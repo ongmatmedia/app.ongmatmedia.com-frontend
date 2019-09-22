@@ -49,7 +49,7 @@ export const TopBar = withAppDrawerState(props => (
                 <Avatar size={40} src="https://img.icons8.com/bubbles/2x/user.png" />
             </Popover>
 
-            <Popover placement="bottomRight" content={<AppDrawer />} trigger="click">
+            <Popover placement="bottomRight" content={<AppDrawer />} trigger="hover">
                 <Icon type="appstore" style={{ fontSize: 20, color: '#f8ffd9' }} />
             </Popover>
 
@@ -57,5 +57,4 @@ export const TopBar = withAppDrawerState(props => (
 
     </div>
 ))
-
-{/* <Header style={{ height: 50, background: 'linear-gradient(to right, #43cea2, #185a9d)' }}></Header> */ }
+ 

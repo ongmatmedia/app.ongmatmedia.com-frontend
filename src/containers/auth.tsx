@@ -1,17 +1,51 @@
 import React from 'react';
-import { Props } from "react";
-import { Layout } from "antd";
+import { Row, Col } from "antd";
+import { IReactComponent } from 'mobx-react';
 
-export const AuthLayout = (props: Props<any>) => (
-    <div className="gx-main-content-wrapper">
-      <Layout className="gx-app-layout">
-        <Layout>
-          <Layout.Content className="gx-layout-content">
-            {
-              props.children
-            }
-          </Layout.Content>
-        </Layout>
-      </Layout>
-    </div>
-  )
+import './auth-layout.css'
+import { RouterProps } from 'react-router';
+
+const Icon = () => (
+  <Row type="flex" justify="space-around" align="middle" style={{ height: '100%', flexDirection: 'column' }}>
+    <Col md={24} style={{ display: 'flex', justifyContent: 'center' }} >
+      <img src="https://i.pinimg.com/originals/58/f4/72/58f4723d8f23906bdcb058604075ad2a.png" style={{ maxWidth: '90%', alignItems: 'center' }} />
+    </Col>
+  </Row>
+
+)
+
+export const AuthLayout = (props: { Content: IReactComponent }) => (
+  <div style={{
+    display: 'flex',
+    background: 'linear-gradient(to right, #4e54c8, #8f94fb)',
+    flexDirection: 'column',
+    minHeight: '100vh',
+    justifyContent: 'center'
+  }}>
+    <Row type="flex" justify="center">
+      <Col
+        md={12}
+        xs={20}
+        xxl={9}
+        style={{
+          backgroundColor: 'white',
+          borderRadius: 30,
+          minHeight: 400
+        }}
+      >
+        <Row type="flex" style={{ padding: 30 }}>
+
+          <Col md={12} xs={0} >
+            <Icon />
+          </Col>
+
+          <Col md={12} xs={24} >
+            <props.Content {...props} />
+          </Col>
+
+        </Row>
+
+      </Col>
+    </Row>
+  </div>
+)

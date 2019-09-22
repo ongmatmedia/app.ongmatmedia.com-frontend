@@ -1,6 +1,8 @@
 import React from 'react';
-import { Icon } from 'antd'
-import { Link } from 'react-router-dom';
+import { Icon, Modal } from 'antd'
+import { Link, withRouter } from 'react-router-dom';
+import { Auth } from 'aws-amplify';
+import { RouterProps } from 'react-router';
 
 const DrawerLinks: Array<{
     name: string,
@@ -17,11 +19,10 @@ const DrawerLinks: Array<{
         { name: 'Account', icon: 'user', to: '/account' },
         { name: 'Deposit', icon: 'dollar', to: '/deposit' },
         { name: 'Agency', icon: 'global', to: '/agency' },
-        { name: 'Log out', icon: 'logout', to: '/logout' },
-        
+
     ]
 
-export const AppDrawer = () => (
+export const AppDrawer = withRouter((props: RouterProps) => (
 
     <div style={{
         width: 260,
@@ -50,5 +51,28 @@ export const AppDrawer = () => (
                 </Link>
             ))
         }
+
+        <div
+            onClick={() => Modal.confirm({
+                title: "Logout now?",
+                onOk: async () => {
+                    props.history.push('/auth/login')
+                    await Auth.signOut()
+                }
+            })}
+            style={{
+                width: 80,
+                padding: 10,
+                display: 'flex',
+                flexDirection: 'column',
+                marginTop: 15,
+                alignItems: 'center',
+                cursor: 'pointer'
+            }}
+            className="drawerItem"
+        >
+            <Icon type="logout" style={{ fontSize: 30 }} />
+            <span style={{ fontSize: 12, paddingTop: 15 }}>Log out</span>
+        </div>
     </div>
-)
+))
