@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Icon, Modal } from 'antd'
 import { Link, withRouter } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
@@ -16,24 +16,54 @@ const DrawerLinks: Array<{
         { name: 'Inbox', icon: 'message', to: '/inbox' },
         { name: 'CRM', icon: 'cluster', to: '/crm' },
         { name: 'Livestream', icon: 'eye', to: '/livestream' },
-        { name: 'Account', icon: 'user', to: '/account' },
+        { name: 'Account', icon: 'user', to: '/accounts' },
         { name: 'Deposit', icon: 'dollar', to: '/deposit' },
         { name: 'Agency', icon: 'global', to: '/agency' },
 
     ]
 
-export const AppDrawer = withRouter((props: RouterProps) => (
+const LogoutButton = withRouter((props: RouterProps) => (
+    <div
+        onClick={() => Modal.confirm({
+            title: "Logout now?",
+            onOk: async () => {
+                props.history.push('/auth/login')
+                await Auth.signOut()
+            }
+        })}
+        style={{
+            width: 80,
+            padding: 10,
+            display: 'flex',
+            flexDirection: 'column',
+            marginTop: 15,
+            alignItems: 'center',
+            cursor: 'pointer'
+        }}
+        className="drawerItem"
+    >
+        <Icon type="logout" style={{ fontSize: 30 }} />
+        <span style={{ fontSize: 12, paddingTop: 15 }}>Log out</span>
+    </div>
+))
 
-    <div style={{
-        width: 260,
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        padding: 10
-    }}>
+
+
+export const AppDrawer = (props: { onClick: Function }) => (
+
+    <div
+        onClick={() => props.onClick()}
+        style={{
+            width: 260,
+            display: 'flex',
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            padding: 10
+        }}
+    >
         {
             DrawerLinks.map(el => (
-                <Link to={el.to}>
+                <Link key={el.to} to={el.to}>
                     <div style={{
                         width: 80,
                         padding: 10,
@@ -52,27 +82,6 @@ export const AppDrawer = withRouter((props: RouterProps) => (
             ))
         }
 
-        <div
-            onClick={() => Modal.confirm({
-                title: "Logout now?",
-                onOk: async () => {
-                    props.history.push('/auth/login')
-                    await Auth.signOut()
-                }
-            })}
-            style={{
-                width: 80,
-                padding: 10,
-                display: 'flex',
-                flexDirection: 'column',
-                marginTop: 15,
-                alignItems: 'center',
-                cursor: 'pointer'
-            }}
-            className="drawerItem"
-        >
-            <Icon type="logout" style={{ fontSize: 30 }} />
-            <span style={{ fontSize: 12, paddingTop: 15 }}>Log out</span>
-        </div>
+        <LogoutButton />
     </div>
-))
+) 

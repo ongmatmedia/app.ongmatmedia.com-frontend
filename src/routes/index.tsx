@@ -5,7 +5,7 @@ import { SeedingPage, SeedingMenuContent } from './seeding'
 import { LivestreamPage } from './livestream';
 import { AuthLayout } from '../containers/auth';
 import { Login, ResetPassword } from './auth';
-import { Auth } from 'aws-amplify';
+import {AccountPage} from './account'
 
 
 export const AppWithRouter = () => (
@@ -21,8 +21,15 @@ export const AppWithRouter = () => (
         <AuthLayout Content={Login} />
       </Route>
 
+      
+
       <Route exact path="/auth/reset-password">
         <AuthLayout Content={ResetPassword} />
+      </Route>
+
+      
+      <Route exact path="/accounts" >
+        <MainLayout Content={AccountPage} />
       </Route>
 
       <Route exact path="/seeding" >
