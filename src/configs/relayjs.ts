@@ -6,9 +6,10 @@ import {
     Store,
 } from 'relay-runtime';
 import { Auth } from "aws-amplify";
+import { Modal } from 'antd';
 
-const GraphQLEndpoint = 'https://astywsdaunes5mxcihwj4jnfzu.appsync-api.us-east-1.amazonaws.com/graphql'
- 
+const GraphQLEndpoint = 'https://7qwdnah2rbbopjl5cgj7w5jgqe.appsync-api.us-east-1.amazonaws.com/graphql'
+
 async function query(operation, variables) {
     try {
         const user = await Auth.currentSession()
@@ -26,9 +27,13 @@ async function query(operation, variables) {
         })
         return await response.json()
     } catch (e) {
-        if(['#/reset-pass','#/set-new-pass'].indexOf(window.location.hash.trim()) < 1){
-            window.location.href = window.location.origin + '#login'
-        }
+        Modal.error({
+            title: 'Error with API, do you want to login?',
+            onOk: () => {
+                Auth.signOut()
+                window.location.href = '#/auth/login'
+            }
+        })
     }
 
 }

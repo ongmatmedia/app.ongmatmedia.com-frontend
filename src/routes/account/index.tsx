@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { AccountList } from './account.list'
+import { AccountList } from './AccountList'
 import { Card, Row, Col } from 'antd'
-import { AccountAction } from './account.action'
+import { AccountActions } from './AccountActions'
 
 export const AccountPage = () => {
 
@@ -17,7 +17,7 @@ export const AccountPage = () => {
                     paddingTop: 10
                 }}
                 >
-                    <AccountAction />
+                    <AccountActions />
                 </Col>
             </Row>
 

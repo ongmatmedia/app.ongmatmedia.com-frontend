@@ -34,14 +34,14 @@ const ResetPasswordPage = withRouter<any, any>((props: FormComponentProps & Rout
         set_error(null)
         set_loading(true)
         try {
-
             await Auth.forgotPasswordSubmit(username, code, password)
             notification.success({ message: 'Password changed' })
             props.history.push('/')
         } catch (e) {
             set_error(e.message)
+            set_loading(false)
         }
-        set_loading(false)
+        
     }
 
     useEffect(() => { username && send_vetification_code(username) }, [])

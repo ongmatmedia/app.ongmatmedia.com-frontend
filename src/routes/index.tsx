@@ -5,7 +5,8 @@ import { SeedingPage, SeedingMenuContent } from './seeding'
 import { LivestreamPage } from './livestream';
 import { AuthLayout } from '../containers/auth';
 import { Login, ResetPassword } from './auth';
-import {AccountPage} from './account'
+import { AccountPage } from './account'
+import { SetNewPasswordPage } from './auth/set-new-pass';
 
 
 export const AppWithRouter = () => (
@@ -21,13 +22,15 @@ export const AppWithRouter = () => (
         <AuthLayout Content={Login} />
       </Route>
 
-      
+      <Route exact path="/auth/set-new-password">
+        <AuthLayout Content={SetNewPasswordPage} />
+      </Route>
 
       <Route exact path="/auth/reset-password">
         <AuthLayout Content={ResetPassword} />
       </Route>
 
-      
+
       <Route exact path="/accounts" >
         <MainLayout Content={AccountPage} />
       </Route>

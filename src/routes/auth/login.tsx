@@ -78,6 +78,23 @@ export const LoginView = withRouter<any, any>((props: FormComponentProps & Route
 
     const { form } = props
 
+    const set_new_pass_prompt = (username: string, password: string) => Modal.confirm({
+        title: 'New password require',
+        content: 'You must set a new password for your account, do you want to do it now ?',
+        onOk: () => {
+            localStorage.setItem('tmp-user-credential', JSON.stringify({ username, password }))
+            props.history.push(`/auth/set-new-password`)
+        }
+    })
+
+    const reset_password_prompt = (username: string) => {
+        Modal.confirm({
+            title: 'Password reset require',
+            content: 'You must set a new password for your account, do you want to do it now ?',
+            onOk: () => props.history.push(`/auth/reset-password?username=${username}`)
+        })
+    }
+
     const login = async () => {
         form.validateFields(async (err, values) => {
             if (err) return
@@ -88,24 +105,18 @@ export const LoginView = withRouter<any, any>((props: FormComponentProps & Route
             const { password, username } = values
             try {
                 const user = await Auth.signIn({ password, username })
+
                 if (user.challengeName) {
-                    console.error(user.challengeName)
-                    return
+                    if (user.challengeName == 'NEW_PASSWORD_REQUIRED') set_new_pass_prompt(username, password)
                 }
                 props.history.push('/')
             } catch (e) {
                 set_error(e.message)
-                console.log(e)
-
-                e.code == "PasswordResetRequiredException" && Modal.confirm({
-                    title: 'Password reset require',
-                    content: 'You must set a new password for your account, do you want to do it now ?',
-                    onOk: () => props.history.push(`/auth/reset-password?username=${username}`)
-                })
                 set_loading(false)
+                e.code == 'PasswordResetRequiredException' && reset_password_prompt(username)
             }
 
-
+            
         })
     }
 
@@ -149,13 +160,13 @@ export const LoginView = withRouter<any, any>((props: FormComponentProps & Route
                     <Button type="dashed" onClick={() => props.history.push('/auth/reset-password')}>Forgot password</Button>
                     <Button type="dashed" onClick={() => Modal.warn({
                         title: 'Developing feature'
-                    })}>Register</Button>  
+                    })}>Register</Button>
                 </div>
             </div>
 
         </Form>
 
-    )       
+    )
 
 });
 

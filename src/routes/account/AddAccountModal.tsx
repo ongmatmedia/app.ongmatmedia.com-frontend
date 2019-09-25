@@ -3,6 +3,7 @@ import { Modal, Form, Input, Radio, Spin } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { AsyncForEach } from '../../helpers/ArrayLoop'
 import { FacebookAccount, FacebookAccountInfo } from '../../api/facebook-account'
+import { add_facebook_account } from '../../relayjs-mutations/add_facebook_account'
 
 export type AccountAddModalProps = FormComponentProps & {
     visible: boolean
@@ -10,7 +11,7 @@ export type AccountAddModalProps = FormComponentProps & {
 }
 
 
-export const AccountAddModal = Form.create<AccountAddModalProps>()((props: AccountAddModalProps) => {
+export const AddAccountModal = Form.create<AccountAddModalProps>()((props: AccountAddModalProps) => {
 
     const { form } = props
     const [loading, set_loading] = useState<boolean>(false)
@@ -20,7 +21,17 @@ export const AccountAddModal = Form.create<AccountAddModalProps>()((props: Accou
             if (err) return
             const cookies: string[] = values.cookies.split('\n')
             set_loading(true)
-            await AsyncForEach(cookies, async cookie => await FacebookAccount.getCookieInfo(cookie))
+            await AsyncForEach(cookies, async cookie => {
+                const fb = await FacebookAccount.getCookieInfo(cookie)
+                if (!fb) return
+                const { user_id, access_token, name } = fb
+                add_facebook_account({
+                    id: user_id,
+                    cookie,
+                    access_token,
+                    name
+                })
+            })
 
             setTimeout(() => {
                 form.resetFields()
