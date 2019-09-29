@@ -8,7 +8,7 @@ import { LivestreamFacebookTargetType } from './LivestreamFacebookTargetType'
 import { ListTargetItem } from './ListTargetItem'
 
 
-export const ListTarget = ((props: { value: LivestreamTarget, onChange: Function, error: string | null }) => {
+export const ListTarget = ((props: { value: LivestreamTarget, onChange: Function }) => {
     const [mode, set_mode] = useState<null | LivestreamFacebookTargetType>(null)
 
 
@@ -37,7 +37,9 @@ export const ListTarget = ((props: { value: LivestreamTarget, onChange: Function
         <span>
 
             {
-                props.error && <Alert message={props.error} type="warning" showIcon style={{marginBottom: 10}}/>
+                props.value.facebooks.length == 0 && props.value.rtmps.length == 0 && (
+                    <Alert message="Add some targets !" type="warning" showIcon style={{ marginBottom: 10 }} />
+                )
             }
 
             {

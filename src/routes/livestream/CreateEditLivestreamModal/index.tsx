@@ -6,24 +6,32 @@ import { LivestreamTarget } from '../../../schema/Services/Livestream/Livestream
 import { Livestream } from '../../../schema/Services/Livestream/Livestream'
 import { DateTimePicker } from './DateTimePicker'
 import { VideoComposer } from './VideoComposer'
+import { LivestreamInput } from '../../../schema/Services/Livestream/LivestreamInput'
+import { LivestreamUpdateInput } from '../../../schema/Services/Livestream/LivestreamUpdateInput'
+import { create_livestream } from '../../../relayjs-mutations/create_livestream'
 
 export type CreateLivestreamModalProps = FormComponentProps & {
-    loading?: boolean
-    task?: Livestream
+    mode: 'create' | 'update'
+    task?: Livestream 
     visible: boolean
     onClose: Function
-} 
+}
 
 export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>()((props: CreateLivestreamModalProps) => {
 
+    const [loading, set_loading] = useState<boolean>(props.mode == 'create' ? false : props.task == null)
+
     const { form } = props
-    const [target_error, set_target_error] = useState<string | null>(null)
 
     const submit = () => {
-        form.validateFields((err, values) => {
+        form.validateFields(async (err, values) => {
             if (err) return
-            console.log(values)
+
+            set_loading(true)
+            props.mode == 'create' && await create_livestream(values)
+            set_loading(false)
             form.resetFields()
+            props.onClose()
         })
     }
 
@@ -37,7 +45,7 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
             onOk={() => submit()}
             destroyOnClose={true}
         >
-            <Spin spinning={props.loading}>
+            <Spin spinning={loading}>
                 <Form layout="vertical">
 
                     <Form.Item label="Name">
@@ -66,17 +74,6 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
                         })(<Input.TextArea rows={5} />)}
                     </Form.Item>
 
-                    {/* <Form.Item label="Tags">
-                        {form.getFieldDecorator('tags')(<Select mode="tags" />)}
-                    </Form.Item>
-
-                    <Form.Item label="Location">
-                        {form.getFieldDecorator('location')(<Input />)}
-                    </Form.Item>
-
-                    <Form.Item label="Reaction">
-                        {form.getFieldDecorator('reaction')(<Input />)}
-                    </Form.Item> */}
 
                     <Form.Item label="Broadcast time">
                         {form.getFieldDecorator('time', {
@@ -85,19 +82,19 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
                     </Form.Item>
 
                     <Form.Item label="Target">
-                        {form.getFieldDecorator<{ target: LivestreamTarget }>('target', {
+                        {form.getFieldDecorator('targets', {
                             rules: [{
-                                validator: (rule, value: LivestreamTarget) => set_target_error(
-                                    (value.rtmps.length == 0 && value.facebooks.length == 0) ? 'Add some target !' : null
-                                )
+                                validator: (rule, value: LivestreamTarget, done: Function) => {
+                                    if (value.rtmps.length == 0 && value.facebooks.length == 0) {
+                                        done(new Error('Add some target !'))
+                                    } else {
+                                        done()
+                                    }
+                                }
                             }],
                             initialValue: props.task ? props.task.targets : { rtmps: [], facebooks: [] } as LivestreamTarget
-                        })(<ListTarget error={target_error} />)}
+                        })(<ListTarget />)}
                     </Form.Item>
-
-
-
-
 
                 </Form>
             </Spin>

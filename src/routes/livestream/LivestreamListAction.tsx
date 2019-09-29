@@ -8,7 +8,7 @@ export const LivestreamListAction = () => {
 
     return (
         <span>
-            <CreateEditLivestreamModal visible={create_modal_visible} onClose={() => set_create_modal_visible(false)} loading={false} />
+            <CreateEditLivestreamModal visible={create_modal_visible} onClose={() => set_create_modal_visible(false)} mode="create"/>
             <Button icon="plus" type="primary" onClick={() => set_create_modal_visible(true)}>Add livestream schedule</Button>
         </span>
     )

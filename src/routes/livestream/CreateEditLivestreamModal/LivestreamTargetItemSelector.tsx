@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col, Select, Avatar, Icon, Button, Alert, Spin } from 'antd'
 import { QueryRenderer } from 'react-relay'
-const graphql = require('babel-plugin-relay/macro');
+import graphql from 'babel-plugin-relay/macro'
 import { RelayEnvironment } from '../../../configs/relayjs'
 import { LivestreamConnection } from '../../../schema/Services/Livestream/LivestreamConnection';
 import { LivestreamFacebookTargetType } from './LivestreamFacebookTargetType';
@@ -14,7 +14,7 @@ import { FacebookGraphAPI } from '../../../api/facebook-graph-api';
 
 
 const getAccountsQuery = graphql`
-    query FacebookAccountTargetListAccountQuery{
+    query LivestreamTargetItemSelectorQuery{
         facebook_accounts{
             edges{
                 node{
