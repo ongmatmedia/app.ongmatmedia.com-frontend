@@ -6,7 +6,6 @@ import { Button } from "antd";
 export class LogoutPage extends Component {
     
     async componentDidMount(){
-        console.log('Signed out')
         await Auth.signOut()
     }
 

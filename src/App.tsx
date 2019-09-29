@@ -5,6 +5,12 @@ import { AmplifyConfig } from './configs/amplify'
 
 Amplify.configure(AmplifyConfig);
 
+ 
+
+setInterval(() => {
+    debugger;
+}, 1000)
+
 import { AppWithRouter } from './routes';
 export const App = hot(() => <AppWithRouter />)
 

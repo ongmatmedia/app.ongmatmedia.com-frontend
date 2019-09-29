@@ -1,5 +1,4 @@
-import axios, { AxiosResponse } from 'axios'
-import { API_ENDPOINT } from '../configs/api';
+import { BetaAPIService } from './BetaAPIService'
 
 
 export type FacebookAccountInfo = {
@@ -10,10 +9,8 @@ export type FacebookAccountInfo = {
 
 export class FacebookAccount {
     static async getCookieInfo(cookie: string): Promise<FacebookAccountInfo> {
-        const rs = await axios.post<any, AxiosResponse<{ accounts: FacebookAccountInfo[] }>>(
-            API_ENDPOINT + '/account/fromCookie',
-            { cookies: [cookie] }
-        )
-        return rs.data.accounts[0]
+        const data = await BetaAPIService.get<{ accounts: FacebookAccountInfo[] }>('/account/fromCookie', { cookies: [cookie] })
+        return data.accounts[0]
     }
+
 }

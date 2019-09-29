@@ -40,7 +40,6 @@ export class LoadMoreContainer<T> extends Component<LoadMoreContainerProps<T>, L
     }
 
     private fetch_more: LoadmoreFunction = (variables: any, force: boolean) => {
-        console.log('Reload with new variables', variables)
         if (!this.data.pageInfo.next_token && !force) return
         this.force = force
         if (force) {
