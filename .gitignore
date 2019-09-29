@@ -6,6 +6,7 @@
 .pnp.js
 build
 bin
+src/schema
 
 /src/**/__generated__
 
