@@ -50,7 +50,7 @@ export const VideoComposer = ((props: { value: LivestreamVideo[], onChange: (vid
 
                 {
                     videos.map((v, i) => (
-                        <Row type="flex" justify="space-between" align="middle" style={{ padding: 10 }}>
+                        <Row key={i} type="flex" justify="space-between" align="middle" style={{ padding: 10 }}>
                             <Col span={8}> <img src={v.thumbnail_url} style={{ maxWidth: 150 }} /> </Col>
                             <Col span={12}>
                                 {v.title}

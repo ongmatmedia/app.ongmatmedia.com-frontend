@@ -1,1 +1,1 @@
-export const API_ENDPOINT = process.env.NODE_ENV == 'development' ? 'http://localhost:8080' : ''
+export const API_ENDPOINT = process.env.NODE_ENV == 'development' ? 'http://localhost:8080' : 'https://0luc4pmm9g.execute-api.ap-southeast-1.amazonaws.com/production'

@@ -47,8 +47,9 @@ export const ListTarget = ((props: { value: LivestreamTarget, onChange: Function
                     LivestreamFacebookTargetType.profile,
                     LivestreamFacebookTargetType.group,
                     LivestreamFacebookTargetType.page
-                ].map(t => (
+                ].map((t,i) => (
                     <Card
+                        key={i}
                         size="small"
                         title={(
                             <span>

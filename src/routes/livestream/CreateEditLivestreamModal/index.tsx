@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Modal, Form, Input, Radio, Spin, Switch, Select } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { ListTarget } from './ListTarget'
@@ -6,13 +6,12 @@ import { LivestreamTarget } from '../../../schema/Services/Livestream/Livestream
 import { Livestream } from '../../../schema/Services/Livestream/Livestream'
 import { DateTimePicker } from './DateTimePicker'
 import { VideoComposer } from './VideoComposer'
-import { LivestreamInput } from '../../../schema/Services/Livestream/LivestreamInput'
-import { LivestreamUpdateInput } from '../../../schema/Services/Livestream/LivestreamUpdateInput'
 import { create_livestream } from '../../../relayjs-mutations/create_livestream'
+import { update_livestream } from '../../../relayjs-mutations/update_livestream'
 
 export type CreateLivestreamModalProps = FormComponentProps & {
     mode: 'create' | 'update'
-    task?: Livestream 
+    task?: Livestream
     visible: boolean
     onClose: Function
 }
@@ -21,6 +20,8 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
 
     const [loading, set_loading] = useState<boolean>(props.mode == 'create' ? false : props.task == null)
 
+    useEffect(() => set_loading(props.task == null), [props.task == null])
+
     const { form } = props
 
     const submit = () => {
@@ -28,7 +29,13 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
             if (err) return
 
             set_loading(true)
-            props.mode == 'create' && await create_livestream(values)
+            if(props.mode == 'create'){
+                await create_livestream(values)
+            }else{
+                const task = { id: (props.task as any).id, ...values } as Livestream
+                console.log(task)
+                await update_livestream(task)
+            }
             set_loading(false)
             form.resetFields()
             props.onClose()
@@ -65,12 +72,14 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
                     <Form.Item label="Video title">
                         {form.getFieldDecorator('title', {
                             rules: [{ required: true, message: 'Please input title !' }],
+                            initialValue: props.task ? props.task.title : null
                         })(<Input />)}
                     </Form.Item>
 
                     <Form.Item label="Video descripton">
                         {form.getFieldDecorator('description', {
                             rules: [{ required: true, message: 'Please input description !' }],
+                            initialValue: props.task ? props.task.description : null
                         })(<Input.TextArea rows={5} />)}
                     </Form.Item>
 
@@ -78,6 +87,7 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
                     <Form.Item label="Broadcast time">
                         {form.getFieldDecorator('time', {
                             rules: [{ required: true, message: 'Please select time !' }],
+                            initialValue: props.task ? props.task.time : null
                         })(<DateTimePicker />)}
                     </Form.Item>
 

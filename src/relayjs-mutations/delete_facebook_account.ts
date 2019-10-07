@@ -1,7 +1,7 @@
 import { commitMutation } from "react-relay";
 import { ConnectionHandler, RecordProxy } from "relay-runtime";
 import { RelayEnvironment } from '../configs/relayjs'
-const graphql = require('babel-plugin-relay/macro');
+import graphql from 'babel-plugin-relay/macro';
 
 
 const mutation = graphql`

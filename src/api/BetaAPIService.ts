@@ -1,21 +1,36 @@
 import axios, { AxiosResponse } from 'axios'
 import { API_ENDPOINT } from '../configs/api';
+import { Auth } from 'aws-amplify';
+
+const rq = axios.create({
+    baseURL: API_ENDPOINT
+})
 
 
 export class BetaAPIService {
+    private static async  getAccessToken(): Promise<string> {
+        const user = await Auth.currentSession()
+        return user.getAccessToken().getJwtToken()
+    }
     static async get<T>(uri: string, query: any = {}): Promise<T> {
-        const rs = await axios.get<any, AxiosResponse<{ data: T, message: string, error: boolean }>>(
-            API_ENDPOINT + uri, { params: query }
+        const headers = {
+            'Authorization': await this.getAccessToken()
+        }
+        const rs = await rq.get<any, AxiosResponse<{ data: T, message: string, error: boolean }>>(
+            uri, { params: query, headers }
         )
         if (rs.data.error) throw rs.data.message
         return rs.data.data
     }
 
     static async post<T>(uri: string, body: any = {}, query: any = null) {
-        const rs = await axios.post<any, AxiosResponse<{ data: T, message: string, error: boolean }>>(
-            API_ENDPOINT + uri,
+        const headers = {
+            'Authorization': await this.getAccessToken()
+        }
+        const rs = await rq.post<any, AxiosResponse<{ data: T, message: string, error: boolean }>>(
+            uri,
             body,
-            { params: query }
+            { params: query, headers }
         )
         if (rs.data.error) throw rs.data.message
         return rs.data.data
