@@ -19,7 +19,7 @@ export const delete_livestream = async (id: string) => new Promise(
     async (success: Function, reject: Function
     ) => {
 
-        commitMutation(RelayEnvironment, {
+        commitMutation(RelayEnvironment as any, {
             variables: { id },
             mutation,
             optimisticUpdater: store => share_updater(store, id),

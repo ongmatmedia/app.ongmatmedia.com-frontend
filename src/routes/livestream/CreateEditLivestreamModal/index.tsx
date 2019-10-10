@@ -20,7 +20,7 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
 
     const [loading, set_loading] = useState<boolean>(props.mode == 'create' ? false : props.task == null)
 
-    useEffect(() => set_loading(props.task == null), [props.task == null])
+    props.mode == 'update' && useEffect(() => set_loading(props.task == null), [props.task == null])
 
     const { form } = props
 

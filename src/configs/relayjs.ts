@@ -67,5 +67,5 @@ async function query(operation, variables, cacheConfig?: any) {
 
 export const RelayEnvironment = new Environment({
     network: Network.create(query),
-    store: new Store(new RecordSource()),
-}); 
+    store: new Store(new RecordSource())
+}) as any

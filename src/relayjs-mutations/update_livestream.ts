@@ -24,7 +24,7 @@ export const update_livestream = async (task: LivestreamUpdateInput) => new Prom
     async (success: Function, reject: Function
     ) => {
 
-        commitMutation(RelayEnvironment, {
+        commitMutation(RelayEnvironment as any, {
             variables: { task },
             mutation,
             onCompleted: store => {

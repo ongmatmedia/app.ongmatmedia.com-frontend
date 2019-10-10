@@ -1,7 +1,6 @@
 import { commitMutation } from "react-relay";
 import { ConnectionHandler, RecordProxy } from "relay-runtime";
 import { RelayEnvironment } from '../configs/relayjs'
-import { FacebookAccount } from "../schema/FacebookAccount/FacebookAccount";
 import { FacebookAccountInput } from "../schema/FacebookAccount/FacebookAccountInput";
 const graphql = require('babel-plugin-relay/macro');
 
@@ -28,7 +27,7 @@ export const add_facebook_account = async (account: FacebookAccountInput) => new
     async (success: Function, reject: Function
     ) => {
 
-        commitMutation(RelayEnvironment, {
+        commitMutation(RelayEnvironment as any, {
             variables: { input: account },
             mutation,
             updater: store => {

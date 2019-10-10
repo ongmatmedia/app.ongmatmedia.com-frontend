@@ -15,7 +15,7 @@ export const delete_facebook_account = async (id: string) => new Promise(
     async (success: Function, reject: Function
     ) => {
 
-        commitMutation(RelayEnvironment, {
+        commitMutation(RelayEnvironment as any, {
             variables: { id },
             mutation,
             optimisticUpdater: store => {

@@ -28,7 +28,8 @@ export const create_livestream = async (task: LivestreamInput) => new Promise(
     async (success: Function, reject: Function
     ) => {
 
-        commitMutation(RelayEnvironment, {
+        commitMutation(RelayEnvironment as any, {
+            
             variables: { task },
             mutation,
             updater: store => {
