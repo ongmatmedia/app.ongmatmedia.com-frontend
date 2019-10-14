@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Modal, Form, Input, Radio, Spin, Switch, Select } from 'antd'
+import { Modal, Form, Input, Radio, Spin, Switch, Select, Alert } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { ListTarget } from './ListTarget'
 import { LivestreamTarget } from '../../../schema/Services/Livestream/LivestreamTarget'
@@ -19,6 +19,7 @@ export type CreateLivestreamModalProps = FormComponentProps & {
 export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>()((props: CreateLivestreamModalProps) => {
 
     const [loading, set_loading] = useState<boolean>(props.mode == 'create' ? false : props.task == null)
+    const [error, set_error] = useState<string | null>(null)
 
     props.mode == 'update' && useEffect(() => set_loading(props.task == null), [props.task == null])
 
@@ -29,16 +30,20 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
             if (err) return
 
             set_loading(true)
-            if(props.mode == 'create'){
-                await create_livestream(values)
-            }else{
-                const task = { id: (props.task as any).id, ...values } as Livestream
-                console.log(task)
-                await update_livestream(task)
+            try {
+                if (props.mode == 'create') {
+                    await create_livestream(values)
+                } else {
+                    const task = { id: (props.task as any).id, ...values } as Livestream
+                    await update_livestream(task)
+                }
+                form.resetFields()
+                props.onClose()
+            } catch (e) {
+                set_error(e.message)
             }
             set_loading(false)
-            form.resetFields()
-            props.onClose()
+
         })
     }
 
@@ -53,6 +58,9 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
             destroyOnClose={true}
         >
             <Spin spinning={loading}>
+                {
+                    error && <Alert type="error" message={error} style={{ padding: 5 }} />
+                }
                 <Form layout="vertical">
 
                     <Form.Item label="Name">
@@ -88,7 +96,7 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
                         {form.getFieldDecorator('time', {
                             rules: [{ required: true, message: 'Please select time !' }],
                             initialValue: props.task ? props.task.time : null
-                        })(<DateTimePicker />)}
+                        })(<DateTimePicker now={props.mode == 'create'} />)}
                     </Form.Item>
 
                     <Form.Item label="Target">
