@@ -1,5 +1,5 @@
 import React from 'react'
-import { Livestream } from '../../schema/Services/Livestream/Livestream'
+import { Livestream } from '../../../schema/Services/Livestream/Livestream'
 import { Avatar, Icon, Card, Popconfirm } from 'antd'
 import Meta from 'antd/lib/card/Meta'
 import Moment from 'react-moment'

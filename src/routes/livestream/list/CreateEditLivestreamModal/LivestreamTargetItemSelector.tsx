@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 import { Row, Col, Select, Avatar, Icon, Button, Alert, Spin } from 'antd'
 import { QueryRenderer } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import { RelayEnvironment } from '../../../configs/relayjs'
-import { LivestreamConnection } from '../../../schema/Services/Livestream/LivestreamConnection';
+import { RelayEnvironment } from '../../../../configs/relayjs'
+import { LivestreamConnection } from '../../../../schema/Services/Livestream/LivestreamConnection';
 import { LivestreamFacebookTargetType } from './LivestreamFacebookTargetType';
-import { FacebookAccountConnection } from '../../../schema/FacebookAccount/FacebookAccountConnection';
-import { FacebookAccount } from '../../../schema/FacebookAccount/FacebookAccount';
-import { FacebookGraphAPI } from '../../../api/facebook-graph-api';
+import { FacebookAccountConnection } from '../../../../schema/FacebookAccount/FacebookAccountConnection';
+import { FacebookAccount } from '../../../../schema/FacebookAccount/FacebookAccount';
+import { FacebookGraphAPI } from '../../../../api/facebook-graph-api';
 
 
 
@@ -137,11 +137,14 @@ export const LivestreamTargetItemSelector = (props: FacebookAccountTarget) => {
                         placeholder="Select facebook account"
                         optionFilterProp="children"
                         style={{ marginTop: 10 }}
-                        onChange={(id: string) => props.onSelect(
-                            id,
-                            selectable_groups_pages.filter(a => a.id == id)[0].name,
-                            selected_account ? selected_account.id : undefined
-                        )}
+                        onChange={(id: string) => {
+                            props.onSelect(
+                                id,
+                                selectable_groups_pages.filter(a => a.id == id)[0].name,
+                                selected_account ? selected_account.id : undefined
+                            )
+
+                        }}
                     >
                         {
                             selectable_groups_pages.map((account, index) => (

@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import { MainLayout } from '../containers/main';
 import { SeedingPage, SeedingMenuContent } from './seeding'
-import { LivestreamPage } from './livestream';
+import { LivestreamPage } from './livestream/list';
 import { AuthLayout } from '../containers/auth';
 import { Login, ResetPassword } from './auth';
 import { AccountPage } from './account'
 import { SetNewPasswordPage } from './auth/set-new-pass';
+import { LivestreamSubscriptionPage } from './livestream/subscription';
 
 
 export const AppWithRouter = () => (
@@ -45,6 +46,9 @@ export const AppWithRouter = () => (
         <MainLayout Content={LivestreamPage} />
       </Route>
 
+      <Route exact path="/livestream/list" >
+        <MainLayout Content={LivestreamSubscriptionPage} />
+      </Route>
 
 
       <Route>

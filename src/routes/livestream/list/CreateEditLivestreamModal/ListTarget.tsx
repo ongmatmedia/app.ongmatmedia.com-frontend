@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { LivestreamTarget } from '../../../schema/Services/Livestream/LivestreamTarget'
+import { LivestreamTarget } from '../../../../schema/Services/Livestream/LivestreamTarget'
 import { useState } from 'react'
 import { Card, Avatar, Col, Row, Button, Input, Icon, Alert } from 'antd'
 import { LivestreamTargetItemSelector } from './LivestreamTargetItemSelector'
@@ -18,11 +18,12 @@ export const ListTarget = ((props: { value: LivestreamTarget, onChange: Function
         [LivestreamFacebookTargetType.page]: 'https://www.socialmediaexaminer.com/wp-content/uploads/2014/07/kl-facebook-pages-app-logo.jpg'
     }
 
-    const select = (uid: string, name: string, type: LivestreamFacebookTargetType) => {
+    const select = (uid: string, name: string, type: LivestreamFacebookTargetType, owner?: string) => {
+        console.log({uid, name, type, owner})
         props.onChange({
             ...props.value,
             facebooks: [...props.value.facebooks, {
-                uid, name, type
+                uid, name, type, owner
             }]
         })
     }
@@ -47,7 +48,7 @@ export const ListTarget = ((props: { value: LivestreamTarget, onChange: Function
                     LivestreamFacebookTargetType.profile,
                     LivestreamFacebookTargetType.group,
                     LivestreamFacebookTargetType.page
-                ].map((t,i) => (
+                ].map((t, i) => (
                     <Card
                         key={i}
                         size="small"
@@ -71,7 +72,7 @@ export const ListTarget = ((props: { value: LivestreamTarget, onChange: Function
                                 <LivestreamTargetItemSelector
                                     type={t}
                                     selected={props.value.facebooks.filter(a => a.type == t).map(p => p.uid)}
-                                    onSelect={(uid: string, name: string) => select(uid, name, t)}
+                                    onSelect={(uid: string, name: string, owner?: string) => select(uid, name, t, owner)}
                                     onClose={() => set_mode(null)}
                                 />
                             ) : (
