@@ -38,6 +38,12 @@ export const SubscriptionView = () => GraphQLWrapper<{
 }>(query, {}, (loading, data) => (
     <span>
         <SubscriptionInfo loading={loading} sub={data && data.livestream_subscription} />
-        <UserInfo render={(loading, user) => loading ? <Spin /> : data && data.pricing && data.livestream_subscription && user && <UpdateSubscription sub={data.livestream_subscription} user={user} pricing={data.pricing} />} />
+        <UserInfo render={(loading, user) => loading ? <Spin /> : data && data.pricing && data.livestream_subscription && user && (
+            <UpdateSubscription
+                sub={data.livestream_subscription}
+                user={user}
+                pricing={data.pricing}
+            />
+        )} />
     </span>
 ))

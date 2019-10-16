@@ -8,6 +8,7 @@ import { Login, ResetPassword } from './auth';
 import { AccountPage } from './account'
 import { SetNewPasswordPage } from './auth/set-new-pass';
 import { LivestreamSubscriptionPage } from './livestream/subscription';
+import { LivestreamMenu } from './livestream/LivestreamMenu'
 
 
 export const AppWithRouter = () => (
@@ -43,11 +44,11 @@ export const AppWithRouter = () => (
 
 
       <Route exact path="/livestream" >
-        <MainLayout Content={LivestreamPage} />
+        <MainLayout Content={LivestreamPage} Menu={LivestreamMenu} />
       </Route>
 
-      <Route exact path="/livestream/list" >
-        <MainLayout Content={LivestreamSubscriptionPage} />
+      <Route exact path="/livestream/subscription" >
+        <MainLayout Content={LivestreamSubscriptionPage} Menu={LivestreamMenu} />
       </Route>
 
 

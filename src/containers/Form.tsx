@@ -47,6 +47,10 @@ export class Form {
         }
     }
 
+    setValues(data: {[key: string] : any}){
+        for(const key in data) this.data[name] = data[key]
+    }
+
 
     field<T>({ name, render, require, validator, initalValue }: FormFieldParams<T>) {
         if (initalValue != undefined) {
