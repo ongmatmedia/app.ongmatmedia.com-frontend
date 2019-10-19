@@ -9,6 +9,7 @@ import { AccountPage } from './account'
 import { SetNewPasswordPage } from './auth/set-new-pass';
 import { LivestreamSubscriptionPage } from './livestream/subscription';
 import { LivestreamMenu } from './livestream/LivestreamMenu'
+import { AgencyPage } from './agency';
 
 
 export const AppWithRouter = () => (
@@ -50,6 +51,12 @@ export const AppWithRouter = () => (
       <Route exact path="/livestream/subscription" >
         <MainLayout Content={LivestreamSubscriptionPage} Menu={LivestreamMenu} />
       </Route>
+
+      <Route exact path="/agency" >
+        <MainLayout Content={AgencyPage}   />
+      </Route>
+
+      
 
 
       <Route>

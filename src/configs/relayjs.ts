@@ -36,7 +36,7 @@ async function query(operation, variables, cacheConfig?: any) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': user.getAccessToken().getJwtToken()
+                'Authorization': user.getIdToken().getJwtToken()
             },
             body: JSON.stringify({
                 operationName: operation.name,
