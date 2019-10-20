@@ -1,5 +1,5 @@
 import React from 'react'
 
-export const CreateAgency = () => (
+export const ResetPass = () => (
     <span>List</span>
 )
