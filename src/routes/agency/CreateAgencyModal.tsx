@@ -1,6 +1,7 @@
-import React from 'react'
-import { Form, Modal, Input } from 'antd'
+import React, { useState } from 'react'
+import { Form, Modal, Input, Icon, InputNumber, Spin, Alert } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
+import { create_user } from '../../relayjs-mutations/create_user'
 
 export type CreateAgencyModalProps = FormComponentProps & {
     visible: boolean
@@ -11,8 +12,24 @@ export type CreateAgencyModalProps = FormComponentProps & {
 
 export const CreateAgencyModal = Form.create<CreateAgencyModalProps>()((props: CreateAgencyModalProps) => {
 
-    const submit = () => {
 
+    const [loading, set_loading] = useState<boolean>(false);
+    const [error, set_error] = useState<string | null>(null)
+
+    const submit = () => {
+        props.form.validateFields(async (err, values) => {
+            set_loading(true)
+            try {
+                await create_user(values.username, values.password, values.price_percent)
+                set_error(null)
+                set_loading(false)
+                props.onClose()
+            } catch (e) {
+                set_error(e.message)
+                set_loading(false)
+            }
+
+        })
     }
 
     return (
@@ -20,19 +37,44 @@ export const CreateAgencyModal = Form.create<CreateAgencyModalProps>()((props: C
             <Modal
                 title="Create user or agency"
                 visible={props.visible}
+                onOk={submit}
                 onCancel={() => props.onClose()}
             >
-                <Form >
-                    <Form.Item label="Username">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Password">
-                        <Input />
-                    </Form.Item>
-                    <Form.Item label="Price percent">
-                        <Input type="number"/>
-                    </Form.Item>
-                </Form>
+                <Spin spinning={loading} >
+                    {
+                        error && <Alert type="error" message={error} />
+                    }
+                    <Form>
+                        <Form.Item label="Username">
+                            {
+                                props.form.getFieldDecorator('username', {
+                                    rules: [{ required: true }]
+                                })(
+                                    <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} />
+                                )
+                            }
+                        </Form.Item>
+                        <Form.Item label="Password">
+                            {
+                                props.form.getFieldDecorator('password', {
+                                    rules: [{ required: true }]
+                                })(
+                                    <Input prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />} />
+                                )
+                            }
+                        </Form.Item>
+                        <Form.Item label="Price percent">
+                            {
+                                props.form.getFieldDecorator('price_percent', {
+
+                                    rules: [{ required: true }]
+                                })(
+                                    <InputNumber min={0} max={100} />
+                                )
+                            }
+                        </Form.Item>
+                    </Form>
+                </Spin>
             </Modal>
         </span>
     )

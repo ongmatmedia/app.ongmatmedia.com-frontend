@@ -23,8 +23,8 @@ const query = graphql`
     }
 `
 
-export const UserInfo = (props: UserInfoProps) => GraphQLWrapper<{ me: User }>(
+export const UserInfo = (props: { render: (loading: boolean, me: User | null) => any }) => GraphQLWrapper<{ me: User }>(
     query,
     {},
-    (loading, data) => props.render(loading, data && data.me)
-)
+    ({ data, loading }) => props.render(loading, data && data.me)
+) as any
