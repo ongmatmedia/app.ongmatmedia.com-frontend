@@ -6,6 +6,7 @@ import { Spin, List, Card, Col, Row, Tag, Icon, Tooltip, Button } from 'antd'
 import { Avatar } from '@material-ui/core';
 import { User } from '../../schema/User/User';
 import { SendMoneyModal } from './SendMoneyModal';
+import { UpdatePricePercentModal } from './UpdatePricePercentModal';
 
 const query = graphql`
     query AgencyListQuery{
@@ -35,6 +36,7 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
     if (loading) return <Spin />
 
     const [sent_money_to_user, set_sent_money_to_user] = useState<User | null>(null)
+    const [update_price_percent_user, set_update_price_percent_user] = useState<User | null>(null)
 
     return data && (
         <Fragment>
@@ -44,6 +46,16 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
                         onClose={() => set_sent_money_to_user(null)}
                         visible={true}
                         user={sent_money_to_user}
+                        me={data.me}
+                    />
+                )
+            }
+            {
+                update_price_percent_user && (
+                    <UpdatePricePercentModal
+                        visible={true}
+                        onClose={() => set_update_price_percent_user(null)}
+                        user={update_price_percent_user}
                         me={data.me}
                     />
                 )
@@ -85,7 +97,11 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
                                         />
                                     </Tooltip>,
                                     <Tooltip placement="bottom" title="Change price percent">
-                                        <Icon type="percentage" key="percentage" />
+                                        <Icon
+                                            type="percentage"
+                                            key="percentage"
+                                            onClick={() => set_update_price_percent_user(item)}
+                                        />
                                     </Tooltip>,
                                     <Tooltip placement="bottom" title="Set new password">
                                         <Icon type="unlock" key="unlock" />

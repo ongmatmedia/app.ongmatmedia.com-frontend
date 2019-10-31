@@ -1,9 +1,9 @@
-import React, { useState, createRef } from 'react'
+import React, { useState } from 'react'
 import { User } from '../../schema/User/User'
-import { Modal, Form, InputNumber, Spin, Col, Row, Tag, Input } from 'antd'
+import { Modal, Form, Spin, Col, Row, Tag, Input } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
-import { InputProps } from 'antd/lib/input'
-
+import { send_money } from '../../relayjs-mutations/send_money'
+import { AutoSelectInput } from '../../components/AutoSelectInput'
 export type SendMoneyModalProps = FormComponentProps & {
     visible: boolean
     user: User
@@ -11,39 +11,28 @@ export type SendMoneyModalProps = FormComponentProps & {
     onClose: Function
 }
 
-const AutoSelectInput = (props: InputProps) => {
-    const ref = createRef<{ select: Function }>()
-    const select_all_contents = () => {
-        ref.current && ref.current.select()
-    }
-    const Element = (
-        <Input
-            ref={ref as any}
-            {...props}
-            onFocus={e => {
-                props.onFocus && props.onFocus(e)
-                select_all_contents()
-            }}
-        />
-    )
-    return Element
-}
 
 export const SendMoneyModal = Form.create<SendMoneyModalProps>()((props: SendMoneyModalProps) => {
 
     const [loading, set_loading] = useState<boolean>(false)
-
+    const [error, set_error] = useState<string | null>(null)
     const [send_amount, set_send_amount] = useState<number>(0)
     const [receive_amount, set_receive_amount] = useState<number>(0)
+    const [note, set_note] = useState<string | null>(null)
 
-    const submit = () => {
-        props.form.validateFields(async (err, values) => {
-            set_loading(true)
-            const { amount } = values
-            console.log({ amount })
-            props.onClose()
+    const submit = async () => {
+        if (note && note.length == 0) return
+        set_loading(true)
+        try {
+            await send_money(note || '', send_amount, props.user.id, props.user.balance + receive_amount)
+            set_error(null)
             set_loading(false)
-        })
+            props.onClose()
+        } catch (e) {
+            set_error(e.message)
+            set_loading(false)
+        }
+
     }
 
     const update_amount = (value: string, is_send_amount: boolean) => {
@@ -72,40 +61,58 @@ export const SendMoneyModal = Form.create<SendMoneyModalProps>()((props: SendMon
             visible={props.visible}
             onOk={submit}
             onCancel={() => props.onClose()}
-            okButtonProps={{ disabled: send_amount <= 10000 || send_amount > props.me.balance }}
+            okButtonProps={{
+                disabled: note == null || note.length == 0 || send_amount < 10000 || send_amount > props.me.balance,
+                loading
+            }}
         >
-            <Spin spinning={loading}>
-                <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
-                    <Col span={12}>Your user pricing percent</Col>
-                    <Col><Tag color="#108ee9">{
-                        Number((
-                            100 * props.user.price_percent / props.me.price_percent
-                        ).toFixed(2))
-                    } %</Tag></Col>
-                </Row>
-                <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
-                    <Col span={12}>Send Amount</Col>
-                    <Col>
-                        <AutoSelectInput
-                            value={send_amount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                            onChange={e => update_amount(e.target.value, true)}
-                        />
-                    </Col>
-                </Row>
-                <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
-                    <Col span={12}>Your balance</Col>
-                    <Col><Tag color="#108ee9">{(props.me.balance || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })} $</Tag></Col>
-                </Row>
-                <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
-                    <Col span={12}>Receive Amount</Col>
-                    <Col>
-                        <AutoSelectInput
-                            value={receive_amount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                            onChange={e => update_amount(e.target.value, false)}
-                        />
-                    </Col>
-                </Row>
-            </Spin>
+            {
+                error && <Tag color="red">{error}</Tag>
+            }
+            <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
+                <Col span={12}>Your user pricing percent</Col>
+                <Col><Tag color="#108ee9">{
+                    Number((
+                        100 * props.user.price_percent / props.me.price_percent
+                    ).toFixed(2))
+                } %</Tag></Col>
+            </Row>
+            <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
+                <Col span={12}>Send Amount</Col>
+                <Col>
+                    <AutoSelectInput
+                        value={send_amount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                        onChange={e => update_amount(e.target.value, true)}
+                    />
+                </Col>
+            </Row>
+            <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
+                <Col span={12}>Your balance</Col>
+                <Col><Tag color="#108ee9">{(props.me.balance || 0).toLocaleString(undefined, { maximumFractionDigits: 0 })} $</Tag></Col>
+            </Row>
+            <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
+                <Col span={12}>Receive Amount</Col>
+                <Col>
+                    <AutoSelectInput
+                        value={receive_amount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                        onChange={e => update_amount(e.target.value, false)}
+                    />
+                </Col>
+            </Row>
+            <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
+                <Col span={12}>Note</Col>
+                <Col>
+                    <Input
+                        defaultValue={note || ''}
+                        onChange={e => set_note(e.target.value)}
+                    />
+                    {
+                        note && note.length == 0 && (
+                            <Tag color="red">Require note</Tag>
+                        )
+                    }
+                </Col>
+            </Row>
         </Modal>
     )
 })

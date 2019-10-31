@@ -9,17 +9,10 @@ const DrawerLinks: Array<{
     icon: string,
     to: string
 }> = [
-        { name: 'Dashbroad', icon: 'home', to: '/' },
         { name: 'Seeding', icon: 'alert', to: '/seeding' },
-        { name: 'Backup', icon: 'save', to: '/backups' },
-        { name: 'Groups', icon: 'team', to: '/groups' },
-        { name: 'Inbox', icon: 'message', to: '/inbox' },
-        { name: 'CRM', icon: 'cluster', to: '/crm' },
         { name: 'Livestream', icon: 'eye', to: '/livestream' },
         { name: 'Account', icon: 'user', to: '/accounts' },
-        { name: 'Deposit', icon: 'dollar', to: '/deposit' },
         { name: 'Agency', icon: 'global', to: '/agency' },
-
     ]
 
 const LogoutButton = withRouter((props: RouterProps) => (
