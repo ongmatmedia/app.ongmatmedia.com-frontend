@@ -1,9 +1,8 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, FunctionComponent } from 'react'
 import { User } from '../schema/User/User'
+import graphql from 'babel-plugin-relay/macro'
 import { QueryRenderer } from 'react-relay'
 import { RelayEnvironment } from '../configs/relayjs'
-import graphql from 'babel-plugin-relay/macro'
-import { GraphQLWrapper } from './GraphQLWrapper'
 
 type UserInfoProps = {
     render: (loading: boolean, user: User | null) => ReactNode
@@ -23,8 +22,13 @@ const query = graphql`
     }
 `
 
-export const UserInfo = (props: { render: (loading: boolean, me: User | null) => any }) => GraphQLWrapper<{ me: User }>(
-    query,
-    {},
-    ({ data, loading }) => props.render(loading, data && data.me)
-) as any
+export const UserInfo = (props: UserInfoProps) => (
+    <QueryRenderer
+        environment={RelayEnvironment}
+        query={query}
+        variables={{}}
+        render={
+            rs => props.render(rs.props == null, rs.props ? (rs as any).props.me : null)
+        }
+    />
+)

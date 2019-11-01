@@ -7,6 +7,7 @@ import { Avatar } from '@material-ui/core';
 import { User } from '../../schema/User/User';
 import { SendMoneyModal } from './SendMoneyModal';
 import { UpdatePricePercentModal } from './UpdatePricePercentModal';
+import { ResetPass } from './ResetPass';
 
 const query = graphql`
     query AgencyListQuery{
@@ -33,10 +34,16 @@ const query = graphql`
 
 export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(query, {}, ({ loading, data }) => {
 
-    if (loading) return <Spin />
-
+    if (loading) return (
+        <Row type="flex" justify="space-around" align="middle" style={{ height: 200 }}>
+            <Col>
+                <Spin />
+            </Col>
+        </Row>
+    )
     const [sent_money_to_user, set_sent_money_to_user] = useState<User | null>(null)
     const [update_price_percent_user, set_update_price_percent_user] = useState<User | null>(null)
+    const [set_new_pass_for_user, set_set_new_pass_for_user] = useState<User | null>(null)
 
     return data && (
         <Fragment>
@@ -57,6 +64,15 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
                         onClose={() => set_update_price_percent_user(null)}
                         user={update_price_percent_user}
                         me={data.me}
+                    />
+                )
+            }
+            {
+                set_new_pass_for_user && (
+                    <ResetPass
+                        visible={true}
+                        onClose={() => set_set_new_pass_for_user(null)}
+                        user={set_new_pass_for_user}
                     />
                 )
             }
@@ -104,7 +120,11 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
                                         />
                                     </Tooltip>,
                                     <Tooltip placement="bottom" title="Set new password">
-                                        <Icon type="unlock" key="unlock" />
+                                        <Icon
+                                            type="unlock"
+                                            key="unlock"
+                                            onClick={() => set_set_new_pass_for_user(item)} 
+                                        />
                                     </Tooltip>,
                                 ]}
                                 style={{ lineHeight: '2em' }}

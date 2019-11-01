@@ -35,10 +35,10 @@ const query = graphql`
 export const SubscriptionView = GraphQLWrapper<{
     livestream_subscription: LivestreamSubscription,
     pricing: ServicePricing
-}>(query, {}, ({loading, data}) => (
+}>(query, {}, ({ loading, data }) => (
     <span>
         <SubscriptionInfo loading={loading} sub={data && data.livestream_subscription} />
-        
+
 
         <UserInfo render={(loading, user) => loading ? <Spin /> : data && data.pricing && data.livestream_subscription && user && (
             <UpdateSubscription
