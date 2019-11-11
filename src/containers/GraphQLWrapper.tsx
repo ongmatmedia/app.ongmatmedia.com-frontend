@@ -4,17 +4,17 @@ import { GraphQLTaggedNode } from 'relay-runtime'
 import { RelayEnvironment } from '../configs/relayjs'
 
 
-export const GraphQLWrapper = <T extends {}>(
+export const GraphQLWrapper = <T extends {}, P = {}>(
     query: GraphQLTaggedNode,
     variables: any,
-    C: FunctionComponent<{ loading: boolean, data: T | null }>
-) => () => (
+    C: FunctionComponent<{ loading: boolean, data: T | null } & P>
+) => (props: P) => (
     <QueryRenderer
         environment={RelayEnvironment}
         query={query as any}
         variables={variables}
         render={
-            rs => <C loading={rs.props == null} data={rs.props as any as T || null} />
+            rs => <C loading={rs.props == null} data={rs.props as any as T || null} {...props} />
         }
     />
 ) 

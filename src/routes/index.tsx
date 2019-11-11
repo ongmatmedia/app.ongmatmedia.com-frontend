@@ -10,6 +10,7 @@ import { SetNewPasswordPage } from './auth/set-new-pass';
 import { LivestreamSubscriptionPage } from './livestream/subscription';
 import { LivestreamMenu } from './livestream/LivestreamMenu'
 import { AgencyPage } from './agency';
+import { VipViewersLivestream } from './seeding/vip-viewers-livestream'
 
 
 export const AppWithRouter = () => (
@@ -42,6 +43,13 @@ export const AppWithRouter = () => (
         <MainLayout Content={SeedingPage} Menu={SeedingMenuContent} />
       </Route>
 
+      <Route exact path="/seeding/vip-viewer-livestream" >
+        <MainLayout Content={VipViewersLivestream} Menu={SeedingMenuContent} />
+      </Route>
+
+
+
+
 
 
       <Route exact path="/livestream" >
@@ -53,10 +61,10 @@ export const AppWithRouter = () => (
       </Route>
 
       <Route exact path="/agency" >
-        <MainLayout Content={AgencyPage}   />
+        <MainLayout Content={AgencyPage} />
       </Route>
 
-      
+
 
 
       <Route>

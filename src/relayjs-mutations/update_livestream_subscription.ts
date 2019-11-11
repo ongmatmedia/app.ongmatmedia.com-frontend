@@ -6,11 +6,29 @@ import { commitMutation, ConnectionHandler, RecordProxy } from 'relay-runtime';
 const mutation = graphql`
     mutation updateLivestreamSubscriptionMutation($days: Int!, $data: LivestreamSubscriptionInput!, $user_id: ID){
         update_livestream_subscription(days: $days, data: $data, user_id: $user_id){
-            user_id
-            quality
-            concurrent_limit
-            end_time
-            playing
+            livestream_subscription{
+                id
+                user_id
+                quality
+                concurrent_limit
+                end_time
+                playing
+            }
+            me{
+                id 
+                balance
+            }
+            payment_history{
+                node{
+                    id
+                    time
+                    total
+                    receiver_username
+                    receiver_id
+                    balance_after
+                    note
+                }
+            }
         }
     }
 `
@@ -24,11 +42,6 @@ export const update_livestream_subscription = (sub: LivestreamSubscriptionInput,
             user_id
         },
         updater: store => {
-            if (!user_id) {
-                const sub = store.getRootField('update_livestream_subscription') as RecordProxy
-                const old_sub = store.get('client:root:livestream_subscription') as RecordProxy
-                ['quality', 'concurrent_limit', 'end_time'].map(name => old_sub.setValue(sub.getValue(name), name))
-            }
             s()
         },
         onError: reject

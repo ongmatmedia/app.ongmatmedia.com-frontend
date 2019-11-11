@@ -15,7 +15,7 @@ export type FormRenderProps<T> = {
 type FormFieldParams<T> = {
     name: string
     initalValue?: T
-    render: (config: FormRenderProps<T>) => JSX.Element
+    render?: (config: FormRenderProps<T>) => JSX.Element | null | false
     require?: string
     validator?: (value: T) => string | void
 }
@@ -47,22 +47,23 @@ export class Form {
         }
     }
 
-    setValues(data: {[key: string] : any}){
-        for(const key in data) this.data[name] = data[key]
+    setValues(data: { [key: string]: any }) {
+        for (const key in data) this.data[name] = data[key]
     }
 
 
     field<T>({ name, render, require, validator, initalValue }: FormFieldParams<T>) {
         if (initalValue != undefined) {
             this.data[name] == undefined && (this.data[name] = initalValue)
+            console.log({ name, initalValue })
             this.defaultValues.set(name, initalValue)
         }
+
         require && this.require_fields.set(name, require)
         validator && this.validators.set(name, validator)
 
         const setValue = (key: string, value: T, validate: boolean = true) => {
             this.data[key] = value
-
             if (!validate) return
 
             if (require && this.data[key] == undefined) {
@@ -84,7 +85,7 @@ export class Form {
         }
 
 
-        return render({
+        return render && render({
             error: this.errors.get(name),
             loading: this.isLoading.get(name) == true,
             setValues: (data, exclude_check_keys: string[] = []) => {
@@ -108,7 +109,6 @@ export class Form {
         }
 
         for (const name of Array.from(this.validators.keys())) {
-            if (this.data[name] == undefined) continue;
             const check = (this.validators.get(name) as Function)(this.data[name])
             if (check) {
                 this.errors.set(name, check)
@@ -123,5 +123,5 @@ export class Form {
 
 export const withForm = <T extends {}>(target: IReactComponent<{ form: Form } & T>) => {
     const C = observer(target)
-    return props => <C form={new Form()} {...props} />
-}
+    return (props: T) => <C form={new Form()} {...props} />
+}  

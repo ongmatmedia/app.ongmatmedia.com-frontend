@@ -13,8 +13,8 @@ export const SeedingMenuContent = () => (
                 <Menu.Item key="services/buff-viewers-livestream">
                     <Link to="/buff-viewers-livestream"><i className="icon icon-custom-view" />Buff</Link>
                 </Menu.Item>
-                <Menu.Item key="services/vip-viewers-livestream">
-                    <Link to="/vip-viewers-livestream"><i className="icon icon-view" />VIP</Link>
+                <Menu.Item key="/seeding/vip-viewer-livestream">
+                    <Link to="/seeding/vip-viewer-livestream"><i className="icon icon-view" />VIP   </Link>
                 </Menu.Item> 
 
             </Menu.SubMenu>
@@ -25,8 +25,8 @@ export const SeedingMenuContent = () => (
                 <Menu.Item key="services/buff-viewers-livestream">
                     <Link to="/buff-viewers-livestream"><i className="icon icon-custom-view" />Buff</Link>
                 </Menu.Item>
-                <Menu.Item key="services/vip-viewers-livestream">
-                    <Link to="/vip-viewers-livestream"><i className="icon icon-view" />VIP</Link>
+                <Menu.Item key="/seeding/vip-viewer-livestream">
+                    <Link to="/seeding/vip-viewer-livestream"><i className="icon icon-view" />VIP</Link>
                 </Menu.Item>
                 <Menu.Item key="services/vip-viewerbs-livestream">
                     <Link to="/buff-video-viewers"><i className="icon icon-view" />Buff viewers</Link>

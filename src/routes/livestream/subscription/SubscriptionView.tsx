@@ -11,6 +11,7 @@ import { ServicePricing } from '../../../schema/User/ServicePricing'
 const query = graphql`
     query SubscriptionViewQuery{
         livestream_subscription{
+                id
                 user_id,
                 quality
                 concurrent_limit
@@ -22,9 +23,9 @@ const query = graphql`
             buff_viewers_livestream
             vip_viewers_livestream
             livestream{
-            p480
-            p720
-            p1080
+                p480
+                p720
+                p1080
             }
         }
 
