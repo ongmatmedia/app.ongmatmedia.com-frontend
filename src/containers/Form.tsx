@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { observable, keys } from "mobx";
 import { observer, IReactComponent } from 'mobx-react';
 
@@ -55,7 +55,6 @@ export class Form {
     field<T>({ name, render, require, validator, initalValue }: FormFieldParams<T>) {
         if (initalValue != undefined) {
             this.data[name] == undefined && (this.data[name] = initalValue)
-            console.log({ name, initalValue })
             this.defaultValues.set(name, initalValue)
         }
 
@@ -66,7 +65,7 @@ export class Form {
             this.data[key] = value
             if (!validate) return
 
-            if (require && this.data[key] == undefined) {
+            if (require && (this.data[key] == undefined || this.data[key] == '')) {
                 this.errors.set(key, require)
                 return;
             }
@@ -121,7 +120,15 @@ export class Form {
 
 }
 
-export const withForm = <T extends {}>(target: IReactComponent<{ form: Form } & T>) => {
-    const C = observer(target)
+// export const withForm2 = <T extends {}>(target: IReactComponent<{ form: Form } & T>) => {
+//     const C = observer(target)
+//     return (props: T) => <C form={new Form()} {...props} />
+// }
+
+
+// const PropsKey = Symbol.for('PropsKey')
+
+export const withForm = <T extends {}>(Target: IReactComponent<{ form: Form } & T>) => {
+    const C = observer(Target)
     return (props: T) => <C form={new Form()} {...props} />
 }  

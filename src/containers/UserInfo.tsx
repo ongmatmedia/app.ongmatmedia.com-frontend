@@ -32,3 +32,16 @@ export const UserInfo = (props: UserInfoProps) => (
         }
     />
 )
+
+export const withUserInfo = <P extends {}>(
+    C: FunctionComponent<{ loading: boolean, me: User | null } & P>
+) => (props: P) => (
+    <QueryRenderer
+        environment={RelayEnvironment}
+        query={query}
+        variables={{}}
+        render={
+            rs => <C loading={rs.props == null} me={rs.props as User || null} {...props} />
+        }
+    />
+) 

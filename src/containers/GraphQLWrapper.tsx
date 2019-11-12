@@ -17,4 +17,19 @@ export const GraphQLWrapper = <T extends {}, P = {}>(
             rs => <C loading={rs.props == null} data={rs.props as any as T || null} {...props} />
         }
     />
-) 
+)
+
+export const SmartGrahQLQueryRenderer = <T extends {}>(props: {
+    query: GraphQLTaggedNode,
+    variables: any,
+    render: FunctionComponent<{ loading: boolean, data: T | null }>
+}) => (
+        <QueryRenderer
+            environment={RelayEnvironment}
+            query={props.query as any}
+            variables={props.variables}
+            render={
+                rs => <props.render loading={rs.props == null} data={rs.props as any as T || null} />
+            }
+        />
+    ) 

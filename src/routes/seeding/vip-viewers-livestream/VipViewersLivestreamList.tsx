@@ -1,10 +1,11 @@
 import React, { Fragment, useState } from 'react'
-import { Row, Col, Spin, List, Card, Avatar, Tag } from 'antd'
+import { Row, Col, Spin, List, Card, Avatar, Tag, Tooltip } from 'antd'
 import { graphql } from 'babel-plugin-relay/macro'
 import { GraphQLWrapper } from '../../../containers/GraphQLWrapper'
 import { VIPViewersLivestreamConnection } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestreamConnection'
 import { CUModal } from './CUModal'
 import { VIPViewersLivestream } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestream'
+import Moment from 'react-moment';
 
 const query = graphql`
     query VipViewersLivestreamListQuery{
@@ -47,17 +48,21 @@ export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_
             }
             <List
                 grid={{
-                    gutter: 8,
                     xs: 1,
                     sm: 2,
-                    md: 2,
+                    md: 4,
                     lg: 4,
-                    xl: 6,
-                    xxl: 6,
+                    xl: 4,
+                    xxl: 4,
+                }}
+                rowKey="uid"
+                pagination={{
+                    pageSizeOptions: ['5', '10', '20', '30', '50', '100', '200', '300', '400', '500', '1000'],
+                    showSizeChanger: true
                 }}
                 dataSource={props.data.vip_viewers_livestream_tasks.edges.map(e => e.node)}
                 renderItem={item => (
-                    <List.Item >
+                    <List.Item style={{ margin: 5 }} >
                         <Card type="inner" hoverable size="small" onClick={() => set_editing_vip(item)}  >
                             <Row type="flex" justify="start" align="middle" >
                                 <Col>
@@ -68,8 +73,21 @@ export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_
                                 </Col>
                                 <Col style={{ paddingLeft: 10, overflowWrap: 'break-word', lineHeight: '2em' }}>
                                     <Row><Col>{item.name}</Col></Row>
-                                    <Row><Col><Tag color="#108ee9">{item.amount} viewers</Tag></Col></Row>
-                                    <Row><Col> <Tag color="cyan">30 days 6 hours</Tag></Col></Row>
+                                    <Row><Col>
+                                        <Tag color="#108ee9">{item.amount} viewers</Tag>
+                                        {
+                                            !item.active && <Tag color="rgb(192, 25, 34)">Disabled</Tag>
+                                        }
+                                    </Col></Row>
+                                    <Row>
+                                        <Col>
+                                            <Tooltip title={<Moment format="DD/MM/YYYY H:mm">{item.end_time}</Moment>} placement="bottom">
+                                                <Tag color={item.end_time > Date.now() ? 'blue' : '#c01922'}>
+                                                    <Moment fromNow>{item.end_time}</Moment>
+                                                </Tag>
+                                            </Tooltip>
+                                        </Col>
+                                    </Row>
                                 </Col>
                             </Row>
                         </Card>
