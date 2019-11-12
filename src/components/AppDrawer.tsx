@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { Icon, Modal } from 'antd'
+import { Icon, Modal, Card, Row, Col, Avatar } from 'antd'
 import { Link, withRouter } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { RouterProps } from 'react-router';
+import { UserInfo } from '../containers/UserInfo';
 
 const DrawerLinks: Array<{
     name: string,
@@ -54,6 +55,25 @@ export const AppDrawer = (props: { onClick: Function }) => (
             padding: 10
         }}
     >
+        <UserInfo
+            render={(loading, user) => (
+                <Card style={{ width: '100%' }} size="small" loading={loading}>
+                    <Row type="flex" justify="start" align="middle">
+                        <Col>
+                            <Avatar src="https://hammockweb.com/slider/img/user.png" size={60}  />
+                        </Col>
+                        <Col style={{paddingLeft: 20}}>
+                            <Row><Col style={{ wordBreak: 'break-all', fontWeight: 'bold' }}>{user && user.username}</Col></Row>
+                            <Row><Col style={{ color: 'rgb(0, 131, 227)', fontWeight: 'bold' }}>{
+                                user && user.balance.toLocaleString(undefined, { maximumFractionDigits: 0 }) + ' đ'
+                            }</Col></Row>
+                        </Col>
+                    </Row>
+                </Card>
+            )}
+
+        />
+
         {
             DrawerLinks.map(el => (
                 <Link key={el.to} to={el.to}>

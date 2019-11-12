@@ -1,11 +1,12 @@
 import React, { useEffect, Fragment, useState } from 'react'
-import { Modal, Form as AntdForm, Input, Icon, Select, Row, Col, Avatar, Tag, Alert, Button, Switch, Card, Spin } from 'antd'
+import { Modal, Form as AntdForm, Input, Icon, Select, Row, Col, Avatar, Tag, Alert, Button, Switch, Card, Spin, notification } from 'antd'
 import { withForm, Form } from '../../../containers/Form'
 import { VIPViewersLivestream } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestream'
 import { VipViewersLivestreamGroup } from '../../../schema/Services/VIPViewersLivestream/VipViewersLivestreamGroup'
 import { FacebookObjectInput, LivestreamFacebookTargetType } from '../../../components/FacebookObjectInput'
 import { create_vip_viewers_livestream } from '../../../relayjs-mutations/create_vip_viewers_livestream'
 import { update_vip_viewers_livestream } from '../../../relayjs-mutations/update_vip_viewers_livestream'
+import { delete_vip_viewers_livestream } from '../../../relayjs-mutations/delete_vip_viewers_livestream'
 import Moment from 'react-moment';
 import { graphql } from 'babel-plugin-relay/macro'
 import { GraphQLWrapper } from '../../../containers/GraphQLWrapper'
@@ -84,6 +85,17 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
 
 
         if (props.vip && props.mode == 'update') {
+            const { id, name } = props.vip
+            const cancel_vip_subscription = async () => {
+                try {
+                    await delete_vip_viewers_livestream(id)
+                    notification.success({ message: <span>Canceled success</span> })
+                    Modal.destroyAll()
+                    props.onClose()
+                } catch (e) {
+                    Modal.error({ title: 'Something error' })
+                }
+            }
 
             const remain_days = props.vip.end_time > Date.now() ? (props.vip.end_time - Date.now()) / 86400000 : 0
             const remain_money = Math.floor(props.vip.amount * remain_days * props.data.pricing.vip_viewers_livestream)
@@ -207,7 +219,8 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                             icon="delete"
                             onClick={() => Modal.confirm({
                                 title: "Do you want to cancel this VIP subscription?",
-                                content: CancelVipSubscriptionConfirm
+                                content: CancelVipSubscriptionConfirm,
+                                onOk: cancel_vip_subscription
                             })}
                         >Cancel VIP and refund</Button>
                     </Col>
