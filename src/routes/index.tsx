@@ -11,6 +11,7 @@ import { LivestreamSubscriptionPage } from './livestream/subscription';
 import { LivestreamMenu } from './livestream/LivestreamMenu'
 import { AgencyPage } from './agency';
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream'
+import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
 
 
 export const AppWithRouter = () => (
@@ -43,9 +44,16 @@ export const AppWithRouter = () => (
         <MainLayout Content={SeedingPage} Menu={SeedingMenuContent} />
       </Route>
 
-      <Route exact path="/seeding/vip-viewer-livestream" >
+      <Route exact path="/seeding/vip-viewers-livestream" >
         <MainLayout Content={VipViewersLivestream} Menu={SeedingMenuContent} />
       </Route>
+
+      <Route exact path="/seeding/buff-viewers-livestream" >
+        <MainLayout Content={BuffViewersLivestream} Menu={SeedingMenuContent} />
+      </Route>
+
+
+
 
 
 
