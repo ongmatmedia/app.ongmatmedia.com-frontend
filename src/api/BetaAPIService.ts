@@ -10,6 +10,7 @@ const rq = axios.create({
 export class BetaAPIService {
     private static async  getAccessToken(): Promise<string> {
         const user = await Auth.currentSession()
+        console.log(user)
         return user.getAccessToken().getJwtToken()
     }
     static async get<T>(uri: string, query: any = {}): Promise<T> {

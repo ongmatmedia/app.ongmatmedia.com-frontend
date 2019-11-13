@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { VipViewersLivestreamAction } from './VipViewersLivestreamAction'
 import { Card } from 'antd'
 import { VipViewersLivestreamList } from './VipViewersLivestreamList'
 
-export const VipViewersLivestream = () => (
-    <Card title="Vip viewers livestream">
-        <VipViewersLivestreamAction />
-        <VipViewersLivestreamList />
-        
-    </Card>
-)
+export const VipViewersLivestream = () => {
+    const [search, set_search] = useState<string>('')
+    return (
+        <Card title="Vip viewers livestream">
+            <VipViewersLivestreamAction onChangeSearch={set_search} />
+            <VipViewersLivestreamList search={search} />
+
+        </Card>
+    )
+}

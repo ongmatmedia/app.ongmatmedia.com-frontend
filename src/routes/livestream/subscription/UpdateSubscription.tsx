@@ -151,7 +151,7 @@ export const UpdateSubscription = withForm<UpdateSubscriptionProps>(props => {
                         </Row>
 
                         <Row style={{ marginTop: 10 }}>
-                            <Col span={8}> Delta </Col>
+                            <Col span={8}> Diff </Col>
                             <Col span={16}>
                                 <Tag color="#108ee9">{
                                     new_total.toLocaleString(undefined, {

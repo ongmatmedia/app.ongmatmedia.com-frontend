@@ -9,7 +9,7 @@ const mutation = graphql`
         update_vip_viewers_livestream_task(input: $input){
             vip{
                 node{
-                    id, active, amount, note, created_time, end_time, updated_time, name, groups{uid,name,image}
+                    id, active, amount, note, created_time, end_time, updated_time, name, groups{id,name,image}
                 }
             }
             me{

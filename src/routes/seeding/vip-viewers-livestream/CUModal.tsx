@@ -13,6 +13,7 @@ import { GraphQLWrapper } from '../../../containers/GraphQLWrapper'
 import { ServicePricing } from '../../../schema/User/ServicePricing'
 import { User } from '../../../schema/User/User'
 
+
 const query = graphql`
     query CUModalQuery{
         me{
@@ -23,6 +24,10 @@ const query = graphql`
         }
     }
 `
+
+const IconFont = Icon.createFromIconfontCN({
+    scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
+});
 
 
 export type CUModalProps = {
@@ -47,8 +52,10 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
             set_loading(true)
             if (props.mode == 'create') {
                 await create_vip_viewers_livestream({ ...data, active: true })
+                notification.success({message: 'Create success'})
             } else {
                 await update_vip_viewers_livestream(data)
+                notification.success({message: 'Update success'})
             }
             set_error(null)
             set_loading(false)
@@ -107,8 +114,8 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                 <div style={{ lineHeight: '2em' }}>
                     <Tag color="#108ee9">
                         {props.vip.amount} viewers</Tag>
-                    x < Tag color="#108ee9" > {remain_days.toFixed(1)} days</Tag >
-                    x < Tag color="#108ee9" > {props.data.pricing.vip_viewers_livestream}đ / viewer / day </Tag >
+                    x <Tag color="#108ee9" > {remain_days.toFixed(1)} days</Tag >
+                    x <Tag color="#108ee9" > {props.data.pricing.vip_viewers_livestream}đ / viewer / day </Tag >
                     = <Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag>
                 </div>
             )
@@ -116,33 +123,43 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
             if ((amount && amount != props.vip.amount) || days) {
 
                 OrderInfoCard = (
-                    <Card title="Order infomation" size="small" style={{ lineHeight: '2em' }}>
+                    <Card title={<h2>Order infomation</h2>} size="small" style={{ lineHeight: '2em' }}>
                         <Row>
                             <Col><h4>Remain subscription</h4></Col>
-                            <Col>{CurrentSubscription} </Col>
-                        </Row>
-                        <Row>
-                            <Col><h4>New subscription</h4></Col>
                             <Col>
-                                <Tag color="#108ee9">{amount || props.vip.amount} viewers</Tag>
-                                x <Tag color="#108ee9">{((days || 0) + remain_days).toFixed(1)} days</Tag>
-                                x <Tag color="#108ee9">{props.data.pricing.vip_viewers_livestream}đ /viewer/day </Tag>
-                                = <Tag color="#108ee9">{new_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag>
+                                <Row type="flex" justify="space-around" align="middle">
+                                    <Col>
+                                        {CurrentSubscription}
+                                    </Col>
+                                </Row>
                             </Col>
                         </Row>
-                        <Row>
-                            <Col><h4>Delta</h4></Col>
+                        <Row >
+                            <Col><h4>New subscription</h4></Col>
+                            <Col>
+                                <Row type="flex" justify="space-around" align="middle">
+                                    <Col>
+                                        <Tag color="#108ee9">{amount || props.vip.amount} viewers</Tag>
+                                        x <Tag color="#108ee9">{((days || 0) + remain_days).toFixed(1)} days</Tag>
+                                        x <Tag color="#108ee9">{props.data.pricing.vip_viewers_livestream}đ /viewer/day </Tag>
+                                        = <Tag color="#108ee9">{new_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag>
+                                    </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                        <Row type="flex" justify="space-between" align="bottom">
+                            <Col><h4>Diff</h4></Col>
                             <Col>
                                 <Tag color="#108ee9">{new_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag>
                                 - <Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag>
                                 = <Tag color="#108ee9">{delta_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag>
                             </Col>
                         </Row>
-                        <Row>
+                        <Row type="flex" justify="space-between" align="bottom">
                             <Col><h4>Your discount</h4></Col>
                             <Col><Tag color="blue">{100 - props.data.me.price_percent}% </Tag></Col>
                         </Row>
-                        <Row>
+                        <Row type="flex" justify="space-between" align="bottom">
                             <Col><h4>Total</h4></Col>
                             <Col>
                                 <Tag color="#108ee9">{
@@ -156,7 +173,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                         </Row>
                         {
                             delta_total < 0 && (
-                                <Row>
+                                <Row type="flex" justify="space-between" align="bottom">
                                     <Col><h4>Refund 80%</h4></Col>
                                     <Col>
                                         <Tag color="#c01922">{
@@ -170,13 +187,21 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                 </Row>
                             )
                         }
+                        <Row type="flex" justify="space-between" align="bottom">
+                            <Col><h4>Your balance</h4></Col>
+                            <Col>
+                                <Tag color="#108ee9">{
+                                    props.data.me.balance.toLocaleString(undefined, { maximumFractionDigits: 0 })
+                                }đ </Tag>
+                            </Col>
+                        </Row>
                     </Card>
                 )
             }
 
             const CancelVipSubscriptionConfirm = (
                 <Fragment>
-                    <Row type="flex" justify="start" align="middle" >
+                    <Row type="flex" justify="start" align="middle" style={{ marginTop: 10, marginBottom: 10 }} >
                         <Col>
                             <Avatar
                                 src={`http://graph.facebook.com/${props.vip.id}/picture?type=large`}
@@ -187,32 +212,51 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                             {props.vip.name}
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            {CurrentSubscription}
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            Refund back &nbsp;
-                            <Tag color="blue">{100 - props.data.me.price_percent}% </Tag>
-                            x &nbsp;<Tag color="red">80% </Tag>
-                            = &nbsp;<Tag color="#108ee9">{
-                                Math.ceil(
-                                    remain_money
-                                    * props.data.me.price_percent
-                                    * 0.008
-                                ).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                            }đ </Tag>
-                        </Col>
-                    </Row>
+                    <Row style={{ lineHeight: '2em' }}><Col>
+                        <Row type="flex" justify="space-between" align="bottom">
+                            <Col>Current viewers</Col>
+                            <Col>  <Tag color="#108ee9">  {props.vip.amount} viewers</Tag>   </Col>
+                        </Row>
+                        <Row type="flex" justify="space-between" align="bottom">
+                            <Col>Remaining days</Col>
+                            <Col><Tag color="#108ee9" > {remain_days.toFixed(1)} days</Tag ></Col>
+                        </Row>
+                        <Row type="flex" justify="space-between" align="bottom">
+                            <Col>Pricing</Col>
+                            <Col><Tag color="#108ee9" > {props.data.pricing.vip_viewers_livestream}đ / viewer / day </Tag ></Col>
+                        </Row>
+                        <Row type="flex" justify="space-between" align="bottom">
+                            <Col>Total</Col>
+                            <Col><Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag></Col>
+                        </Row>
+                        <Row type="flex" justify="space-between" align="bottom">
+                            <Col>Your discount</Col>
+                            <Col><Tag color="blue">{100 - props.data.me.price_percent}% </Tag></Col>
+                        </Row>
+                        <Row type="flex" justify="space-between" align="bottom">
+                            <Col>Refund percent</Col>
+                            <Col><Tag color="red">80% </Tag></Col>
+                        </Row>
+                        <Row type="flex" justify="space-between" align="bottom">
+                            <Col>Final refund amount</Col>
+                            <Col>
+                                <Tag color="#108ee9">{
+                                    Math.ceil(
+                                        remain_money
+                                        * props.data.me.price_percent
+                                        * 0.008
+                                    ).toLocaleString(undefined, { maximumFractionDigits: 0 })
+                                }đ </Tag>
+                            </Col>
+                        </Row>
+                    </Col></Row>
                 </Fragment>
             )
 
             CancelVipSubscription = (
                 <Row type="flex" justify="end">
                     <Col></Col>
-                    <Col style={{ padding: 5 }}>
+                    <Col style={{ paddingTop: 10 }}>
                         <Button
                             size="small"
                             type="danger"
@@ -296,21 +340,31 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                                 <Col span={4}>
                                                     <Avatar src={`http://graph.facebook.com/${props.form.data.id}/picture?type=large`} size={60} />
                                                 </Col >
-                                                <Col span={18}>
+                                                <Col span={14}>
                                                     <div style={{ padding: 10, flexWrap: 'wrap' }}>
                                                         {props.mode == 'create' ? props.form.data.name : props.vip && props.vip.name}
                                                     </div>
                                                 </Col>
-                                                <Col span={2}>
+                                                <Col span={props.mode == 'create' ? 6 : 4}>
                                                     {
                                                         props.mode == 'create' && (
                                                             <Icon
                                                                 type="edit"
-                                                                style={{ color: 'rgb(81, 74, 157)', fontSize: 20, cursor: 'pointer' }}
+                                                                style={{ color: 'black', marginRight: 10, fontSize: 20, cursor: 'pointer' }}
                                                                 onClick={() => set_editing_uid(true)}
                                                             />
                                                         )
                                                     }
+                                                    <Icon
+                                                        type="message"
+                                                        style={{ color: 'black', marginRight: 10, fontSize: 20, cursor: 'pointer' }}
+                                                        onClick={() => window.open(`https://m.me/${props.vip ? props.vip.id : props.form.data.id}`)}
+                                                    />
+                                                    <IconFont
+                                                        type="icon-facebook"
+                                                        style={{ color: 'black', fontSize: 20, cursor: 'pointer' }}
+                                                        onClick={() => window.open(`https://fb.com/${props.vip ? props.vip.id : props.form.data.id}`)}
+                                                    />
                                                 </Col>
                                             </Row>
                                         )
@@ -320,11 +374,12 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                         editing_uid && (
                                             <FacebookObjectInput
                                                 placeholder="Enter link of fanpage or profile here then click search"
-                                                onSelect={({ name, image, type, uid }) => {
+                                                onSelect={({ name, image, type, id }) => {
                                                     // if (type == LivestreamFacebookTargetType.group) return
-                                                    setValues({ id: uid, name })
+                                                    setValues({ id, name })
                                                     set_editing_uid(false)
                                                 }}
+                                                onError={() => Modal.error({ title: 'Invaild UID' })}
                                             />
                                         )
                                     }
@@ -359,10 +414,17 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                     {
                                         error && <Alert type="error" message={error} />
                                     }
-                                    <Select onChange={setValue} placeholder="Click to select viewers amount when livestream">
+                                    <Select
+                                        onChange={setValue}
+                                        placeholder="Click to select viewers amount when livestream"
+                                    >
                                         {
                                             [30, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000].map(amount => (
-                                                <Select.Option value={amount}>{amount}</Select.Option>
+                                                <Select.Option
+                                                    value={amount}
+                                                >
+                                                    {amount} {props.vip && props.vip.amount == amount && ' ** (not change)'}
+                                                </Select.Option>
                                             ))
                                         }
                                     </Select>
@@ -401,7 +463,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                     }
                                     <Select placeholder="Click to select days" onChange={setValue}>
                                         {
-                                            [15, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300].map(days => (
+                                            [...props.mode == 'create' ? [] : [0], 7, 15, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300].map(days => (
                                                 <Select.Option value={days}>
                                                     {props.mode == 'update' && '+ '}
                                                     {days} days {days >= 30 ? `~ (${Math.floor(days / 30)} months)` : ''}
@@ -418,7 +480,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                     {
                         props.form.field<VipViewersLivestreamGroup[]>({
                             name: 'groups',
-                            initalValue: [],
+                            initalValue: props.mode == 'create' ? [] : props.vip ? props.vip.groups : [],
                             render: ({ error, loading, setValue, value: groups, set_touched, touched }) => (
                                 <AntdForm.Item>
                                     <Row type="flex" justify="space-between" align="bottom"  >
@@ -444,7 +506,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                                     <Icon
                                                         type="close-circle"
                                                         style={{ color: 'rgb(81, 74, 157)', fontSize: 20, cursor: 'pointer' }}
-                                                        onClick={() => setValue(groups.filter(g => g.uid != group.uid))}
+                                                        onClick={() => setValue(groups.filter(g => g.id != group.id))}
                                                     />
                                                 </Col>
                                             </Row>
@@ -454,17 +516,18 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                     <Row>
                                         <Col>
                                             <FacebookObjectInput
-                                                onSelect={({ name, image, type, uid }) => {
+                                                onSelect={({ name, image, type, id }) => {
                                                     if (type != LivestreamFacebookTargetType.group) return
-                                                    if (groups.filter(g => g.uid == uid).length > 0) {
-                                                        setValue(groups.map(g => g.uid == uid ? { name, image, uid } : g))
+                                                    if (groups.filter(g => g.id == id).length > 0) {
+                                                        setValue(groups.map(g => g.id == id ? { name, image, id } : g))
                                                     } else {
                                                         setValue([
-                                                            { image, uid, name },
+                                                            { image, id, name },
                                                             ...groups
                                                         ])
                                                     }
                                                 }}
+                                                onError={() => Modal.error({ title: 'Invaild UID' })}
                                                 placeholder="Enter your group URL here then click search"
                                             />
                                         </Col>

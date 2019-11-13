@@ -14,6 +14,8 @@ const DrawerLinks: Array<{
         { name: 'Livestream', icon: 'eye', to: '/livestream' },
         { name: 'Account', icon: 'user', to: '/accounts' },
         { name: 'Agency', icon: 'global', to: '/agency' },
+        { name: 'Payments', icon: 'bars', to: '/payments' },
+        { name: 'Deposit', icon: 'dollar', to: '/deposit' },
     ]
 
 const LogoutButton = withRouter((props: RouterProps) => (

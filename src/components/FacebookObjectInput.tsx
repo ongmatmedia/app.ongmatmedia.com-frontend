@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Input, Icon } from 'antd'
+import { FacebookAccount } from '../api/facebook-account'
 
 export enum LivestreamFacebookTargetType {
     profile = "profile",
@@ -8,7 +9,8 @@ export enum LivestreamFacebookTargetType {
 }
 
 export type FacebookObjectInputProps = {
-    onSelect: (obj: { name: string, uid: string, image: string, type: LivestreamFacebookTargetType }) => any,
+    onSelect: (obj: { name: string, id: string, image: string, type: LivestreamFacebookTargetType }) => any,
+    onError?: Function,
     placeholder?: string
     defaultValue?: string
 }
@@ -18,16 +20,38 @@ export const FacebookObjectInput = (props: FacebookObjectInputProps) => {
     const [value, set_value] = useState<string>(props.defaultValue || '')
 
     const submit = async () => {
+        const manual_mode_match = value.match(/^([1-9][0-9]+)(.+)$/)
+        if (manual_mode_match) {
+            try {
+                const [, id, name] = manual_mode_match as [any, string, string]
+                props.onSelect({
+                    image: `http://graph.facebook.com/${id}/picture?type=large`,
+                    name: name.trim(),
+                    id,
+                    type: LivestreamFacebookTargetType.profile
+                })
+            } catch (e) {
+                props.onError && props.onError()
+            }
+            return
+        }
+
         set_loading(true)
-        await new Promise(s => setTimeout(s, 3000))
-        props.onSelect({
-            image: 'http://graph.facebook.com/100002482238412/picture?type=large',
-            name: 'Duong Van Ba',
-            uid: `${Date.now()}`,
-            type: LivestreamFacebookTargetType.group
-        })
-        set_loading(false)
-        set_value('')
+        try {
+            const { name, type, uid:id } = await FacebookAccount.getUIDFromURL(value)
+            props.onSelect({
+                image: type != 'group' ? `http://graph.facebook.com/${id}/picture?type=large` : 'https://leadershiproundtable.org/wp-content/uploads/2015/09/group-1824145_1280.png',
+                name,
+                id,
+                type
+            })
+            set_loading(false)
+            set_value('')
+        } catch (e) {
+            set_loading(false)
+            set_value('')
+            props.onError && props.onError()
+        }
     }
 
     return (

@@ -20,7 +20,7 @@ const query = graphql`
                     created_time,
                     updated_time,
                     end_time,
-                    groups{uid,name,image}
+                    groups{id,name,image}
                 }
             }
         }
@@ -28,7 +28,7 @@ const query = graphql`
 `
 
 
-export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_tasks: VIPViewersLivestreamConnection }>(query, {}, props => {
+export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_tasks: VIPViewersLivestreamConnection}, {search: string} >(query, {}, props => {
 
     const [editing_vip, set_editing_vip] = useState<VIPViewersLivestream | null>(null)
 
@@ -60,7 +60,14 @@ export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_
                     pageSizeOptions: ['5', '10', '20', '30', '50', '100', '200', '300', '400', '500', '1000'],
                     showSizeChanger: true
                 }}
-                dataSource={props.data.vip_viewers_livestream_tasks.edges.map(e => e.node)}
+                dataSource={
+                    props
+                    .data
+                    .vip_viewers_livestream_tasks
+                    .edges
+                    .map(e => e.node)
+                    .filter(e => e.id.includes(props.search) || e.name.toLowerCase().includes(props.search))
+                }
                 renderItem={item => (
                     <List.Item style={{ margin: 5 }} >
                         <Card type="inner" hoverable size="small" onClick={() => set_editing_vip(item)}  >
