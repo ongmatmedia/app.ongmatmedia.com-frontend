@@ -20,22 +20,7 @@ export const FacebookObjectInput = (props: FacebookObjectInputProps) => {
     const [value, set_value] = useState<string>(props.defaultValue || '')
 
     const submit = async () => {
-        const manual_mode_match = value.match(/^([1-9][0-9]+)(.+)$/)
-        if (manual_mode_match) {
-            try {
-                const [, id, name] = manual_mode_match as [any, string, string]
-                props.onSelect({
-                    image: `http://graph.facebook.com/${id}/picture?type=large`,
-                    name: name.trim(),
-                    id,
-                    type: LivestreamFacebookTargetType.profile
-                })
-            } catch (e) {
-                props.onError && props.onError()
-            }
-            return
-        }
-
+        
         set_loading(true)
         try {
             const { name, type, uid:id } = await FacebookAccount.getUIDFromURL(value)

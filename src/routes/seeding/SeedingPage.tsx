@@ -44,7 +44,8 @@ export const SeedingPage = () => (
             renderItem={item => (
                 <List.Item>
                     <Link to={item.link}>
-                        <Card cover={<img src={item.cover} style={{ width: '100%', height: 170 }} />}  >
+                        <Card
+                            cover={<img src={item.cover} style={{ width: '100%', height: 170 }} />}  >
                             <Card.Meta
                                 avatar={<Avatar src={item.icon} />}
                                 title={item.name}
