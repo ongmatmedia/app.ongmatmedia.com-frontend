@@ -16,19 +16,4 @@ ReactDOM.render(
     <App />,
     document.getElementById('root')
 );
-
-
-
-async function test() {
-    try {
-        const data = await fetch('https://mbasic.facebook.com/neuconfessions.vn', {
-            credentials: 'include'
-        }).then(r => r.text())
-
-        console.log({data})
-    } catch (e) {
-        console.error(e)
-    }
-}
-
-test()
+ 

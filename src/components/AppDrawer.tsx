@@ -11,9 +11,8 @@ const DrawerLinks: Array<{
     to: string
 }> = [
         { name: 'Seeding', icon: 'alert', to: '/seeding' },
-        { name: 'Livestream', icon: 'eye', to: '/livestream' },
+        ...window.location.href.includes('fbmedia.xyz') ? [] : [{ name: 'Livestream', icon: 'eye', to: '/livestream' }],
         { name: 'Account', icon: 'user', to: '/accounts' },
-        { name: 'Agency', icon: 'global', to: '/agency' },
         { name: 'Payments', icon: 'bars', to: '/payments' },
         { name: 'Deposit', icon: 'dollar', to: '/deposit' },
     ]
@@ -62,9 +61,9 @@ export const AppDrawer = (props: { onClick: Function }) => (
                 <Card style={{ width: '100%' }} size="small" loading={loading}>
                     <Row type="flex" justify="start" align="middle">
                         <Col>
-                            <Avatar src="https://hammockweb.com/slider/img/user.png" size={60}  />
+                            <Avatar src="https://hammockweb.com/slider/img/user.png" size={60} />
                         </Col>
-                        <Col style={{paddingLeft: 20}}>
+                        <Col style={{ paddingLeft: 20 }}>
                             <Row><Col style={{ wordBreak: 'break-all', fontWeight: 'bold' }}>{user && user.username}</Col></Row>
                             <Row><Col style={{ color: 'rgb(0, 131, 227)', fontWeight: 'bold' }}>{
                                 user && user.balance.toLocaleString(undefined, { maximumFractionDigits: 0 }) + ' đ'

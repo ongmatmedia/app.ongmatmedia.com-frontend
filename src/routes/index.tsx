@@ -12,6 +12,7 @@ import { LivestreamMenu } from './livestream/LivestreamMenu'
 import { AgencyPage } from './agency';
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream'
 import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
+import { Payments } from './payments'
 
 
 export const AppWithRouter = () => (
@@ -52,13 +53,9 @@ export const AppWithRouter = () => (
         <MainLayout Content={BuffViewersLivestream} Menu={SeedingMenuContent} />
       </Route>
 
-
-
-
-
-
-
-
+      <Route exact path="/payments" >
+        <MainLayout Content={Payments} />
+      </Route>
 
       <Route exact path="/livestream" >
         <MainLayout Content={LivestreamPage} Menu={LivestreamMenu} />

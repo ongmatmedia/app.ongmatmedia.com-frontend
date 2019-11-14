@@ -9,7 +9,7 @@ const mutation = graphql`
         create_buff_viewers_livestream_task(input: $input){
             buff{
                 node{
-                    id, amount, note, created_time, name, uid
+                    id, amount, note, created_time, name
                 }
             }
             me{
