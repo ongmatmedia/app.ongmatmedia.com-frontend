@@ -18,6 +18,7 @@ export const VipViewersLivestreamAction = (props: VipViewersLivestreamActionProp
             set_loading_uid(true)
             const { uid } = await FacebookAccount.getUIDFromURL(search)
             set_search(uid)
+            props.onChangeSearch(uid)
         } catch (e) {
             notification.error({ message: 'Can not get UID' })
         }

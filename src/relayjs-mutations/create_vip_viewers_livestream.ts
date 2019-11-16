@@ -31,7 +31,7 @@ export const create_vip_viewers_livestream = async (input: VIPViewersLivestreamI
                 ConnectionHandler.insertEdgeAfter(list, vip)
                 s()
             },
-            onError: r
+            onError: e => r(e.message)
         })
     })
 }

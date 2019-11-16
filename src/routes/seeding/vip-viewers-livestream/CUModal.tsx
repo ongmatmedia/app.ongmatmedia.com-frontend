@@ -52,10 +52,10 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
             set_loading(true)
             if (props.mode == 'create') {
                 await create_vip_viewers_livestream({ ...data, active: true })
-                notification.success({message: 'Create success'})
+                notification.success({ message: 'Create success' })
             } else {
                 await update_vip_viewers_livestream(data)
-                notification.success({message: 'Update success'})
+                notification.success({ message: 'Update success' })
             }
             set_error(null)
             set_loading(false)
@@ -463,7 +463,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                     }
                                     <Select placeholder="Click to select days" onChange={setValue}>
                                         {
-                                            [...props.mode == 'create' ? [] : [0], 7, 15, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300].map(days => (
+                                            [...props.mode == 'create' ? [7, 15] : [0], 30, 60, 90, 120, 150, 180, 210, 240, 270, 300].map(days => (
                                                 <Select.Option value={days}>
                                                     {props.mode == 'update' && '+ '}
                                                     {days} days {days >= 30 ? `~ (${Math.floor(days / 30)} months)` : ''}
