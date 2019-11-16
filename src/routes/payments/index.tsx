@@ -43,7 +43,7 @@ const query = graphql`
 export const Payments = () => {
     const [search, set_search] = useState<string>('')
     const [payment_histories, set_payment_histories] = useState<PaymentHistory[]>([])
-    let next_page_token: string | undefined
+    const [next_page_token, set_next_page_token] = useState<string | undefined>(undefined)
     const [loading, set_loading] = useState<boolean>(false)
 
     const load = async (variables: { after?: string, before_time?: number } = {}, clear: boolean = true) => {
@@ -55,7 +55,7 @@ export const Payments = () => {
                 ...clear ? [] : payment_histories,
                 ...data.payment_histories.edges.map(e => e.node)
             ])
-            next_page_token = data.payment_histories.pageInfo.next_token
+            set_next_page_token(data.payment_histories.pageInfo.next_token)
         } catch (e) {
             console.log(e)
         }
@@ -69,7 +69,8 @@ export const Payments = () => {
             <PaymentListAction onChangeDate={d => load({ before_time: d.getTime() })} onSearch={set_search} />
             <PaymentList
                 search={search}
-                onLoadMore={() => next_page_token && load({ after: next_page_token }, false) && console.log({next_page_token})}
+                has_more={next_page_token != null}
+                onLoadMore={() => load({ after: next_page_token }, false)}
                 payment_histories={payment_histories}
                 loading={loading}
             />

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Input, Icon } from 'antd'
-import { FacebookAccount } from '../../../api/facebook-account'
-import { FacebookVideo } from '../../../api/facebook-video'
+import { FacebookVideo } from '../../../api/FacebookVideo'
 
 export enum LivestreamFacebookTargetType {
     profile = "profile",

@@ -9,7 +9,7 @@ import { Auth } from "aws-amplify";
 import { Modal } from 'antd';
 import RelayQueryResponseCache from 'relay-runtime/lib/RelayQueryResponseCache';
 
-const cache = new RelayQueryResponseCache({ size: 250, ttl: 300 * 1000 });
+export const RelayJSCache = new RelayQueryResponseCache({ size: 250, ttl: 300 * 1000 });
 const GraphQLEndpoint = 'https://7qwdnah2rbbopjl5cgj7w5jgqe.appsync-api.us-east-1.amazonaws.com/graphql'
 
 async function query(operation, variables, cacheConfig?: any) {
@@ -20,7 +20,7 @@ async function query(operation, variables, cacheConfig?: any) {
 
 
     // Try to get data from cache on queries
-    const fromCache = cache.get(queryID, variables);
+    const fromCache = RelayJSCache.get(queryID, variables);
     if (
         isQuery &&
         fromCache !== null &&
@@ -47,10 +47,10 @@ async function query(operation, variables, cacheConfig?: any) {
         const data = await response.json()
 
         if (isQuery) {
-            cache.set(queryID, variables, data);
+            RelayJSCache.set(queryID, variables, data);
         }
         if (isMutation) {
-            cache.clear();
+            RelayJSCache.clear();
         }
         return data
     } catch (e) {

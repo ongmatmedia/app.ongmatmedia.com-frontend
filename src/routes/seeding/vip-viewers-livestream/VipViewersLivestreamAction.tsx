@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Row, Col, Input, Icon, notification } from 'antd'
 import { Button } from 'antd'
 import { CUModal } from './CUModal'
-import { FacebookAccount } from '../../../api/facebook-account'
+import { FacebookAccount } from '../../../api/FacebookAccount'
 
 export type VipViewersLivestreamActionProps = {
     onChangeSearch: (v: string) => any

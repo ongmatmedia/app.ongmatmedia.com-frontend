@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Modal, Form, Input, Radio, Spin } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { AsyncForEach } from '../../helpers/ArrayLoop'
-import { FacebookAccount, FacebookAccountInfo } from '../../api/facebook-account'
+import { FacebookAccount, FacebookAccountInfo } from '../../api/FacebookAccount'
 import { add_facebook_account } from '../../relayjs-mutations/add_facebook_account'
 
 export type AccountAddModalProps = FormComponentProps & {

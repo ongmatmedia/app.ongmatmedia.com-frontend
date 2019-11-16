@@ -7,7 +7,7 @@ const rq = axios.create({
 })
 
 
-export class BetaAPIService {
+export class API {
     private static async  getAccessToken(): Promise<string> {
         const user = await Auth.currentSession()
         return user.getAccessToken().getJwtToken()

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Row, Col, Input, Icon, notification } from 'antd'
 import { Button } from 'antd'
-import { FacebookAccount } from '../../../api/facebook-account'
+import { FacebookAccount } from '../../../api/FacebookAccount'
 import { BuffViewersLivestreamCreateModal } from './BuffViewersLivestreamCreateModal'
 
 

@@ -4,6 +4,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { RouterProps } from 'react-router';
 import { UserInfo } from '../containers/UserInfo';
+import { RelayJSCache } from '../configs/relayjs';
 
 const DrawerLinks: Array<{
     name: string,
@@ -23,6 +24,7 @@ const LogoutButton = withRouter((props: RouterProps) => (
             title: "Logout now?",
             onOk: async () => {
                 props.history.push('/auth/login')
+                RelayJSCache.clear()
                 await Auth.signOut()
             }
         })}

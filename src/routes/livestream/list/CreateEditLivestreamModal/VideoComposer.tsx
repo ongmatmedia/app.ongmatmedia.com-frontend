@@ -1,7 +1,7 @@
 import React, { useState, createRef } from 'react'
 import { Row, Col, Input, Icon, Avatar, Alert, Button } from 'antd'
 import { LivestreamVideo } from '../../../../schema/Services/Livestream/LivestreamVideo'
-import { FacebookVideo } from '../../../../api/facebook-video'
+import { FacebookVideo } from '../../../../api/FacebookVideo'
 
 export const VideoComposer = ((props: { value: LivestreamVideo[], onChange: (videos: LivestreamVideo[]) => void }) => {
 

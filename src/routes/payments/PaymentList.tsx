@@ -5,6 +5,7 @@ import Moment from 'react-moment'
 
 export type PaymentListProps = {
     onLoadMore: Function
+    has_more: boolean
     search: string
     payment_histories: PaymentHistory[]
     loading: boolean
@@ -27,7 +28,7 @@ export const PaymentList = (props: PaymentListProps) => (
                                 <Tag color="red">{item.service}</Tag>
                             </Col>
                             <Col xs={24} md={8}>
-                                <Tag color="#108ee9">{(-item.total).toLocaleString(undefined)} đ</Tag>
+                                <Tag color="#108ee9">{item.total.toLocaleString(undefined)} đ</Tag>
                             </Col>
 
                         </Row>
@@ -52,19 +53,23 @@ export const PaymentList = (props: PaymentListProps) => (
             ]}
             dataSource={
                 props
-                .payment_histories
-                .filter(el => `${el.note} ${el.service} ${el.receiver_username}`.toLowerCase().includes(props.search.toLowerCase()))
+                    .payment_histories
+                    .filter(el => `${el.note} ${el.service} ${el.receiver_username}`.toLowerCase().includes(props.search.toLowerCase()))
             }
             pagination={false}
         />
-        <Row type="flex" justify="space-around" align="middle"><Col>
-            <Button
-                loading={props.loading}
-                type="dashed"
-                icon="more"
-                style={{ margin: 10 }}
-                onClick={() => props.onLoadMore()}
-            >{props.loading ? 'Loading' : 'Show more'}</Button>
-        </Col></Row>
+        {
+            props.has_more && (
+                <Row type="flex" justify="space-around" align="middle"><Col>
+                    <Button
+                        loading={props.loading}
+                        type="dashed"
+                        icon="more"
+                        style={{ margin: 10 }}
+                        onClick={() => props.onLoadMore()}
+                    >{props.loading ? 'Loading' : 'Show more'}</Button>
+                </Col></Row>
+            )
+        }
     </Fragment>
 )

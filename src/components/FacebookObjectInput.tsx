@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Input, Icon } from 'antd'
-import { FacebookAccount } from '../api/facebook-account'
+import { FacebookAccount } from '../api/FacebookAccount'
 
 export enum LivestreamFacebookTargetType {
     profile = "profile",

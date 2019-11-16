@@ -2,12 +2,11 @@ import React, { useState } from 'react'
 import { Row, Col, Select, Avatar, Icon, Button, Alert, Spin } from 'antd'
 import { QueryRenderer } from 'react-relay'
 import graphql from 'babel-plugin-relay/macro'
-import { RelayEnvironment } from '../../../../configs/relayjs'
-import { LivestreamConnection } from '../../../../schema/Services/Livestream/LivestreamConnection';
+import { RelayEnvironment } from '../../../../configs/relayjs' 
 import { LivestreamFacebookTargetType } from './LivestreamFacebookTargetType';
 import { FacebookAccountConnection } from '../../../../schema/FacebookAccount/FacebookAccountConnection';
 import { FacebookAccount } from '../../../../schema/FacebookAccount/FacebookAccount';
-import { FacebookGraphAPI } from '../../../../api/facebook-graph-api';
+import { FacebookGraphAPI } from '../../../../api/FacebookGraphAPI';
 
 
 

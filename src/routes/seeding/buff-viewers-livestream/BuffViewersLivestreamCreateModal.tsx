@@ -98,13 +98,13 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivest
                     {
                         props.form.field({
                             name: 'id',
-                            require: 'Enter Facebook fanpage or Profile',
+                            require: 'Enter Facebook Livestream URL',
                             render: ({ error, loading, setValues, value, set_touched, touched }) => (
                                 <AntdForm.Item >
                                     <Row type="flex" justify="space-between" align="middle">
                                         <Col>
                                             <h3>
-                                                <Icon type="user" /> Fanpage or profile
+                                                <Icon type="user" /> Facebook Video URL
                                                 <Tag style={{ background: '#fff', borderStyle: 'dashed' }}> Require </Tag>
                                             </h3>
                                         </Col>
@@ -156,7 +156,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivest
                                     {
                                         editing_uid_visible && (
                                             <VideoInput
-                                                placeholder="Enter link of fanpage or profile here then click search"
+                                                placeholder="www.facebook.com/***/videos/**"
                                                 onSelect={({ name, image, type, id, uid }) => {
                                                     setValues({ id, name, uid })
                                                     set_editing_uid_visible(false)
