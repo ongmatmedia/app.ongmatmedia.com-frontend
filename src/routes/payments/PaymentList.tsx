@@ -53,10 +53,10 @@ export const PaymentList = (props: PaymentListProps) => (
                                     text={item.note}
                                     onCopy={() => message.info('Payment note copied')}
                                 >
-                                    <Fragment>
+                                    <span style={{cursor: 'pointer'}}>  
                                         <span>{item.note} &nbsp;</span>
                                         <Icon type="copy" />
-                                    </Fragment>
+                                    </span>
                                 </CopyToClipboard>
                             </Col>
                         </Row>
