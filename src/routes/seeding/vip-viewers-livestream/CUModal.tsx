@@ -1,5 +1,5 @@
 import React, { useEffect, Fragment, useState } from 'react'
-import { Modal, Form as AntdForm, Input, Icon, Select, Row, Col, Avatar, Tag, Alert, Button, Switch, Card, Spin, notification } from 'antd'
+import { Modal, Form as AntdForm, Input, Icon, Select, Row, Col, Avatar, Tag, Alert, Button, Switch, Card, Spin, notification, message } from 'antd'
 import { withForm, Form } from '../../../containers/Form'
 import { VIPViewersLivestream } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestream'
 import { VipViewersLivestreamGroup } from '../../../schema/Services/VIPViewersLivestream/VipViewersLivestreamGroup'
@@ -12,6 +12,7 @@ import { graphql } from 'babel-plugin-relay/macro'
 import { GraphQLWrapper } from '../../../containers/GraphQLWrapper'
 import { ServicePricing } from '../../../schema/User/ServicePricing'
 import { User } from '../../../schema/User/User'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 
 const query = graphql`
@@ -355,6 +356,13 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                                             />
                                                         )
                                                     }
+                                                    <CopyToClipboard text={props.vip ? props.vip.id : props.form.data.id}
+                                                        onCopy={() => message.info('UID copied')}>
+                                                        <Icon
+                                                            type="copy"
+                                                            style={{ color: 'black', marginRight: 10, fontSize: 20, cursor: 'pointer' }}
+                                                        />
+                                                    </CopyToClipboard>
                                                     <Icon
                                                         type="message"
                                                         style={{ color: 'black', marginRight: 10, fontSize: 20, cursor: 'pointer' }}

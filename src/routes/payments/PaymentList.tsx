@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react'
-import { Table, Tag, Row, Col, Button } from 'antd'
+import { Table, Tag, Row, Col, Button, message, Icon } from 'antd'
 import { PaymentHistory } from '../../schema/PaymentHistory/PaymentHistory'
 import Moment from 'react-moment'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 export type PaymentListProps = {
     onLoadMore: Function
@@ -15,6 +16,7 @@ export type PaymentListProps = {
 export const PaymentList = (props: PaymentListProps) => (
     <Fragment>
         <Table
+            loading={props.loading && props.payment_histories.length == 0}
             columns={[
                 {
                     title: 'Time',
@@ -46,7 +48,17 @@ export const PaymentList = (props: PaymentListProps) => (
                             <Col xs={24} md={4}>
                                 {item.receiver_username != 'system' ? <Tag color="#108ee9">{item.receiver_username}</Tag> : null}
                             </Col>
-                            <Col xs={24} md={10}>{item.note} </Col>
+                            <Col xs={24} md={10}>
+                                <CopyToClipboard
+                                    text={item.note}
+                                    onCopy={() => message.info('Payment note copied')}
+                                >
+                                    <Fragment>
+                                        <span>{item.note} &nbsp;</span>
+                                        <Icon type="copy" />
+                                    </Fragment>
+                                </CopyToClipboard>
+                            </Col>
                         </Row>
                     )
                 }

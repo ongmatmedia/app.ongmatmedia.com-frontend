@@ -1,7 +1,6 @@
 import React from 'react'
-import { Table, Button, Row, Col, Avatar, Icon, Tag, Modal, notification } from 'antd'
+import { Table, Row, Col, Avatar, Icon, Tag, Modal, notification, message } from 'antd'
 import { BuffViewersLivestream } from '../../../schema/Services/BuffViewersLivestream/BuffViewersLivestream'
-import { LivestreamFacebookTargetType } from '../../../components/FacebookObjectInput'
 import Moment from 'react-moment';
 import { ColumnProps } from 'antd/lib/table';
 
@@ -9,6 +8,10 @@ import { graphql } from 'babel-plugin-relay/macro'
 import { GraphQLWrapper } from '../../../containers/GraphQLWrapper';
 import { BuffViewersLivestreamConnection } from '../../../schema/Services/BuffViewersLivestream/BuffViewersLivestreamConnection';
 import { delete_buff_viewers_livestream } from '../../../relayjs-mutations/delete_buff_viewers_livestream';
+
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+
+
 const query = graphql`
     query BuffViewersLivestreamListQuery{
         buff_viewers_livestream_tasks{
@@ -33,7 +36,7 @@ const IconFont = Icon.createFromIconfontCN({
 
 const columns: ColumnProps<BuffViewersLivestream>[] = [
     {
-        title: 'UID',
+        title: 'Info',
         key: 'uid',
         align: 'center',
         render: (item: BuffViewersLivestream) => (
@@ -47,6 +50,13 @@ const columns: ColumnProps<BuffViewersLivestream>[] = [
                     <Row type="flex" justify="space-around" > <Col style={{ minWidth: 300, paddingBottom: 10, paddingTop: 10 }}>
                         <Tag color="#2db7f5"><Moment format="DD/MM/YYYY H:mm">{item.created_time}</Moment></Tag>
                         <Tag color="#108ee9"><Moment toNow>{item.created_time}</Moment></Tag>
+                        <CopyToClipboard text={item.uid}
+                            onCopy={() => message.info('Video owner UID copied')}>
+                            <Tag color="#108ee9">
+                                <span>{item.uid}</span> &nbsp;
+                            <Icon type="copy" />
+                            </Tag>
+                        </CopyToClipboard>
                     </Col></Row>
                 </Col>
                 <Col style={{ maxWidth: 300 }}>
