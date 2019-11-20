@@ -57,7 +57,11 @@ export const LivestreamTargetItemSelector = (props: FacebookAccountTarget) => {
         const fb = new FacebookGraphAPI(access_token)
         const url = `/me/${props.type == LivestreamFacebookTargetType.group ? 'groups' : 'accounts'}`
         const { data } = await fb.get<{ data: Array<{ name: string, id: string }> }>(url)
-        set_groups_pages(data)
+        if(data){
+            set_groups_pages(data)
+        }else{
+            
+        }
         set_loading_groups_pages(false)
     }
 

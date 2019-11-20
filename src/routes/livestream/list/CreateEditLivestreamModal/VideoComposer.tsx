@@ -1,7 +1,7 @@
 import React, { useState, createRef } from 'react'
 import { Row, Col, Input, Icon, Avatar, Alert, Button } from 'antd'
 import { LivestreamVideo } from '../../../../schema/Services/Livestream/LivestreamVideo'
-import { FacebookVideo } from '../../../../api/FacebookVideo'
+import { Video } from '../../../../api/Video'
 
 export const VideoComposer = ((props: { value: LivestreamVideo[], onChange: (videos: LivestreamVideo[]) => void }) => {
 
@@ -16,7 +16,7 @@ export const VideoComposer = ((props: { value: LivestreamVideo[], onChange: (vid
         set_loading(true)
         set_video_url('')
         try {
-            const data = await FacebookVideo.getVideoInfo(video_url)
+            const data = await Video.getVideoInfo(video_url)
             videos.filter(v => v.video_id == data.video_id).length == 0 && props.onChange([...videos, data])
         } catch (e) {
             set_error(e)
