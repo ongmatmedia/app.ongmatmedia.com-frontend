@@ -40,7 +40,8 @@ export type CUModalProps = {
 export type CUModalGraphqlData = { me: User, pricing: ServicePricing }
 
 
-export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {}, withForm(props => {
+export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {}, withForm(props => { 
+
 
     const [editing_uid, set_editing_uid] = useState<boolean>(props.mode == 'create')
     const [error, set_error] = useState<string | null>(null)

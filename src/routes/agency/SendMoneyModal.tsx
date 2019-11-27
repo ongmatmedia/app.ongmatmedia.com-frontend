@@ -3,7 +3,7 @@ import { User } from '../../schema/User/User'
 import { Modal, Form, Spin, Col, Row, Tag, Input } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { send_money } from '../../relayjs-mutations/send_money'
-import { AutoSelectInput } from '../../components/AutoSelectInput'
+import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect'
 export type SendMoneyModalProps = FormComponentProps & {
     visible: boolean
     user: User
@@ -35,14 +35,7 @@ export const SendMoneyModal = Form.create<SendMoneyModalProps>()((props: SendMon
 
     }
 
-    const update_amount = (value: string, is_send_amount: boolean) => {
-        if (value == '') {
-            set_send_amount(0)
-            set_receive_amount(0)
-            return
-        }
-        if (!value.match(/^[0-9\.]+$/)) return
-        const amount = Number(value.replace(/\./g, ''))
+    const update_amount = (amount: number, is_send_amount: boolean) => {
 
         if (is_send_amount) {
             set_send_amount(amount)
@@ -62,7 +55,7 @@ export const SendMoneyModal = Form.create<SendMoneyModalProps>()((props: SendMon
             onOk={submit}
             onCancel={() => props.onClose()}
             okButtonProps={{
-                disabled: note == null || note.length == 0 || send_amount < 10000 || send_amount > props.me.balance,
+                disabled: note == null || note.length == 0 || send_amount > props.me.balance,
                 loading
             }}
         >
@@ -80,9 +73,9 @@ export const SendMoneyModal = Form.create<SendMoneyModalProps>()((props: SendMon
             <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
                 <Col span={12}>Send Amount</Col>
                 <Col>
-                    <AutoSelectInput
-                        value={send_amount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                        onChange={e => update_amount(e.target.value, true)}
+                    <InputNumberAutoSelect
+                        defaultValue={send_amount}
+                        onChangeValue={n => update_amount(n, true)}
                     />
                 </Col>
             </Row>
@@ -93,9 +86,9 @@ export const SendMoneyModal = Form.create<SendMoneyModalProps>()((props: SendMon
             <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
                 <Col span={12}>Receive Amount</Col>
                 <Col>
-                    <AutoSelectInput
-                        value={receive_amount.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                        onChange={e => update_amount(e.target.value, false)}
+                    <InputNumberAutoSelect
+                        defaultValue={receive_amount}
+                        onChangeValue={n => update_amount(n, false)}
                     />
                 </Col>
             </Row>

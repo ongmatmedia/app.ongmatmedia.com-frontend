@@ -1,0 +1,1 @@
+export {VIPViewersLivestreamResolver} from './VIPViewersLivestreamResolver'

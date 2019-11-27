@@ -1,0 +1,1 @@
+export {PaymentHistoryResolver} from './PaymentHistoryResolver'
