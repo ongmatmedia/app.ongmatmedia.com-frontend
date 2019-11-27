@@ -15,6 +15,7 @@ import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
 import { Payments } from './payments'
 import {DepositPage} from './deposit'
 import {HomePage} from './HomePage'
+import { UpdatePrice } from './agency/UpdatePrice';
 
 export const AppWithRouter = () => (
   <HashRouter>
@@ -67,6 +68,10 @@ export const AppWithRouter = () => (
 
       <Route exact path="/agency" >
         <MainLayout Content={AgencyPage} />
+      </Route>
+      
+      <Route exact path="/agency/update-price" >
+        <MainLayout Content={UpdatePrice} />
       </Route>
 
       <Route exact path="/deposit" >
