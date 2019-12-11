@@ -20,7 +20,7 @@ export const CreateAgencyModal = Form.create<CreateAgencyModalProps>()((props: C
         props.form.validateFields(async (err, values) => {
             set_loading(true)
             try {
-                await create_user(values.username, values.password, values.price_percent)
+                await create_user(values.username, values.password, values.price_percent, values.email)
                 set_error(null)
                 set_loading(false)
                 props.onClose()
@@ -51,6 +51,15 @@ export const CreateAgencyModal = Form.create<CreateAgencyModalProps>()((props: C
                                     rules: [{ required: true }]
                                 })(
                                     <Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} />
+                                )
+                            }
+                        </Form.Item>
+                        <Form.Item label="Email">
+                            {
+                                props.form.getFieldDecorator('email', {
+                                    rules: [{ required: true }]
+                                })(
+                                    <Input prefix={<Icon type="email" style={{ color: 'rgba(0,0,0,.25)' }} />} />
                                 )
                             }
                         </Form.Item>
