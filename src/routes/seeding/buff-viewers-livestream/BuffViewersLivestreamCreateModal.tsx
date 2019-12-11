@@ -62,17 +62,17 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivest
         OrderInfoCard = (
             <Card title="Order infomation" size="small" style={{ lineHeight: '2em' }}>
                 <Row>
-                    <Tag color="#108ee9">{props.form.data.amount} viewers</Tag> x <Tag color="#108ee9">{props.data.pricing.buff_viewers_livestream}<Icon type="dollar" /> /viewer </Tag> = <Tag color="#108ee9">{
+                    <Tag color="#108ee9">{props.form.data.amount} viewers</Tag> x <Tag color="#108ee9">{props.data.pricing.buff_viewers_livestream}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> /viewer </Tag> = <Tag color="#108ee9">{
                         total.toLocaleString(undefined, { maximumFractionDigits: 0 })
-                    }<Icon type="dollar" /></Tag>
+                    }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /></Tag>
                 </Row>
                 <Row>Your discount: <Tag color="blue">{100 - props.data.me.price_percent}% </Tag></Row>
                 <Row>Total: <Tag color="#108ee9">{
                     Math.ceil(total * props.data.me.price_percent * 0.01).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                }<Icon type="dollar" /> </Tag></Row>
+                }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> </Tag></Row>
                 <Row>Your balance: <Tag color="#108ee9">{
                     props.data.me.balance.toLocaleString(undefined, { maximumFractionDigits: 0 })
-                }<Icon type="dollar" /> </Tag></Row>
+                }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> </Tag></Row>
             </Card>
         )
 

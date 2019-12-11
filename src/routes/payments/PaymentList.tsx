@@ -30,7 +30,7 @@ export const PaymentList = (props: PaymentListProps) => (
                                 <Tag color="red">{item.service}</Tag>
                             </Col>
                             <Col xs={24} md={8}>
-                                <Tag color="#108ee9">{item.total.toLocaleString(undefined)} <Icon type="dollar" /></Tag>
+                                <Tag color="#108ee9">{item.total.toLocaleString(undefined)} <Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /></Tag>
                             </Col>
 
                         </Row>
@@ -43,7 +43,7 @@ export const PaymentList = (props: PaymentListProps) => (
                     render: (item: PaymentHistory) => (
                         <Row style={{ lineHeight: '2em' }} type="flex" justify="space-around" align="middle">
                             <Col xs={24} md={8}>
-                                <Tag color="green"> $ = {item.balance_after.toLocaleString(undefined)} <Icon type="dollar" /> </Tag>
+                                <Tag color="green"> $ = {item.balance_after.toLocaleString(undefined)} <Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> </Tag>
                             </Col>
                             <Col xs={24} md={4}>
                                 {item.receiver_username != 'system' ? <Tag color="#108ee9">{item.receiver_username}</Tag> : null}

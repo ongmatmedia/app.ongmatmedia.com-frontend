@@ -1,5 +1,10 @@
 import React from 'react'
-import { Card, List, Avatar, Icon, Tooltip, Row, Col } from 'antd'
+import { Card, List, Avatar, Icon, Tooltip, Row, Col, Spin, Divider, message } from 'antd'
+import { GraphQLWrapper } from '../../containers/GraphQLWrapper'
+import { PaymentMethod } from '../../schema/User/PaymentMethod'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+
+const graphql = require('babel-plugin-relay/macro')
 
 type DepositMethod = {
     name: string
@@ -8,63 +13,65 @@ type DepositMethod = {
     icon: string
 }
 
-const methods: DepositMethod[] = [
-    {
-        account: '0301.0003.814.58',
-        name: 'Vietcombank',
-        cover: 'http://gg.gg/frngs',
-        icon: 'https://lh3.googleusercontent.com/hRq2DVKkzBXQkyftxr0e2ytl0fS2hEWx3UTe3V652RfJVYWqVRGgBNhmZgqNzJ8PKHE'
-    },
-    {
-        account: '0172.0199.104',
-        name: 'TPBank',
-        cover: 'http://gg.gg/frng0',
-        icon: 'https://lh3.googleusercontent.com/mSM5SOjZpz2zBfwPCbEiLrWMHD1ubpk2pnrstPmjJWGPjuVUlqtz7Gg5b4l6XxBUvuY'
-    },
-    {
-        account: '0978.346.354',
-        name: 'Momo',
-        cover: 'http://gg.gg/frngb',
-        icon: 'https://static.mservice.io/img/logo-momo.png'
+const query = graphql`
+    query depositQuery{
+        payment_methods{
+            name
+            owner
+            description
+            account
+            image_url
+        }
     }
-]
+`
 
-export const DepositPage = () => (
+export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(query, {}, ({ loading, data }) => (
     <Card title="Deposit">
-        <List
-            grid={{
-                gutter: 16,
-                xs: 2,
-                sm: 2,
-                md: 4,
-                lg: 6,
-                xl: 6,
-                xxl: 6
-            }}
-            dataSource={methods}
-            renderItem={item => (
-                <List.Item>
-                    <Card
-                        size="small"
-                        cover={<img src={item.cover}  />}
-                        actions={[
-                            <Tooltip title="Copy account" placement="bottom"><Icon type="copy" /></Tooltip>
-                        ]}
-                    >
-                        <Card.Meta
-                            avatar={<Avatar src={item.icon} />}
-                            title={item.name}
-                            description={
-                                <Row>
-                                    <Col>Dương Văn Ba</Col>
-                                    <Col>Account: {item.account}</Col>
-                                </Row>
-                            }
+        {(!loading && data) ? (
+            <List
+                grid={{
+                    gutter: 16,
+                    xs: 1,
+                    sm: 1,
+                    md: 4,
+                    lg: 4,
+                    xl: 4,
+                    xxl: 4
+                }}
+                dataSource={data.payment_methods}
+                renderItem={item => (
+                    <List.Item>
+                        <Card
+                            size="small"
+                            cover={<img src={item.image_url} />}
+                            actions={[
+                                <CopyToClipboard
+                                    text={item.account}
+                                    onCopy={() => message.info('Payment note copied')}
+                                >
+                                    <Tooltip title="Copy account" placement="bottom">
+                                        <Icon type="copy" />
+                                    </Tooltip>
+                                </CopyToClipboard>
+                            ]}
+                        >
+                            <Card.Meta
+                                avatar={<Avatar src={item.image_url} />}
+                                title={item.name}
+                                description={
+                                    <Row>
+                                        <Col>{item.owner}</Col>
+                                        <Col>{item.account}</Col>
+                                        <Divider />
+                                        <Col>{item.description}</Col>
+                                    </Row>
+                                }
 
-                        />
-                    </Card>
-                </List.Item>
-            )}
-        />
+                            />
+                        </Card>
+                    </List.Item>
+                )}
+            />
+        ) : <Spin />}
     </Card>
-)
+))
