@@ -212,7 +212,7 @@ type Mutation {
   update_livestream(task: LivestreamUpdateInput!): Livestream!
   delete_livestream(id: ID!): Boolean!
   create_user(price_percent: Int!, email: String!, password: String!, username: String!): UserEdge!
-  update_price_percent(price_percent: Int!, user_id: String!): Boolean!
+  update_price_percent(price_percent: Int!, user_id: String!): UserEdge!
   update_pricing(price: ServicePricingInput!): Boolean!
   send_money(note: String!, amount: Int!, user_id: String!): SendmoneyResponse!
   set_user_password(password: String!, user_id: String!): Boolean!

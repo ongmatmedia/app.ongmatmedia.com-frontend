@@ -33,7 +33,8 @@
   "scripts": {
     "start": "react-app-rewired start",
     "build": "yarn relay && react-app-rewired build",
-    "relay": "relay-compiler --src ./src --schema ./src/schema/schema.graphql --language typescript"
+    "relay": "relay-compiler --src ./src --schema ./src/schema/schema.graphql --language typescript",
+    "sync:schema":"rsync -r ../server/src/schema/ src/schema/"
   },
   "browserslist": [],
   "devDependencies": {

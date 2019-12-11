@@ -13,7 +13,7 @@ const DrawerLinks: Array<{
 }> = [
         { name: 'Seeding', icon: 'alert', to: '/seeding' },
         // ...window.location.href.includes('fbmedia.xyz') ? [] : [{ name: 'Livestream', icon: 'eye', to: '/livestream' }],
-        { name: 'Account', icon: 'user', to: '/accounts' },
+        // { name: 'Account', icon: 'user', to: '/accounts' },
         { name: 'Payments', icon: 'bars', to: '/payments' },
         { name: 'Deposit', icon: 'dollar', to: '/deposit' },
     ]

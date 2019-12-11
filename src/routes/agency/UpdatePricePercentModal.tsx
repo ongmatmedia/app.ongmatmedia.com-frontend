@@ -42,6 +42,7 @@ export const UpdatePricePercentModal = (props: UpdatePricePercentModalProps) => 
                 error && <Alert type="error" message={error} />
             }
             <Row>
+                <Alert showIcon style={{margin: 10}} type="error" message="Change price percent will set ALL AGENCY BALANCE TO ZERO" />
                 <Col span={12}>New price percent</Col>
                 <Col span={12}>
                     <AutoSelectInput

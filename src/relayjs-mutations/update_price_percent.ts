@@ -5,7 +5,14 @@ import { RecordProxy } from "relay-runtime";
 
 const mutation = graphql`
     mutation updatePricePercentMutation($price_percent: Int!, $user_id: String!){
-        update_price_percent(user_id: $user_id, price_percent: $price_percent )
+        update_price_percent(user_id: $user_id, price_percent: $price_percent ){
+            node{
+                username
+                id
+                balance
+                price_percent 
+            }
+        }
     }
 `
 export const update_price_percent = (user_id: string, price_percent: number, owner_percent: number) => new Promise(

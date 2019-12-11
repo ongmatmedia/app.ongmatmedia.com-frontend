@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react'
 const graphql = require('babel-plugin-relay/macro');
 import { GraphQLWrapper } from '../../containers/GraphQLWrapper'
 import { UserConnection } from '../../schema/User/UserConnection'
-import { Spin, List, Card, Col, Row, Tag, Icon, Tooltip, Button } from 'antd'
+import { Spin, List, Card, Col, Row, Tag, Icon, Tooltip, Button, Modal } from 'antd'
 import { Avatar } from '@material-ui/core';
 import { User } from '../../schema/User/User';
 import { SendMoneyModal } from './SendMoneyModal';
@@ -116,14 +116,19 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
                                         <Icon
                                             type="percentage"
                                             key="percentage"
-                                            onClick={() => set_update_price_percent_user(item)}
+                                            onClick={() => Modal.confirm({
+                                                title: 'Warining',
+                                                content: 'Change price percent RESET your user balance TO ZERO',
+                                                onOk: () => set_update_price_percent_user(item),
+                                                onCancel: () => {}
+                                            })}
                                         />
                                     </Tooltip>,
                                     <Tooltip placement="bottom" title="Set new password">
                                         <Icon
                                             type="unlock"
                                             key="unlock"
-                                            onClick={() => set_set_new_pass_for_user(item)} 
+                                            onClick={() => set_set_new_pass_for_user(item)}
                                         />
                                     </Tooltip>,
                                 ]}
