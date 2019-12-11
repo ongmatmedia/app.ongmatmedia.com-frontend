@@ -15,4 +15,7 @@ export class PaymentMethod{
 
     @Field()
     account: string
+
+    @Field()
+    image_url: string
 }
