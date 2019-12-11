@@ -43,7 +43,7 @@ export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
                     <List.Item>
                         <Card
                             size="small"
-                            cover={<img src={item.image_url} />}
+                            cover={<img src={item.image_url} style={{height: 200, objectFit: 'scale-down' }} />}
                             actions={[
                                 <CopyToClipboard
                                     text={item.account}
