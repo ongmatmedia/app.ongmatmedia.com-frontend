@@ -5,6 +5,8 @@ import { VipViewersLivestreamGroup } from "./VipViewersLivestreamGroup";
 @ObjectType()
 export class VIPViewersLivestream {
 
+    user_id: string
+
     @Field(type => ID!)
     id: string
 

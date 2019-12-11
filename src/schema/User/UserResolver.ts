@@ -1,10 +1,11 @@
 import { User } from "./User";
-import { Resolver, Query, Mutation, Arg, Int } from "type-graphql"
+import { Resolver, Query, Mutation, Arg, Int, Args } from "type-graphql"
 import { ServicePricing } from "./ServicePricing";
 import { PaymentHistory } from "../PaymentHistory/PaymentHistory";
 import { UserEdge } from "./UserEdge";
 import { UserConnection } from "./UserConnection";
 import { SendmoneyResponse } from "./response.type";
+import { PaymentMethod } from "./PaymentMethod";
 
 @Resolver(of => User)
 export class UserResolver {
@@ -14,6 +15,10 @@ export class UserResolver {
 
   @Query(returns => ServicePricing)
   pricing() {
+  }
+
+  @Query(returns => [PaymentMethod])
+  payment_methods() {
   }
 
   @Query(returns => UserConnection)
@@ -26,6 +31,7 @@ export class UserResolver {
   create_user(
     @Arg("username") username: string,
     @Arg("password") password: string,
+    @Arg("email") email: string,
     @Arg("price_percent", type => Int) price_percent: number,
   ) { }
 
@@ -51,6 +57,12 @@ export class UserResolver {
   set_user_password(
     @Arg("user_id") id: string,
     @Arg("password") amount: string
+  ) { }
+
+  @Mutation(returns => Boolean)
+  update_info(
+    @Arg('facebook_uid') facebook_uid: string,
+    @Arg('payment_methods', type => [PaymentMethod]) payment_methods: PaymentMethod[]
   ) { }
 
 }

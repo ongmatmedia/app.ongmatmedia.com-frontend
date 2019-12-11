@@ -80,14 +80,14 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
             OrderInfoCard = (
                 <Card title="Order infomation" size="small" style={{ lineHeight: '2em' }}>
                     <Row>
-                        <Tag color="#108ee9">{amount} viewers</Tag> x <Tag color="#108ee9">{days} days</Tag>x <Tag color="#108ee9">{props.data.pricing.vip_viewers_livestream}đ /viewer/day </Tag> = <Tag color="#108ee9">{
+                        <Tag color="#108ee9">{amount} viewers</Tag> x <Tag color="#108ee9">{days} days</Tag>x <Tag color="#108ee9">{props.data.pricing.vip_viewers_livestream}<Icon type="dollar" /> /viewer/day </Tag> = <Tag color="#108ee9">{
                             total.toLocaleString(undefined, { maximumFractionDigits: 0 })
-                        }đ</Tag>
+                        }<Icon type="dollar" /></Tag>
                     </Row>
                     <Row>Your discount: <Tag color="blue">{100 - props.data.me.price_percent}% </Tag></Row>
                     <Row>Total: <Tag color="#108ee9">{
                         Math.ceil(total * props.data.me.price_percent * 0.01).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                    }đ </Tag></Row>
+                    }<Icon type="dollar" /> </Tag></Row>
                 </Card>
             )
         }
@@ -117,8 +117,8 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                     <Tag color="#108ee9">
                         {props.vip.amount} viewers</Tag>
                     x <Tag color="#108ee9" > {remain_days.toFixed(1)} days</Tag >
-                    x <Tag color="#108ee9" > {props.data.pricing.vip_viewers_livestream}đ / viewer / day </Tag >
-                    = <Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag>
+                    x <Tag color="#108ee9" > {props.data.pricing.vip_viewers_livestream}<Icon type="dollar" /> / viewer / day </Tag >
+                    = <Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" /></Tag>
                 </div>
             )
 
@@ -143,8 +143,8 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                     <Col>
                                         <Tag color="#108ee9">{amount || props.vip.amount} viewers</Tag>
                                         x <Tag color="#108ee9">{((days || 0) + remain_days).toFixed(1)} days</Tag>
-                                        x <Tag color="#108ee9">{props.data.pricing.vip_viewers_livestream}đ /viewer/day </Tag>
-                                        = <Tag color="#108ee9">{new_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag>
+                                        x <Tag color="#108ee9">{props.data.pricing.vip_viewers_livestream}<Icon type="dollar" /> /viewer/day </Tag>
+                                        = <Tag color="#108ee9">{new_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" /></Tag>
                                     </Col>
                                 </Row>
                             </Col>
@@ -152,9 +152,9 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col><h4>Diff</h4></Col>
                             <Col>
-                                <Tag color="#108ee9">{new_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag>
-                                - <Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag>
-                                = <Tag color="#108ee9">{delta_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag>
+                                <Tag color="#108ee9">{new_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" /></Tag>
+                                - <Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" /></Tag>
+                                = <Tag color="#108ee9">{delta_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" /></Tag>
                             </Col>
                         </Row>
                         <Row type="flex" justify="space-between" align="bottom">
@@ -170,7 +170,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                         * props.data.me.price_percent
                                         * 0.01
                                     ).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                                }đ </Tag>
+                                }<Icon type="dollar" /> </Tag>
                             </Col>
                         </Row>
                         {
@@ -184,7 +184,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                                 * props.data.me.price_percent
                                                 * 0.008
                                             ).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                                        }đ </Tag>
+                                        }<Icon type="dollar" /> </Tag>
                                     </Col>
                                 </Row>
                             )
@@ -194,7 +194,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                             <Col>
                                 <Tag color="#108ee9">{
                                     props.data.me.balance.toLocaleString(undefined, { maximumFractionDigits: 0 })
-                                }đ </Tag>
+                                }<Icon type="dollar" /> </Tag>
                             </Col>
                         </Row>
                     </Card>
@@ -225,11 +225,11 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                         </Row>
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col>Pricing</Col>
-                            <Col><Tag color="#108ee9" > {props.data.pricing.vip_viewers_livestream}đ / viewer / day </Tag ></Col>
+                            <Col><Tag color="#108ee9" > {props.data.pricing.vip_viewers_livestream}<Icon type="dollar" /> / viewer / day </Tag ></Col>
                         </Row>
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col>Total</Col>
-                            <Col><Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}đ</Tag></Col>
+                            <Col><Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" /></Tag></Col>
                         </Row>
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col>Your discount</Col>
@@ -248,7 +248,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                         * props.data.me.price_percent
                                         * 0.008
                                     ).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                                }đ </Tag>
+                                }<Icon type="dollar" /> </Tag>
                             </Col>
                         </Row>
                     </Col></Row>
