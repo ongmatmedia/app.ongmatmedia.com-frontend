@@ -260,6 +260,7 @@ type PaymentMethod {
   owner: String!
   description: String!
   account: String!
+  image_url: String!
 }
 
 input PaymentMethodInput {
@@ -267,6 +268,7 @@ input PaymentMethodInput {
   owner: String!
   description: String!
   account: String!
+  image_url: String!
 }
 
 type Query {
