@@ -6,17 +6,26 @@ import {
   rangeKey,
   table,
 } from '@aws/dynamodb-data-mapper-annotations';
+import { PaymentMethod } from "./PaymentMethod";
 
 @table('users')
-@ObjectType({})
+@ObjectType()
 export class User {
 
   @hashKey()
   sub: string
 
   @attribute()
-  @Field({})
+  @Field()
   username: string
+
+  @attribute()
+  @Field()
+  email: string
+
+  @attribute()
+  @Field()
+  facebook_uid: string
 
   @Field(type => ID, {})
   id: string
@@ -28,6 +37,9 @@ export class User {
   @Field(type => Int, {})
   price_percent: number
 
+  @Field(type => [PaymentMethod], { nullable: true })
+  payment_methods: PaymentMethod[]
+
   @Field({})
   creator_id: string
 
@@ -36,5 +48,5 @@ export class User {
 
   @Field(type => Long)
   updated_at: number
-  
+
 }

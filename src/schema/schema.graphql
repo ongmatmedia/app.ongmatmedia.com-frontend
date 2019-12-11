@@ -211,11 +211,12 @@ type Mutation {
   create_livestream(task: LivestreamInput!): LivestreamEdge!
   update_livestream(task: LivestreamUpdateInput!): Livestream!
   delete_livestream(id: ID!): Boolean!
-  create_user(price_percent: Int!, password: String!, username: String!): UserEdge!
+  create_user(price_percent: Int!, email: String!, password: String!, username: String!): UserEdge!
   update_price_percent(price_percent: Int!, user_id: String!): Boolean!
   update_pricing(price: ServicePricingInput!): Boolean!
   send_money(note: String!, amount: Int!, user_id: String!): SendmoneyResponse!
   set_user_password(password: String!, user_id: String!): Boolean!
+  update_info(payment_methods: [PaymentMethodInput!]!, facebook_uid: String!): Boolean!
   create_buff_viewers_livestream_task(input: BuffViewersLivestreamInput!): BuffViewersLivestreamTaskCUDResponse!
   delete_buff_viewers_livestream_task(id: ID!): BuffViewersLivestreamTaskCUDResponse!
   add_facebook_account(input: FacebookAccountInput!): FacebookAccountEdge!
@@ -254,12 +255,27 @@ type PaymentHistoryEdge {
   node: PaymentHistory!
 }
 
+type PaymentMethod {
+  name: String!
+  owner: String!
+  description: String!
+  account: String!
+}
+
+input PaymentMethodInput {
+  name: String!
+  owner: String!
+  description: String!
+  account: String!
+}
+
 type Query {
   livestream_subscription(user_id: ID): LivestreamSubscription
   livestream_tasks(after: String, limit: Int, filters: LivestreamQueryFilters): LivestreamConnection!
   livestream_task(id: ID!): Livestream!
   me: User!
   pricing: ServicePricing!
+  payment_methods: [PaymentMethod!]!
   users(after: String, limit: Int): UserConnection!
   buff_viewers_livestream_tasks(after: String, limit: Int, filters: BuffViewersLivestreamQueryFilters): BuffViewersLivestreamConnection!
   buff_viewers_livestream_task(id: ID!): BuffViewersLivestream!
@@ -315,9 +331,12 @@ input TableStringFilterInput {
 
 type User {
   username: String!
+  email: String!
+  facebook_uid: String!
   id: ID!
   balance: Long!
   price_percent: Int!
+  payment_methods: [PaymentMethod!]
   creator_id: String!
   created_at: Long!
   updated_at: Long!
