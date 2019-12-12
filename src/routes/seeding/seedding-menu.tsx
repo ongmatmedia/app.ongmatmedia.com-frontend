@@ -9,7 +9,7 @@ export const SeedingMenuContent = () => (
     >
         <Menu.ItemGroup key="services" className="gx-menu-group" title="Service">
 
-            <Menu.SubMenu key="seeding" title={<span><Icon type="eye" style={{fontSize: 20}}/>View livestream</span>}>
+            <Menu.SubMenu key="seeding" title={<span><Icon type="eye" style={{ fontSize: 20 }} />View livestream</span>}>
 
                 <Menu.Item key="/seeding/buff-viewers-livestream">
                     <Link to="/seeding/buff-viewers-livestream"><i className="icon icon-custom-view" />Buff</Link>
@@ -17,7 +17,7 @@ export const SeedingMenuContent = () => (
                 <Menu.Item key="/seeding/vip-viewers-livestream">
                     <Link to="/seeding/vip-viewers-livestream"><i className="icon icon-view" />VIP</Link>
                 </Menu.Item>
-                
+
             </Menu.SubMenu>
 
 
