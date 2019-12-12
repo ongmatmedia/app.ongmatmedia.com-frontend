@@ -40,7 +40,7 @@ export type CUModalProps = {
 export type CUModalGraphqlData = { me: User, pricing: ServicePricing }
 
 
-export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {}, withForm(props => { 
+export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {}, withForm(props => {
 
 
     const [editing_uid, set_editing_uid] = useState<boolean>(props.mode == 'create')
@@ -75,19 +75,20 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
     const { amount, days } = props.form.data
     if (!props.loading && props.data && props.data.me && props.data.pricing) {
 
+        const price = props.data.me.price_percent * 0.01 * props.data.pricing.vip_viewers_livestream
+
         if (amount && days && props.mode == 'create') {
-            const total = amount * days * props.data.pricing.vip_viewers_livestream
+            const total = amount * days * price
             OrderInfoCard = (
                 <Card title="Order infomation" size="small" style={{ lineHeight: '2em' }}>
                     <Row>
-                        <Tag color="#108ee9">{amount} viewers</Tag> x <Tag color="#108ee9">{days} days</Tag>x <Tag color="#108ee9">{props.data.pricing.vip_viewers_livestream}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> /viewer/day </Tag> = <Tag color="#108ee9">{
-                            total.toLocaleString(undefined, { maximumFractionDigits: 0 })
-                        }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /></Tag>
+                        <Tag color="#108ee9">{amount} viewers</Tag> x <Tag color="#108ee9">{days} days</Tag>x <Tag color="#108ee9">{
+                            Math.ceil(price).toLocaleString()
+                        }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> /viewer/day </Tag>
                     </Row>
-                    <Row>Your discount: <Tag color="blue">{100 - props.data.me.price_percent}% </Tag></Row>
                     <Row>Total: <Tag color="#108ee9">{
-                        Math.ceil(total * props.data.me.price_percent * 0.01).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                    }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> </Tag></Row>
+                        Math.ceil(total).toLocaleString()
+                    }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> </Tag></Row>
                 </Card>
             )
         }
@@ -107,9 +108,17 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
             }
 
             const remain_days = props.vip.end_time > Date.now() ? (props.vip.end_time - Date.now()) / 86400000 : 0
-            const remain_money = Math.floor(props.vip.amount * remain_days * props.data.pricing.vip_viewers_livestream)
+            const remain_money = Math.floor(
+                props.vip.amount
+                * remain_days
+                * price
+            )
 
-            const new_total = Math.ceil((amount || props.vip.amount) * ((days || 0) + remain_days) * props.data.pricing.vip_viewers_livestream)
+            const new_total = Math.ceil(
+                (amount || props.vip.amount)
+                * ((days || 0) + remain_days)
+                * price
+            )
             const delta_total = new_total - remain_money
 
             const CurrentSubscription = (
@@ -117,8 +126,10 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                     <Tag color="#108ee9">
                         {props.vip.amount} viewers</Tag>
                     x <Tag color="#108ee9" > {remain_days.toFixed(1)} days</Tag >
-                    x <Tag color="#108ee9" > {props.data.pricing.vip_viewers_livestream}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> / viewer / day </Tag >
-                    = <Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /></Tag>
+                    x <Tag color="#108ee9" > {
+                        price.toLocaleString()
+                    }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> / viewer / day </Tag >
+                    = <Tag color="#108ee9">{remain_money.toLocaleString()}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
                 </div>
             )
 
@@ -143,8 +154,10 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                     <Col>
                                         <Tag color="#108ee9">{amount || props.vip.amount} viewers</Tag>
                                         x <Tag color="#108ee9">{((days || 0) + remain_days).toFixed(1)} days</Tag>
-                                        x <Tag color="#108ee9">{props.data.pricing.vip_viewers_livestream}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> /viewer/day </Tag>
-                                        = <Tag color="#108ee9">{new_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /></Tag>
+                                        x <Tag color="#108ee9">{
+                                            price.toLocaleString()
+                                        }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> /viewer/day </Tag>
+                                        = <Tag color="#108ee9">{new_total.toLocaleString()}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
                                     </Col>
                                 </Row>
                             </Col>
@@ -152,27 +165,12 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col><h4>Diff</h4></Col>
                             <Col>
-                                <Tag color="#108ee9">{new_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /></Tag>
-                                - <Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /></Tag>
-                                = <Tag color="#108ee9">{delta_total.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /></Tag>
+                                <Tag color="#108ee9">{new_total.toLocaleString( )}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
+                                - <Tag color="#108ee9">{remain_money.toLocaleString( )}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
+                                = <Tag color="#108ee9">{delta_total.toLocaleString( )}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
                             </Col>
-                        </Row>
-                        <Row type="flex" justify="space-between" align="bottom">
-                            <Col><h4>Your discount</h4></Col>
-                            <Col><Tag color="blue">{100 - props.data.me.price_percent}% </Tag></Col>
-                        </Row>
-                        <Row type="flex" justify="space-between" align="bottom">
-                            <Col><h4>Total</h4></Col>
-                            <Col>
-                                <Tag color="#108ee9">{
-                                    Math.ceil(
-                                        delta_total
-                                        * props.data.me.price_percent
-                                        * 0.01
-                                    ).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                                }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> </Tag>
-                            </Col>
-                        </Row>
+                        </Row> 
+                      
                         {
                             delta_total < 0 && (
                                 <Row type="flex" justify="space-between" align="bottom">
@@ -184,7 +182,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                                 * props.data.me.price_percent
                                                 * 0.008
                                             ).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                                        }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> </Tag>
+                                        }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> </Tag>
                                     </Col>
                                 </Row>
                             )
@@ -194,7 +192,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                             <Col>
                                 <Tag color="#108ee9">{
                                     props.data.me.balance.toLocaleString(undefined, { maximumFractionDigits: 0 })
-                                }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> </Tag>
+                                }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> </Tag>
                             </Col>
                         </Row>
                     </Card>
@@ -225,11 +223,11 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                         </Row>
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col>Pricing</Col>
-                            <Col><Tag color="#108ee9" > {props.data.pricing.vip_viewers_livestream}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> / viewer / day </Tag ></Col>
+                            <Col><Tag color="#108ee9" > {props.data.pricing.vip_viewers_livestream}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> / viewer / day </Tag ></Col>
                         </Row>
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col>Total</Col>
-                            <Col><Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /></Tag></Col>
+                            <Col><Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag></Col>
                         </Row>
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col>Your discount</Col>
@@ -248,7 +246,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                         * props.data.me.price_percent
                                         * 0.008
                                     ).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                                }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> </Tag>
+                                }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> </Tag>
                             </Col>
                         </Row>
                     </Col></Row>

@@ -56,23 +56,22 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivest
     let OrderInfoCard: any = null
 
     if (!props.loading && props.data && props.data.me && props.data.pricing && props.form.data.amount) {
-
+        const price = props.data.pricing.buff_viewers_livestream * props.data.me.price_percent * 0.01
         const total = props.form.data.amount * props.data.pricing.buff_viewers_livestream
 
         OrderInfoCard = (
             <Card title="Order infomation" size="small" style={{ lineHeight: '2em' }}>
                 <Row>
-                    <Tag color="#108ee9">{props.form.data.amount} viewers</Tag> x <Tag color="#108ee9">{props.data.pricing.buff_viewers_livestream}<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> /viewer </Tag> = <Tag color="#108ee9">{
-                        total.toLocaleString(undefined, { maximumFractionDigits: 0 })
-                    }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /></Tag>
+                    <Tag color="#108ee9">{props.form.data.amount} viewers</Tag> x <Tag color="#108ee9">{
+                        price.toLocaleString()
+                    }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> /viewer </Tag> = <Tag color="#108ee9">{
+                        total.toLocaleString()
+                    }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
                 </Row>
-                <Row>Your discount: <Tag color="blue">{100 - props.data.me.price_percent}% </Tag></Row>
-                <Row>Total: <Tag color="#108ee9">{
-                    Math.ceil(total * props.data.me.price_percent * 0.01).toLocaleString(undefined, { maximumFractionDigits: 0 })
-                }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> </Tag></Row>
+
                 <Row>Your balance: <Tag color="#108ee9">{
-                    props.data.me.balance.toLocaleString(undefined, { maximumFractionDigits: 0 })
-                }<Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} /> </Tag></Row>
+                    props.data.me.balance.toLocaleString()
+                }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> </Tag></Row>
             </Card>
         )
 
