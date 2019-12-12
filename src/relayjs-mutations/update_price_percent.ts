@@ -23,10 +23,7 @@ export const update_price_percent = (user_id: string, price_percent: number, own
 
             variables: { user_id, price_percent },
             mutation,
-            updater: store => {
-                (store.get(user_id) as RecordProxy).setValue(owner_percent * price_percent / 100, 'price_percent')
-                success()
-            },
+            onCompleted: () => success(), 
             onError: (error) => {
                 reject(error)
             }

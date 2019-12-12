@@ -89,9 +89,7 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
                 dataSource={data.users.edges.map(n => n.node)}
                 renderItem={item => {
 
-                    const percent = Number((
-                        100 * item.price_percent / data.me.price_percent
-                    ).toFixed(2))
+                    const percent = item.price_percent
 
                     const balance = item.balance.toLocaleString(undefined, { maximumFractionDigits: 0 })
 

@@ -39,10 +39,10 @@ export const SendMoneyModal = Form.create<SendMoneyModalProps>()((props: SendMon
 
         if (is_send_amount) {
             set_send_amount(amount)
-            const receive_amount = Math.floor((amount * props.user.price_percent / props.me.price_percent))
+            const receive_amount = Math.floor((amount * props.user.price_percent / 100))
             set_receive_amount(receive_amount)
         } else {
-            const send_amount = Math.ceil(amount * props.me.price_percent / props.user.price_percent)
+            const send_amount = Math.ceil(amount * 100 / props.user.price_percent)
             set_receive_amount(amount)
             set_send_amount(send_amount)
         }
@@ -65,9 +65,7 @@ export const SendMoneyModal = Form.create<SendMoneyModalProps>()((props: SendMon
             <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
                 <Col span={12}>Your user pricing percent</Col>
                 <Col><Tag color="#108ee9">{
-                    Number((
-                        100 * props.user.price_percent / props.me.price_percent
-                    ).toFixed(2))
+                    props.user.price_percent.toFixed(2)
                 } %</Tag></Col>
             </Row>
             <Row type="flex" justify="start" align="middle" style={{ marginBottom: 5 }}>
