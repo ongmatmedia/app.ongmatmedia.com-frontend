@@ -11,7 +11,7 @@ export const InputNumberAutoSelect = (props: InputNumberAutoSelectProps) => {
     useEffect(() => set_value(props.defaultValue.toLocaleString(undefined)), [props.defaultValue])
 
     const changeValue = (v: string) => {
-        const match = v.replace(/\./g, '').match(/^(?:\-|)[0-9]{0,20}$/)
+        const match = v.replace(/\.|,/g, '').match(/^(?:\-|)[0-9]{0,20}$/)
         if (match) {
             if (v == '-') {
                 set_value('-')
