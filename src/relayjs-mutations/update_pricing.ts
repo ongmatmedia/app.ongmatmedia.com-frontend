@@ -6,7 +6,19 @@ import { ServicePricing as ServicePricingInput } from '../schema/User/ServicePri
 
 const mutation = graphql`
     mutation updatePricingMutation($price: ServicePricingInput!){
-        update_pricing(price: $price) 
+    update_pricing(price: $price) {
+        node {
+            id, pricing {
+                buff_viewers_livestream
+                vip_viewers_livestream
+                livestream{
+                    p480
+                    p720
+                    p1080
+                }
+            }
+        }
+    }
     }
 `
 export const update_pricing = (price: ServicePricingInput) => new Promise(

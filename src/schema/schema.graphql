@@ -207,13 +207,9 @@ input LivestreamVideoInput {
 scalar Long
 
 type Mutation {
-  update_livestream_subscription(days: Int!, data: LivestreamSubscriptionInput!, user_id: ID): LivestreamSubscriptionUpdateResponse!
-  create_livestream(task: LivestreamInput!): LivestreamEdge!
-  update_livestream(task: LivestreamUpdateInput!): Livestream!
-  delete_livestream(id: ID!): Boolean!
   create_user(price_percent: Int!, email: String!, password: String!, username: String!): UserEdge!
   update_price_percent(price_percent: Int!, user_id: String!): UserEdge!
-  update_pricing(price: ServicePricingInput!): Boolean!
+  update_pricing(price: ServicePricingInput!): UserEdge!
   send_money(note: String!, amount: Int!, user_id: String!): SendmoneyResponse!
   set_user_password(password: String!, user_id: String!): Boolean!
   update_info(payment_methods: [PaymentMethodInput!]!, facebook_uid: String!): Boolean!
@@ -225,6 +221,10 @@ type Mutation {
   create_vip_viewers_livestream_task(input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskCUDResponse!
   update_vip_viewers_livestream_task(input: VIPViewersLivestreamUpdateInput!): VipViewersLivestreamTaskCUDResponse!
   delete_vip_viewers_livestream_task(id: String!): VipViewersLivestreamTaskCUDResponse!
+  update_livestream_subscription(days: Int!, data: LivestreamSubscriptionInput!, user_id: ID): LivestreamSubscriptionUpdateResponse!
+  create_livestream(task: LivestreamInput!): LivestreamEdge!
+  update_livestream(task: LivestreamUpdateInput!): Livestream!
+  delete_livestream(id: ID!): Boolean!
 }
 
 type PageInfo {
@@ -272,9 +272,6 @@ input PaymentMethodInput {
 }
 
 type Query {
-  livestream_subscription(user_id: ID): LivestreamSubscription
-  livestream_tasks(after: String, limit: Int, filters: LivestreamQueryFilters): LivestreamConnection!
-  livestream_task(id: ID!): Livestream!
   me: User!
   pricing: ServicePricing!
   payment_methods: [PaymentMethod!]!
@@ -285,6 +282,9 @@ type Query {
   facebook_account(uid: ID!): FacebookAccount!
   vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
   vip_viewers_livestream_task(id: String!): VIPViewersLivestream!
+  livestream_subscription(user_id: ID): LivestreamSubscription
+  livestream_tasks(after: String, limit: Int, filters: LivestreamQueryFilters): LivestreamConnection!
+  livestream_task(id: ID!): Livestream!
   payment_histories(after: String, before_time: Long): PaymentHistoryConnection!
 }
 
@@ -337,6 +337,7 @@ type User {
   facebook_uid: String!
   id: ID!
   balance: Long!
+  pricing: ServicePricing!
   price_percent: Int!
   payment_methods: [PaymentMethod!]
   creator_id: String!

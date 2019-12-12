@@ -1,5 +1,5 @@
 import { ObjectType, Field, InputType, Int  } from "type-graphql";  
-import { LivestreamPricing } from "../Services/Livestream";
+import { LivestreamPricing } from "../Services/Livestream/LivestreamPricing";
  
 
 @ObjectType()

@@ -41,7 +41,7 @@ export class UserResolver {
     @Arg("price_percent", type => Int) pricing: number,
   ) { }
 
-  @Mutation(returns => Boolean)
+  @Mutation(returns => UserEdge)
   update_pricing(
     @Arg("price") price: ServicePricing,
   ) { }

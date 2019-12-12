@@ -13,13 +13,14 @@ import { AgencyPage } from './agency';
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream'
 import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
 import { Payments } from './payments'
-import {DepositPage} from './deposit'
-import {HomePage} from './HomePage'
+import { DepositPage } from './deposit'
+import { HomePage } from './HomePage'
 import { UpdatePrice } from './agency/UpdatePrice';
+import { AgencyMenu } from './agency/AgencyMenu';
 
 export const AppWithRouter = () => (
   <HashRouter>
-    <Switch> 
+    <Switch>
 
       <Route exact path="/">
         <MainLayout Content={() => <HomePage />} />
@@ -67,11 +68,11 @@ export const AppWithRouter = () => (
       </Route>
 
       <Route exact path="/agency" >
-        <MainLayout Content={AgencyPage} />
+        <MainLayout Content={AgencyPage} Menu={AgencyMenu} />
       </Route>
-      
+
       <Route exact path="/agency/update-price" >
-        <MainLayout Content={UpdatePrice} />
+        <MainLayout Content={UpdatePrice} Menu={AgencyMenu} />
       </Route>
 
       <Route exact path="/deposit" >
@@ -79,7 +80,7 @@ export const AppWithRouter = () => (
       </Route>
 
 
-      
+
 
       <Route>
         <span>Not found</span>

@@ -7,6 +7,7 @@ import {
   table,
 } from '@aws/dynamodb-data-mapper-annotations';
 import { PaymentMethod } from "./PaymentMethod";
+import { ServicePricing } from "./ServicePricing";
 
 @table('users')
 @ObjectType()
@@ -33,6 +34,10 @@ export class User {
   @attribute()
   @Field(type => Long, {})
   balance: number
+
+  @attribute()
+  @Field()
+  pricing: ServicePricing
 
   @Field(type => Int, {})
   price_percent: number

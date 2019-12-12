@@ -82,11 +82,11 @@ const UpdatePriceWithData = (props: { pricing: ServicePricing, me: User }) => {
         error && <Alert type="error" message={error} />
       }
       <Form.Item label="Buff Viewers Livestream">
-        <InputNumberAutoSelect onChangeValue={value => setPriceBuffViewers(value)} defaultValue={props.pricing.buff_viewers_livestream} />
+        <InputNumberAutoSelect onChangeValue={value => setPriceBuffViewers(value)} defaultValue={props.me.pricing.buff_viewers_livestream} />
         <div>Root's pricing: {props.pricing.buff_viewers_livestream}</div>
       </Form.Item>
       <Form.Item label="Vip Viewers Livestream">
-        <InputNumberAutoSelect onChangeValue={value => setPriceVipViewers(value)} defaultValue={props.pricing.vip_viewers_livestream} />
+        <InputNumberAutoSelect onChangeValue={value => setPriceVipViewers(value)} defaultValue={props.me.pricing.vip_viewers_livestream} />
         <div>Root's pricing: {props.pricing.vip_viewers_livestream}</div>
       </Form.Item>
       {/* <Form.Item label="Livestream 480P">
@@ -118,7 +118,6 @@ export const UpdatePrice = GraphQLWrapper<{ pricing: ServicePricing, me: User }>
   <>
     <Row>
       <Col>
-        <span>{JSON.stringify({ data })}</span>
         <Card title="Update Price" bordered={false}>
           {(data && !loading) ? <UpdatePriceWithData pricing={data.pricing} me={data.me} /> : (
             <Row type="flex" justify="space-around">
