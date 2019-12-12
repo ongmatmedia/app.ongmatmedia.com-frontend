@@ -337,7 +337,7 @@ type User {
   facebook_uid: String!
   id: ID!
   balance: Long!
-  pricing: ServicePricing!
+  pricing: ServicePricing
   price_percent: Int!
   payment_methods: [PaymentMethod!]
   creator_id: String!
