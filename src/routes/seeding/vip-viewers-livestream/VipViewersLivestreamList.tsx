@@ -6,6 +6,7 @@ import { VIPViewersLivestreamConnection } from '../../../schema/Services/VIPView
 import { CUModal } from './CUModal'
 import { VIPViewersLivestream } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestream'
 import Moment from 'react-moment';
+import { VipViewersLivestreamReport } from './VipViewersLivestreamReport'
 
 const query = graphql`
     query VipViewersLivestreamListQuery{
@@ -28,7 +29,7 @@ const query = graphql`
 `
 
 
-export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_tasks: VIPViewersLivestreamConnection}, {search: string} >(query, {}, props => {
+export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_tasks: VIPViewersLivestreamConnection }, { search: string }>(query, {}, props => {
 
     const [editing_vip, set_editing_vip] = useState<VIPViewersLivestream | null>(null)
 
@@ -40,12 +41,12 @@ export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_
         )
     }
 
-
     return props.data && (
         <Fragment>
             {
                 editing_vip && <CUModal mode="update" onClose={() => set_editing_vip(null)} vip={editing_vip} />
             }
+            <VipViewersLivestreamReport vips={props.data ? props.data.vip_viewers_livestream_tasks.edges.map(e => e.node) : []}/>
             <List
                 grid={{
                     xs: 1,
@@ -62,11 +63,11 @@ export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_
                 }}
                 dataSource={
                     props
-                    .data
-                    .vip_viewers_livestream_tasks
-                    .edges
-                    .map(e => e.node)
-                    .filter(e => e.id.includes(props.search) || e.name.toLowerCase().includes(props.search))
+                        .data
+                        .vip_viewers_livestream_tasks
+                        .edges
+                        .map(e => e.node)
+                        .filter(e => e.id.includes(props.search) || e.name.toLowerCase().includes(props.search))
                 }
                 renderItem={item => (
                     <List.Item style={{ margin: 5 }} >
