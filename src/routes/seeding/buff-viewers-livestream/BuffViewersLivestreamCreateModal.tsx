@@ -57,7 +57,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivest
 
     if (!props.loading && props.data && props.data.me && props.data.pricing && props.form.data.amount) {
         const price = props.data.pricing.buff_viewers_livestream * props.data.me.price_percent * 0.01
-        const total = props.form.data.amount * props.data.pricing.buff_viewers_livestream
+        const total = props.form.data.amount * price
 
         OrderInfoCard = (
             <Card title="Order infomation" size="small" style={{ lineHeight: '2em' }}>

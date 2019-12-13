@@ -83,11 +83,11 @@ const UpdatePriceWithData = (props: { pricing: ServicePricing, me: User }) => {
       }
       <Form.Item label="Buff Viewers Livestream">
         <InputNumberAutoSelect onChangeValue={value => setPriceBuffViewers(value)} defaultValue={props.me.pricing ? props.me.pricing.buff_viewers_livestream : 0} />
-        <div>Root's pricing: {props.pricing.buff_viewers_livestream}</div>
+        <div>Root's pricing: {props.pricing.buff_viewers_livestream * props.me.price_percent * 0.01}</div>
       </Form.Item>
       <Form.Item label="Vip Viewers Livestream">
         <InputNumberAutoSelect onChangeValue={value => setPriceVipViewers(value)} defaultValue={props.me.pricing ? props.me.pricing.vip_viewers_livestream : 0} />
-        <div>Root's pricing: {props.pricing.vip_viewers_livestream}</div>
+        <div>Root's pricing: {props.pricing.vip_viewers_livestream * props.me.price_percent * 0.01}</div>
       </Form.Item>
       {/* <Form.Item label="Livestream 480P">
         <InputNumberAutoSelect onChangeValue={() => ''} defaultValue={props.pricing.livestream.p480} />
