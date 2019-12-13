@@ -113,6 +113,7 @@ export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_
                                             <Tooltip title={<Moment format="DD/MM/YYYY H:mm">{item.end_time}</Moment>} placement="bottom">
                                                 <Tag color={item.end_time > Date.now() ? 'blue' : '#c01922'}>
                                                     Expire <Moment fromNow>{item.end_time}</Moment>
+                                                    &nbsp; (<Moment format="DD/MM/YYYY H:mm">{item.end_time}</Moment>)
                                                 </Tag>
                                             </Tooltip>
                                         </Col>
