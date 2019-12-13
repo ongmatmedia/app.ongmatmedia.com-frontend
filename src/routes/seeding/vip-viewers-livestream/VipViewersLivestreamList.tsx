@@ -6,7 +6,7 @@ import { VIPViewersLivestreamConnection } from '../../../schema/Services/VIPView
 import { CUModal } from './CUModal'
 import { VIPViewersLivestream } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestream'
 import Moment from 'react-moment';
-import { VipViewersLivestreamReport } from './VipViewersLivestreamReport'
+import { VipViewersLivestreamReport, VipViewersLivestreamReportStatusFilter } from './VipViewersLivestreamReport'
 
 const query = graphql`
     query VipViewersLivestreamListQuery{
@@ -32,6 +32,7 @@ const query = graphql`
 export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_tasks: VIPViewersLivestreamConnection }, { search: string }>(query, {}, props => {
 
     const [editing_vip, set_editing_vip] = useState<VIPViewersLivestream | null>(null)
+    const [status_filter, set_status_filter] = useState<VipViewersLivestreamReportStatusFilter>('all')
 
     if (props.loading) {
         return (
@@ -40,13 +41,40 @@ export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_
             </Row>
         )
     }
+    let list: VIPViewersLivestream[] = []
+    if (props.data) {
+        list = props
+            .data
+            .vip_viewers_livestream_tasks
+            .edges
+            .map(e => e.node)
+            .filter(e => e.id.includes(props.search) || e.name.toLowerCase().includes(props.search))
+    }
+    const now = Date.now()
+    if (status_filter == 'exprise_5_days') {
+        list = list.filter(e => e.end_time > now && e.end_time < now + 5 * 24 * 3600 * 1000)
+    }
+
+    if (status_filter == 'exprised') {
+        list = list.filter(e => e.end_time < now)
+    }
+
+    if (status_filter == 'active') {
+        list = list.filter(e => e.end_time > now)
+    }
+
+
 
     return props.data && (
         <Fragment>
             {
                 editing_vip && <CUModal mode="update" onClose={() => set_editing_vip(null)} vip={editing_vip} />
             }
-            <VipViewersLivestreamReport vips={props.data ? props.data.vip_viewers_livestream_tasks.edges.map(e => e.node) : []}/>
+            <VipViewersLivestreamReport
+                vips={props.data ? props.data.vip_viewers_livestream_tasks.edges.map(e => e.node) : []}
+                filter={status_filter}
+                on_change={set_status_filter}
+            />
             <List
                 grid={{
                     xs: 1,
@@ -61,14 +89,7 @@ export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_
                     pageSizeOptions: ['5', '10', '20', '30', '50', '100', '200', '300', '400', '500', '1000'],
                     showSizeChanger: true
                 }}
-                dataSource={
-                    props
-                        .data
-                        .vip_viewers_livestream_tasks
-                        .edges
-                        .map(e => e.node)
-                        .filter(e => e.id.includes(props.search) || e.name.toLowerCase().includes(props.search))
-                }
+                dataSource={list}
                 renderItem={item => (
                     <List.Item style={{ margin: 5 }} >
                         <Card type="inner" hoverable size="small" onClick={() => set_editing_vip(item)}  >

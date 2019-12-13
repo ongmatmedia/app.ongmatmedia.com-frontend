@@ -7,6 +7,7 @@ export interface StatictisCustomProps {
   iconName: string,
   title: string,
   description: string,
+  active?: boolean
 }
 
 export const StatictisCustom = (props: StatictisCustomProps) => (
@@ -18,6 +19,7 @@ export const StatictisCustom = (props: StatictisCustomProps) => (
     color: "white",
     ...props.backgroundColor ? {backgroundColor : props.backgroundColor } : {},
     ...props.gradient ? {background : props.gradient } : {},
+    ... props.active ? {border: '1px #000102 solid'} : {}
   }} type="flex" align="middle" >
     <Col xs={8} style={{ textAlign: "center", width: 70 }}>
       <Icon type={props.iconName} style={{ fontSize: 35 }} />

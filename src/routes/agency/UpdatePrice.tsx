@@ -33,6 +33,7 @@ const query = graphql`
             }
         }
         me{
+          price_percent
           pricing{
             buff_viewers_livestream
             vip_viewers_livestream
