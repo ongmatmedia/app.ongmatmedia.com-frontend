@@ -165,12 +165,12 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col><h4>Diff</h4></Col>
                             <Col>
-                                <Tag color="#108ee9">{new_total.toLocaleString( )}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
-                                - <Tag color="#108ee9">{remain_money.toLocaleString( )}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
-                                = <Tag color="#108ee9">{delta_total.toLocaleString( )}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
+                                <Tag color="#108ee9">{new_total.toLocaleString()}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
+                                - <Tag color="#108ee9">{remain_money.toLocaleString()}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
+                                = <Tag color="#108ee9">{delta_total.toLocaleString()}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
                             </Col>
-                        </Row> 
-                      
+                        </Row>
+
                         {
                             delta_total < 0 && (
                                 <Row type="flex" justify="space-between" align="bottom">
@@ -223,15 +223,13 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                         </Row>
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col>Pricing</Col>
-                            <Col><Tag color="#108ee9" > {props.data.pricing.vip_viewers_livestream}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> / viewer / day </Tag ></Col>
+                            <Col><Tag color="#108ee9" > {
+                                Math.ceil(props.data.pricing.vip_viewers_livestream * props.data.me.price_percent / 100).toLocaleString()
+                            }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> / viewer / day </Tag ></Col>
                         </Row>
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col>Total</Col>
                             <Col><Tag color="#108ee9">{remain_money.toLocaleString(undefined, { maximumFractionDigits: 0 })}<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag></Col>
-                        </Row>
-                        <Row type="flex" justify="space-between" align="bottom">
-                            <Col>Your discount</Col>
-                            <Col><Tag color="blue">{100 - props.data.me.price_percent}% </Tag></Col>
                         </Row>
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col>Refund percent</Col>

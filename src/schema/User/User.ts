@@ -36,10 +36,10 @@ export class User {
   balance: number
 
   @attribute()
-  @Field()
-  pricing: ServicePricing
+  @Field({nullable: true})
+  pricing?: ServicePricing
 
-  @Field(type => Int, {})
+  @Field(type => Int)
   price_percent: number
 
   @Field(type => [PaymentMethod], { nullable: true })

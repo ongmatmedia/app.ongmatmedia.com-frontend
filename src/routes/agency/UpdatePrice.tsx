@@ -82,11 +82,11 @@ const UpdatePriceWithData = (props: { pricing: ServicePricing, me: User }) => {
         error && <Alert type="error" message={error} />
       }
       <Form.Item label="Buff Viewers Livestream">
-        <InputNumberAutoSelect onChangeValue={value => setPriceBuffViewers(value)} defaultValue={props.me.pricing.buff_viewers_livestream} />
+        <InputNumberAutoSelect onChangeValue={value => setPriceBuffViewers(value)} defaultValue={props.me.pricing ? props.me.pricing.buff_viewers_livestream : 0} />
         <div>Root's pricing: {props.pricing.buff_viewers_livestream}</div>
       </Form.Item>
       <Form.Item label="Vip Viewers Livestream">
-        <InputNumberAutoSelect onChangeValue={value => setPriceVipViewers(value)} defaultValue={props.me.pricing.vip_viewers_livestream} />
+        <InputNumberAutoSelect onChangeValue={value => setPriceVipViewers(value)} defaultValue={props.me.pricing ? props.me.pricing.vip_viewers_livestream : 0} />
         <div>Root's pricing: {props.pricing.vip_viewers_livestream}</div>
       </Form.Item>
       {/* <Form.Item label="Livestream 480P">
