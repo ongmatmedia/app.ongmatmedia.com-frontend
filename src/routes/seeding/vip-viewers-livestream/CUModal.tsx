@@ -424,7 +424,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                         placeholder="Click to select viewers amount when livestream"
                                     >
                                         {
-                                            [30, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000].map(amount => (
+                                            [30, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000,2000,3000,4000,5000].map(amount => (
                                                 <Select.Option
                                                     value={amount}
                                                 >

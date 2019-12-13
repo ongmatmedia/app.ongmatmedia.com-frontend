@@ -1,12 +1,12 @@
 import React, { useEffect, Fragment, useState } from 'react'
 import { Modal, Form as AntdForm, Input, Icon, Select, Row, Col, Avatar, Tag, Alert, Button, Switch, Card, Spin, notification } from 'antd'
-import { withForm, Form } from '../../../containers/Form' 
+import { withForm, Form } from '../../../containers/Form'
 import { graphql } from 'babel-plugin-relay/macro'
 import { GraphQLWrapper } from '../../../containers/GraphQLWrapper'
 import { ServicePricing } from '../../../schema/User/ServicePricing'
 import { User } from '../../../schema/User/User'
 import { VideoInput } from './VideoInput'
-import { create_buff_viewers_livestream } from '../../../relayjs-mutations/create_buff_viewers_livestream' 
+import { create_buff_viewers_livestream } from '../../../relayjs-mutations/create_buff_viewers_livestream'
 
 
 const query = graphql`
@@ -193,7 +193,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivest
                                         placeholder="Click to select viewers amount when livestream"
                                     >
                                         {
-                                            [30, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000].map(amount => (
+                                            [30, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000].map(amount => (
                                                 <Select.Option
                                                     value={amount}
                                                 >
