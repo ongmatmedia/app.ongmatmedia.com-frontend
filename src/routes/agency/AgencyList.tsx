@@ -115,8 +115,8 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
                                             type="percentage"
                                             key="percentage"
                                             onClick={() => Modal.confirm({
-                                                title: 'Warining',
-                                                content: 'Change price percent RESET your user balance TO ZERO',
+                                                title: 'Warning',
+                                                content: 'Change user price percent result CHANGE USER BALANCE',
                                                 onOk: () => set_update_price_percent_user(item),
                                                 onCancel: () => {}
                                             })}
