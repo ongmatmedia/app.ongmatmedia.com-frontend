@@ -63,14 +63,14 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivest
                 <Row>
                     <Tag color="#108ee9">{props.form.data.amount} viewers</Tag> x <Tag color="#108ee9">{
                         price.toLocaleString()
-                    }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> /viewer </Tag> = <Tag color="#108ee9">{
+                    }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} /> /viewer </Tag> = <Tag color="#108ee9">{
                         total.toLocaleString()
-                    }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /></Tag>
+                    }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} /></Tag>
                 </Row>
 
                 <Row>Your balance: <Tag color="#108ee9">{
                     props.data.me.balance.toLocaleString()
-                }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} /> </Tag></Row>
+                }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} /> </Tag></Row>
             </Card>
         )
 
@@ -193,7 +193,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivest
                                         placeholder="Click to select viewers amount when livestream"
                                     >
                                         {
-                                            [30, 50, 100, 150, 200, 250, 300, 400, 500, 600, 700, 800, 900, 1000, 2000, 3000, 4000, 5000].map(amount => (
+                                            [50, 100, 150, 200, 250, 300, 400, 450,500, 600, 700, 800, 900, 1000,1500,2000,2500,3000,3500,4000,4500,5000].map(amount => (
                                                 <Select.Option
                                                     value={amount}
                                                 >

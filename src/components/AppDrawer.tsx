@@ -70,7 +70,7 @@ export const AppDrawer = (props: { onClick: Function }) => (
                             <Row><Col style={{ color: 'rgb(0, 131, 227)', fontWeight: 'bold' }}>{
                                 user && user.balance.toLocaleString(undefined, { maximumFractionDigits: 0 })
                             }
-                            <Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c"}} />
+                            <Icon type="dollar" style={{fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white"}} />
                             </Col></Row>
                         </Col>
                     </Row>

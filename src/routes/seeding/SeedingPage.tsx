@@ -47,7 +47,7 @@ export const SeedingPage = GraphQLWrapper<{ pricing: ServicePricing, me: User }>
                             Math.ceil(
                                 props.data.pricing.vip_viewers_livestream * props.data.me.price_percent * 0.01
                             ).toLocaleString()
-                        }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} />
+                        }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} />
                         </Tag>
                     }
                     AUTO increase livestream viewers when livestream
@@ -64,7 +64,7 @@ export const SeedingPage = GraphQLWrapper<{ pricing: ServicePricing, me: User }>
                     {
                         props.data && <Tag color="#108ee9">{
                             Math.ceil(props.data.pricing.buff_viewers_livestream * props.data.me.price_percent * 0.01).toLocaleString()
-                        }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "#ffc55c" }} />
+                        }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} />
                         </Tag>
                     }
                     Increase viewers for active livestreaming video
