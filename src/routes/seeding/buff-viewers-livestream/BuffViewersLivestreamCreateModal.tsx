@@ -12,11 +12,18 @@ import { create_buff_viewers_livestream } from '../../../relayjs-mutations/creat
 const query = graphql`
     query BuffViewersLivestreamCreateModalQuery{
         me{
-            id, balance, price_percent
-        }
-        pricing{
-            buff_viewers_livestream
-        }
+            id, balance, price_percent,
+            pricing{
+                buff_viewers_livestream
+                vip_viewers_livestream
+                livestream{
+                    p480
+                    p720
+                    p1080
+                }
+            }
+            
+        } 
     }
 `
 
@@ -29,7 +36,7 @@ export type BuffViewersLivestreamCreateModalProps = {
     onClose: Function
 }
 
-export type BuffViewersLivestreamCreateModalGraphqlData = { me: User, pricing: ServicePricing }
+export type BuffViewersLivestreamCreateModalGraphqlData = { me: User }
 
 
 export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivestreamCreateModalGraphqlData, BuffViewersLivestreamCreateModalProps>(query, {}, withForm(props => {
@@ -54,8 +61,8 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivest
 
     let OrderInfoCard: any = null
 
-    if (!props.loading && props.data && props.data.me && props.data.pricing && props.form.data.amount) {
-        const price = props.data.pricing.buff_viewers_livestream * props.data.me.price_percent * 0.01
+    if (!props.loading && props.data && props.data.me && props.data.me.pricing && props.form.data.amount) {
+        const price = props.data.me.pricing.buff_viewers_livestream
         const total = props.form.data.amount * price
 
         OrderInfoCard = (
@@ -193,7 +200,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivest
                                         placeholder="Click to select viewers amount when livestream"
                                     >
                                         {
-                                            [50, 100, 150, 200, 250, 300, 400, 450,500, 600, 700, 800, 900, 1000,1500,2000,2500,3000,3500,4000,4500,5000].map(amount => (
+                                            [50, 100, 150, 200, 250, 300, 400, 450, 500, 600, 700, 800, 900, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000].map(amount => (
                                                 <Select.Option
                                                     value={amount}
                                                 >

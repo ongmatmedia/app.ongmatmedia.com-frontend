@@ -26,8 +26,7 @@ const query = graphql`
                     receiver_username
                     receiver_id
                     balance_after
-                    note
-                    discount
+                    note 
                     service
                 }
             }

@@ -17,24 +17,24 @@ type SeedingService = {
 
 const query = graphql`
     query SeedingPageQuery{
-        pricing{
-            buff_viewers_livestream
-            vip_viewers_livestream
-            livestream{
-              p480
-              p720
-              p1080
-            }
-        }
         me{
             price_percent
+            pricing{
+                buff_viewers_livestream
+                vip_viewers_livestream
+                livestream{
+                p480
+                p720
+                p1080
+                }
+            }
         }
     }
 `
 
 
 
-export const SeedingPage = GraphQLWrapper<{ pricing: ServicePricing, me: User }>(query, {}, props => {
+export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
 
     const cards: SeedingService[] = [
         {
@@ -45,7 +45,7 @@ export const SeedingPage = GraphQLWrapper<{ pricing: ServicePricing, me: User }>
                     {
                         props.data && <Tag color="#108ee9">{
                             Math.ceil(
-                                props.data.pricing.vip_viewers_livestream * props.data.me.price_percent * 0.01
+                                props.data.me.pricing ? props.data.me.pricing.vip_viewers_livestream : NaN
                             ).toLocaleString()
                         }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} />
                         </Tag>
@@ -63,7 +63,9 @@ export const SeedingPage = GraphQLWrapper<{ pricing: ServicePricing, me: User }>
                 <span>
                     {
                         props.data && <Tag color="#108ee9">{
-                            Math.ceil(props.data.pricing.buff_viewers_livestream * props.data.me.price_percent * 0.01).toLocaleString()
+                            Math.ceil(
+                                props.data.me.pricing ? props.data.me.pricing.buff_viewers_livestream : NaN
+                            ).toLocaleString()
                         }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} />
                         </Tag>
                     }

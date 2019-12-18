@@ -208,6 +208,7 @@ scalar Long
 
 type Mutation {
   create_user(price_percent: Int!, email: String!, password: String!, username: String!): UserEdge!
+  update_price_for_user(price: ServicePricingInput!, price_percent: Int!, user_id: String!): UserEdge!
   update_price_percent(price_percent: Int!, user_id: String!): UserEdge!
   update_pricing(price: ServicePricingInput!): UserEdge!
   send_money(note: String!, amount: Int!, user_id: String!): SendmoneyResponse!
