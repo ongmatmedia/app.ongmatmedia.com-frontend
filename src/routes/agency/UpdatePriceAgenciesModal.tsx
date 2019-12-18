@@ -78,7 +78,7 @@ export const UpdatePriceAgenciesModal = withForm<UpdatePriceAgenciesModalProps>(
                 })
               }
             </Form.Item>
-            <Form.Item label="Vip Viewers Livestream">
+            <Form.Item label="Vip viewers livestream price">
               {
                 props.form.field<number>({
                   name: 'vip_viewers_livestream',
@@ -92,7 +92,7 @@ export const UpdatePriceAgenciesModal = withForm<UpdatePriceAgenciesModalProps>(
                 })
               }
             </Form.Item>
-            <Form.Item label="Vip Buff Livestream">
+            <Form.Item label="Buff viewers livestream pricing">
               {
                 props.form.field<number>({
                   name: 'buff_viewers_livestream',
