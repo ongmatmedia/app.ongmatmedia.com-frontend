@@ -8,6 +8,7 @@ import { AgencyAction } from './AgencyAction';
 import { ResetPass } from './ResetPass';
 import { SendMoneyModal } from './SendMoneyModal';
 import { UpdatePricePercentModal } from './UpdatePricePercentModal';
+import { UpdatePriceAgenciesModal } from './UpdatePriceAgenciesModal';
 const graphql = require('babel-plugin-relay/macro');
 
 const query = graphql`
@@ -43,7 +44,7 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
         </Row>
     )
     const [sent_money_to_user, set_sent_money_to_user] = useState<User | null>(null)
-    const [update_price_percent_user, set_update_price_percent_user] = useState<User | null>(null)
+    const [updatePriceAgenciesModalVisible, setUpdatePriceAgenciesModalVisible] = useState<boolean>(false)
     const [set_new_pass_for_user, set_set_new_pass_for_user] = useState<User | null>(null)
 
     const [selectedAgencies, setSelectedAgencies] = useState(new Set<User>());
@@ -54,6 +55,12 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
             setSelectedAgencies(new Set(selectedAgencies));
         } else setSelectedAgencies(new Set(selectedAgencies.add(user)));
     }
+
+    const onSelectAgencyAndOpenModal = (user: User) => {
+        setSelectedAgencies(new Set([user]))
+        setUpdatePriceAgenciesModalVisible(true);
+    }
+
 
     return data && (
         <Fragment>
@@ -68,12 +75,11 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
                 )
             }
             {
-                update_price_percent_user && (
-                    <UpdatePricePercentModal
-                        visible={true}
-                        onClose={() => set_update_price_percent_user(null)}
-                        user={update_price_percent_user}
-                        me={data.me}
+                updatePriceAgenciesModalVisible && (
+                    <UpdatePriceAgenciesModal
+                        onClose={() => setUpdatePriceAgenciesModalVisible(false)}
+                        visible={updatePriceAgenciesModalVisible}
+                        selectedAgencies={selectedAgencies}
                     />
                 )
             }
@@ -87,7 +93,19 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
                 )
             }
             <div style={{ paddingBottom: 10 }}>
-                <AgencyAction selectedAgencies={selectedAgencies} />
+                <AgencyAction
+                    selectedAgencies={selectedAgencies}
+                    onRemoveAllSelectedAgencies={() => {
+                        setSelectedAgencies(new Set());
+                    }}
+                    onSelectAllAgencies={() => {
+                        const listUsers = data ? data.users.edges.map(n => n.node) : [];
+                        setSelectedAgencies(new Set(listUsers));
+                    }}
+                    onOpenUpdatePriceAgenciesModal={() => {
+                        setUpdatePriceAgenciesModalVisible(!updatePriceAgenciesModalVisible);
+                    }}
+                />
             </div>
             <List
                 grid={{
@@ -128,12 +146,7 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
                                             <Icon
                                                 type="percentage"
                                                 key="percentage"
-                                                onClick={() => Modal.confirm({
-                                                    title: 'Warning',
-                                                    content: 'Change user price percent result CHANGE USER BALANCE',
-                                                    onOk: () => set_update_price_percent_user(item),
-                                                    onCancel: () => { }
-                                                })}
+                                                onClick={() => onSelectAgencyAndOpenModal(item)}
                                             />
                                         </Tooltip>,
                                         <Tooltip placement="bottom" title="Set new password">
