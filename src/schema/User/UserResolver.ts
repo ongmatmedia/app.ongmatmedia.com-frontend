@@ -35,16 +35,13 @@ export class UserResolver {
     @Arg("price_percent", type => Int) price_percent: number,
   ) { }
 
-  @Mutation(returns => UserEdge)
-  update_price_percent(
+  @Mutation(returns => UserEdge) 
+  update_price_for_user(
     @Arg("user_id") id: string,
     @Arg("price_percent", type => Int) pricing: number,
+    @Arg("price") price: ServicePricing
   ) { }
-
-  @Mutation(returns => UserEdge)
-  update_pricing(
-    @Arg("price") price: ServicePricing,
-  ) { }
+  
 
   @Mutation(returns => SendmoneyResponse)
   send_money(

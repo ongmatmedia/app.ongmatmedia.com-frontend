@@ -4,7 +4,8 @@ import React, { useState } from 'react'
 import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect'
 import { User } from '../../schema/User/User'
 import { withForm } from '../../containers/Form'
-
+import { update_price_for_user } from '../../relayjs-mutations/update_price_for_user'
+import { AsyncForEach } from '../../helpers/ArrayLoop'
 export type UpdatePriceAgenciesModalProps = {
   visible: boolean
   onClose: Function
@@ -19,19 +20,29 @@ export const UpdatePriceAgenciesModal = withForm<UpdatePriceAgenciesModalProps>(
   const [loading, set_loading] = useState<boolean>(false);
   const [error, set_error] = useState<string | null>(null);
 
-  const submit = async () => {
-    props.form.submit(async values => {
-      set_loading(true)
-      try {
-        set_error(null)
-        set_loading(false)
-        props.onClose()
-      } catch (e) {
-        set_error(e.source.errors[0].message)
-        set_loading(false)
-      }
-    })
-  }
+  const submit = async () => props.form.submit(async values => {
+    set_loading(true)
+    try {
+      set_error(null)
+
+      await AsyncForEach([...props.selectedAgencies], async agency => await update_price_for_user(
+        agency.id,
+        values.price_percent,
+        {
+          buff_viewers_livestream: values.buff_viewers_livestream,
+          vip_viewers_livestream: values.vip_viewers_livestream,
+          livestream: { p1080: 1000, p480: 1000, p720: 1000 }
+        }
+      ))
+
+      set_loading(false)
+      props.onClose()
+
+    } catch (e) {
+      set_error(e.source.errors[0].message)
+      set_loading(false)
+    }
+  })
 
 
   return (
