@@ -21,6 +21,15 @@ const query = graphql`
                 balance
                 price_percent
                 created_at
+                pricing{
+                        buff_viewers_livestream
+                        vip_viewers_livestream
+                        livestream{
+                            p480
+                            p720
+                            p1080
+                        }
+                }
             }
             }
         }

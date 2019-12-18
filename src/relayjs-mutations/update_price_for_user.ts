@@ -14,21 +14,21 @@ const mutation = graphql`
                         buff_viewers_livestream
                         vip_viewers_livestream
                         livestream{
-                        p480
-                        p720
-                        p1080
-                    }
+                            p480
+                            p720
+                            p1080
+                        }
                 }
             }
         }
     }
 `
-export const update_price_for_user = (user_id: string, price_percent: number, pricing: ServicePricing) => new Promise(
+export const update_price_for_user = (user_id: string, price_percent: number, price: ServicePricing) => new Promise(
     async (success: Function, reject: Function
     ) => {
         commitMutation(RelayEnvironment as any, {
 
-            variables: { user_id, price_percent, pricing },
+            variables: { user_id, price_percent, price },
             mutation,
             updater: store => {
                 success()

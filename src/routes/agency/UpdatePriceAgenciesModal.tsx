@@ -5,7 +5,6 @@ import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect'
 import { User } from '../../schema/User/User'
 import { withForm } from '../../containers/Form'
 import { update_price_for_user } from '../../relayjs-mutations/update_price_for_user'
-import { AsyncForEach } from '../../helpers/ArrayLoop'
 export type UpdatePriceAgenciesModalProps = {
   visible: boolean
   onClose: Function
@@ -22,18 +21,21 @@ export const UpdatePriceAgenciesModal = withForm<UpdatePriceAgenciesModalProps>(
 
   const submit = async () => props.form.submit(async values => {
     set_loading(true)
+    console.log(JSON.stringify(values))
     try {
       set_error(null)
 
-      await AsyncForEach([...props.selectedAgencies], async agency => await update_price_for_user(
-        agency.id,
-        values.price_percent,
-        {
-          buff_viewers_livestream: values.buff_viewers_livestream,
-          vip_viewers_livestream: values.vip_viewers_livestream,
-          livestream: { p1080: 1000, p480: 1000, p720: 1000 }
-        }
-      ))
+      await Promise.all(
+        [...props.selectedAgencies].map(agency => update_price_for_user(
+          agency.id,
+          values.price_percent,
+          {
+            buff_viewers_livestream: values.buff_viewers_livestream,
+            vip_viewers_livestream: values.vip_viewers_livestream,
+            livestream: { p1080: 1000, p480: 1000, p720: 1000 }
+          }
+        ))
+      )
 
       set_loading(false)
       props.onClose()
@@ -45,10 +47,14 @@ export const UpdatePriceAgenciesModal = withForm<UpdatePriceAgenciesModalProps>(
   })
 
 
+  const user = props.selectedAgencies.size == 1 ? [...props.selectedAgencies][0] : undefined
+  const pricing = user && user.pricing
+
+
   return (
     <span>
       <Modal
-        title="Update price for all"
+        title="Update price"
         visible={props.visible}
         onOk={submit}
         onCancel={() => props.onClose()}
@@ -63,7 +69,7 @@ export const UpdatePriceAgenciesModal = withForm<UpdatePriceAgenciesModalProps>(
                 props.form.field<number>({
                   name: 'price_percent',
                   require: 'Price percent is required',
-                  initalValue: 0,
+                  initalValue: user ? user.price_percent : 100,
                   render: ({ value, setValue, error }) => (
                     <div>
                       <InputNumberAutoSelect defaultValue={value} onChangeValue={setValue} />
@@ -76,8 +82,8 @@ export const UpdatePriceAgenciesModal = withForm<UpdatePriceAgenciesModalProps>(
               {
                 props.form.field<number>({
                   name: 'vip_viewers_livestream',
-                  require: 'Vip Viewers Livestream is required',
-                  initalValue: 0,
+                  require: 'Vip viewers livestream price is required',
+                  initalValue: pricing ? pricing.vip_viewers_livestream : 0,
                   render: ({ value, setValue, error }) => (
                     <div>
                       <InputNumberAutoSelect defaultValue={value} onChangeValue={setValue} />
@@ -89,9 +95,9 @@ export const UpdatePriceAgenciesModal = withForm<UpdatePriceAgenciesModalProps>(
             <Form.Item label="Vip Buff Livestream">
               {
                 props.form.field<number>({
-                  name: 'vip_buff_livestream',
-                  require: 'Vip Buff Livestream is required',
-                  initalValue: 0,
+                  name: 'buff_viewers_livestream',
+                  require: 'Buff viewers livestream price is required',
+                  initalValue: pricing ? pricing.buff_viewers_livestream : 0,
                   render: ({ value, setValue, error }) => (
                     <div>
                       <InputNumberAutoSelect defaultValue={value} onChangeValue={setValue} />
