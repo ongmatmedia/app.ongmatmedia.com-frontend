@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react'
-import { Row, Col, Spin, List, Card, Avatar, Tag, Tooltip } from 'antd'
+import { Row, Col, Spin, List, Card, Avatar, Tag, Tooltip, Icon } from 'antd'
 import { graphql } from 'babel-plugin-relay/macro'
 import { GraphQLWrapper } from '../../../containers/GraphQLWrapper'
 import { VIPViewersLivestreamConnection } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestreamConnection'
@@ -7,6 +7,8 @@ import { CUModal } from './CUModal'
 import { VIPViewersLivestream } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestream'
 import Moment from 'react-moment';
 import { VipViewersLivestreamReport, VipViewersLivestreamReportStatusFilter } from './VipViewersLivestreamReport'
+import { Badge } from 'antd'
+import { ViewModal } from './ViewModal'
 
 const query = graphql`
     query VipViewersLivestreamListQuery{
@@ -28,10 +30,10 @@ const query = graphql`
     }
 `
 
-
 export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_tasks: VIPViewersLivestreamConnection }, { search: string }>(query, {}, props => {
 
     const [editing_vip, set_editing_vip] = useState<VIPViewersLivestream | null>(null)
+    const [viewing_vip, set_viewing_vip] = useState<VIPViewersLivestream | null>(null)
     const [status_filter, set_status_filter] = useState<VipViewersLivestreamReportStatusFilter>('all')
 
     if (props.loading) {
@@ -70,6 +72,9 @@ export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_
             {
                 editing_vip && <CUModal mode="update" onClose={() => set_editing_vip(null)} vip={editing_vip} />
             }
+            {
+                viewing_vip && <ViewModal onClose={() => set_viewing_vip(null)} person={viewing_vip} onClick={(video_id) => { console.log(video_id) }} />
+            }
             <VipViewersLivestreamReport
                 vips={props.data ? props.data.vip_viewers_livestream_tasks.edges.map(e => e.node) : []}
                 filter={status_filter}
@@ -92,13 +97,25 @@ export const VipViewersLivestreamList = GraphQLWrapper<{ vip_viewers_livestream_
                 dataSource={list}
                 renderItem={item => (
                     <List.Item style={{ margin: 5 }} >
-                        <Card type="inner" hoverable size="small" onClick={() => set_editing_vip(item)}  >
+                        <Card
+                            type="inner"
+                            hoverable size="small"
+                            actions={[
+                                <Tooltip placement="bottom" title="Click to view">
+                                    <Icon type="eye" key="eye" onClick={() => set_viewing_vip(item)}/>
+                                </Tooltip>,
+                                <Tooltip placement="bottom" title="Click to edit">
+                                    <Icon type="edit" key="edit" onClick={() => set_editing_vip(item)} />
+                                </Tooltip>,
+                            ]}
+                        >
                             <Row type="flex" justify="start" align="middle" >
                                 <Col>
                                     <Avatar
                                         src={`http://graph.facebook.com/${item.id}/picture?type=large`}
                                         size={65}
                                     />
+                                    <Badge status="error" offset={[-10, -13]} style={{ float: "right", fontSize: 25 }} />
                                 </Col>
                                 <Col style={{ paddingLeft: 10, overflowWrap: 'break-word', lineHeight: '2em' }}>
                                     <Row><Col>{item.name}</Col></Row>
