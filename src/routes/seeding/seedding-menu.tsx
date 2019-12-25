@@ -17,6 +17,9 @@ export const SeedingMenuContent = () => (
                 <Menu.Item key="/seeding/vip-viewers-livestream">
                     <Link to="/seeding/vip-viewers-livestream"><i className="icon icon-view" />VIP</Link>
                 </Menu.Item>
+                <Menu.Item key="/seeding/buff-viewers">
+                    <Link to="/seeding/buff-viewers"><i className="icon icon-view" />Viewers Video</Link>
+                </Menu.Item>
 
             </Menu.SubMenu>
 

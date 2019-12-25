@@ -1,16 +1,13 @@
-import React from 'react'
-import { Table, Row, Col, Avatar, Icon, Tag, Modal, notification, message } from 'antd'
-import { BuffViewersLivestream } from '../../../schema/Services/BuffViewersLivestream/BuffViewersLivestream'
-import Moment from 'react-moment';
+import { Avatar, Col, Icon, message, Modal, notification, Row, Table, Tag } from 'antd';
 import { ColumnProps } from 'antd/lib/table';
-
-import { graphql } from 'babel-plugin-relay/macro'
-import { GraphQLWrapper } from '../../../containers/GraphQLWrapper';
-import { BuffViewersLivestreamConnection } from '../../../schema/Services/BuffViewersLivestream/BuffViewersLivestreamConnection';
-import { delete_buff_viewers_livestream } from '../../../relayjs-mutations/delete_buff_viewers_livestream';
-
+import { graphql } from 'babel-plugin-relay/macro';
+import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-
+import Moment from 'react-moment';
+import { GraphQLWrapper } from '../../../containers/GraphQLWrapper';
+import { delete_buff_viewers_livestream } from '../../../relayjs-mutations/delete_buff_viewers_livestream';
+import { BuffViewersLivestream } from '../../../schema/Services/BuffViewersLivestream/BuffViewersLivestream';
+import { BuffViewersLivestreamConnection } from '../../../schema/Services/BuffViewersLivestream/BuffViewersLivestreamConnection';
 
 const query = graphql`
     query BuffViewersLivestreamListQuery{
@@ -28,7 +25,6 @@ const query = graphql`
         }
     }
 `
-
 
 const IconFont = Icon.createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',

@@ -6,6 +6,7 @@ import { GraphQLWrapper } from '../../containers/GraphQLWrapper'
 import graphql from 'babel-plugin-relay/macro';
 import { ServicePricing } from '../../schema/User/ServicePricing'
 import { User } from '../../schema/User/User'
+import { useTranslation } from 'react-i18next'
 
 type SeedingService = {
     name: string
@@ -35,6 +36,8 @@ const query = graphql`
 
 
 export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
+
+    const { t, i18n } = useTranslation('seeding_page');
 
     const cards: SeedingService[] = [
         {
@@ -74,12 +77,31 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
             ),
             icon: 'https://cdn1.iconfinder.com/data/icons/antivirus-flat/512/signal_service_online_stream-512.png',
             name: 'BUFF livestream'
+        },
+        {
+            cover: 'https://wordpress.mediatel.co.uk/wp-content/uploads/2019/05/bigstock-Social-Influencer-Concept-Med-227207743.jpg',
+            link: '/seeding/buff-viewers',
+            description: (
+                <span>
+                    {
+                        props.data && <Tag color="#108ee9">{
+                            Math.ceil(
+                                props.data.me.pricing ? props.data.me.pricing.buff_viewers_livestream : NaN
+                            ).toLocaleString()
+                        }<Icon type="rise" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} />
+                        </Tag>
+                    }
+                    Increase viewers for video/live stream
+                    </span>
+            ),
+            icon: 'https://cdn1.iconfinder.com/data/icons/marketing-32/512/Growth_icon-512.png',
+            name: 'BUFF Viewers'
         }
     ]
 
 
     return (
-        <Card title="Seeding services">
+        <Card title={t("seeding_page:title")}>
             <List
                 grid={{
                     gutter: 16,
