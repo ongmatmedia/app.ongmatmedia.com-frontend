@@ -1,0 +1,12 @@
+{
+  "report": {
+    "total_uids_description": "Total UIDs",
+    "active_description": "Active",
+    "expire_in_5_days_description": "Expire 5 days",
+    "expired_description": "Expired"
+  },
+  "action": {
+    "add_button": "Add VIP",
+    "search_placeholder": "UID, name, URL search"
+  }
+}

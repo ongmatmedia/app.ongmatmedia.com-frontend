@@ -1,0 +1,43 @@
+{
+  "title": {
+    "creating": "Tạo tài khoản VIP mới",
+    "editing": "Chỉnh sửa tài khoản VIP"
+  },
+  "form": {
+    "facebook_object_input": {
+      "title": "Fanpage hoặc trang cá nhân",
+      "rule": "Không để trống",
+      "placeholder": "Nhập địa chỉ fanpage hoặc trang cá nhân, sau đó bấm tìm kiếm",
+      "validatingErrorMessage": "Vui lòng nhập địa chỉ fanpage hoặc trang cá nhân"
+    },
+    "viewer_amount_select": {
+      "title": {
+        "creating": "Số lượng người xem",
+        "editing": "Thay đổi số lượng người xem"
+      },
+      "rule": "Không để trống",
+      "placeholder": "Chọn số lượng người xem",
+      "validatingErrorMessage": "Vui lòng chọn số lượng người xem"
+    },
+    "subscription_period_select": {
+      "title": {
+        "creating": "Số ngày gia hạn",
+        "editing": "Gia hạn thêm"
+      },
+      "rule": "Không để trống",
+      "placeholder": "Chọn số ngày đăng ký",
+      "validatingErrorMessage": "Vui lòng chọn số ngày đăng ký"
+    },
+    "groups_input": {
+      "title": "Nhóm công khai cần tăng mắt",
+      "placeholder": "Nhập địa chỉ của nhóm rồi nhấp chọn tìm kiếm",
+      "error_message": "Địa chỉ không hợp lệ"
+    },
+    "note_input": {
+      "title": "Ghi chú",
+      "rule": "Không để trống",
+      "validatingErrorMessage": "Vui lòng nhập ghi chú",
+      "placeholder": "Nhập ghi chú cho tài khoản VIP"
+    }
+  }
+}

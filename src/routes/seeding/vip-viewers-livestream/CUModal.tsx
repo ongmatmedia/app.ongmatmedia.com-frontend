@@ -1,19 +1,18 @@
-import React, { useEffect, Fragment, useState } from 'react'
-import { Modal, Form as AntdForm, Input, Icon, Select, Row, Col, Avatar, Tag, Alert, Button, Switch, Card, Spin, notification, message } from 'antd'
-import { withForm, Form } from '../../../containers/Form'
+import { Alert, Avatar, Button, Card, Col, Form as AntdForm, Icon, Input, message, Modal, notification, Row, Select, Spin, Switch, Tag } from 'antd'
+import { graphql } from 'babel-plugin-relay/macro'
+import React, { Fragment, useState } from 'react'
+import { CopyToClipboard } from 'react-copy-to-clipboard'
+import { useTranslation } from 'react-i18next'
+import Moment from 'react-moment'
+import { FacebookObjectInput, LivestreamFacebookTargetType } from '../../../components/FacebookObjectInput'
+import { withForm } from '../../../containers/Form'
+import { GraphQLWrapper } from '../../../containers/GraphQLWrapper'
+import { create_vip_viewers_livestream } from '../../../relayjs-mutations/create_vip_viewers_livestream'
+import { delete_vip_viewers_livestream } from '../../../relayjs-mutations/delete_vip_viewers_livestream'
+import { update_vip_viewers_livestream } from '../../../relayjs-mutations/update_vip_viewers_livestream'
 import { VIPViewersLivestream } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestream'
 import { VipViewersLivestreamGroup } from '../../../schema/Services/VIPViewersLivestream/VipViewersLivestreamGroup'
-import { FacebookObjectInput, LivestreamFacebookTargetType } from '../../../components/FacebookObjectInput'
-import { create_vip_viewers_livestream } from '../../../relayjs-mutations/create_vip_viewers_livestream'
-import { update_vip_viewers_livestream } from '../../../relayjs-mutations/update_vip_viewers_livestream'
-import { delete_vip_viewers_livestream } from '../../../relayjs-mutations/delete_vip_viewers_livestream'
-import Moment from 'react-moment';
-import { graphql } from 'babel-plugin-relay/macro'
-import { GraphQLWrapper } from '../../../containers/GraphQLWrapper'
-import { ServicePricing } from '../../../schema/User/ServicePricing'
 import { User } from '../../../schema/User/User'
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-
 
 const query = graphql`
     query CUModalQuery{
@@ -50,6 +49,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
     const [error, set_error] = useState<string | null>(null)
     const [loading, set_loading] = useState<boolean>(false)
 
+    const { t, i18n } = useTranslation('cu_modal');
 
     const submit = () => props.form.submit(async data => {
         set_error(null)
@@ -78,7 +78,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
     const { amount, days } = props.form.data
     if (!props.loading && props.data && props.data.me && props.data.me.pricing) {
 
-        const price =  props.data.me.pricing.vip_viewers_livestream
+        const price = props.data.me.pricing.vip_viewers_livestream
 
         if (amount && days && props.mode == 'create') {
             const total = amount * days * price
@@ -226,7 +226,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                         <Row type="flex" justify="space-between" align="bottom">
                             <Col>Pricing</Col>
                             <Col><Tag color="#108ee9" > {
-                                Math.ceil(props.data.me.pricing.vip_viewers_livestream ).toLocaleString()
+                                Math.ceil(props.data.me.pricing.vip_viewers_livestream).toLocaleString()
                             }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} /> / viewer / day </Tag ></Col>
                         </Row>
                         <Row type="flex" justify="space-between" align="bottom">
@@ -282,7 +282,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
             destroyOnClose
             closable={false}
             okButtonProps={{ loading }}
-            title={props.mode == 'create' ? 'Create new VIP subscription' : 'Edit VIP subscription'}
+            title={props.mode == 'create' ? t('title.creating') : t('title.editing')}
         >
             <Spin spinning={props.loading}>
 
@@ -311,15 +311,15 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                     {
                         props.form.field({
                             name: 'id',
-                            require: 'Enter Facebook fanpage or Profile',
+                            require: t('form.facebook_object_input.validatingErrorMessage'),
                             initalValue: props.mode == 'create' ? undefined : props.vip && props.vip.id,
                             render: ({ error, loading, setValues, value, set_touched, touched }) => (
                                 <AntdForm.Item >
                                     <Row type="flex" justify="space-between" align="middle">
                                         <Col>
                                             <h3>
-                                                <Icon type="user" /> Fanpage or profile {
-                                                    props.mode == 'create' && <Tag style={{ background: '#fff', borderStyle: 'dashed' }}> Require </Tag>
+                                                <Icon type="user" /> {t('form.facebook_object_input.title')} {
+                                                    props.mode == 'create' && <Tag style={{ background: '#fff', borderStyle: 'dashed' }}> {t('form.facebook_object_input.rule')} </Tag>
                                                 }
                                             </h3>
                                         </Col>
@@ -379,7 +379,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                     {
                                         editing_uid && (
                                             <FacebookObjectInput
-                                                placeholder="Enter link of fanpage or profile here then click search"
+                                                placeholder={t('form.facebook_object_input.placeholder')}
                                                 onSelect={({ name, image, type, id }) => {
                                                     // if (type == LivestreamFacebookTargetType.group) return
                                                     setValues({ id, name })
@@ -397,7 +397,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                     {
                         props.form.field<number>({
                             name: 'amount',
-                            require: props.mode == 'create' ? 'Select amount' : undefined,
+                            require: props.mode == 'create' ? t('form.viewer_amount_select.validatingErrorMessage') : undefined,
                             render: ({ error, loading, setValue, value, set_touched, touched }) => (
                                 <AntdForm.Item>
                                     <Row type="flex" justify="space-between" align="middle">
@@ -405,11 +405,11 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                         {
                                             props.mode == 'create' ? (
                                                 <Col>
-                                                    <h3><Icon type="eye" /> Viewers amount <Tag style={{ background: '#fff', borderStyle: 'dashed' }}> Require </Tag></h3>
+                                                    <h3><Icon type="eye" /> {t('form.viewer_amount_select.title.creating')} <Tag style={{ background: '#fff', borderStyle: 'dashed' }}> {t('form.viewer_amount_select.rule')} </Tag></h3>
                                                 </Col>
                                             ) : (
                                                     <Fragment>
-                                                        <Col><h3><Icon type="eye" /> Change amount</h3></Col>
+                                                        <Col><h3><Icon type="eye" /> {t('form.viewer_amount_select.title.editing')}</h3></Col>
                                                         <Col> <Tag color="#108ee9">Current {props.vip && props.vip.amount} viewers</Tag></Col>
                                                     </Fragment>
 
@@ -422,10 +422,10 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                     }
                                     <Select
                                         onChange={setValue}
-                                        placeholder="Click to select viewers amount when livestream"
+                                        placeholder={t('form.viewer_amount_select.placeholder')}
                                     >
                                         {
-                                            [50, 100, 150, 200, 250, 300, 400, 450,500, 600, 700, 800, 900, 1000,1500,2000,2500,3000,3500,4000,4500,5000].map(amount => (
+                                            [50, 100, 150, 200, 250, 300, 400, 450, 500, 600, 700, 800, 900, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000].map(amount => (
                                                 <Select.Option
                                                     value={amount}
                                                 >
@@ -441,7 +441,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                     {
                         props.form.field<number>({
                             name: 'days',
-                            require: props.mode == 'create' ? 'Select day' : undefined,
+                            require: props.mode == 'create' ? t('form.subscription_period_select.validatingErrorMessage') : undefined,
                             render: ({ error, loading, setValue, value, set_touched, touched }) => (
                                 <AntdForm.Item>
                                     <Row type="flex" justify="space-between" align="middle" >
@@ -449,25 +449,22 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                         {
                                             props.mode == 'create' ? (
                                                 <Col><h3>
-                                                    <Icon type="calendar" /> Subscription days <Tag style={{ background: '#fff', borderStyle: 'dashed' }}> Require </Tag>
+                                                    <Icon type="calendar" /> {t('form.subscription_period_select.title.creating')} <Tag style={{ background: '#fff', borderStyle: 'dashed' }}>{t('form.subscription_period_select.rule')}</Tag>
                                                 </h3></Col>
                                             ) : (
                                                     <Fragment>
-                                                        <Col><h3><Icon type="eye" /> Extend day</h3></Col>
+                                                        <Col><h3><Icon type="eye" /> {t('form.subscription_period_select.title.editing')}</h3></Col>
                                                         <Col><Tag color="#108ee9">
                                                             Current <Moment format="DD/MM/YYYY H:mm">{props.vip && props.vip.end_time}</Moment> ~ <Moment fromNow>{props.vip && props.vip.end_time}</Moment>
                                                         </Tag></Col>
                                                     </Fragment>
                                                 )
                                         }
-
-
-
                                     </Row>
                                     {
                                         error && <Alert type="error" message={error} />
                                     }
-                                    <Select placeholder="Click to select days" onChange={setValue}>
+                                    <Select placeholder={t('form.subscription_period_select.placeholder')} onChange={setValue}>
                                         {
                                             [...props.mode == 'create' ? [7, 15] : [0], 30, 60, 90, 120, 150, 180, 210, 240, 270, 300].map(days => (
                                                 <Select.Option value={days}>
@@ -490,7 +487,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                             render: ({ error, loading, setValue, value: groups, set_touched, touched }) => (
                                 <AntdForm.Item>
                                     <Row type="flex" justify="space-between" align="bottom"  >
-                                        <Col><h3><Icon type="usergroup-add" /> Groups </h3></Col>
+                                        <Col><h3><Icon type="usergroup-add" /> {t('form.groups_input.title')} </h3></Col>
                                         <Col>
                                             <Tag color="#108ee9">{groups.length} groups</Tag>
                                         </Col>
@@ -533,8 +530,8 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                                         ])
                                                     }
                                                 }}
-                                                onError={() => Modal.error({ title: 'Invaild UID' })}
-                                                placeholder="Enter your group URL here then click search"
+                                                onError={() => Modal.error({ title: t('form.groups_input.error_message') })}
+                                                placeholder={t('form.groups_input.placeholder')}
                                             />
                                         </Col>
                                     </Row>
@@ -546,13 +543,13 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                     {
                         props.form.field<string>({
                             name: 'note',
-                            require: 'Enter note',
+                            require: t('form.note_input.validatingErrorMessage'),
                             initalValue: props.mode == 'update' ? props.vip && props.vip.note : undefined,
                             render: ({ error, loading, setValue, value, set_touched, touched }) => {
                                 return (
                                     <AntdForm.Item>
                                         <Row type="flex" justify="space-between" align="bottom">
-                                            <Col ><h3><Icon type="form" /> Note <Tag style={{ background: '#fff', borderStyle: 'dashed' }}> Require </Tag></h3></Col>
+                                            <Col ><h3><Icon type="form" /> {t('form.note_input.title')} <Tag style={{ background: '#fff', borderStyle: 'dashed' }}> {t('form.note_input.rule')} </Tag></h3></Col>
                                             <Col>
                                             </Col>
                                         </Row>
@@ -560,7 +557,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(query, {
                                             error && <Alert type="error" message={error} />
                                         }
                                         <Input
-                                            placeholder="Some note for this VIP"
+                                            placeholder={t('form.note_input.placeholder')}
                                             value={value}
                                             onChange={e => setValue(e.target.value)}
                                             allowClear
