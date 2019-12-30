@@ -1,23 +1,21 @@
-import React, { useState } from 'react'
-import { HashRouter, Switch, Route } from 'react-router-dom';
-import { MainLayout } from '../containers/main';
-import { SeedingPage, SeedingMenuContent } from './seeding'
-import { LivestreamPage } from './livestream/list';
+import React from 'react';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 import { AuthLayout } from '../containers/auth';
-import { Login, ResetPassword } from './auth';
-import { AccountPage } from './account'
-import { SetNewPasswordPage } from './auth/set-new-pass';
-import { LivestreamSubscriptionPage } from './livestream/subscription';
-import { LivestreamMenu } from './livestream/LivestreamMenu'
+import { MainLayout } from '../containers/main';
+import { AccountPage } from './account';
 import { AgencyPage } from './agency';
-import { VipViewersLivestream } from './seeding/vip-viewers-livestream'
-import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
-import { Payments } from './payments'
-import { DepositPage } from './deposit'
-import { HomePage } from './HomePage'
-import { UpdatePrice } from './agency/UpdatePrice';
-import { AgencyMenu } from './agency/AgencyMenu';
+import { Login, ResetPassword } from './auth';
+import { SetNewPasswordPage } from './auth/set-new-pass';
+import { DepositPage } from './deposit';
+import { HomePage } from './HomePage';
+import { LivestreamPage } from './livestream/list';
+import { LivestreamMenu } from './livestream/LivestreamMenu';
+import { LivestreamSubscriptionPage } from './livestream/subscription';
+import { Payments } from './payments';
+import { SeedingMenuContent, SeedingPage } from './seeding';
 import { BuffViewers } from './seeding/buff-viewers';
+import { BuffViewersLivestream } from './seeding/buff-viewers-livestream';
+import { VipViewersLivestream } from './seeding/vip-viewers-livestream';
 
 export const AppWithRouter = () => (
   <HashRouter>

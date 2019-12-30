@@ -1,3 +1,9 @@
 {
-  "title": "Dịch vụ tăng mắt"
+  "title": "Dịch vụ tăng tương tác ảo",
+  "vip_livestream_title": "VIP mắt",
+  "vip_livestream_description": "Tự động tăng mắt đỏ cho live stream, mua theo tháng",
+  "buff_livestream_title": "BUFF mắt",
+  "buff_livestream_description": "Tắng mắt đỏ 01 lần cho video live stream",
+  "buff_viewers_title": "BUFF lượt xem",
+  "buff_viewers_description": "Tăng tổng số lượt xem và số phút xem cho video hoặc livestream"
 }

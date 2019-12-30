@@ -1,6 +1,5 @@
 import { Field, ID, Int, ObjectType, InputType } from "type-graphql";
 import { Long } from "../../aws-scalar";
-import { LivestreamFacebookTargetType } from "../Livestream/LivestreamFacebookTargetType";
 
 @ObjectType()
 export class BuffViewersLivestream {
@@ -25,6 +24,8 @@ export class BuffViewersLivestream {
 
     @Field(type => Long)
     created_time: number
+
+    delay: number
 }
 
 
