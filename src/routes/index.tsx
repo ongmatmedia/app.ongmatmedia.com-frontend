@@ -68,12 +68,12 @@ export const AppWithRouter = () => (
       </Route>
 
       <Route exact path="/agency" >
-        <MainLayout Content={AgencyPage} Menu={AgencyMenu} />
+        <MainLayout Content={AgencyPage} />
       </Route>
 
-      <Route exact path="/agency/update-price" >
+      {/* <Route exact path="/agency/update-price" >
         <MainLayout Content={UpdatePrice} Menu={AgencyMenu} />
-      </Route>
+      </Route> */}
 
       <Route exact path="/deposit" >
         <MainLayout Content={DepositPage} />
