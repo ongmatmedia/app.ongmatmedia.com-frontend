@@ -1,5 +1,5 @@
 import { Avatar } from '@material-ui/core';
-import { Card, Col, Icon, List, Modal, Row, Spin, Tag, Tooltip } from 'antd';
+import { Card, Col, Icon, List, Row, Spin, Tag, Tooltip } from 'antd';
 import React, { Fragment, useState } from 'react';
 import { GraphQLWrapper } from '../../containers/GraphQLWrapper';
 import { User } from '../../schema/User/User';
@@ -7,9 +7,8 @@ import { UserConnection } from '../../schema/User/UserConnection';
 import { AgencyAction } from './AgencyAction';
 import { ResetPass } from './ResetPass';
 import { SendMoneyModal } from './SendMoneyModal';
-import { UpdatePricePercentModal } from './UpdatePricePercentModal';
 import { UpdatePriceAgenciesModal } from './UpdatePriceAgenciesModal';
-const graphql = require('babel-plugin-relay/macro');
+import graphql from 'babel-plugin-relay/macro';
 
 const query = graphql`
     query AgencyListQuery{
@@ -135,49 +134,47 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection, me: User }>(qu
 
                     return (
                         <List.Item style={{ border: selectedAgencies.has(item) ? "2px solid #1890ff" : "2px solid white" }}>
-                            <Tooltip placement="top" title="Click avatar to select agency">
-                                <Card
-                                    title={(
-                                        <Row type="flex" align="middle" justify="start" onClick={() => handleSelectAgencies(item)} style={{ cursor: "pointer" }}>
-                                            <Col style={{ paddingRight: 5 }}><Avatar>{item.username.substring(0, 1)}</Avatar></Col>
-                                            <Col>{item.username}</Col>
-                                        </Row>
-                                    )}
-                                    actions={[
-                                        <Tooltip placement="bottom" title="Deposit">
-                                            <Icon
-                                                type="dollar"
-                                                key="dollar"
-                                                onClick={() => set_sent_money_to_user(item)}
-                                            />
-                                        </Tooltip>,
-                                        <Tooltip placement="bottom" title="Change price percent">
-                                            <Icon
-                                                type="percentage"
-                                                key="percentage"
-                                                onClick={() => onSelectAgencyAndOpenModal(item)}
-                                            />
-                                        </Tooltip>,
-                                        <Tooltip placement="bottom" title="Set new password">
-                                            <Icon
-                                                type="unlock"
-                                                key="unlock"
-                                                onClick={() => set_set_new_pass_for_user(item)}
-                                            />
-                                        </Tooltip>,
-                                    ]}
-                                    style={{ lineHeight: '2em' }}
-                                >
-                                    <Row type="flex" align="middle" justify="space-between">
-                                        <Col >Price</Col>
-                                        <Col><Tag color={percent >= 100 ? "#108ee9" : 'rgb(234, 16, 6)'}>{percent} %</Tag></Col>
+                            <Card
+                                title={(
+                                    <Row type="flex" align="middle" justify="start" onClick={() => handleSelectAgencies(item)} style={{ cursor: "pointer" }}>
+                                        <Col style={{ paddingRight: 5 }}><Avatar>{item.username.substring(0, 1)}</Avatar></Col>
+                                        <Col>{item.username}</Col>
                                     </Row>
-                                    <Row type="flex" align="middle" justify="space-between">
-                                        <Col >Balance</Col>
-                                        <Col><Tag color="#108ee9">{balance} $</Tag></Col>
-                                    </Row>
-                                </Card>
-                            </Tooltip>
+                                )}
+                                actions={[
+                                    <Tooltip placement="bottom" title="Deposit">
+                                        <Icon
+                                            type="dollar"
+                                            key="dollar"
+                                            onClick={() => set_sent_money_to_user(item)}
+                                        />
+                                    </Tooltip>,
+                                    <Tooltip placement="bottom" title="Change price percent">
+                                        <Icon
+                                            type="percentage"
+                                            key="percentage"
+                                            onClick={() => onSelectAgencyAndOpenModal(item)}
+                                        />
+                                    </Tooltip>,
+                                    <Tooltip placement="bottom" title="Set new password">
+                                        <Icon
+                                            type="unlock"
+                                            key="unlock"
+                                            onClick={() => set_set_new_pass_for_user(item)}
+                                        />
+                                    </Tooltip>,
+                                ]}
+                                style={{ lineHeight: '2em' }}
+                            >
+                                <Row type="flex" align="middle" justify="space-between">
+                                    <Col >Price</Col>
+                                    <Col><Tag color={percent >= 100 ? "#108ee9" : 'rgb(234, 16, 6)'}>{percent} %</Tag></Col>
+                                </Row>
+                                <Row type="flex" align="middle" justify="space-between">
+                                    <Col >Balance</Col>
+                                    <Col><Tag color="#108ee9">{balance} $</Tag></Col>
+                                </Row>
+                            </Card>
                         </List.Item >
                     )
                 }}

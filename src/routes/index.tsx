@@ -17,6 +17,7 @@ import { DepositPage } from './deposit'
 import { HomePage } from './HomePage'
 import { UpdatePrice } from './agency/UpdatePrice';
 import { AgencyMenu } from './agency/AgencyMenu';
+import { BuffViewers } from './seeding/buff-viewers';
 
 export const AppWithRouter = () => (
   <HashRouter>
@@ -55,6 +56,10 @@ export const AppWithRouter = () => (
         <MainLayout Content={BuffViewersLivestream} Menu={SeedingMenuContent} />
       </Route>
 
+      <Route exact path="/seeding/buff-viewers" >
+        <MainLayout Content={BuffViewers} Menu={SeedingMenuContent} />
+      </Route>
+
       <Route exact path="/payments" >
         <MainLayout Content={Payments} />
       </Route>
@@ -78,9 +83,6 @@ export const AppWithRouter = () => (
       <Route exact path="/deposit" >
         <MainLayout Content={DepositPage} />
       </Route>
-
-
-
 
       <Route>
         <span>Not found</span>

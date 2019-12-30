@@ -11,6 +11,9 @@
     "aws-amplify": "1.1.29",
     "axios": "0.19.0",
     "babel-plugin-macros": "2.6.1",
+    "i18next": "^19.0.2",
+    "i18next-browser-languagedetector": "^4.0.1",
+    "i18next-xhr-backend": "^3.2.2",
     "input-moment": "0.4.0",
     "lodash": "^4.17.15",
     "mobx": "5.10.1",
@@ -22,6 +25,7 @@
     "react-copy-to-clipboard": "^5.0.2",
     "react-custom-scrollbars": "4.2.1",
     "react-dom": "16.10.2",
+    "react-i18next": "^11.2.7",
     "react-infinite-calendar": "2.3.1",
     "react-moment": "0.9.2",
     "react-notifications": "1.4.3",
@@ -34,8 +38,8 @@
     "start": "react-app-rewired start",
     "build": "yarn relay && react-app-rewired build; yarn clear-map",
     "relay": "relay-compiler --src ./src --schema ./src/schema/schema.graphql --language typescript",
-    "sync:schema":"rsync -r ../server/src/schema/ src/schema/",
-    "clear-map":"find ./build -name '*.map' -delete"
+    "sync:schema": "rsync -r ../server/src/schema/ src/schema/",
+    "clear-map": "find ./build -name '*.map' -delete"
   },
   "browserslist": [],
   "devDependencies": {

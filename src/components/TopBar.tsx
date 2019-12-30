@@ -1,15 +1,19 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Layout, Popover, Icon, Avatar, Row, Col } from 'antd'
+import { Layout, Popover, Icon, Avatar, Row, Col, Button } from 'antd'
 import { withAppDrawerState } from '../store/app-drawer'
 import { AppDrawer } from '../components/AppDrawer'
 import { UserProfile } from './UserProfile';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 
 export const TopBar = withAppDrawerState(props => {
 
     const [drawer_visible, set_drawer_visible] = useState<boolean>(false)
-
+    const { t, i18n } = useTranslation();
+    const changeLanguage = (lng: string) => {
+        i18n.changeLanguage(lng);
+    };
 
     return (
         <div style={{ display: 'flex', flex: 1, flexDirection: 'row', alignContent: 'center', justifyContent: 'space-between', height: 55 }}>
@@ -36,6 +40,10 @@ export const TopBar = withAppDrawerState(props => {
                 </Link>
             </div>
             <div style={{ display: 'flex' }}>
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', float: "right", marginRight: 20 }}>
+                    <Button onClick={() => changeLanguage('vi')}>vi</Button>
+                    <Button onClick={() => changeLanguage('en')}>en</Button>
+                </div>
                 <Popover
                     placement="bottomRight"
                     content={<AppDrawer onClick={() => set_drawer_visible(false)} />}
