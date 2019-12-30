@@ -1,0 +1,12 @@
+{
+  "report": {
+    "total_uids_description": "Tổng số UID",
+    "active_description": "Đang kích hoạt",
+    "expire_in_5_days_description": "Sắp hết hạn",
+    "expired_description": "Đã hết hạn"
+  },
+  "action": {
+    "add_button": "Thêm VIP",
+    "search_placeholder": "UID, tên, hoặc URL của người dùng"
+  }
+}

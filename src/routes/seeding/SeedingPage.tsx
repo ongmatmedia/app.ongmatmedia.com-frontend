@@ -53,11 +53,11 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
                         }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} />
                         </Tag>
                     }
-                    AUTO increase livestream viewers when livestream
+                    {t('vip_livestream_description')}
                 </span>
             ),
             icon: 'https://www.logolynx.com/images/logolynx/72/723a8b2156ff3429b6b93830df4a0475.png',
-            name: 'VIP livestream'
+            name: t('vip_livestream_title')
         },
         {
             cover: 'https://techcrunch.com/wp-content/uploads/2015/08/facebook-live.png?w=730&crop=1',
@@ -72,11 +72,11 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
                         }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} />
                         </Tag>
                     }
-                    Increase viewers for active livestreaming video
+                    {t('buff_livestream_description')}
                     </span>
             ),
             icon: 'https://cdn1.iconfinder.com/data/icons/antivirus-flat/512/signal_service_online_stream-512.png',
-            name: 'BUFF livestream'
+            name: t('buff_livestream_title')
         },
         {
             cover: 'https://wordpress.mediatel.co.uk/wp-content/uploads/2019/05/bigstock-Social-Influencer-Concept-Med-227207743.jpg',
@@ -88,14 +88,14 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
                             Math.ceil(
                                 props.data.me.pricing ? props.data.me.pricing.buff_viewers_livestream : NaN
                             ).toLocaleString()
-                        }<Icon type="rise" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} />
+                        }<Icon type="dollar" style={{ fontSize: 16, verticalAlign: "-0.2em", paddingLeft: 3, color: "white" }} />
                         </Tag>
                     }
-                    Increase viewers for video/live stream
+                    {t('buff_viewers_description')}
                     </span>
             ),
             icon: 'https://cdn1.iconfinder.com/data/icons/marketing-32/512/Growth_icon-512.png',
-            name: 'BUFF Viewers'
+            name: t('buff_viewers_title')
         }
     ]
 

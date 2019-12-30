@@ -1,9 +1,8 @@
+import { Alert, Col, Modal, Row, Tag } from 'antd'
 import React, { useState } from 'react'
-import { Modal, Row, Col, Spin, Alert, Tag } from 'antd'
 import { AutoSelectInput } from '../../components/AutoSelectInput'
-import { update_price_percent } from '../../relayjs-mutations/update_price_percent'
-import { User } from '../../schema/User/User'
 import { set_user_password } from '../../relayjs-mutations/set_user_password'
+import { User } from '../../schema/User/User'
 
 export interface ResetPassModalProps {
     visible: boolean

@@ -1,3 +1,9 @@
 {
-  "title": "Seeding service"
+  "title": "Seeding service",
+  "vip_livestream_title": "VIP livestream",
+  "vip_livestream_description": "Auto increase viewers for live stream, monthly subcription",
+  "buff_livestream_title": "BUFF livestream",
+  "buff_livestream_description": "Increase viewers for active livestreaming video",
+  "buff_viewers_title": "BUFF viewers",
+  "buff_viewers_description": "Increase total amount and minutes viewers for video/livestream"
 }

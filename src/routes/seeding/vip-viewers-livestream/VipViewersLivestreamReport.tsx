@@ -2,6 +2,7 @@ import { Col, Icon, Row } from 'antd';
 import React from 'react';
 import { StatictisCustom } from '../../../components/StatictisCustom';
 import { VIPViewersLivestream } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestream';
+import { useTranslation } from 'react-i18next'
 
 export type VipViewersLivestreamReportStatusFilter = 'all' | 'exprise_5_days' | 'active' | 'exprised'
 
@@ -12,6 +13,9 @@ export type VipViewersLivestreamReportProps = {
 }
 
 export const VipViewersLivestreamReport = (props: VipViewersLivestreamReportProps) => {
+
+  const { t, i18n } = useTranslation('vip_viewers_livestream');
+
   let totalIds = 0;
   let willExpireTotalIds = 0;
   let expiredTotalIds = 0;
@@ -37,7 +41,7 @@ export const VipViewersLivestreamReport = (props: VipViewersLivestreamReportProp
           <StatictisCustom
             gradient="linear-gradient(90deg, rgb(24, 99, 175) 6%, rgb(109, 183, 247) 100%)"
             iconName="align-left"
-            description="Total UIDs"
+            description={t('report.total_uids_description')}
             title={`${totalIds}`}
             active={props.filter == 'all'} />
         </span>
@@ -47,7 +51,7 @@ export const VipViewersLivestreamReport = (props: VipViewersLivestreamReportProp
           <StatictisCustom
             gradient="linear-gradient(to right, rgb(120, 158, 139), rgb(10, 143, 94), rgb(14, 89, 76))"
             iconName="check"
-            description="Active"
+            description={t('report.active_description')}
             title={`${active}`}
             active={props.filter == 'active'}
           />
@@ -58,7 +62,7 @@ export const VipViewersLivestreamReport = (props: VipViewersLivestreamReportProp
           <StatictisCustom
             gradient="linear-gradient(90deg, rgba(250,117,22,1) 37%, rgba(251,193,131,1) 98%)"
             iconName="clock-circle"
-            description="Expire 5 days"
+            description={t('report.expire_in_5_days_description')}
             title={`${willExpireTotalIds}`}
             active={props.filter == 'exprise_5_days'}
           />
@@ -69,7 +73,7 @@ export const VipViewersLivestreamReport = (props: VipViewersLivestreamReportProp
           <StatictisCustom
             gradient="linear-gradient(90deg, rgba(250,79,22,1) 37%, rgba(251,132,131,1) 100%)"
             iconName="home"
-            description="Expired"
+            description={t('report.expired_description')}
             title={`${expiredTotalIds}`}
             active={props.filter == 'exprised'}
           />

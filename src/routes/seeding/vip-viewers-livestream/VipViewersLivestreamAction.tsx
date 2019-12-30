@@ -3,6 +3,7 @@ import { Row, Col, Input, Icon, notification } from 'antd'
 import { Button } from 'antd'
 import { CUModal } from './CUModal'
 import { FacebookAccount } from '../../../api/FacebookAccount'
+import { useTranslation } from 'react-i18next'
 
 export type VipViewersLivestreamActionProps = {
     onChangeSearch: (v: string) => any
@@ -12,6 +13,8 @@ export const VipViewersLivestreamAction = (props: VipViewersLivestreamActionProp
     const [CU_modal_visible, set_CU_modal_visible] = useState<boolean>(false)
     const [search, set_search] = useState<string>('')
     const [loading_uid, set_loading_uid] = useState<boolean>(false)
+
+    const { t, i18n } = useTranslation('vip_viewers_livestream');
 
     const load_uid = async function () {
         try {
@@ -31,12 +34,12 @@ export const VipViewersLivestreamAction = (props: VipViewersLivestreamActionProp
                 CU_modal_visible && <CUModal onClose={() => set_CU_modal_visible(false)} mode="create" />
             }
             <Col style={{ paddingBottom: 5 }}>
-                <Button type="primary" icon="plus" onClick={() => set_CU_modal_visible(true)}>Add VIP</Button>
+                <Button type="primary" icon="plus" onClick={() => set_CU_modal_visible(true)}>{t('action.add_button')}</Button>
             </Col>
             <Col xs={24} md={12} xxl={8} style={{ paddingBottom: 5 }}>
                 <Input
                     addonAfter={<Icon type={loading_uid ? 'loading' : 'search'} onClick={load_uid} />}
-                    placeholder="UID, name, URL search"
+                    placeholder={t('action.search_placeholder')}
                     allowClear
                     value={search}
                     onChange={e => {

@@ -1,0 +1,43 @@
+{
+  "title": {
+    "creating": "Create new VIP subscription",
+    "editing": "Edit VIP subscription"
+  },
+  "form": {
+    "facebook_object_input": {
+      "title": "Fanpage or Personal profile",
+      "rule": "Require",
+      "placeholder": "Enter link of fanpage or profile, then click search button",
+      "validatingErrorMessage": "Enter URL of facebook fanpage or personal profile"
+    },
+    "viewer_amount_select": {
+      "title": {
+        "creating": "Viewer amount",
+        "editing": "Change amount"
+      },
+      "rule": "Require",
+      "placeholder": "Click to select viewers amount when livestream",
+      "validatingErrorMessage": "Select amount"
+    },
+    "subscription_period_select": {
+      "title": {
+        "creating": "Subscription period",
+        "editing": "Extend subscription period"
+      },
+      "rule": "Require",
+      "placeholder": "Click to select subscription period",
+      "validatingErrorMessage": "Select period"
+    },
+    "groups_input": {
+      "title": "Groups",
+      "placeholder": "Enter your group URL here then click search",
+      "error_message": "Invalid URL"
+    },
+    "note_input": {
+      "title": "Note",
+      "rule": "Require",
+      "validatingErrorMessage": "Enter note",
+      "placeholder": "Some note for this VIP"
+    }
+  }
+}

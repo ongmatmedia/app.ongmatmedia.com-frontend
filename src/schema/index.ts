@@ -6,6 +6,7 @@ import { FacebookAccountResolver } from "./FacebookAccount";
 import { VIPViewersLivestreamResolver } from "./Services/VIPViewersLivestream";
 import { LivestreamResolver } from "./Services/Livestream";
 import { PaymentHistoryResolver } from "./PaymentHistory";
+import { BuffViewersVideoResolver } from "./Services/BuffViewersVideo/BuffViewersVideoResolver";
 
 
 
@@ -17,6 +18,7 @@ async function bootstrap() {
       UserResolver,
       BuffViewersLivestreamResolver,
       VIPViewersLivestreamResolver,
+      BuffViewersVideoResolver,
       LivestreamResolver,
       FacebookAccountResolver,
       PaymentHistoryResolver

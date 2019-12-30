@@ -42,6 +42,41 @@ type BuffViewersLivestreamTaskCUDResponse {
   payment_history: PaymentHistoryEdge
 }
 
+type BuffViewersVideo {
+  video_id: String!
+  title: String!
+  uid: Float!
+  thumbnail: String!
+  note: String!
+  amount: Float!
+  done: Float!
+  created_time: Float!
+}
+
+type BuffViewersVideoConnection {
+  edges: [BuffViewersVideoEdge!]!
+  pageInfo: PageInfo!
+}
+
+type BuffViewersVideoCUDResponse {
+  buff: BuffViewersVideoEdge!
+  me: User!
+  payment_history: PaymentHistoryEdge
+}
+
+type BuffViewersVideoEdge {
+  node: BuffViewersVideo!
+}
+
+input BuffViewersVideoInput {
+  video_id: String!
+  title: String!
+  uid: Float!
+  thumbnail: String!
+  note: String!
+  amount: Float!
+}
+
 type FacebookAccount {
   user_id: String!
   id: ID!
@@ -209,8 +244,6 @@ scalar Long
 type Mutation {
   create_user(price_percent: Int!, email: String!, password: String!, username: String!): UserEdge!
   update_price_for_user(price: ServicePricingInput!, price_percent: Int!, user_id: String!): UserEdge!
-  update_price_percent(price_percent: Int!, user_id: String!): UserEdge!
-  update_pricing(price: ServicePricingInput!): UserEdge!
   send_money(note: String!, amount: Int!, user_id: String!): SendmoneyResponse!
   set_user_password(password: String!, user_id: String!): Boolean!
   update_info(payment_methods: [PaymentMethodInput!]!, facebook_uid: String!): Boolean!
@@ -226,6 +259,8 @@ type Mutation {
   create_livestream(task: LivestreamInput!): LivestreamEdge!
   update_livestream(task: LivestreamUpdateInput!): Livestream!
   delete_livestream(id: ID!): Boolean!
+  create_buff_viewers_video_task(input: BuffViewersVideoInput!): BuffViewersVideoCUDResponse!
+  delete_buff_viewers_video_task(id: ID!): BuffViewersVideoCUDResponse!
 }
 
 type PageInfo {
@@ -287,6 +322,7 @@ type Query {
   livestream_tasks(after: String, limit: Int, filters: LivestreamQueryFilters): LivestreamConnection!
   livestream_task(id: ID!): Livestream!
   payment_histories(after: String, before_time: Long): PaymentHistoryConnection!
+  buff_viewers_video_tasks(after: String, limit: Int): BuffViewersVideoConnection!
 }
 
 type SendmoneyResponse {
