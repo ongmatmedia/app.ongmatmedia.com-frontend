@@ -1,0 +1,29 @@
+{
+  "title": "Tăng mắt cho livestream",
+  "form": {
+    "facebook_video_input": {
+      "title": "Địa chỉ facebook video",
+      "rule": "Không bỏ trống",
+      "placeholder": "www.facebook.com/***/videos/**",
+      "validatingErrorMessage": "Nhập vào địa chỉ facebook video"
+    },
+    "viewer_amount_select": {
+      "title": "Số lượng người xem",
+      "rule": "Không để trống",
+      "placeholder": "Chọn số lượng người xem",
+      "validatingErrorMessage": "Vui lòng chọn số lượng người xem"
+    },
+    "speed_increase_viewers": {
+      "title": "Tốc độ tăng mắt",
+      "rule": "Không để trống",
+      "placeholder": "Chọn tốc độ tăng mắt",
+      "validatingErrorMessage": "Vui lòng chọn tốc độ tăng mắt"
+    },
+    "note_input": {
+      "title": "Ghi chú",
+      "rule": "Không để trống",
+      "validatingErrorMessage": "Vui lòng nhập ghi chú",
+      "placeholder": "Nhập ghi chú cho tài khoản VIP"
+    }
+  }
+}

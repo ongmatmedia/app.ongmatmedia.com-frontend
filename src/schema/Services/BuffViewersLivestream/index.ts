@@ -1,1 +1,1 @@
-export { BuffViewersLivestreamResolver } from './BuffViewersLivestreamResolver' 
+export { BuffViewersLivestreamResolver } from './BuffViewersLivestreamResolver';

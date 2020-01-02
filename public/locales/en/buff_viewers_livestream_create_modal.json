@@ -1,0 +1,29 @@
+{
+  "title": "Buff viewers for livestream",
+  "form": {
+    "facebook_video_input": {
+      "title": "Facebook Video URL",
+      "rule": "Require",
+      "placeholder": "www.facebook.com/***/videos/**",
+      "validatingErrorMessage": "Enter Facebook Livestream URL"
+    },
+    "viewer_amount_select": {
+      "title": "Viewer amount",
+      "rule": "Require",
+      "placeholder": "Click to select viewers amount when livestream",
+      "validatingErrorMessage": "Select amount"
+    },
+    "speed_increase_viewers": {
+      "title": "Speed of increasing viewers",
+      "rule": "Require",
+      "placeholder": "Click to select speed of increasing viewers",
+      "validatingErrorMessage": "Select speed"
+    },
+    "note_input": {
+      "title": "Note",
+      "rule": "Require",
+      "validatingErrorMessage": "Enter note",
+      "placeholder": "Some note for this VIP"
+    }
+  }
+}

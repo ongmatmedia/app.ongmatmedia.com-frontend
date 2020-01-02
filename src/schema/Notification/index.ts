@@ -1,1 +1,1 @@
-export { NotificationResolver } from './NotificationResolver'
+export { NotificationResolver } from './NotificationResolver';

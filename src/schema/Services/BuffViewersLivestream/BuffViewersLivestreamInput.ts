@@ -1,19 +1,19 @@
-import { InputType, Field, ID, Int } from "type-graphql"
+import { InputType, Field, ID, Int } from 'type-graphql';
 
 @InputType()
 export class BuffViewersLivestreamInput {
-    @Field(type => ID)
-    id: string
+  @Field(type => ID)
+  id: string;
 
-    @Field()
-    uid: string
+  @Field()
+  uid: string;
 
-    @Field()
-    name: string
+  @Field()
+  name: string;
 
-    @Field()
-    note: string
+  @Field()
+  note: string;
 
-    @Field(type => Int)
-    amount: number 
+  @Field(type => Int)
+  amount: number;
 }

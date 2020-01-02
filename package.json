@@ -36,6 +36,7 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "build": "yarn relay && react-app-rewired build; yarn clear-map",
     "relay": "relay-compiler --src ./src --schema ./src/schema/schema.graphql --language typescript",
     "sync:schema": "rsync -r ../server/src/schema/ src/schema/",
@@ -58,6 +59,7 @@
     "customize-cra": "0.2.13",
     "graphql": "14.4.0",
     "less-loader": "5.0.0",
+    "prettier": "^1.19.1",
     "react-hot-loader": "4.11.1",
     "react-scripts": "3.0.1",
     "relay-compiler": "5.0.0",

@@ -1,15 +1,12 @@
-import { ObjectType, InputType, Field } from "type-graphql";
-import { LivestreamFacebookTarget } from "./LivestreamFacebookTarget";
-
+import { ObjectType, InputType, Field } from 'type-graphql';
+import { LivestreamFacebookTarget } from './LivestreamFacebookTarget';
 
 @ObjectType()
 @InputType('LivestreamTargetInput')
-export class LivestreamTarget{
+export class LivestreamTarget {
+  @Field(type => [String])
+  rtmps: string[];
 
-    @Field(type => [String] )
-    rtmps: string[]
-
-    @Field(type => [LivestreamFacebookTarget] )
-    facebooks: LivestreamFacebookTarget[]
-
+  @Field(type => [LivestreamFacebookTarget])
+  facebooks: LivestreamFacebookTarget[];
 }

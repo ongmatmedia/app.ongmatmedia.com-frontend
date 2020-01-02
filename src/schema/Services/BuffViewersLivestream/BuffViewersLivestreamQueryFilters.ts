@@ -1,15 +1,18 @@
-import { InputType, Field } from "type-graphql";
-import { TableBooleanFilterInput, TableStringFilterInput, TableIntFilterInput } from "../../TableFilter";
+import { InputType, Field } from 'type-graphql';
+import {
+  TableBooleanFilterInput,
+  TableStringFilterInput,
+  TableIntFilterInput,
+} from '../../TableFilter';
 
 @InputType()
-export class BuffViewersLivestreamQueryFilters{
+export class BuffViewersLivestreamQueryFilters {
+  @Field(type => TableStringFilterInput)
+  id: number;
 
-    @Field(type => TableStringFilterInput)
-    id: number
- 
-    @Field(type => TableIntFilterInput)
-    amount: number
+  @Field(type => TableIntFilterInput)
+  amount: number;
 
-    @Field(type => TableIntFilterInput)
-    created_time: number 
+  @Field(type => TableIntFilterInput)
+  created_time: number;
 }

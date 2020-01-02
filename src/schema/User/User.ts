@@ -1,57 +1,50 @@
-import { ObjectType, ID, Field, Int } from "type-graphql";
-import { Long } from "../aws-scalar";
-import {
-  attribute,
-  hashKey,
-  rangeKey,
-  table,
-} from '@aws/dynamodb-data-mapper-annotations';
-import { PaymentMethod } from "./PaymentMethod";
-import { ServicePricing } from "./ServicePricing";
+import { ObjectType, ID, Field, Int } from 'type-graphql';
+import { Long } from '../aws-scalar';
+import { attribute, hashKey, rangeKey, table } from '@aws/dynamodb-data-mapper-annotations';
+import { PaymentMethod } from './PaymentMethod';
+import { ServicePricing } from './ServicePricing';
 
 @table('users')
 @ObjectType()
 export class User {
-
   @hashKey()
-  sub: string
+  sub: string;
 
   @attribute()
   @Field()
-  username: string
+  username: string;
 
   @attribute()
   @Field()
-  email: string
+  email: string;
 
   @attribute()
   @Field()
-  facebook_uid: string
+  facebook_uid: string;
 
   @Field(type => ID, {})
-  id: string
+  id: string;
 
   @attribute()
   @Field(type => Long, {})
-  balance: number
+  balance: number;
 
   @attribute()
-  @Field({nullable: true})
-  pricing?: ServicePricing
+  @Field({ nullable: true })
+  pricing?: ServicePricing;
 
   @Field(type => Int)
-  price_percent: number
+  price_percent: number;
 
   @Field(type => [PaymentMethod], { nullable: true })
-  payment_methods: PaymentMethod[]
+  payment_methods: PaymentMethod[];
 
   @Field({})
-  creator_id: string
+  creator_id: string;
 
   @Field(type => Long)
-  created_at: number
+  created_at: number;
 
   @Field(type => Long)
-  updated_at: number
-
+  updated_at: number;
 }

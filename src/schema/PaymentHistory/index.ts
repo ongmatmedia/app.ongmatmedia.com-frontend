@@ -1,1 +1,1 @@
-export {PaymentHistoryResolver} from './PaymentHistoryResolver'
+export { PaymentHistoryResolver } from './PaymentHistoryResolver';

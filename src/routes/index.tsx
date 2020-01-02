@@ -20,7 +20,6 @@ import { VipViewersLivestream } from './seeding/vip-viewers-livestream';
 export const AppWithRouter = () => (
   <HashRouter>
     <Switch>
-
       <Route exact path="/">
         <MainLayout Content={() => <HomePage />} />
       </Route>
@@ -37,40 +36,39 @@ export const AppWithRouter = () => (
         <AuthLayout Content={ResetPassword} />
       </Route>
 
-
-      <Route exact path="/accounts" >
+      <Route exact path="/accounts">
         <MainLayout Content={AccountPage} />
       </Route>
 
-      <Route exact path="/seeding" >
+      <Route exact path="/seeding">
         <MainLayout Content={SeedingPage} Menu={SeedingMenuContent} />
       </Route>
 
-      <Route exact path="/seeding/vip-viewers-livestream" >
+      <Route exact path="/seeding/vip-viewers-livestream">
         <MainLayout Content={VipViewersLivestream} Menu={SeedingMenuContent} />
       </Route>
 
-      <Route exact path="/seeding/buff-viewers-livestream" >
+      <Route exact path="/seeding/buff-viewers-livestream">
         <MainLayout Content={BuffViewersLivestream} Menu={SeedingMenuContent} />
       </Route>
 
-      <Route exact path="/seeding/buff-viewers" >
+      <Route exact path="/seeding/buff-viewers">
         <MainLayout Content={BuffViewers} Menu={SeedingMenuContent} />
       </Route>
 
-      <Route exact path="/payments" >
+      <Route exact path="/payments">
         <MainLayout Content={Payments} />
       </Route>
 
-      <Route exact path="/livestream" >
+      <Route exact path="/livestream">
         <MainLayout Content={LivestreamPage} Menu={LivestreamMenu} />
       </Route>
 
-      <Route exact path="/livestream/subscription" >
+      <Route exact path="/livestream/subscription">
         <MainLayout Content={LivestreamSubscriptionPage} Menu={LivestreamMenu} />
       </Route>
 
-      <Route exact path="/agency" >
+      <Route exact path="/agency">
         <MainLayout Content={AgencyPage} />
       </Route>
 
@@ -78,14 +76,13 @@ export const AppWithRouter = () => (
         <MainLayout Content={UpdatePrice} Menu={AgencyMenu} />
       </Route> */}
 
-      <Route exact path="/deposit" >
+      <Route exact path="/deposit">
         <MainLayout Content={DepositPage} />
       </Route>
 
       <Route>
         <span>Not found</span>
       </Route>
-
     </Switch>
   </HashRouter>
-) 
+);

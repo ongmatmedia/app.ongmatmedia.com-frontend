@@ -33,6 +33,12 @@
       "placeholder": "Nhập địa chỉ của nhóm rồi nhấp chọn tìm kiếm",
       "error_message": "Địa chỉ không hợp lệ"
     },
+    "speed_increase_viewers": {
+      "title": "Tốc độ tăng mắt",
+      "rule": "Không để trống",
+      "placeholder": "Chọn tốc độ tăng mắt",
+      "validatingErrorMessage": "Vui lòng chọn tốc độ tăng mắt"
+    },
     "note_input": {
       "title": "Ghi chú",
       "rule": "Không để trống",

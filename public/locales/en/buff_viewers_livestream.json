@@ -1,0 +1,7 @@
+{
+  "title": "Buff viewers livestream",
+  "action": {
+    "add_button": "Buff now",
+    "search_placeholder": "UID, name, URL search"
+  }
+}

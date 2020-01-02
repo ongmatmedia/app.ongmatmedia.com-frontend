@@ -7,65 +7,72 @@ import { delete_buff_viewers_livestream } from '../../../relayjs-mutations/delet
 import { BuffViewersLivestream } from '../../../schema/Services/BuffViewersLivestream/BuffViewersLivestream';
 
 interface BuffViewersData {
-  uid: string
-  title: string
-  video_id: string
-  created: number
-  amount: number
-  done_amount: number
-  thumbnail: string
-  description: string
+  uid: string;
+  title: string;
+  video_id: string;
+  created: number;
+  amount: number;
+  done_amount: number;
+  thumbnail: string;
+  description: string;
 }
 
 const fakeData: Array<BuffViewersData> = [
   {
-    uid: "123456789",
-    title: "Video title",
-    video_id: "1234567899",
+    uid: '123456789',
+    title: 'Video title',
+    video_id: '1234567899',
     created: 123456789,
     amount: 123456789,
     done_amount: 10000000,
-    thumbnail: "https://i.ytimg.com/vi/VTd5kQhtih8/hqdefault.jpg",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+    thumbnail: 'https://i.ytimg.com/vi/VTd5kQhtih8/hqdefault.jpg',
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
   },
   {
-    uid: "123456789",
-    title: "Video title",
-    video_id: "1234567899",
+    uid: '123456789',
+    title: 'Video title',
+    video_id: '1234567899',
     created: 123456789,
     amount: 123456789,
     done_amount: 123,
-    thumbnail: "https://i.ytimg.com/vi/VTd5kQhtih8/hqdefault.jpg",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+    thumbnail: 'https://i.ytimg.com/vi/VTd5kQhtih8/hqdefault.jpg',
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
   },
   {
-    uid: "123456789",
-    title: "Video title",
-    video_id: "1234567899",
+    uid: '123456789',
+    title: 'Video title',
+    video_id: '1234567899',
     created: 123456789,
     amount: 123456789,
     done_amount: 123,
-    thumbnail: "https://i.ytimg.com/vi/VTd5kQhtih8/hqdefault.jpg",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+    thumbnail: 'https://i.ytimg.com/vi/VTd5kQhtih8/hqdefault.jpg',
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
   },
   {
-    uid: "123456789",
-    title: "Video title",
-    video_id: "1234567899",
+    uid: '123456789',
+    title: 'Video title',
+    video_id: '1234567899',
     created: 123456789,
     amount: 123456789,
     done_amount: 123,
-    thumbnail: "https://i.ytimg.com/vi/VTd5kQhtih8/hqdefault.jpg",
-    description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
+    thumbnail: 'https://i.ytimg.com/vi/VTd5kQhtih8/hqdefault.jpg',
+    description:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
   },
-]
-
+];
 
 const IconFont = Icon.createFromIconfontCN({
   scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
 });
 
-const TagCustom = props => <Tag color={props.color} style={{ marginTop: 10, paddingLeft: 10 }}>{props.children}</Tag>
+const TagCustom = props => (
+  <Tag color={props.color} style={{ marginTop: 10, paddingLeft: 10 }}>
+    {props.children}
+  </Tag>
+);
 
 const columns: ColumnProps<BuffViewersData>[] = [
   {
@@ -73,7 +80,7 @@ const columns: ColumnProps<BuffViewersData>[] = [
     key: 'uid',
     align: 'center',
     render: (item: BuffViewersData) => (
-      <Row type="flex" align="middle" justify="space-between" >
+      <Row type="flex" align="middle" justify="space-between">
         <Col xs={24} md={3}>
           <Row type="flex" justify="space-around">
             <Row>
@@ -82,11 +89,11 @@ const columns: ColumnProps<BuffViewersData>[] = [
               </Col>
             </Row>
             <Row>
-              <span style={{fontSize: 20}}>{item.title}</span>
+              <span style={{ fontSize: 20 }}>{item.title}</span>
             </Row>
           </Row>
         </Col>
-        <Col xs={24} md={10} style={{marginBottom: 10}}>
+        <Col xs={24} md={10} style={{ marginBottom: 10 }}>
           <Row>
             <Col span={12}>
               <TagCustom color="#2db7f5">
@@ -94,40 +101,46 @@ const columns: ColumnProps<BuffViewersData>[] = [
               </TagCustom>
             </Col>
             <Col span={12}>
-              <TagCustom color="#108ee9"><Moment toNow>{item.created}</Moment></TagCustom>
-            </Col>
-            <Col span={12}><CopyToClipboard text={item.uid}
-              onCopy={() => message.info('Video owner UID copied')}>
               <TagCustom color="#108ee9">
-                <span>{item.uid}</span> &nbsp;
-                <Icon type="copy" />
+                <Moment toNow>{item.created}</Moment>
               </TagCustom>
-            </CopyToClipboard></Col>
+            </Col>
+            <Col span={12}>
+              <CopyToClipboard
+                text={item.uid}
+                onCopy={() => message.info('Video owner UID copied')}
+              >
+                <TagCustom color="#108ee9">
+                  <span>{item.uid}</span> &nbsp;
+                  <Icon type="copy" />
+                </TagCustom>
+              </CopyToClipboard>
+            </Col>
             <Col span={12}>
               {item.done_amount < item.amount ? (
                 <TagCustom>
-                  <Icon type="loading" /> {item.done_amount.toLocaleString(undefined)}/{item.amount.toLocaleString(undefined)}
+                  <Icon type="loading" /> {item.done_amount.toLocaleString(undefined)}/
+                  {item.amount.toLocaleString(undefined)}
                 </TagCustom>
               ) : (
-                  <TagCustom color="green">
-                    <Icon type="check" /> {item.done_amount.toLocaleString(undefined)}/{item.amount.toLocaleString(undefined)}
-                  </TagCustom>
-                )}</Col>
+                <TagCustom color="green">
+                  <Icon type="check" /> {item.done_amount.toLocaleString(undefined)}/
+                  {item.amount.toLocaleString(undefined)}
+                </TagCustom>
+              )}
+            </Col>
           </Row>
         </Col>
-        <Col style={{ maxWidth: 300, textAlign: "left" }}>
-          {item.description}
-        </Col>
-
-      </Row >
-    )
+        <Col style={{ maxWidth: 300, textAlign: 'left' }}>{item.description}</Col>
+      </Row>
+    ),
   },
   {
     title: 'Action',
     key: 'address',
     align: 'center',
     render: (item: BuffViewersLivestream) => (
-      <Row align="middle" style={{marginLeft: 15}}>
+      <Row align="middle" style={{ marginLeft: 15 }}>
         <Col>
           <Icon
             type="video-camera"
@@ -142,28 +155,29 @@ const columns: ColumnProps<BuffViewersData>[] = [
           <Icon
             type="delete"
             style={{ color: 'red', margin: 10, fontSize: 20, cursor: 'pointer' }}
-            onClick={() => Modal.confirm({
-              title: 'Confirm!',
-              content: <span>Delete <span style={{ color: 'red' }}> {item.name}</span> ?</span>,
-              onOk: async () => {
-                try {
-                  await delete_buff_viewers_livestream(item.id)
-                  notification.success({ message: 'Success' })
-                } catch (e) {
-                  notification.error({ message: 'Error' })
-                }
-              }
-            })}
+            onClick={() =>
+              Modal.confirm({
+                title: 'Confirm!',
+                content: (
+                  <span>
+                    Delete <span style={{ color: 'red' }}> {item.name}</span> ?
+                  </span>
+                ),
+                onOk: async () => {
+                  try {
+                    await delete_buff_viewers_livestream(item.id);
+                    notification.success({ message: 'Success' });
+                  } catch (e) {
+                    notification.error({ message: 'Error' });
+                  }
+                },
+              })
+            }
           />
         </Col>
       </Row>
-    )
-  }
-]
+    ),
+  },
+];
 
-export const BuffViewersList = () => (
-  <Table
-    columns={columns}
-    dataSource={fakeData}
-  />
-)
+export const BuffViewersList = () => <Table columns={columns} dataSource={fakeData} />;

@@ -1,1 +1,1 @@
-export {VIPViewersLivestreamResolver} from './VIPViewersLivestreamResolver'
+export { VIPViewersLivestreamResolver } from './VIPViewersLivestreamResolver';

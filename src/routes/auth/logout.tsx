@@ -1,18 +1,19 @@
-import React, { Component } from "react";
-import { RouterProps } from "react-router";
+import React, { Component } from 'react';
+import { RouterProps } from 'react-router';
 import { Auth } from 'aws-amplify';
-import { Button } from "antd";
+import { Button } from 'antd';
 
 export class LogoutPage extends Component {
-    
-    async componentDidMount(){
-        await Auth.signOut()
-    }
+  async componentDidMount() {
+    await Auth.signOut();
+  }
 
-    render(){
-        return (<span>
-            You are loged out
-            <Button onClick={() => (this.props as RouterProps).history.push('login')}>Login</Button>
-        </span>)
-    }
+  render() {
+    return (
+      <span>
+        You are loged out
+        <Button onClick={() => (this.props as RouterProps).history.push('login')}>Login</Button>
+      </span>
+    );
+  }
 }

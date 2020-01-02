@@ -1,12 +1,12 @@
-import { ObjectType, Field } from "type-graphql";
-import { UserEdge } from "./UserEdge";
-import { PageInfo } from "../PageInfo";
+import { ObjectType, Field } from 'type-graphql';
+import { UserEdge } from './UserEdge';
+import { PageInfo } from '../PageInfo';
 
 @ObjectType()
-export class UserConnection{
+export class UserConnection {
   @Field(type => UserEdge)
-  edges: [UserEdge]
+  edges: [UserEdge];
 
   @Field(type => PageInfo)
-  pageInfo: PageInfo
+  pageInfo: PageInfo;
 }

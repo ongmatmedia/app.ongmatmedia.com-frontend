@@ -1,7 +1,6 @@
-import React from "react"; 
+import React from 'react';
 
 // const graphql = require('babel-plugin-relay/macro')
-
 
 // const query = graphql`
 //     query paymentHistoryQuery($next_token: String, $from: Long ){
@@ -35,8 +34,6 @@ import React from "react";
 //         text: 'VIP Buff Viewers Livestream',
 //     }
 // }
-
-
 
 // const payment_history_column_render: ColumnProps<PaymentHistory>[] = [
 //     {
@@ -122,16 +119,9 @@ import React from "react";
 //                 </Row>
 //             </div>
 
-
-
 //         </Card>
 
 //     </span>
 // )
 
-
-
-
-export const PaymentHistoryPage = () => (
-    <span>Payment history</span>
-)
+export const PaymentHistoryPage = () => <span>Payment history</span>;

@@ -33,6 +33,12 @@
       "placeholder": "Enter your group URL here then click search",
       "error_message": "Invalid URL"
     },
+    "speed_increase_viewers": {
+      "title": "Speed of increasing viewers",
+      "rule": "Require",
+      "placeholder": "Click to select speed of increasing viewers",
+      "validatingErrorMessage": "Select speed"
+    },
     "note_input": {
       "title": "Note",
       "rule": "Require",

@@ -1,14 +1,11 @@
-import { ObjectType, Field } from "type-graphql";
-import { Notification } from "./Notification";
-
-
-
+import { ObjectType, Field } from 'type-graphql';
+import { Notification } from './Notification';
 
 @ObjectType()
 export class NotificationEdge {
-    @Field()
-    cursor: string
+  @Field()
+  cursor: string;
 
-    @Field(type => Notification)
-    node: Notification
+  @Field(type => Notification)
+  node: Notification;
 }

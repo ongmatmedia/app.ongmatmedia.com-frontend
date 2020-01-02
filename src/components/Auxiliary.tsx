@@ -1,1 +1,1 @@
-export const Auxiliary = (props) => props.children
+export const Auxiliary = props => props.children;
