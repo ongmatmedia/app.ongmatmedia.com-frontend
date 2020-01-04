@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, List, Avatar, Icon, Tooltip, Row, Col, Spin, Divider, message } from 'antd';
 import { GraphQLWrapper } from '../../containers/GraphQLWrapper';
 import { PaymentMethod } from '../../schema/User/PaymentMethod';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { PaymentInfoModal } from './PaymentInfoModal';
 
 const graphql = require('babel-plugin-relay/macro');
 
@@ -25,48 +26,44 @@ const query = graphql`
   }
 `;
 
-const Preview = (props: { payment_methods: PaymentMethod[] }) => (
-  <List
-    grid={{
-      gutter: 16,
-      xs: 1,
-      sm: 1,
-      md: 4,
-      lg: 4,
-      xl: 4,
-      xxl: 4,
-    }}
-    dataSource={props.payment_methods}
-    renderItem={item => (
-      <List.Item>
-        <Card
-          size="small"
-          cover={<img src={item.image_url} style={{ height: 200, objectFit: 'scale-down' }} />}
-          actions={[
-            <CopyToClipboard text={item.account} onCopy={() => message.info('Payment note copied')}>
-              <Tooltip title="Copy account" placement="bottom">
-                <Icon type="copy" />
-              </Tooltip>
-            </CopyToClipboard>,
-          ]}
-        >
-          <Card.Meta
-            avatar={<Avatar src={item.image_url} />}
-            title={item.name}
-            description={
-              <Row>
-                <Col>{item.owner}</Col>
-                <Col>{item.account}</Col>
-                <Divider />
-                <Col>{item.description}</Col>
-              </Row>
-            }
-          />
-        </Card>
-      </List.Item>
-    )}
-  />
-);
+const Preview = (props: { payment_methods: PaymentMethod[] }) => {
+
+  const [paymentInfoModalIsVisible, setVisibleForPaymentInfoModal] = useState(false);
+  const [currentPaymentMethod, setCurrentPaymentMethod] = useState<PaymentMethod | null>(null);
+
+  return (
+    <>
+      <PaymentInfoModal isVisible={paymentInfoModalIsVisible} onClose={() => setVisibleForPaymentInfoModal(false)} data={currentPaymentMethod} />
+      <List
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 1,
+          md: 4,
+          lg: 4,
+          xl: 6,
+          xxl: 6,
+        }}
+        dataSource={props.payment_methods}
+        renderItem={item => (
+          <List.Item>
+            <Tooltip placement="top" title="Click to see detail information">
+              <Card
+                size="small"
+                cover={<img src={item.image_url} style={{ height: 200, objectFit: 'scale-down' }} />}
+                onClick={() => {
+                  setCurrentPaymentMethod(item);
+                  setVisibleForPaymentInfoModal(true);
+                }}
+              >
+              </Card>
+            </Tooltip>
+          </List.Item>
+        )}
+      />
+    </>
+  );
+}
 
 export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
   query,

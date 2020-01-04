@@ -1,29 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { Layout, Popover, Icon, Avatar, Row, Col, Button } from 'antd';
-import { withAppDrawerState } from '../store/app-drawer';
-import { AppDrawer } from '../components/AppDrawer';
-import { UserProfile } from './UserProfile';
+import { Icon, Popover } from 'antd';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { AppDrawer } from '../components/AppDrawer';
+import { withAppDrawerState } from '../store/app-drawer';
 
 export const TopBar = withAppDrawerState(props => {
-  const [drawer_visible, set_drawer_visible] = useState<boolean>(false);
-  const { t, i18n } = useTranslation();
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng);
-  };
+
+  const [drawer_visible, set_drawer_visible] = useState<boolean>(false)
+
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flex: 1,
-        flexDirection: 'row',
-        alignContent: 'center',
-        justifyContent: 'space-between',
-        height: 55,
-      }}
-    >
+    <div style={{ display: 'flex', flex: 1, flexDirection: 'row', alignContent: 'center', justifyContent: 'space-between', height: 55 }}>
       <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
         <Icon
           type="menu"
@@ -31,40 +18,22 @@ export const TopBar = withAppDrawerState(props => {
           onClick={() => props.store.toggle()}
         />
       </div>
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          lineHeight: 55,
-        }}
-      >
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', lineHeight: 55 }}>
+
         <Link to="/">
           <img
             src="https://freeiconshop.com/wp-content/uploads/edd/play-flat.png"
             style={{
               width: 35,
               borderRadius: 20,
-              borderStyle: 'solid',
+              borderStyle: "solid",
               borderWidth: 2,
-              borderColor: 'white',
+              borderColor: 'white'
             }}
           />
         </Link>
       </div>
       <div style={{ display: 'flex' }}>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            float: 'right',
-            marginRight: 20,
-          }}
-        >
-          <Button onClick={() => changeLanguage('vi')}>vi</Button>
-          <Button onClick={() => changeLanguage('en')}>en</Button>
-        </div>
         <Popover
           placement="bottomRight"
           content={<AppDrawer onClick={() => set_drawer_visible(false)} />}
@@ -79,5 +48,5 @@ export const TopBar = withAppDrawerState(props => {
         </Popover>
       </div>
     </div>
-  );
-});
+  )
+})

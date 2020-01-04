@@ -19,8 +19,6 @@ check_login();
 update_title();
 
 ReactDOM.render(
-  <Suspense fallback="loading">
-    <App />
-  </Suspense>,
+  <App />,
   document.getElementById('root'),
 );
