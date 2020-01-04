@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Icon, Modal, Card, Row, Col, Avatar } from 'antd';
+import { Icon, Modal, Card, Row, Col, Avatar, Button } from 'antd';
 import { Link, withRouter } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { RouterProps } from 'react-router';
@@ -12,10 +12,10 @@ const DrawerLinks: Array<{
   icon: string;
   to: string;
 }> = [
-  { name: 'seeding_icon_title', icon: 'alert', to: '/seeding' },
-  { name: 'payments_icon_title', icon: 'bars', to: '/payments' },
-  { name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
-];
+    { name: 'seeding_icon_title', icon: 'alert', to: '/seeding' },
+    { name: 'payments_icon_title', icon: 'bars', to: '/payments' },
+    { name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
+  ];
 
 const LogoutButton = withRouter((props: RouterProps) => {
   const { t, i18n } = useTranslation('app_drawer');
@@ -50,6 +50,10 @@ const LogoutButton = withRouter((props: RouterProps) => {
 
 export const AppDrawer = (props: { onClick: Function }) => {
   const { t, i18n } = useTranslation('app_drawer');
+  const changeLanguage = lng => {
+    i18n.changeLanguage(lng);
+  };
+
   return (
     <div
       onClick={() => props.onClick()}
@@ -115,6 +119,22 @@ export const AppDrawer = (props: { onClick: Function }) => {
       ))}
 
       <LogoutButton />
+      <div style={{
+        width: 260,
+        marginRight: 10,
+        textAlign: 'center',
+      }}
+      >
+        <Button type="link" onClick={() => changeLanguage('vi')} >
+          <Avatar size="small" src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Flag_of_Vietnam.svg/2000px-Flag_of_Vietnam.svg.png" />
+        </Button>
+        <Button type="link" onClick={() => changeLanguage('en')}>
+          <Avatar size="small" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Flag_of_the_United_States.svg/475px-Flag_of_the_United_States.svg.png" />
+        </Button>
+        <Button type="link" onClick={() => changeLanguage('th')}>
+          <Avatar size="small" src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Flag_of_Thailand.svg/1280px-Flag_of_Thailand.svg.png" />
+        </Button>
+      </div>
     </div>
   );
 };
