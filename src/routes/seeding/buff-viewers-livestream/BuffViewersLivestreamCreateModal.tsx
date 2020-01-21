@@ -200,7 +200,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<BuffViewersLivest
                                         placeholder="Click to select viewers amount when livestream"
                                     >
                                         {
-                                            [50, 100, 150, 200, 250, 300, 400, 450, 500, 600, 700, 800, 900, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000].map(amount => (
+                                            [50, 100, 150, 200, 250, 300, 400, 450, 500].map(amount => (
                                                 <Select.Option
                                                     value={amount}
                                                 >
