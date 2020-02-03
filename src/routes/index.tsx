@@ -41,19 +41,19 @@ export const AppWithRouter = () => (
       </Route>
 
       <Route exact path="/seeding">
-        <MainLayout Content={SeedingPage} Menu={SeedingMenuContent} />
+        <MainLayout Content={SeedingPage} />
       </Route>
 
       <Route exact path="/seeding/vip-viewers-livestream">
-        <MainLayout Content={VipViewersLivestream} Menu={SeedingMenuContent} />
+        <MainLayout Content={VipViewersLivestream} />
       </Route>
 
       <Route exact path="/seeding/buff-viewers-livestream">
-        <MainLayout Content={BuffViewersLivestream} Menu={SeedingMenuContent} />
+        <MainLayout Content={BuffViewersLivestream} />
       </Route>
 
       <Route exact path="/seeding/buff-viewers">
-        <MainLayout Content={BuffViewers} Menu={SeedingMenuContent} />
+        <MainLayout Content={BuffViewers} />
       </Route>
 
       <Route exact path="/payments">

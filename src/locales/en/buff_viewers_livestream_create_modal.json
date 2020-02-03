@@ -13,6 +13,12 @@
       "placeholder": "Click to select viewers amount when livestream",
       "validatingErrorMessage": "Select amount"
     },
+    "limit_mins_viewers":{
+      "title":"Limit mins",
+      "rule":"Require",
+      "placeholder": "Click to select mins limit",
+      "validatingErrorMessage": "Select mins limit"
+    },
     "speed_increase_viewers": {
       "title": "Speed of increasing viewers",
       "rule": "Require",

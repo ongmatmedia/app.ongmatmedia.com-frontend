@@ -21,6 +21,7 @@ import { create_buff_viewers_livestream } from '../../../relayjs-mutations/creat
 import { User } from '../../../schema/User/User';
 import { VideoInput } from './VideoInput';
 import { useTranslation } from 'react-i18next';
+import { Dollar } from '../../../components/Dollar'
 
 const query = graphql`
   query BuffViewersLivestreamCreateModalQuery {
@@ -62,7 +63,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
     const [loading, set_loading] = useState<boolean>(false);
     const [editing_uid_visible, set_editing_uid_visible] = useState<boolean>(true);
 
-    const { t, i18n } = useTranslation('buff_viewers_livestream_create_modal');
+    const { t } = useTranslation('buff_viewers_livestream_create_modal');
 
     const submit = () =>
       props.form.submit(async data => {
@@ -88,39 +89,21 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
       props.form.data.amount
     ) {
       const price = props.data.me.pricing.buff_viewers_livestream;
-      const total = props.form.data.amount * price;
+      const mins = props.form.data.limit_mins
+      const total = props.form.data.amount * mins * price;
 
       OrderInfoCard = (
         <Card title="Order infomation" size="small" style={{ lineHeight: '2em' }}>
           <Row>
-            <Tag color="#108ee9">{props.form.data.amount} viewers</Tag> x{' '}
-            <Tag color="#108ee9">
-              {price.toLocaleString()}
-              <Icon
-                type="dollar"
-                style={{ fontSize: 16, verticalAlign: '-0.2em', paddingLeft: 3, color: 'white' }}
-              />{' '}
-              /viewer{' '}
-            </Tag>{' '}
-            ={' '}
-            <Tag color="#108ee9">
-              {total.toLocaleString()}
-              <Icon
-                type="dollar"
-                style={{ fontSize: 16, verticalAlign: '-0.2em', paddingLeft: 3, color: 'white' }}
-              />
-            </Tag>
+            <Tag color="#108ee9">{props.form.data.amount} viewers</Tag>
+            x <Tag color="#108ee9">   {price.toLocaleString()}<Dollar /></Tag>
+            x <Tag color="#108ee9">{mins} <Dollar /></Tag>
+            = <Tag color="#108ee9">   {total.toLocaleString()}<Dollar />  </Tag>
           </Row>
 
           <Row>
             Your balance:{' '}
-            <Tag color="#108ee9">
-              {props.data.me.balance.toLocaleString()}
-              <Icon
-                type="dollar"
-                style={{ fontSize: 16, verticalAlign: '-0.2em', paddingLeft: 3, color: 'white' }}
-              />{' '}
-            </Tag>
+            <Tag color="#108ee9">   {props.data.me.balance.toLocaleString()} <Dollar /> </Tag>
           </Row>
         </Card>
       );
@@ -278,17 +261,17 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
               ),
             })}
             {props.form.field<number>({
-              name: 'amount',
-              require: t('form.speed_increase_viewers.validatingErrorMessage'),
+              name: 'limit_mins',
+              require: t('form.limit_mins_viewers.validatingErrorMessage'),
               render: ({ error, loading, setValue, value, set_touched, touched }) => (
                 <AntdForm.Item>
                   <Row type="flex" justify="space-between" align="middle">
                     <Col>
                       <h3>
-                        <Icon type="rise" /> {t('form.speed_increase_viewers.title')}{' '}
+                        <Icon type="rise" /> {t('form.limit_mins_viewers.title')}{' '}
                         <Tag style={{ background: '#fff', borderStyle: 'dashed' }}>
                           {' '}
-                          {t('form.speed_increase_viewers.rule')}{' '}
+                          {t('form.limit_mins_viewers.rule')}{' '}
                         </Tag>
                       </h3>
                     </Col>
@@ -296,10 +279,10 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
                   {error && <Alert type="error" message={error} />}
                   <Select
                     onChange={setValue}
-                    placeholder={t('form.speed_increase_viewers.placeholder')}
+                    placeholder={t('form.limit_mins_viewers.placeholder')}
                   >
-                    {[0, 1, , 2, 3, 4, 5, 6, 7, 8, 9, 10].map(amount => (
-                      <Select.Option value={amount}>{amount}</Select.Option>
+                    {[10, 20, 30, 60, 90, 120, 150, 180].map(min => (
+                      <Select.Option value={min}>{min}</Select.Option>
                     ))}
                   </Select>
                 </AntdForm.Item>

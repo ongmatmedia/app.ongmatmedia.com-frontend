@@ -13,6 +13,12 @@
       "placeholder": "Chọn số lượng người xem",
       "validatingErrorMessage": "Vui lòng chọn số lượng người xem"
     },
+    "limit_mins_viewers":{
+      "title":"Giới hạn phút xem",
+      "rule":"Không để trống",
+      "placeholder": "Chọn số phút xem ",
+      "validatingErrorMessage": "Vui lòng chọn số phút xem"
+    },
     "speed_increase_viewers": {
       "title": "Tốc độ tăng mắt",
       "rule": "Không để trống",
