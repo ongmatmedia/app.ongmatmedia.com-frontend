@@ -231,14 +231,10 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
                     placeholder={t('form.viewer_amount_select.placeholder')}
                   >
                     {[
-                      50,
                       100,
-                      150,
                       200,
-                      250,
                       300,
                       400,
-                      450,
                       500,
                       600,
                       700,
