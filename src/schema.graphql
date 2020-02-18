@@ -3,7 +3,7 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-type BuffViewersLivestream {
+type BuffViewersLivestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
   user_id: String!
   id: ID!
   uid: String!
@@ -11,14 +11,15 @@ type BuffViewersLivestream {
   note: String!
   amount: Int!
   created_time: Long!
+  limit_mins: Int!
 }
 
-type BuffViewersLivestreamConnection {
+type BuffViewersLivestreamConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
   edges: [BuffViewersLivestreamEdge!]!
   pageInfo: PageInfo!
 }
 
-type BuffViewersLivestreamEdge {
+type BuffViewersLivestreamEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
   node: BuffViewersLivestream!
 }
 
@@ -28,6 +29,7 @@ input BuffViewersLivestreamInput {
   name: String!
   note: String!
   amount: Int!
+  limit_mins: Int!
 }
 
 input BuffViewersLivestreamQueryFilters {
@@ -36,13 +38,13 @@ input BuffViewersLivestreamQueryFilters {
   created_time: TableIntFilterInput!
 }
 
-type BuffViewersLivestreamTaskCUDResponse {
+type BuffViewersLivestreamTaskCUDResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
   buff: BuffViewersLivestreamEdge!
   me: User!
   payment_history: PaymentHistoryEdge
 }
 
-type BuffViewersVideo {
+type BuffViewersVideo @aws_api_key @aws_cognito_user_pools @aws_oidc {
   video_id: String!
   title: String!
   uid: Float!
@@ -53,18 +55,18 @@ type BuffViewersVideo {
   created_time: Float!
 }
 
-type BuffViewersVideoConnection {
+type BuffViewersVideoConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
   edges: [BuffViewersVideoEdge!]!
   pageInfo: PageInfo!
 }
 
-type BuffViewersVideoCUDResponse {
+type BuffViewersVideoCUDResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
   buff: BuffViewersVideoEdge!
   me: User!
   payment_history: PaymentHistoryEdge
 }
 
-type BuffViewersVideoEdge {
+type BuffViewersVideoEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
   node: BuffViewersVideo!
 }
 
@@ -77,7 +79,7 @@ input BuffViewersVideoInput {
   amount: Float!
 }
 
-type FacebookAccount {
+type FacebookAccount @aws_api_key @aws_cognito_user_pools @aws_oidc {
   user_id: String!
   id: ID!
   name: String!
@@ -88,12 +90,12 @@ type FacebookAccount {
   updated_at: Long!
 }
 
-type FacebookAccountConnection {
+type FacebookAccountConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
   edges: [FacebookAccountEdge!]!
   pageInfo: PageInfo!
 }
 
-type FacebookAccountEdge {
+type FacebookAccountEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
   cursor: String
   node: FacebookAccount!
 }
@@ -111,7 +113,7 @@ input FacebookAccountQueryFilters {
   tags: TableStringFilterInput
 }
 
-type Livestream {
+type Livestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
   user_id: String!
   id: ID!
   videos: [LivestreamVideo!]!
@@ -122,38 +124,28 @@ type Livestream {
   updated_time: Long!
   title: String!
   description: String
-  time: Long!
+  time: [Long!]!
   targets: LivestreamTarget!
   errors: [String!]!
 }
 
-type LivestreamConnection {
+type LivestreamConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
   edges: [LivestreamEdge!]!
   pageInfo: PageInfo!
 }
 
-type LivestreamEdge {
+type LivestreamEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
   node: Livestream!
 }
 
-type LivestreamFacebookTarget {
+type LivestreamFacebookTarget @aws_api_key @aws_cognito_user_pools @aws_oidc {
   uid: String!
   name: String!
-  owner: String
-  type: LivestreamFacebookTargetType!
 }
 
 input LivestreamFacebookTargetInput {
   uid: String!
   name: String!
-  owner: String
-  type: LivestreamFacebookTargetType!
-}
-
-enum LivestreamFacebookTargetType {
-  profile
-  group
-  page
 }
 
 input LivestreamInput {
@@ -165,7 +157,7 @@ input LivestreamInput {
   targets: LivestreamTargetInput!
 }
 
-type LivestreamPricing {
+type LivestreamPricing @aws_api_key @aws_cognito_user_pools @aws_oidc {
   p480: Int!
   p720: Int!
   p1080: Int!
@@ -182,7 +174,7 @@ input LivestreamQueryFilters {
   created_time: Long!
 }
 
-type LivestreamSubscription {
+type LivestreamSubscription @aws_api_key @aws_cognito_user_pools @aws_oidc {
   id: ID!
   user_id: String!
   quality: Int!
@@ -196,13 +188,13 @@ input LivestreamSubscriptionInput {
   concurrent_limit: Int!
 }
 
-type LivestreamSubscriptionUpdateResponse {
+type LivestreamSubscriptionUpdateResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
   livestream_subscription: LivestreamSubscription!
   me: User!
   payment_history: PaymentHistoryEdge
 }
 
-type LivestreamTarget {
+type LivestreamTarget @aws_api_key @aws_cognito_user_pools @aws_oidc {
   rtmps: [String!]!
   facebooks: [LivestreamFacebookTarget!]!
 }
@@ -223,7 +215,7 @@ input LivestreamUpdateInput {
   targets: LivestreamTargetInput
 }
 
-type LivestreamVideo {
+type LivestreamVideo @aws_api_key @aws_cognito_user_pools @aws_oidc {
   title: String!
   is_livestream: Boolean!
   video_id: String!
@@ -241,7 +233,7 @@ input LivestreamVideoInput {
 
 scalar Long
 
-type Mutation {
+type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   create_user(price_percent: Int!, email: String!, password: String!, username: String!): UserEdge!
   update_price_for_user(price: ServicePricingInput!, price_percent: Int!, user_id: String!): UserEdge!
   send_money(note: String!, amount: Int!, user_id: String!): SendmoneyResponse!
@@ -263,12 +255,12 @@ type Mutation {
   delete_buff_viewers_video_task(id: ID!): BuffViewersVideoCUDResponse!
 }
 
-type PageInfo {
+type PageInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
   next_token: String
   prev_token: String
 }
 
-type PaymentHistory {
+type PaymentHistory @aws_api_key @aws_cognito_user_pools @aws_oidc {
   id: ID!
   time: Long!
   total: Int!
@@ -279,19 +271,18 @@ type PaymentHistory {
   receiver_id: String
   balance_after: Long!
   note: String!
-  discount: Int!
 }
 
-type PaymentHistoryConnection {
+type PaymentHistoryConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
   edges: [PaymentHistoryEdge!]!
   pageInfo: PageInfo!
 }
 
-type PaymentHistoryEdge {
+type PaymentHistoryEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
   node: PaymentHistory!
 }
 
-type PaymentMethod {
+type PaymentMethod @aws_api_key @aws_cognito_user_pools @aws_oidc {
   name: String!
   owner: String!
   description: String!
@@ -307,7 +298,7 @@ input PaymentMethodInput {
   image_url: String!
 }
 
-type Query {
+type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   me: User!
   pricing: ServicePricing!
   payment_methods: [PaymentMethod!]!
@@ -325,13 +316,13 @@ type Query {
   buff_viewers_video_tasks(after: String, limit: Int): BuffViewersVideoConnection!
 }
 
-type SendmoneyResponse {
+type SendmoneyResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
   payment_history: PaymentHistoryEdge!
   me: User!
   user: UserEdge!
 }
 
-type ServicePricing {
+type ServicePricing @aws_api_key @aws_cognito_user_pools @aws_oidc {
   buff_viewers_livestream: Int!
   vip_viewers_livestream: Int!
   livestream: LivestreamPricing!
@@ -368,7 +359,7 @@ input TableStringFilterInput {
   between: String
 }
 
-type User {
+type User @aws_api_key @aws_cognito_user_pools @aws_oidc {
   username: String!
   email: String!
   facebook_uid: String!
@@ -382,47 +373,46 @@ type User {
   updated_at: Long!
 }
 
-type UserConnection {
+type UserConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
   edges: [UserEdge!]!
   pageInfo: PageInfo!
 }
 
-type UserEdge {
+type UserEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
   cursor: String!
   node: User!
 }
 
-type VIPViewersLivestream {
+type VIPViewersLivestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  user_id: String!
   id: ID!
   active: Boolean!
   amount: Int!
+  bought_mins: Int!
+  used_mins: Int!
   note: String!
   name: String!
+  histories: [VIPViewersLivestreamHistory!]!
   created_time: Long!
   updated_time: Long!
-  end_time: Long!
-  groups: [VipViewersLivestreamGroup!]!
+  auto_disable_after: Float!
+  parallel: Float!
 }
 
-type VIPViewersLivestreamConnection {
+type VIPViewersLivestreamConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
   edges: [VIPViewersLivestreamEdge!]!
   pageInfo: PageInfo!
 }
 
-type VIPViewersLivestreamEdge {
+type VIPViewersLivestreamEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
   node: VIPViewersLivestream!
 }
 
-type VipViewersLivestreamGroup {
-  id: ID!
-  image: String!
-  name: String!
-}
-
-input VipViewersLivestreamGroupInput {
-  id: ID!
-  image: String!
-  name: String!
+type VIPViewersLivestreamHistory @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  id: String!
+  created_time: Float!
+  viewers_count: [Int!]!
+  thumbnail: String!
 }
 
 input VIPViewersLivestreamInput {
@@ -431,8 +421,9 @@ input VIPViewersLivestreamInput {
   note: String!
   amount: Int!
   name: String!
-  days: Int!
-  groups: [VipViewersLivestreamGroupInput!]!
+  auto_disable_after: Int!
+  parallel: Int!
+  bought_mins: Int!
 }
 
 input VIPViewersLivestreamQueryFilters {
@@ -441,7 +432,7 @@ input VIPViewersLivestreamQueryFilters {
   end_time: TableIntFilterInput!
 }
 
-type VipViewersLivestreamTaskCUDResponse {
+type VipViewersLivestreamTaskCUDResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
   vip: VIPViewersLivestreamEdge!
   me: User!
   payment_history: PaymentHistoryEdge
@@ -453,6 +444,7 @@ input VIPViewersLivestreamUpdateInput {
   note: String
   amount: Int
   name: String
-  days: Int
-  groups: [VipViewersLivestreamGroupInput!]
+  auto_disable_after: Int
+  parallel: Int
+  bought_mins: Int
 }

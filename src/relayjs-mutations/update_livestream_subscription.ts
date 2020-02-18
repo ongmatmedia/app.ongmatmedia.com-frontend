@@ -1,7 +1,7 @@
-import { LivestreamSubscriptionInput } from '../schema/Services/Livestream/LivestreamSubscriptionInput';
 import graphql from 'babel-plugin-relay/macro';
 import { RelayEnvironment } from '../configs/relayjs';
 import { commitMutation, ConnectionHandler, RecordProxy } from 'relay-runtime';
+import { LivestreamSubscriptionInput } from '../types';
 
 const mutation = graphql`
   mutation updateLivestreamSubscriptionMutation(

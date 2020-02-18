@@ -1,8 +1,8 @@
 import { commitMutation } from 'react-relay';
 import { ConnectionHandler, RecordProxy } from 'relay-runtime';
-import { RelayEnvironment } from '../configs/relayjs';
-import { VIPViewersLivestreamInput } from '../schema/Services/VIPViewersLivestream/VIPViewersLivestreamInput';
+import { RelayEnvironment } from '../configs/relayjs'; 
 import graphql from 'babel-plugin-relay/macro';
+import { VipViewersLivestreamInput } from '../types';
 
 const mutation = graphql`
   mutation createVipViewersLivestreamMutation($input: VIPViewersLivestreamInput!) {
@@ -12,27 +12,25 @@ const mutation = graphql`
           id
           active
           amount
+          bought_mins
+          used_mins
           note
-          created_time
-          end_time
-          updated_time
           name
-          groups {
-            id
-            name
-            image
-          }
+          created_time
+          updated_time
+          auto_disable_after
+          parallel
         }
       }
       me {
         id
         balance
-      }
+      } 
     }
   }
 `;
 
-export const create_vip_viewers_livestream = async (input: VIPViewersLivestreamInput) => {
+export const create_vip_viewers_livestream = async (input: VipViewersLivestreamInput) => {
   await new Promise((s, r) => {
     commitMutation(RelayEnvironment, {
       mutation,

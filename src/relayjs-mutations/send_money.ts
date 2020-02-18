@@ -1,5 +1,4 @@
 import { commitMutation } from 'react-relay';
-import { ConnectionHandler, RecordProxy } from 'relay-runtime';
 import { RelayEnvironment } from '../configs/relayjs';
 import graphql from 'babel-plugin-relay/macro';
 

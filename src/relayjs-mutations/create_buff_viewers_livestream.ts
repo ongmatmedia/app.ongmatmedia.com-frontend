@@ -1,8 +1,8 @@
 import { commitMutation } from 'react-relay';
 import { ConnectionHandler, RecordProxy } from 'relay-runtime';
 import { RelayEnvironment } from '../configs/relayjs';
-import { BuffViewersLivestreamInput } from '../schema/Services/BuffViewersLivestream/BuffViewersLivestreamInput';
 import graphql from 'babel-plugin-relay/macro';
+import { BuffViewersLivestreamInput } from '../types';
 
 const mutation = graphql`
   mutation createBuffViewersLivestreamMutation($input: BuffViewersLivestreamInput!) {

@@ -1,1 +1,0 @@
-export { PaymentHistoryResolver } from './PaymentHistoryResolver';

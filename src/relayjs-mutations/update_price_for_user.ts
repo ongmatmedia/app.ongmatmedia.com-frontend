@@ -1,7 +1,7 @@
 import { commitMutation } from 'react-relay';
 import { RelayEnvironment } from '../configs/relayjs';
 import graphql from 'babel-plugin-relay/macro';
-import { ServicePricing } from '../schema/User/ServicePricing';
+import { ServicePricing } from '../types';
 
 const mutation = graphql`
   mutation updatePriceForUserMutation(

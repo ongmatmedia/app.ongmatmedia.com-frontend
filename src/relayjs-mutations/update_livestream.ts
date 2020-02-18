@@ -1,7 +1,7 @@
 import { commitMutation } from 'react-relay';
 import { RelayEnvironment } from '../configs/relayjs';
-import { LivestreamUpdateInput } from '../schema/Services/Livestream/LivestreamUpdateInput';
 import graphql from 'babel-plugin-relay/macro';
+import { LivestreamUpdateInput } from '../types';
 
 const mutation = graphql`
   mutation updateLivestreamMutation($task: LivestreamUpdateInput!) {

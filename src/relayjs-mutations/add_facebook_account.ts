@@ -1,7 +1,7 @@
 import { commitMutation } from 'react-relay';
 import { ConnectionHandler, RecordProxy } from 'relay-runtime';
 import { RelayEnvironment } from '../configs/relayjs';
-import { FacebookAccountInput } from '../schema/FacebookAccount/FacebookAccountInput';
+import { FacebookAccountInput } from '../types';
 const graphql = require('babel-plugin-relay/macro');
 
 const mutation = graphql`
