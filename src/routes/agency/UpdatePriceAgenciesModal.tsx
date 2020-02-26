@@ -2,9 +2,9 @@ import { Alert, Modal, Spin, Input, Icon } from 'antd';
 import Form, { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
 import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect';
-import { User } from '../../schema/User/User';
 import { withForm } from '../../containers/Form';
 import { update_price_for_user } from '../../relayjs-mutations/update_price_for_user';
+import { User } from '../../types';
 export type UpdatePriceAgenciesModalProps = {
   visible: boolean;
   onClose: Function;

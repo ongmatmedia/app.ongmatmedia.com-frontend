@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Tooltip, Row, Col } from 'antd';
 import { CreateAgencyModal } from './CreateAgencyModal';
-import { User } from '../../schema/User/User';
-import { UpdatePriceAgenciesModal } from './UpdatePriceAgenciesModal';
+import { User } from '../../types';
 
 interface AgencyActionProps {
   selectedAgencies: Set<User>;

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Slider, Icon, Row, Col, Card, Button, Tag } from 'antd';
-import { LivestreamSubscription } from '../../../schema/Services/Livestream/LivestreamSubscription';
-import { User } from '../../../schema/User/User';
 import { withForm } from '../../../containers/Form';
-import { ServicePricing } from '../../../schema/User/ServicePricing';
 import { update_livestream_subscription } from '../../../relayjs-mutations/update_livestream_subscription';
+import { LivestreamSubscription, User, ServicePricing } from '../../../types';
 
 type UpdateSubscriptionProps = {
   sub: LivestreamSubscription;

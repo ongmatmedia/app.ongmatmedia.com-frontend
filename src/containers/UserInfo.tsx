@@ -1,8 +1,8 @@
 import React, { ReactNode, FunctionComponent } from 'react';
-import { User } from '../schema/User/User';
 import graphql from 'babel-plugin-relay/macro';
 import { QueryRenderer } from 'react-relay';
 import { RelayEnvironment } from '../configs/relayjs';
+import { User } from '../types';
 
 type UserInfoProps = {
   render: (loading: boolean, user: User | null) => ReactNode;
@@ -17,7 +17,6 @@ const query = graphql`
       price_percent
       creator_id
       created_at
-      updated_at
     }
   }
 `;

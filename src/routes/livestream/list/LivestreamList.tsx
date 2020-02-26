@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import graphql from 'babel-plugin-relay/macro';
-import { Livestream } from '../../../schema/Services/Livestream/Livestream';
 import { QueryRenderer } from 'react-relay';
 import { RelayEnvironment } from '../../../configs/relayjs';
 import { List } from 'antd';
 import { LivestreamListItem } from './LivestreamListItem';
 import { LivestreamListItemEdit } from './LivestreamListItemEdit';
 import { delete_livestream } from '../../../relayjs-mutations/delete_livestream';
+import { Livestream } from '../../../types';
 
 const ListLivestreamQuery = graphql`
   query LivestreamListQuery {

@@ -39,7 +39,7 @@
     "start": "react-app-rewired start",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
     "build": "yarn relay && react-app-rewired build; yarn clear-map",
-    "relay": "relay-compiler --src ./src --schema ./src/schema/schema.graphql --language typescript",
+    "relay": "relay-compiler --src ./src --schema ./src/schema.graphql --language typescript",
     "sync:schema": "rsync -r ../server/src/schema/ src/schema/",
     "clear-map": "find ./build -name '*.map' -delete"
   },

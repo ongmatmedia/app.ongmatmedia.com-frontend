@@ -2,7 +2,7 @@ import { Alert, Col, Modal, Row, Tag } from 'antd';
 import React, { useState } from 'react';
 import { AutoSelectInput } from '../../components/AutoSelectInput';
 import { set_user_password } from '../../relayjs-mutations/set_user_password';
-import { User } from '../../schema/User/User';
+import { User } from '../../types';
 
 export interface ResetPassModalProps {
   visible: boolean;

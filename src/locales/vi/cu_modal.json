@@ -12,21 +12,21 @@
     },
     "viewer_amount_select": {
       "title": {
-        "creating": "Số lượng người xem",
+        "creating": "Số lượng mắt xem",
         "editing": "Thay đổi số lượng người xem"
       },
       "rule": "Không để trống",
       "placeholder": "Chọn số lượng người xem",
       "validatingErrorMessage": "Vui lòng chọn số lượng người xem"
     },
-    "subscription_period_select": {
+    "bought_mins": {
       "title": {
-        "creating": "Số ngày gia hạn",
-        "editing": "Gia hạn thêm"
+        "creating": "Tổng số phút mua",
+        "editing": "Mua thêm phút"
       },
       "rule": "Không để trống",
-      "placeholder": "Chọn số ngày đăng ký",
-      "validatingErrorMessage": "Vui lòng chọn số ngày đăng ký"
+      "placeholder": "Chọn tổng số phút",
+      "validatingErrorMessage": "Vui lòng chọn tổng số phút"
     },
     "groups_input": {
       "title": "Nhóm công khai cần tăng mắt",

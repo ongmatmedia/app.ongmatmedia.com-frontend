@@ -1,5 +1,5 @@
 import { API } from './API';
-import { LivestreamFacebookTargetType } from '../schema/Services/Livestream/LivestreamFacebookTargetType';
+import { LivestreamFacebookTargetType } from '../routes/livestream/list/CreateEditLivestreamModal/LivestreamFacebookTargetType';
 
 export type FacebookAccountInfo = {
   user_id: string;

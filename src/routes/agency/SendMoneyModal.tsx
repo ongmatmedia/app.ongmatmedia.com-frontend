@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { User } from '../../schema/User/User';
 import { Modal, Form, Spin, Col, Row, Tag, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { send_money } from '../../relayjs-mutations/send_money';
 import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect';
+import { User } from '../../types';
 export type SendMoneyModalProps = FormComponentProps & {
   visible: boolean;
   user: User;

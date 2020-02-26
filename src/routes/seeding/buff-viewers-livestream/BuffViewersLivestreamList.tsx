@@ -6,8 +6,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Moment from 'react-moment';
 import { GraphQLWrapper } from '../../../containers/GraphQLWrapper';
 import { delete_buff_viewers_livestream } from '../../../relayjs-mutations/delete_buff_viewers_livestream';
-import { BuffViewersLivestream } from '../../../schema/Services/BuffViewersLivestream/BuffViewersLivestream';
-import { BuffViewersLivestreamConnection } from '../../../schema/Services/BuffViewersLivestream/BuffViewersLivestreamConnection';
+import { BuffViewersLivestream, BuffViewersLivestreamConnection } from '../../../types';
 
 const query = graphql`
   query BuffViewersLivestreamListQuery {

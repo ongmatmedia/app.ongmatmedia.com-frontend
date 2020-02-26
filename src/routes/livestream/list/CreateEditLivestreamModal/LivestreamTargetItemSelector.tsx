@@ -4,9 +4,8 @@ import { QueryRenderer } from 'react-relay';
 import graphql from 'babel-plugin-relay/macro';
 import { RelayEnvironment } from '../../../../configs/relayjs';
 import { LivestreamFacebookTargetType } from './LivestreamFacebookTargetType';
-import { FacebookAccountConnection } from '../../../../schema/FacebookAccount/FacebookAccountConnection';
-import { FacebookAccount } from '../../../../schema/FacebookAccount/FacebookAccount';
 import { FacebookGraphAPI } from '../../../../api/FacebookGraphAPI';
+import { FacebookAccount, FacebookAccountConnection } from '../../../../types';
 
 const getAccountsQuery = graphql`
   query LivestreamTargetItemSelectorQuery {

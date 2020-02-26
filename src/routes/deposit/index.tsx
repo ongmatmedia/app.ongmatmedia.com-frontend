@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Card, List, Avatar, Icon, Tooltip, Row, Col, Spin, Divider, message } from 'antd';
 import { GraphQLWrapper } from '../../containers/GraphQLWrapper';
-import { PaymentMethod } from '../../schema/User/PaymentMethod';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { PaymentInfoModal } from './PaymentInfoModal';
+import { PaymentMethod } from '../../types';
 
 const graphql = require('babel-plugin-relay/macro');
 

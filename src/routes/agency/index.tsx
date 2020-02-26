@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, Col, Row } from 'antd';
-import { AgencyAction } from './AgencyAction';
 import { AgencyList } from './AgencyList';
 
 export const AgencyPage = () => (

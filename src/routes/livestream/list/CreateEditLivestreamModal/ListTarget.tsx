@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { LivestreamTarget } from '../../../../schema/Services/Livestream/LivestreamTarget';
 import { useState } from 'react';
 import { Card, Avatar, Col, Row, Button, Input, Icon, Alert } from 'antd';
 import { LivestreamTargetItemSelector } from './LivestreamTargetItemSelector';
 import { LivestreamFacebookTargetType } from './LivestreamFacebookTargetType';
 import { ListTargetItem } from './ListTargetItem';
+import { LivestreamTarget } from '../../../../types';
 
 export const ListTarget = (((props: { value: LivestreamTarget; onChange: Function }) => {
   const [mode, set_mode] = useState<null | LivestreamFacebookTargetType>(null);
@@ -73,7 +73,7 @@ export const ListTarget = (((props: { value: LivestreamTarget; onChange: Functio
           }}
         >
           <ListTargetItem
-            list={props.value.facebooks.filter(a => a.type == t)}
+            list={props.value.facebooks.filter(a => true)}
             onRemove={uid => un_select(uid)}
             type={t}
           />
@@ -81,7 +81,7 @@ export const ListTarget = (((props: { value: LivestreamTarget; onChange: Functio
           {mode == t ? (
             <LivestreamTargetItemSelector
               type={t}
-              selected={props.value.facebooks.filter(a => a.type == t).map(p => p.uid)}
+              selected={props.value.facebooks.filter(a => true).map(p => p.uid)}
               onSelect={(uid: string, name: string, owner?: string) => select(uid, name, t, owner)}
               onClose={() => set_mode(null)}
             />

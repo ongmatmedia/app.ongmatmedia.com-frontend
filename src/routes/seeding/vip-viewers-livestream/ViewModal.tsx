@@ -12,13 +12,13 @@ import {
   Tooltip,
   Spin,
 } from 'antd';
-import { VIPViewersLivestream } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestream';
 import Moment from 'react-moment';
+import { VipViewersLivestream } from '../../../types';
 
 export type ViewModalProps = {
   onClose: Function;
   onClick: (video_id: string) => any;
-  person: VIPViewersLivestream;
+  person: VipViewersLivestream
 };
 
 interface VideoProps {
@@ -77,37 +77,37 @@ const ListVideos = (props: { dataSource: VideoProps[]; onClick: Function }) => (
     renderItem={({
       video: { status, thumbnail, title, current_viewers, description, video_id },
     }) => (
-      <List.Item
-        actions={[
-          status === 'loading' ? (
-            <Icon type="loading" style={{ fontSize: 25 }} />
-          ) : status === 'paused' ? (
-            <Tooltip placement="top" title="Click to play">
-              <Icon
-                type="pause-circle"
-                style={{ fontSize: 25 }}
-                onClick={() => props.onClick(video_id)}
-              />
-            </Tooltip>
-          ) : (
-            <Tooltip placement="top" title="Click to pause">
-              <Icon
-                type="play-circle"
-                style={{ fontSize: 25 }}
-                onClick={() => props.onClick(video_id)}
-              />
-            </Tooltip>
-          ),
-        ]}
-      >
-        <List.Item.Meta
-          avatar={<Avatar src={thumbnail} />}
-          title={title}
-          description={description}
-        />
-        <div>{current_viewers}</div>
-      </List.Item>
-    )}
+        <List.Item
+          actions={[
+            status === 'loading' ? (
+              <Icon type="loading" style={{ fontSize: 25 }} />
+            ) : status === 'paused' ? (
+              <Tooltip placement="top" title="Click to play">
+                <Icon
+                  type="pause-circle"
+                  style={{ fontSize: 25 }}
+                  onClick={() => props.onClick(video_id)}
+                />
+              </Tooltip>
+            ) : (
+                  <Tooltip placement="top" title="Click to pause">
+                    <Icon
+                      type="play-circle"
+                      style={{ fontSize: 25 }}
+                      onClick={() => props.onClick(video_id)}
+                    />
+                  </Tooltip>
+                ),
+          ]}
+        >
+          <List.Item.Meta
+            avatar={<Avatar src={thumbnail} />}
+            title={title}
+            description={description}
+          />
+          <div>{current_viewers}</div>
+        </List.Item>
+      )}
   />
 );
 
@@ -141,7 +141,7 @@ export const ViewModal = (props: ViewModalProps) => {
           <TextCustom
             content={<Moment format="DD/MM/YYYY H:mm">{props.person.created_time}</Moment>}
           />
-          <TextCustom content={<Moment format="DD/MM/YYYY H:mm">{props.person.end_time}</Moment>} />
+          <TextCustom content={<Moment format="DD/MM/YYYY H:mm">{Date.now()}</Moment>} />
           <TextCustom content={props.person.amount} />
         </Col>
       </Row>
@@ -153,8 +153,8 @@ export const ViewModal = (props: ViewModalProps) => {
           </Col>
         </Row>
       ) : (
-        <Row>{videosArray && <ListVideos dataSource={videosArray} onClick={props.onClick} />}</Row>
-      )}
+          <Row>{videosArray && <ListVideos dataSource={videosArray} onClick={props.onClick} />}</Row>
+        )}
     </Modal>
   );
 };

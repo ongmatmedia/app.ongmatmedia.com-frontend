@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { Table, Tag, Row, Col, Button, message, Icon } from 'antd';
-import { PaymentHistory } from '../../schema/PaymentHistory/PaymentHistory';
 import Moment from 'react-moment';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { PaymentHistory } from '../../types';
 
 export type PaymentListProps = {
   onLoadMore: Function;

@@ -1,10 +1,8 @@
-import React, { FormEvent, useState } from 'react';
-import { Button, Checkbox, Form, Icon, Input, message, Layout, Alert, notification } from 'antd';
+import React, { useState } from 'react';
+import { Button, Form, Input, Alert } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
-import { Component, Props } from 'react';
 import { FormComponentProps } from 'antd/lib/form';
 import { Auth } from 'aws-amplify';
-import { CognitoUser } from '@aws-amplify/auth';
 import { RouterProps, withRouter } from 'react-router';
 
 interface SetNewPasswordPageState {

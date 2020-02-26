@@ -18,10 +18,10 @@ import React, { useState } from 'react';
 import { withForm } from '../../../containers/Form';
 import { GraphQLWrapper } from '../../../containers/GraphQLWrapper';
 import { create_buff_viewers_livestream } from '../../../relayjs-mutations/create_buff_viewers_livestream';
-import { User } from '../../../schema/User/User';
 import { VideoInput } from './VideoInput';
 import { useTranslation } from 'react-i18next';
 import { Dollar } from '../../../components/Dollar'
+import { User } from '../../../types';
 
 const query = graphql`
   query BuffViewersLivestreamCreateModalQuery {

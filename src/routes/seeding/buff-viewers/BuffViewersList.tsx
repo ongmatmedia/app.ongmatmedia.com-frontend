@@ -4,7 +4,7 @@ import React from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import Moment from 'react-moment';
 import { delete_buff_viewers_livestream } from '../../../relayjs-mutations/delete_buff_viewers_livestream';
-import { BuffViewersLivestream } from '../../../schema/Services/BuffViewersLivestream/BuffViewersLivestream';
+import { BuffViewersLivestream } from '../../../types';
 
 interface BuffViewersData {
   uid: string;

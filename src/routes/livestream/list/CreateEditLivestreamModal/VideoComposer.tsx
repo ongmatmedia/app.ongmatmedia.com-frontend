@@ -1,7 +1,7 @@
 import React, { useState, createRef } from 'react';
 import { Row, Col, Input, Icon, Avatar, Alert, Button } from 'antd';
-import { LivestreamVideo } from '../../../../schema/Services/Livestream/LivestreamVideo';
 import { Video } from '../../../../api/Video';
+import { LivestreamVideo } from '../../../../types';
 
 export const VideoComposer = ((props: {
   value: LivestreamVideo[];

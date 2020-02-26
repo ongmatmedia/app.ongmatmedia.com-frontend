@@ -1,6 +1,6 @@
 import { API } from './API';
+import { LivestreamVideo } from '../types';
 
-import { LivestreamVideo } from '../schema/Services/Livestream/LivestreamVideo';
 
 export class Video {
   static async getVideoInfo(

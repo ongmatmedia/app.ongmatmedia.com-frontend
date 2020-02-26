@@ -1,8 +1,8 @@
 import React from 'react';
-import { Livestream } from '../../../schema/Services/Livestream/Livestream';
 import { Avatar, Icon, Card, Popconfirm } from 'antd';
 import Meta from 'antd/lib/card/Meta';
 import Moment from 'react-moment';
+import { Livestream } from '../../../types';
 
 export type LivestreamListItem = {
   live: Livestream;
@@ -63,7 +63,7 @@ export const LivestreamListItem = (props: LivestreamListItem) => (
           )}
 
           <span>
-            <Moment format="DD/MM/YYYY H:mm">{new Date(props.live.time) as any}</Moment>
+            <Moment format="DD/MM/YYYY H:mm">{new Date() as any}</Moment>
           </span>
         </span>
       }

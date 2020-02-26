@@ -2,13 +2,12 @@ import { Avatar } from '@material-ui/core';
 import { Card, Col, Icon, List, Row, Spin, Tag, Tooltip } from 'antd';
 import React, { Fragment, useState } from 'react';
 import { GraphQLWrapper } from '../../containers/GraphQLWrapper';
-import { User } from '../../schema/User/User';
-import { UserConnection } from '../../schema/User/UserConnection';
 import { AgencyAction } from './AgencyAction';
 import { ResetPass } from './ResetPass';
 import { SendMoneyModal } from './SendMoneyModal';
 import { UpdatePriceAgenciesModal } from './UpdatePriceAgenciesModal';
 import graphql from 'babel-plugin-relay/macro';
+import { UserConnection, User } from '../../types';
 
 const query = graphql`
   query AgencyListQuery {

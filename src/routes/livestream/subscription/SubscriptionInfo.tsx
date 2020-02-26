@@ -1,6 +1,6 @@
 import React from 'react';
-import { LivestreamSubscription } from '../../../schema/Services/Livestream/LivestreamSubscription';
 import { Card, Row, Col, Avatar } from 'antd';
+import { LivestreamSubscription } from '../../../types';
 
 type SubscriptionInfoProps = {
   sub: LivestreamSubscription | null;

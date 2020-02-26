@@ -19,14 +19,14 @@
       "placeholder": "Click to select viewers amount when livestream",
       "validatingErrorMessage": "Select amount"
     },
-    "subscription_period_select": {
+    "bought_mins": {
       "title": {
-        "creating": "Subscription period",
-        "editing": "Extend subscription period"
+        "creating": "Total duration",
+        "editing": "Buy more duration"
       },
       "rule": "Require",
-      "placeholder": "Click to select subscription period",
-      "validatingErrorMessage": "Select period"
+      "placeholder": "Click to select",
+      "validatingErrorMessage": "Please select one"
     },
     "groups_input": {
       "title": "Groups",

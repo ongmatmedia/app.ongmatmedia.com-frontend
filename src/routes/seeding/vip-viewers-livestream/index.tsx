@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { VipViewersLivestreamAction } from './VipViewersLivestreamAction';
 import { Card } from 'antd';
 import { VipViewersLivestreamList } from './VipViewersLivestreamList';
-import { VipViewersLivestreamReport } from './VipViewersLivestreamReport';
 import { useTranslation } from 'react-i18next';
 
 export const VipViewersLivestream = () => {

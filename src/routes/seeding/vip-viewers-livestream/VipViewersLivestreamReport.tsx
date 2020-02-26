@@ -1,8 +1,8 @@
 import { Col, Icon, Row } from 'antd';
 import React from 'react';
 import { StatictisCustom } from '../../../components/StatictisCustom';
-import { VIPViewersLivestream } from '../../../schema/Services/VIPViewersLivestream/VIPViewersLivestream';
 import { useTranslation } from 'react-i18next';
+import { VipViewersLivestream } from '../../../types';
 
 export type VipViewersLivestreamReportStatusFilter =
   | 'all'
@@ -11,7 +11,7 @@ export type VipViewersLivestreamReportStatusFilter =
   | 'exprised';
 
 export type VipViewersLivestreamReportProps = {
-  vips: VIPViewersLivestream[];
+  vips: VipViewersLivestream[];
   filter: VipViewersLivestreamReportStatusFilter;
   on_change: (status: VipViewersLivestreamReportStatusFilter) => any;
 };
@@ -26,14 +26,7 @@ export const VipViewersLivestreamReport = (props: VipViewersLivestreamReportProp
 
   totalIds = props.vips.length;
   for (const node of props.vips) {
-    if (Date.now() < node.end_time && node.end_time < Date.now() + 5 * 24 * 3600 * 1000) {
-      willExpireTotalIds++;
-      continue;
-    }
-    if (node.end_time < Date.now()) {
-      expiredTotalIds++;
-    }
-    if (node.end_time > Date.now()) active++;
+
   }
 
   return (

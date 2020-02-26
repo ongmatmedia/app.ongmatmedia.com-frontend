@@ -3,14 +3,12 @@ import { Table, Row, Col, Button, Card } from 'antd';
 import { graphql } from 'babel-plugin-relay/macro';
 import { PaymentList } from './PaymentList';
 import { SmartGrahQLQueryRenderer } from '../../containers/GraphQLWrapper';
-import { PaymentHistoryConnection } from '../../schema/PaymentHistory/PaymentHistoryConnection';
 import MomentUtils from '@date-io/moment';
 const { DateTimePicker } = require('@material-ui/pickers') as any;
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { PaymentListAction } from './PaymentListAction';
-import { PaymentHistory } from '../../schema/PaymentHistory/PaymentHistory';
-import { PageInfo } from '../../schema/PageInfo';
 import { GraphqlQuery } from '../../helpers/Relayjs';
+import { PaymentHistory, PaymentHistoryConnection } from '../../types';
 
 const query = graphql`
   query paymentsQuery($after: String, $before_time: Long) {
@@ -58,7 +56,7 @@ export const Payments = () => {
         ...(clear ? [] : payment_histories),
         ...data.payment_histories.edges.map(e => e.node),
       ]);
-      set_next_page_token(data.payment_histories.pageInfo.next_token);
+      data.payment_histories.pageInfo.next_token && set_next_page_token(data.payment_histories.pageInfo.next_token);
     } catch (e) {
       console.log(e);
     }

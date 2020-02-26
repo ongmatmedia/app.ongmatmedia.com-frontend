@@ -2,11 +2,10 @@ import React from 'react';
 import graphql from 'babel-plugin-relay/macro';
 import { UpdateSubscription } from './UpdateSubscription';
 import { SubscriptionInfo } from './SubscriptionInfo';
-import { LivestreamSubscription } from '../../../schema/Services/Livestream/LivestreamSubscription';
 import { GraphQLWrapper } from '../../../containers/GraphQLWrapper';
 import { UserInfo } from '../../../containers/UserInfo';
 import { Spin } from 'antd';
-import { ServicePricing } from '../../../schema/User/ServicePricing';
+import { ServicePricing, LivestreamSubscription } from '../../../types';
 
 const query = graphql`
   query SubscriptionViewQuery {

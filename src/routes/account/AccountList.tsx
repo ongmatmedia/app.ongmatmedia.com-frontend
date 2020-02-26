@@ -2,8 +2,8 @@ import React from 'react';
 import { List, Card, Row, Col, Icon, Avatar, Popover, Popconfirm } from 'antd';
 import { QueryRenderer } from 'react-relay';
 import { RelayEnvironment } from '../../configs/relayjs';
-import { FacebookAccount } from '../../schema/FacebookAccount/FacebookAccount';
 import { delete_facebook_account } from '../../relayjs-mutations/delete_facebook_account';
+import { FacebookAccount } from '../../types';
 const graphql = require('babel-plugin-relay/macro');
 
 export const AccountListComponent = (props: { loading: boolean; accounts: FacebookAccount[] }) => (

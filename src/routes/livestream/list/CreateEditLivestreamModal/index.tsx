@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Form, Input, Radio, Spin, Switch, Select, Alert } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { ListTarget } from './ListTarget';
-import { LivestreamTarget } from '../../../../schema/Services/Livestream/LivestreamTarget';
-import { Livestream } from '../../../../schema/Services/Livestream/Livestream';
 import { DateTimePicker } from './DateTimePicker';
 import { VideoComposer } from './VideoComposer';
 import { create_livestream } from '../../../../relayjs-mutations/create_livestream';
 import { update_livestream } from '../../../../relayjs-mutations/update_livestream';
+import { Livestream, LivestreamTarget } from '../../../../types';
 
 export type CreateLivestreamModalProps = FormComponentProps & {
   mode: 'create' | 'update';
