@@ -1,11 +1,10 @@
+import { Avatar, Card, Icon, List, Tag } from 'antd';
+import graphql from 'babel-plugin-relay/macro';
 import React from 'react';
-import { Card, Icon, Avatar, List, Tag } from 'antd';
-import { height } from '@material-ui/system';
-import { Link } from 'react-router-dom';
-import graphql from 'babel-plugin-relay/macro'; 
 import { useTranslation } from 'react-i18next';
-import { User } from '../../types';
+import { Link } from 'react-router-dom';
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper';
+import { User } from '../../types';
 
 type SeedingService = {
   name: string;
