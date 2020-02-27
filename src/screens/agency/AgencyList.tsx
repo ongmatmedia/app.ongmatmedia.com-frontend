@@ -143,7 +143,7 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection; me: User }>(
                         style={{ cursor: 'pointer' }}
                       >
                         <Col style={{ paddingRight: 5 }}>
-                          <Avatar>{item.username.substring(0, 1)}</Avatar>
+                          {/* <Avatar>{item.username.substring(0, 1)}</Avatar> */}
                         </Col>
                         <Col>{item.username}</Col>
                       </Row>

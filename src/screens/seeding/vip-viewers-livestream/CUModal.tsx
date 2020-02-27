@@ -24,12 +24,13 @@ import Moment from 'react-moment';
 import {
   FacebookObjectInput,
   LivestreamFacebookTargetType,
-} from '../../../components/FacebookObjectInput';  
+} from '../../../components/FacebookObjectInput';
 import { VipViewersLivestream, User } from '../../../types';
 import { create_vip_viewers_livestream } from '../../../graphql/create_vip_viewers_livestream';
 import { update_vip_viewers_livestream } from '../../../graphql/update_vip_viewers_livestream';
 import { withForm } from '../../../libs/Form';
 import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper';
+import { FormElement } from '../../../components/form/FormElement'
 
 
 const query = graphql`
@@ -123,6 +124,8 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
         </AntdForm.Item>
       )
     }) as JSX.Element
+
+    const { FormField } = props.form
 
     // let OrderInfoCard: any = null;
     // let CancelVipSubscription: any = null;
@@ -461,7 +464,16 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
     //               Modal.confirm({
     //                 title: 'Do you want to cancel this VIP subscription?',
     //                 content: CancelVipSubscriptionConfirm,
-    //                 onOk: cancel_vip_subscription,
+    //                 <FormField<boolean>
+    //   name="active"
+    //   initalValue={props.vip ? props.vip.active : true}
+    //   render={p => (
+    //     <Switch
+    //       defaultChecked={p.value}
+    //       onChange={checked => p.setValue(checked)}
+    //     />
+    //   )}
+    // />onOk: cancel_vip_subscription,
     //               })
     //             }
     //           >
@@ -485,6 +497,20 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
       >
         <Spin spinning={props.loading}>
           <AntdForm>
+
+            <FormField<boolean>
+              name="active"
+              validator={value => ''}
+              initalValue={props.vip ? props.vip.active : true}
+              render={p => <FormElement
+                label="Ahhihi"
+                icon="eye"
+              />}
+            />
+
+
+
+
             {error && <Alert type="error" message={error} />}
             {props.mode == 'update' &&
               props.form.field<boolean>({
@@ -624,6 +650,9 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
                 </AntdForm.Item>
               ),
             })}
+
+
+
             {props.form.field<number>({
               name: 'amount',
               require:

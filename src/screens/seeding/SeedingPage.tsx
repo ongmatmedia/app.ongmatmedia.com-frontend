@@ -1,6 +1,9 @@
 import { Avatar, Card, Icon, List, Tag } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import React from 'react';
+import { Card, Icon, Avatar, List, Tag } from 'antd';
+import { Link } from 'react-router-dom';
+import graphql from 'babel-plugin-relay/macro'; 
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper';
