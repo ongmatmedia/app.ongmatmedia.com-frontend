@@ -14,10 +14,6 @@ export const MainLayout = ({ Content, Menu }: MainLayoutProps) => {
       <Header />
       <Layout
         style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'stretch',
         }}
       >
         <Layout style={{ flex: 1, padding: 10 }}>
