@@ -1,4 +1,3 @@
-import { Avatar } from '@material-ui/core';
 import { Card, Col, Icon, List, Row, Spin, Tag, Tooltip } from 'antd';
 import React, { Fragment, useState } from 'react';
 import { AgencyAction } from './AgencyAction';
@@ -144,7 +143,7 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection; me: User }>(
                         style={{ cursor: 'pointer' }}
                       >
                         <Col style={{ paddingRight: 5 }}>
-                          <Avatar>{item.username.substring(0, 1)}</Avatar>
+                          {/* <Avatar>{item.username.substring(0, 1)}</Avatar> */}
                         </Col>
                         <Col>{item.username}</Col>
                       </Row>

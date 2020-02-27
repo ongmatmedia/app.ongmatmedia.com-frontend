@@ -1,6 +1,5 @@
 import React from 'react';
 import { Card, Icon, Avatar, List, Tag } from 'antd';
-import { height } from '@material-ui/system';
 import { Link } from 'react-router-dom';
 import graphql from 'babel-plugin-relay/macro'; 
 import { useTranslation } from 'react-i18next';

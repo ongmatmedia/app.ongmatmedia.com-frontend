@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/node": "^13.7.6",
     "antd": "3.19.6",
     "aws-amplify": "1.1.29",
     "i18next": "^19.0.2",
