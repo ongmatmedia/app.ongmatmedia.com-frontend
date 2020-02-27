@@ -30,6 +30,7 @@ import { create_vip_viewers_livestream } from '../../../graphql/create_vip_viewe
 import { update_vip_viewers_livestream } from '../../../graphql/update_vip_viewers_livestream';
 import { withForm } from '../../../libs/Form';
 import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper';
+import { FormElement } from '../../../components/form/FormElement'
 
 
 const query = graphql`
@@ -463,7 +464,16 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
     //               Modal.confirm({
     //                 title: 'Do you want to cancel this VIP subscription?',
     //                 content: CancelVipSubscriptionConfirm,
-    //                 onOk: cancel_vip_subscription,
+    //                 <FormField<boolean>
+    //   name="active"
+    //   initalValue={props.vip ? props.vip.active : true}
+    //   render={p => (
+    //     <Switch
+    //       defaultChecked={p.value}
+    //       onChange={checked => p.setValue(checked)}
+    //     />
+    //   )}
+    // />onOk: cancel_vip_subscription,
     //               })
     //             }
     //           >
@@ -487,11 +497,19 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
       >
         <Spin spinning={props.loading}>
           <AntdForm>
-            
-            <FormField
-              name="ahihi"
-              render={data => <span></span>}
+
+            <FormField<boolean>
+              name="active"
+              validator={value => ''}
+              initalValue={props.vip ? props.vip.active : true}
+              render={p => <FormElement
+                label="Ahhihi"
+                icon="eye"
+              />}
             />
+
+
+
 
             {error && <Alert type="error" message={error} />}
             {props.mode == 'update' &&
