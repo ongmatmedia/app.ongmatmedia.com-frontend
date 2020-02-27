@@ -7,42 +7,38 @@ export enum LivestreamFacebookTargetType {
   page = 'page',
 }
 
-export type FacebookObjectInputProps = {
+export type VideoInputProps = {
   onSelect: (obj: {
     name: string;
     id: string;
     image: string;
+    uid: string;
     type: LivestreamFacebookTargetType;
   }) => any;
   onError?: Function;
   placeholder?: string;
-  defaultValue?: string;
 };
 
-export const FacebookObjectInput = (props: FacebookObjectInputProps) => {
+export const VideoInput = (props: VideoInputProps) => {
   const [loading, set_loading] = useState<boolean>(false);
-  const [value, set_value] = useState<string>(props.defaultValue || '');
+  const [value, set_value] = useState<string>('');
 
   const submit = async () => {
     set_loading(true);
     try {
-      const { name, type, uid: id } = {name:'Ba', type: LivestreamFacebookTargetType.profile, uid:'124'}
-      props.onSelect({
-        image:
-          type != 'group'
-            ? `http://graph.facebook.com/${id}/picture?type=large`
-            : 'https://leadershiproundtable.org/wp-content/uploads/2015/09/group-1824145_1280.png',
-        name,
-        id,
-        type,
-      });
-      set_loading(false);
-      set_value('');
+      // const { title, owner_id, owner_name, video_id } = await FacebookVideo.getVideoInfo(value);
+      // props.onSelect({
+      //   image: `http://graph.facebook.com/${owner_id}/picture?type=large`,
+      //   name: `${owner_name} - ${title}`,
+      //   uid: owner_id,
+      //   id: video_id,
+      //   type: LivestreamFacebookTargetType.profile,
+      // });
+      // set_value('');
     } catch (e) {
-      set_loading(false);
-      set_value('');
       props.onError && props.onError();
     }
+    set_loading(false);
   };
 
   return (
