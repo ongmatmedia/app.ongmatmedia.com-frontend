@@ -24,7 +24,7 @@ import Moment from 'react-moment';
 import {
   FacebookObjectInput,
   LivestreamFacebookTargetType,
-} from '../../../components/FacebookObjectInput';  
+} from '../../../components/FacebookObjectInput';
 import { VipViewersLivestream, User } from '../../../types';
 import { create_vip_viewers_livestream } from '../../../graphql/create_vip_viewers_livestream';
 import { update_vip_viewers_livestream } from '../../../graphql/update_vip_viewers_livestream';
@@ -123,6 +123,8 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
         </AntdForm.Item>
       )
     }) as JSX.Element
+
+    const { FormField } = props.form
 
     // let OrderInfoCard: any = null;
     // let CancelVipSubscription: any = null;
@@ -485,6 +487,12 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
       >
         <Spin spinning={props.loading}>
           <AntdForm>
+            
+            <FormField
+              name="ahihi"
+              render={data => <span></span>}
+            />
+
             {error && <Alert type="error" message={error} />}
             {props.mode == 'update' &&
               props.form.field<boolean>({
@@ -624,6 +632,9 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
                 </AntdForm.Item>
               ),
             })}
+
+
+
             {props.form.field<number>({
               name: 'amount',
               require:

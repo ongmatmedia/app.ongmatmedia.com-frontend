@@ -13,10 +13,12 @@ export type FormRenderProps<T> = {
 };
 
 type FormFieldParams<T> = {
-  name: string;
-  initalValue?: T;
-  render?: (config: FormRenderProps<T>) => JSX.Element | null | false;
-  require?: string;
+  visible?: boolean
+  ignore?: boolean
+  name: string
+  initalValue?: T
+  render: (config: FormRenderProps<T>) => JSX.Element
+  require?: string
   validator?: (value: T) => string | void;
 };
 
@@ -48,7 +50,20 @@ export class Form {
     for (const key in data) this.data[name] = data[key];
   }
 
-  field<T>({ name, render, require, validator, initalValue }: FormFieldParams<T>) {
+  FormField<T>(props: FormFieldParams<T>) {
+    return this.field(props)
+  }
+
+  field<T>({ name, render, require, validator, initalValue, ignore, visible }: FormFieldParams<T>) {
+    if (ignore){
+      delete this.data[name]
+      this.defaultValues.delete(name)
+      this.require_fields.delete(name)
+      this.validators.delete(name)
+      this.errors.delete(name)
+      return null
+    }
+
     if (initalValue != undefined) {
       this.data[name] == undefined && (this.data[name] = initalValue);
       this.defaultValues.set(name, initalValue);
@@ -77,25 +92,24 @@ export class Form {
       this.errors.delete(key);
     };
 
-    return (
-      render &&
-      render({
-        error: this.errors.get(name),
-        loading: this.isLoading.get(name) == true,
-        setValues: (data, exclude_check_keys: string[] = []) => {
-          for (let key in data) setValue(key, data[key], !exclude_check_keys.includes(key));
-        },
-        setValue: (value: T) => setValue(name, value),
-        set_touched: () => {
-          if (this.data[name] == undefined && this.require_fields.has(name)) {
-            this.errors.set(name, this.require_fields.get(name) as string);
-          }
-          this.isTouched.set(name, true);
-        },
-        touched: this.isTouched.get(name) == true,
-        value: this.data[name],
-      })
-    );
+    if (!visible) return null
+
+    return render({
+      error: this.errors.get(name),
+      loading: this.isLoading.get(name) == true,
+      setValues: (data, exclude_check_keys: string[] = []) => {
+        for (let key in data) setValue(key, data[key], !exclude_check_keys.includes(key));
+      },
+      setValue: (value: T) => setValue(name, value),
+      set_touched: () => {
+        if (this.data[name] == undefined && this.require_fields.has(name)) {
+          this.errors.set(name, this.require_fields.get(name) as string);
+        }
+        this.isTouched.set(name, true);
+      },
+      touched: this.isTouched.get(name) == true,
+      value: this.data[name],
+    })
   }
 
   submit(ok: Function) {
