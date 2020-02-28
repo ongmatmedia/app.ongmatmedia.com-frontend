@@ -10,7 +10,7 @@ export type FormItemProps = PropsWithChildren<{
 }>
 
 export const FormElement = (props: FormItemProps) => (
-    <Row style={{ marginBottom: 20 }}>
+    <Row style={{ marginBottom: 40 }}>
         <Row type="flex" justify="space-between" align="middle">
             <Col>
                 <h3>

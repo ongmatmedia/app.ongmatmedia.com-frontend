@@ -24,10 +24,10 @@ import Moment from 'react-moment';
 import {
   FacebookAccountInput,
 } from '../../../components/FacebookAccountInput';
-import { VipViewersLivestream, User } from '../../../types';
+import { VipViewersLivestream, User, FacebookAccount } from '../../../types';
 import { create_vip_viewers_livestream } from '../../../graphql/create_vip_viewers_livestream';
 import { update_vip_viewers_livestream } from '../../../graphql/update_vip_viewers_livestream';
-import { withForm } from '../../../libs/Form';
+import { withForm, FormFieldParams } from '../../../libs/Form';
 import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper';
 import { FormElement } from '../../../components/form/FormElement'
 
@@ -107,78 +107,110 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
       }
     });
 
-    const { FormField } = props.form
 
+    const amounts_list = new Array(50).fill(0).map((_, index) => (index + 1) * 100)
+    const mins_list = new Array(100).fill(0).map((_, index) => (index + 1) * 30)
 
 
     return (
       <Modal
         visible={true}
         onOk={() => submit()}
-        onCancel={() => props.onClose()}
+        onCancel={() => (props.onClose(), props.form.reset())}
         destroyOnClose
         closable={false}
         okButtonProps={{ loading }}
         title={props.mode == 'create' ? t('title.creating') : t('title.editing')}
       >
         <Spin spinning={props.loading}>
-
-          <FormField<string>
-            name="id"
-            initalValue={props.vip && props.vip.id}
-            require="Require"
-            render={p => (
-              <FormElement
-                icon="user"
-                label={t('form.facebook_object_input.title')}
-                require
-                error={p.error}
-              >
-                <FacebookAccountInput />
+          {props.form.field<{ id: string, name: string }>({
+            name: 'id',
+            initalValue: props.vip,
+            render: _ => (
+              <FormElement icon="user" label={t('form.facebook_object_input.title')} require error={_.error}   >
+                <FacebookAccountInput account={_.value} onChange={_.setValues} />
               </FormElement>
             )
-            }
-          />
+          })}
 
           {
             props.form.field({
-              name: "ba",
-              render: p => (
-                <FormElement
-                  icon="eye"
-                  label="Amount"
-                  require
-                >
-                  <Select onChange={p.setValue} style={{ width: '100%' }} size="large" value={p.value} >
-                    {new Array(50).fill(0).map((v, index) => (index + 1) * 100).map(amount => (
-                      <Select.Option value={amount}>
-                        {amount} {props.vip && props.vip.amount == amount && ' ** (not change)'}
-                      </Select.Option>
-                    ))}
+              name: "amount",
+              initalValue: props.vip?.amount || 100,
+              render: _ => (
+                <FormElement icon="eye" label="Amount" require error={_.error}   >
+                  <Select value={_.value} style={{ width: '100%' }} onChange={_.setValue}>
+                    {
+                      amounts_list.map(amount => <Select.Option value={amount}>{amount}</Select.Option>)
+                    }
                   </Select>
                 </FormElement>
               )
             })
           }
 
-          <FormField<number>
-            name="v"
-            initalValue={props.vip ? props.vip.amount : 100}
-            require="Require"
-            render={p => <FormElement
-              icon="eye"
-              label="Amount"
-              require
-            >
-              <Select onChange={p.setValue} style={{ width: '100%' }} size="large" value={p.value} >
-                {new Array(50).fill(0).map((v, index) => (index + 1) * 100).map(amount => (
-                  <Select.Option value={amount}>
-                    {amount} {props.vip && props.vip.amount == amount && ' ** (not change)'}
-                  </Select.Option>
-                ))}
-              </Select>
-            </FormElement>}
-          />
+          {
+            props.form.field({
+              name: "bought_mins",
+              initalValue: props.vip?.bought_mins || 30,
+              render: _ => (
+                <FormElement icon="clock-circle" label="Bought mins" require error={_.error}   >
+                  <Select value={_.value} style={{ width: '100%' }} onChange={_.setValue}>
+                    {
+                      mins_list.map(min => <Select.Option value={min}>{min}</Select.Option>)
+                    }
+                  </Select>
+                </FormElement>
+              )
+            })
+          }
+
+          {
+            props.form.field({
+              name: "Parallel",
+              initalValue: props.vip?.parallel || 1,
+              render: _ => (
+                <FormElement icon="menu" label="Parallel" require error={_.error}   >
+                  <Select value={_.value} style={{ width: '100%' }} onChange={_.setValue}>
+                    {
+                      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(min => <Select.Option value={min}>{min}</Select.Option>)
+                    }
+                  </Select>
+                </FormElement>
+              )
+            })
+          }
+
+          {
+            props.form.field<number>({
+              name: "auto_disable_after",
+              initalValue: props.vip?.auto_disable_after || -1,
+              render: _ => (
+                <FormElement icon="pause-circle" label="Auto disable after" require error={_.error}   >
+                  <Select value={_.value} style={{ width: '100%' }} onChange={_.setValue}>
+                    <Select.Option value={-1}>Unlimited</Select.Option>
+                    {
+                      [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(min => <Select.Option value={min}>{min}</Select.Option>)
+                    }
+                  </Select>
+                </FormElement>
+              )
+            })
+          }
+
+          {
+            props.form.field<string>({
+              name: "edit",
+              require: 'Require',
+              initalValue: props.vip?.note,
+              render: _ => (
+                <FormElement icon="edit" label="Note" require error={_.error}   >
+                  <Input size="large" onChange={e => _.setValue(e.target.value)} value={_.value} />
+                </FormElement>
+              )
+            })
+          }
+
 
 
         </Spin>

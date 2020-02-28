@@ -12,7 +12,7 @@ export type FormRenderProps<T> = {
   setValues: (data: { [key: string]: any }, exclude_check_keys?: string[]) => void;
 };
 
-type FormFieldParams<T> = {
+export type FormFieldParams<T> = {
   visible?: boolean
   ignore?: boolean
   name: string
@@ -51,7 +51,6 @@ export class Form {
     for (const key in data) this.data[name] = data[key];
   }
 
-  FormField: <T>(props: FormFieldParams<T>) => JSX.Element | null
 
   field<T>({ name, render, require, validator, initalValue, ignore, visible }: FormFieldParams<T>) {
 
@@ -129,16 +128,8 @@ export class Form {
   }
 }
 
-// export const withForm2 = <T extends {}>(target: IReactComponent<{ form: Form } & T>) => {
-//     const C = observer(target)
-//     return (props: T) => <C form={new Form()} {...props} />
-// }
-
-// const PropsKey = Symbol.for('PropsKey')
 
 export const withForm = <T extends {}>(Target: IReactComponent<{ form: Form } & T>) => {
-  const C = observer(Target);
-  const form = new Form()
-  form.FormField = p => form.field(p)
-  return (props: T) => <C form={form} {...props} />;
+  const C = observer(Target); 
+  return (props: T) => <C form={new Form()} {...props} />;
 };

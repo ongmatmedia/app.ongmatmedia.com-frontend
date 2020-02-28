@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { Input, Icon, Avatar, Tag, Alert, Row } from 'antd';
+import { Alert, Avatar, Icon, Input, Row } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
-import { GraphQLQueryFetcher, LazyGrahQLQueryRenderer } from '../graphql/GraphQLWrapper';
+import React, { useState } from 'react';
+import { GraphQLQueryFetcher } from '../graphql/GraphQLWrapper';
 import { FacebookAccount } from '../types';
-
+import { FacebookAvatar } from '../components/FacebookAvatar'
 
 const query = graphql`
   query FacebookAccountInputQuery($url: String!){
@@ -16,22 +16,23 @@ const query = graphql`
 
 
 export type FacebookAccountInputProps = {
-  id?: string
-  name?: string
+  account: { id: string, name: string }
   onChange?: (account: FacebookAccount) => any
 }
 
 
 
 export const FacebookAccountInput = (props: FacebookAccountInputProps) => {
-  const [url, set_url] = useState<string>(props.name || '')
-  const [account, set_account] = useState<FacebookAccount | null>(null)
+  const [account, set_account] = useState<{ id: string, name: string } | null>(props.account)
+  const [url, set_url] = useState<string>(account?.name || '')
   const [loading, set_loading] = useState<boolean>(false)
-  const [editable, set_editable] = useState<boolean>(true)
+  const [editable, set_editable] = useState<boolean>(!props.account)
   const [error, set_error] = useState<string | null>(null)
 
   const search = async () => {
+    set_account(null)
     set_loading(true)
+    set_error(null)
     try {
       const { facebook_account_info } = await GraphQLQueryFetcher<{ facebook_account_info: FacebookAccount }>(query, { url })
       set_account(facebook_account_info)
@@ -40,7 +41,7 @@ export const FacebookAccountInput = (props: FacebookAccountInputProps) => {
       set_editable(false)
     } catch (error) {
       console.log(error)
-      set_error(error)
+      set_error('Not found')
     }
     set_loading(false)
   }
@@ -48,7 +49,7 @@ export const FacebookAccountInput = (props: FacebookAccountInputProps) => {
   return (
     <Row type="flex" justify="start">
       <Input
-        addonBefore={account && <Avatar src="https://yt3.ggpht.com/a/AGF-l7__KbEHwBoTYcJtFE58xFrpoURHPvXZ8MON2w=s48-c-k-c0xffffffff-no-rj-mo" />}
+        addonBefore={account && <FacebookAvatar uid={account.id} size="large" />}
         addonAfter={<Icon
           type={loading ? 'loading' : (editable ? 'search' : 'edit')}
           style={{ cursor: 'pointer' }}

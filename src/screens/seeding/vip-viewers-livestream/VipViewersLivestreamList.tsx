@@ -83,8 +83,8 @@ export const VipViewersLivestreamList = GraphQLWrapper<
             sm: 2,
             md: 4,
             lg: 4,
-            xl: 4,
-            xxl: 4,
+            xl: 8,
+            xxl: 8,
           }}
           rowKey="uid"
           pagination={{
