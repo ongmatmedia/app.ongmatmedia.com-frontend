@@ -19,10 +19,11 @@ type FormFieldParams<T> = {
   initalValue?: T
   render: (config: FormRenderProps<T>) => JSX.Element
   require?: string
-  validator?: (value: T) => string | void;
+  validator?: (value: T) => string | boolean | void;
 };
 
 export class Form {
+
   @observable data: { [key: string]: any } = {};
   @observable errors: Map<string, string> = new Map();
   @observable isTouched: Map<string, boolean> = new Map();
@@ -50,12 +51,11 @@ export class Form {
     for (const key in data) this.data[name] = data[key];
   }
 
-  FormField<T>(props: FormFieldParams<T>) {
-    return this.field(props)
-  }
+  FormField: <T>(props: FormFieldParams<T>) => JSX.Element | null
 
   field<T>({ name, render, require, validator, initalValue, ignore, visible }: FormFieldParams<T>) {
-    if (ignore){
+
+    if (ignore) {
       delete this.data[name]
       this.defaultValues.delete(name)
       this.require_fields.delete(name)
@@ -83,7 +83,7 @@ export class Form {
 
       if (validator) {
         const check = validator(value);
-        if (check) {
+        if (check && typeof check == 'string') {
           this.errors.set(key, check);
           return;
         }
@@ -92,7 +92,7 @@ export class Form {
       this.errors.delete(key);
     };
 
-    if (!visible) return null
+    if (visible == false) return null
 
     return render({
       error: this.errors.get(name),
@@ -114,8 +114,7 @@ export class Form {
 
   submit(ok: Function) {
     for (const name of Array.from(this.require_fields.keys())) {
-      this.data[name] == undefined &&
-        this.errors.set(name, this.require_fields.get(name) as string);
+      this.data[name] == undefined && this.errors.set(name, this.require_fields.get(name) as string);
     }
 
     for (const name of Array.from(this.validators.keys())) {
@@ -124,7 +123,7 @@ export class Form {
         this.errors.set(name, check);
       }
     }
-    if (this.errors.size > 0) return;
+    if (this.errors.size > 0) return
 
     ok(this.data);
   }
@@ -139,5 +138,7 @@ export class Form {
 
 export const withForm = <T extends {}>(Target: IReactComponent<{ form: Form } & T>) => {
   const C = observer(Target);
-  return (props: T) => <C form={new Form()} {...props} />;
+  const form = new Form()
+  form.FormField = p => form.field(p)
+  return (props: T) => <C form={form} {...props} />;
 };

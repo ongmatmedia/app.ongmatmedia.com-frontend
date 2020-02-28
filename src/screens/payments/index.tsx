@@ -4,7 +4,7 @@ import { graphql } from 'babel-plugin-relay/macro';
 import { PaymentList } from './PaymentList';
 import { PaymentListAction } from './PaymentListAction';
 import { PaymentHistory, PaymentHistoryConnection } from '../../types';
-import { GraphqlQueryFetcher } from '../../graphql/GraphQLWrapper';
+import { GraphQLQueryFetcher } from '../../graphql/GraphQLWrapper';
 
 const query = graphql`
   query paymentsQuery($after: String, $before_time: Long) {
@@ -44,7 +44,7 @@ export const Payments = () => {
     if (clear) await set_payment_histories([]);
     await set_loading(true);
     try {
-      const data = await GraphqlQueryFetcher<{ payment_histories: PaymentHistoryConnection }>(
+      const data = await GraphQLQueryFetcher<{ payment_histories: PaymentHistoryConnection }>(
         query,
         variables,
       );
