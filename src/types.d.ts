@@ -157,7 +157,7 @@ export type LivestreamFacebookTargetInput = {
 export type LivestreamInput = {
   videos: Array<LivestreamVideoInput>,
   name: Scalars['String'],
-  time: Scalars['Long'],
+  time: Array<Scalars['Long']>,
   title: Scalars['String'],
   description: Scalars['String'],
   targets: LivestreamTargetInput,
@@ -217,7 +217,7 @@ export type LivestreamUpdateInput = {
   active: Maybe<Scalars['Boolean']>,
   title: Maybe<Scalars['String']>,
   description: Maybe<Scalars['String']>,
-  time: Maybe<Scalars['Long']>,
+  time: Maybe<Array<Scalars['Long']>>,
   targets: Maybe<LivestreamTargetInput>,
 };
 
@@ -416,6 +416,7 @@ export type Query = {
   users: UserConnection,
   buff_viewers_livestream_tasks: BuffViewersLivestreamConnection,
   buff_viewers_livestream_task: BuffViewersLivestream,
+  facebook_account_info: FacebookAccount,
   facebook_accounts: Maybe<FacebookAccountConnection>,
   facebook_account: FacebookAccount,
   vip_viewers_livestream_tasks: VipViewersLivestreamConnection,
@@ -425,6 +426,7 @@ export type Query = {
   livestream_task: Livestream,
   payment_histories: PaymentHistoryConnection,
   buff_viewers_video_tasks: BuffViewersVideoConnection,
+  video_info: VideoInfo,
 };
 
 
@@ -443,6 +445,11 @@ export type QueryBuff_Viewers_Livestream_TasksArgs = {
 
 export type QueryBuff_Viewers_Livestream_TaskArgs = {
   id: Scalars['ID']
+};
+
+
+export type QueryFacebook_Account_InfoArgs = {
+  url: Scalars['String']
 };
 
 
@@ -496,6 +503,11 @@ export type QueryPayment_HistoriesArgs = {
 export type QueryBuff_Viewers_Video_TasksArgs = {
   after: Maybe<Scalars['String']>,
   limit: Maybe<Scalars['Int']>
+};
+
+
+export type QueryVideo_InfoArgs = {
+  url: Scalars['String']
 };
 
 export type SendmoneyResponse = {
@@ -563,6 +575,25 @@ export type UserConnection = {
 export type UserEdge = {
   cursor: Scalars['String'],
   node: User,
+};
+
+export type VideoInfo = {
+  from: Scalars['String'],
+  title: Scalars['String'],
+  description: Scalars['String'],
+  id: Scalars['String'],
+  livestreaming: Scalars['Boolean'],
+  created_time: Scalars['String'],
+  duration: Scalars['Int'],
+  sources: Array<Scalars['String']>,
+  owner: VideoOwner,
+  thumbnail: Scalars['String'],
+};
+
+export type VideoOwner = {
+  name: Scalars['String'],
+  id: Scalars['String'],
+  avatar: Scalars['String'],
 };
 
 export type VipViewersLivestream = {

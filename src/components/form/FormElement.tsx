@@ -1,25 +1,27 @@
 import React, { PropsWithChildren } from 'react'
-import { Form, Row, Col, Icon, Tag } from 'antd'
+import { Form, Row, Col, Icon, Tag, Alert } from 'antd'
 
 export type FormItemProps = PropsWithChildren<{
     icon: string
     label: string
     right?: JSX.Element
     require?: boolean
+    error?:string
 }>
 
 export const FormElement = (props: FormItemProps) => (
-    <Form.Item>
+    <Row style={{ marginBottom: 20 }}>
         <Row type="flex" justify="space-between" align="middle">
             <Col>
                 <h3>
-                    <Icon type={props.icon} />
+                    <Icon type={props.icon} />&nbsp;
                     {props.label}
+                    &nbsp;
                     {props.require && <Tag style={{ background: '#fff', borderStyle: 'dashed' }}>Require</Tag>}
                 </h3>
             </Col>
             <Col>
-                {props.right}
+                <h3>{props.right}</h3>
             </Col>
         </Row>
         <Row>
@@ -27,5 +29,8 @@ export const FormElement = (props: FormItemProps) => (
                 {props.children}
             </Col>
         </Row>
-    </Form.Item>
+        {
+            props.error && <Row><Alert type="error" message={props.error} style={{marginTop: 5}}/></Row>
+        }
+    </Row>
 )

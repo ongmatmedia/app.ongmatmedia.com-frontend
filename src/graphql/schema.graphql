@@ -305,7 +305,7 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   users(after: String, limit: Int): UserConnection!
   buff_viewers_livestream_tasks(after: String, limit: Int, filters: BuffViewersLivestreamQueryFilters): BuffViewersLivestreamConnection!
   buff_viewers_livestream_task(id: ID!): BuffViewersLivestream!
-  facebook_accounts_info(url: String!): FacebookAccount!
+  facebook_account_info(url: String!): FacebookAccount!
   facebook_accounts(after: String, limit: Int, filter: FacebookAccountQueryFilters): FacebookAccountConnection
   facebook_account(uid: ID!): FacebookAccount!
   vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
