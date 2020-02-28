@@ -7,12 +7,13 @@ import { AgencyPage } from './agency';
 import { Login, ResetPassword } from './auth';
 import { SetNewPasswordPage } from './auth/set-new-pass';
 import { DepositPage } from './deposit';
-import { HomePage } from './HomePage'; 
+import { HomePage } from './HomePage';
 import { Payments } from './payments';
-import { SeedingMenuContent, SeedingPage } from './seeding';
+import { SeedingPage } from './seeding';
 import { BuffViewers } from './seeding/buff-viewers';
 import { BuffViewersLivestream } from './seeding/buff-viewers-livestream';
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream';
+import { LivestreamTabs } from '../components/Livestream';
 
 export const AppWithRouter = () => (
   <HashRouter>
@@ -57,20 +58,22 @@ export const AppWithRouter = () => (
         <MainLayout Content={Payments} />
       </Route>
 
-     
       <Route exact path="/agency">
         <MainLayout Content={AgencyPage} />
-      </Route> 
+      </Route>
 
       <Route exact path="/deposit">
         <MainLayout Content={DepositPage} />
+      </Route>
+
+      <Route exact path="/livestream">
+        <MainLayout Content={LivestreamTabs} />
       </Route>
 
       <Route>
         <span>Not found</span>
       </Route>
 
-     
     </Switch>
   </HashRouter>
 );

@@ -1,4 +1,4 @@
-import { Card, Col, Icon, List, Row, Spin, Tag, Tooltip } from 'antd';
+import { Card, Col, Icon, List, Row, Spin, Tag, Tooltip, Avatar } from 'antd';
 import React, { Fragment, useState } from 'react';
 import { AgencyAction } from './AgencyAction';
 import { ResetPass } from './ResetPass';
