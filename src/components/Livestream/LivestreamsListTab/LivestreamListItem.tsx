@@ -14,7 +14,8 @@ export type LivestreamListItem = {
 export const LivestreamListItem = (props: LivestreamListItem) => (
   <Card
     hoverable
-    cover={<img src={props.live.videos[0].thumbnail_url} />}
+    bordered
+    cover={<img src={props.live.videos[0].thumbnail_url} style={{width: "100%"}} />}
     actions={[
       ...(props.live.status === 'created'
         ? [

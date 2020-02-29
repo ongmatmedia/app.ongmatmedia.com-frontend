@@ -125,7 +125,7 @@ export const AddingLivestreamTab = Form.create<AddLivestreamTabProps>()(
             <Form.Item>
               <Button type="primary" htmlType="submit" disabled={hasErrors(form.getFieldsError())}>
                 Save livestream
-        </Button>
+              </Button>
             </Form.Item>
           </Col>
         </Row>

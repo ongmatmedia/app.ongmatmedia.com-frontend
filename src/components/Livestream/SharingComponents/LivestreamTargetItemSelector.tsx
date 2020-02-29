@@ -14,7 +14,7 @@ const getAccountsQuery = graphql`
         node {
           id
           name
-          access_token
+          touch_access_token
         }
       }
     }
@@ -60,7 +60,7 @@ export const LivestreamTargetItemSelector = (props: FacebookAccountTarget) => {
   const onSelectAccount = async (acc: FacebookAccount) => {
     props.type == 'profile'
       ? props.onSelect(acc.id, acc.name)
-      : (select_account(acc), load_groups_pages(acc.access_token));
+      : (select_account(acc), load_groups_pages(acc.touch_access_token  || ''));
   };
 
   return (

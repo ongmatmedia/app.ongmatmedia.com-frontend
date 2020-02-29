@@ -83,8 +83,9 @@ type FacebookAccount @aws_api_key @aws_cognito_user_pools @aws_oidc {
   user_id: String!
   id: ID!
   name: String!
-  cookie: String!
-  access_token: String!
+  cookie: String
+  touch_access_token: String
+  livestream_access_token: String
   live: Boolean!
   created_at: Long!
   updated_at: Long!
@@ -107,16 +108,8 @@ type FacebookAccountInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
 }
 
 input FacebookAccountInput {
-  id: String!
-  name: String!
-  cookie: String!
-  access_token: String!
-}
-
-input FacebookAccountQueryFilters {
-  uid: TableStringFilterInput
-  name: TableStringFilterInput
-  tags: TableStringFilterInput
+  cookie: String
+  access_token: [String!]
 }
 
 type Livestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -312,7 +305,7 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   buff_viewers_livestream_tasks(after: String, limit: Int, filters: BuffViewersLivestreamQueryFilters): BuffViewersLivestreamConnection!
   buff_viewers_livestream_task(id: ID!): BuffViewersLivestream!
   facebook_account_info(url: String!): FacebookAccountInfo!
-  facebook_accounts(after: String, limit: Int, filter: FacebookAccountQueryFilters): FacebookAccountConnection
+  facebook_accounts(after: String, limit: Int): FacebookAccountConnection
   facebook_account(uid: ID!): FacebookAccount!
   vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
   vip_viewers_livestream_task(id: String!): VIPViewersLivestream!
@@ -392,7 +385,6 @@ type UserEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
 }
 
 type VideoInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  from: String!
   title: String!
   description: String!
   id: String!

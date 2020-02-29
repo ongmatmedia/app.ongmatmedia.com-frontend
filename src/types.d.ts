@@ -89,8 +89,9 @@ export type FacebookAccount = {
   user_id: Scalars['String'],
   id: Scalars['ID'],
   name: Scalars['String'],
-  cookie: Scalars['String'],
-  access_token: Scalars['String'],
+  cookie: Maybe<Scalars['String']>,
+  touch_access_token: Maybe<Scalars['String']>,
+  livestream_access_token: Maybe<Scalars['String']>,
   live: Scalars['Boolean'],
   created_at: Scalars['Long'],
   updated_at: Scalars['Long'],
@@ -113,16 +114,8 @@ export type FacebookAccountInfo = {
 };
 
 export type FacebookAccountInput = {
-  id: Scalars['String'],
-  name: Scalars['String'],
-  cookie: Scalars['String'],
-  access_token: Scalars['String'],
-};
-
-export type FacebookAccountQueryFilters = {
-  uid: Maybe<TableStringFilterInput>,
-  name: Maybe<TableStringFilterInput>,
-  tags: Maybe<TableStringFilterInput>,
+  cookie: Maybe<Scalars['String']>,
+  access_token: Maybe<Array<Scalars['String']>>,
 };
 
 export type Livestream = {
@@ -461,8 +454,7 @@ export type QueryFacebook_Account_InfoArgs = {
 
 export type QueryFacebook_AccountsArgs = {
   after: Maybe<Scalars['String']>,
-  limit: Maybe<Scalars['Int']>,
-  filter: Maybe<FacebookAccountQueryFilters>
+  limit: Maybe<Scalars['Int']>
 };
 
 
@@ -584,7 +576,6 @@ export type UserEdge = {
 };
 
 export type VideoInfo = {
-  from: Scalars['String'],
   title: Scalars['String'],
   description: Scalars['String'],
   id: Scalars['String'],
