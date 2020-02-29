@@ -1,5 +1,10 @@
 import { API } from './API';
-import { LivestreamFacebookTargetType } from '../components/FacebookObjectInput';
+
+enum LivestreamFacebookTargetType {
+  profile = 'profile',
+  group = 'group',
+  page = 'page',
+}
 
 export type FacebookAccountInfo = {
   user_id: string;

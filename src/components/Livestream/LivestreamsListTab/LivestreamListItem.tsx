@@ -16,7 +16,7 @@ export const LivestreamListItem = (props: LivestreamListItem) => (
     hoverable
     cover={<img src={props.live.videos[0].thumbnail_url} />}
     actions={[
-      ...(props.live.status == 'created'
+      ...(props.live.status === 'created'
         ? [
             <Icon
               type="edit"

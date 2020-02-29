@@ -106,6 +106,12 @@ export type FacebookAccountEdge = {
   node: FacebookAccount,
 };
 
+export type FacebookAccountInfo = {
+  name: Scalars['String'],
+  id: Scalars['String'],
+  type: Scalars['String'],
+};
+
 export type FacebookAccountInput = {
   id: Scalars['String'],
   name: Scalars['String'],
@@ -416,7 +422,7 @@ export type Query = {
   users: UserConnection,
   buff_viewers_livestream_tasks: BuffViewersLivestreamConnection,
   buff_viewers_livestream_task: BuffViewersLivestream,
-  facebook_account_info: FacebookAccount,
+  facebook_account_info: FacebookAccountInfo,
   facebook_accounts: Maybe<FacebookAccountConnection>,
   facebook_account: FacebookAccount,
   vip_viewers_livestream_tasks: VipViewersLivestreamConnection,
@@ -585,7 +591,6 @@ export type VideoInfo = {
   livestreaming: Scalars['Boolean'],
   created_time: Scalars['String'],
   duration: Scalars['Int'],
-  sources: Array<Scalars['String']>,
   owner: VideoOwner,
   thumbnail: Scalars['String'],
 };

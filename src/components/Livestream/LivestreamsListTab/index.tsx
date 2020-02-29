@@ -75,25 +75,7 @@ export const LivestreamsListTab = () => (
     render={rs => (
       <LivestreamsListView
         loading={rs.props == null}
-        list={rs.props ? (rs.props as any).livestream_tasks.edges.map(e => e.node) : [
-          {
-            id: 123456,
-            videos: [
-              {
-                thumbnail_url: 'https://via.placeholder.com/150'
-              },
-              {
-                thumbnail_url: 'https://via.placeholder.com/150'
-              }
-            ],
-            status: 'test',
-            name: 'test',
-            active: true,
-            created_time: 123456789,
-            updated_time: 123456789,
-            time: 123456789,
-          }
-        ]}
+        list={rs.props ? (rs.props as any).livestream_tasks.edges.map(e => e.node) : []}
       />
     )}
   />

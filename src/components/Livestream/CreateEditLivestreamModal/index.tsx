@@ -1,12 +1,12 @@
 import { Alert, Form, Input, Modal, Spin } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useEffect, useState } from 'react';
-import { ListTarget } from './ListTarget';
-import { VideoComposer } from './VideoComposer';
-import { BroadcastTime } from './BroadcastTime'
-import { Livestream, LivestreamTarget } from '../../../types';
 import { create_livestream } from '../../../graphql/create_livestream';
 import { update_livestream } from '../../../graphql/update_livestream';
+import { Livestream, LivestreamTarget } from '../../../types';
+import { BroadcastTime } from '../SharingComponents/BroadcastTime';
+import { ListTarget } from '../SharingComponents/ListTarget';
+import { VideoComposer } from '../SharingComponents/VideoComposer';
 
 export type CreateLivestreamModalProps = FormComponentProps & {
   mode: 'create' | 'update';
@@ -26,6 +26,8 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
       useEffect(() => set_loading(props.task == null), [props.task == null]);
 
     const { form } = props;
+
+    const [broadcastTimeList, setBroadcastTimeList] = useState<number[]>(props.task ? [...props.task.time] : [])
 
     const submit = () => {
       form.validateFields(async (err, values) => {
@@ -51,7 +53,7 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
     return (
       <Modal
         visible={props.visible}
-        title="Add livestream schedule"
+        title="Update livestream"
         okText="Ok"
         onCancel={() => (form.resetFields(), props.onClose())}
         onOk={() => submit()}
@@ -60,39 +62,44 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
         <Spin spinning={loading}>
           {error && <Alert type="error" message={error} style={{ padding: 5 }} />}
           <Form layout="vertical">
-            <Form.Item label="Name">
+            <Form.Item label="Campaign's name">
               {form.getFieldDecorator('name', {
-                rules: [{ required: true, message: 'Please input videos !' }],
+                rules: [{ required: true, message: `Please type campaign's name` }],
                 initialValue: props.task ? props.task.name : '',
               })(<Input />)}
             </Form.Item>
 
-            <Form.Item label="Video URL">
-              {form.getFieldDecorator('videos', {
-                rules: [{ required: true, message: 'Please add some videos !' }],
-                initialValue: props.task ? props.task.videos : [],
-              })(<VideoComposer />)}
-            </Form.Item>
-
-            <Form.Item label="Video title">
+            <Form.Item label="Livestream title">
               {form.getFieldDecorator('title', {
-                rules: [{ required: true, message: 'Please input title !' }],
+                rules: [{ required: true, message: `Please input livestream's title !` }],
                 initialValue: props.task ? props.task.title : null,
               })(<Input />)}
             </Form.Item>
 
-            <Form.Item label="Video descripton">
+            <Form.Item label="Livestream's descripton">
               {form.getFieldDecorator('description', {
                 rules: [{ required: true, message: 'Please input description !' }],
                 initialValue: props.task ? props.task.description : null,
               })(<Input.TextArea rows={5} />)}
             </Form.Item>
 
+            <Form.Item label="Video URLs">
+              {form.getFieldDecorator('videos', {
+                rules: [{ required: true, message: 'Have at least 1 video!' }],
+                initialValue: props.task ? props.task.videos : [],
+              })(<VideoComposer value={[]} onChange={videos => form.setFieldsValue({ videos })} />)}
+            </Form.Item>
+
             <Form.Item label="Broadcast time">
               {form.getFieldDecorator('time', {
                 rules: [{ required: true, message: 'Please select time !' }],
                 initialValue: props.task ? props.task.time : null,
-              })(<BroadcastTime now={props.mode == 'create'} />)}
+              })(
+                <BroadcastTime
+                  now={true}
+                  value={broadcastTimeList}
+                  onChange={(newBroadcastTimeList: number[]) => setBroadcastTimeList([...newBroadcastTimeList])}
+                />)}
             </Form.Item>
 
             <Form.Item label="Target">

@@ -11,11 +11,11 @@ export const LivestreamTabs = () => {
 
   return (
     <div>
-      <Row style={{ backgroundColor: "white", padding: 20}}>
+      <Row style={{ backgroundColor: "white", padding: 20 }}>
         <Col span={24}>
           <Tabs activeKey={activeTabKey} onTabClick={(key: string, event: MouseEvent) => setActiveTabKey(key)} defaultActiveKey="1" type="card">
             <TabPane tab="List livestreams" key="1">
-              <Button type="primary" onClick={() => setActiveTabKey("2")}>
+              <Button type="primary" onClick={() => setActiveTabKey("2")} style={{ marginBottom: 20 }}>
                 <Icon type="plus" />
                 Add livestream schedule
               </Button>

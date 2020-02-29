@@ -100,6 +100,12 @@ type FacebookAccountEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
   node: FacebookAccount!
 }
 
+type FacebookAccountInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  name: String!
+  id: String!
+  type: String!
+}
+
 input FacebookAccountInput {
   id: String!
   name: String!
@@ -305,7 +311,7 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   users(after: String, limit: Int): UserConnection!
   buff_viewers_livestream_tasks(after: String, limit: Int, filters: BuffViewersLivestreamQueryFilters): BuffViewersLivestreamConnection!
   buff_viewers_livestream_task(id: ID!): BuffViewersLivestream!
-  facebook_account_info(url: String!): FacebookAccount!
+  facebook_account_info(url: String!): FacebookAccountInfo!
   facebook_accounts(after: String, limit: Int, filter: FacebookAccountQueryFilters): FacebookAccountConnection
   facebook_account(uid: ID!): FacebookAccount!
   vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
@@ -393,7 +399,6 @@ type VideoInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
   livestreaming: Boolean!
   created_time: String!
   duration: Int!
-  sources: [String!]!
   owner: VideoOwner!
   thumbnail: String!
 }

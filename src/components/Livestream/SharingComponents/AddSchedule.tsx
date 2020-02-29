@@ -1,9 +1,9 @@
 import { DatePicker, Tag } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 
 export interface IAddSchedule {
   tagsSchedule?: number[],
-  onChange?: (listTimeSchedule: number[]) => any,
+  onChange: (listTimeSchedule: number[]) => void,
 }
 
 export const AddSchedule = (props: IAddSchedule) => {
@@ -14,12 +14,12 @@ export const AddSchedule = (props: IAddSchedule) => {
 
   return (
     <div>
-      {(props.tagsSchedule || []) .map((tag, index) => (
+      {(props.tagsSchedule || []).map((tag, index) => (
         <Tag key={tag} closable={index !== 0} onClose={() => handleCloseInputScheduleTime(tag)}>
-          {new Date(tag).toLocaleDateString()}
+          {new Date(tag).toLocaleString()}
         </Tag>
       ))}
-      <DatePicker allowClear showTime placeholder="Select Time" onOk={date => props.onChange && props.onChange([...(props.tagsSchedule || []), date.valueOf()])} />
+      <DatePicker allowClear showTime showToday placeholder="Select Time" onOk={date => props.onChange && props.onChange([...(props.tagsSchedule || []), date.valueOf()])} />
     </div>
   )
 }
