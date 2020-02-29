@@ -30,6 +30,7 @@ import { update_vip_viewers_livestream } from '../../../graphql/update_vip_viewe
 import { withForm, FormFieldParams } from '../../../libs/Form';
 import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper';
 import { FormElement } from '../../../components/form/FormElement'
+import { OrderInfo } from '../../../components/OrderInfo'
 
 
 const query = graphql`
@@ -57,20 +58,6 @@ export type CUModalProps = {
 
 export type CUModalGraphqlData = { me: User, vip: VipViewersLivestream };
 
-
-const A = props => <span>{JSON.stringify(props)}</span>
-const B = (props: PropsWithChildren<{ a: string, b: string }>) => {
-  const { children, ...s } = props
-
-  return (
-    <span>
-      {
-        React.cloneElement(children as any, s)
-      }
-
-    </span>
-  )
-}
 
 
 
@@ -123,14 +110,18 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
         title={props.mode == 'create' ? t('title.creating') : t('title.editing')}
       >
         <Spin spinning={props.loading}>
-          {props.form.field<{ id: string, name: string }>({
+
+          {props.form.field<string>({
             name: 'id',
-            initalValue: props.vip,
+            require: 'Require',
+            initalValue: props.vip?.id,
             render: _ => (
               <FormElement icon="user" label={t('form.facebook_object_input.title')} require error={_.error}   >
-                <FacebookAccountInput account={_.value} onChange={_.setValues} />
-              </FormElement>
-            )
+                <FacebookAccountInput
+                  account={_.value ? { id: _.value, name: props.vip?.name || '' } : undefined}
+                  onChange={_.setValues}
+                />
+              </FormElement>)
           })}
 
           {
@@ -167,7 +158,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 
           {
             props.form.field({
-              name: "Parallel",
+              name: "parallel",
               initalValue: props.vip?.parallel || 1,
               render: _ => (
                 <FormElement icon="menu" label="Parallel" require error={_.error}   >
@@ -200,7 +191,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 
           {
             props.form.field<string>({
-              name: "edit",
+              name: "note",
               require: 'Require',
               initalValue: props.vip?.note,
               render: _ => (
@@ -211,6 +202,24 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
             })
           }
 
+          {
+            props.data && (
+              <OrderInfo
+                order={[
+                  { amount: props.form.data.amount, unit: 'viewers' },
+                  { amount: props.form.data.bought_mins, unit: 'mins' },
+                  { amount: props.data.me.pricing?.vip_viewers_livestream, unit: 'credit/viewer' },
+                ]}
+                old={ props.vip ? [
+                    { amount: props.vip.amount, unit: 'viewers' },
+                    { amount: props.vip.bought_mins || 0, unit: 'mins' },
+                    { amount: props.data.me.pricing?.vip_viewers_livestream || 0, unit: 'credit/viewer' }
+                  ] : []
+                }
+                balance={props.data.me.balance}
+              />
+            )
+          }
 
 
         </Spin>

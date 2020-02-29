@@ -16,26 +16,23 @@ const query = graphql`
 
 
 export type FacebookAccountInputProps = {
-  account: { id: string, name: string }
+  account?: { id: string, name: string }
   onChange?: (account: FacebookAccount) => any
 }
 
 
 
 export const FacebookAccountInput = (props: FacebookAccountInputProps) => {
-  const [account, set_account] = useState<{ id: string, name: string } | null>(props.account)
-  const [url, set_url] = useState<string>(account?.name || '')
+  const [url, set_url] = useState<string>(props.account?.name || '')
   const [loading, set_loading] = useState<boolean>(false)
   const [editable, set_editable] = useState<boolean>(!props.account)
   const [error, set_error] = useState<string | null>(null)
 
   const search = async () => {
-    set_account(null)
     set_loading(true)
     set_error(null)
     try {
       const { facebook_account_info } = await GraphQLQueryFetcher<{ facebook_account_info: FacebookAccount }>(query, { url })
-      set_account(facebook_account_info)
       props.onChange && props.onChange(facebook_account_info)
       set_url(facebook_account_info.name)
       set_editable(false)
@@ -49,7 +46,7 @@ export const FacebookAccountInput = (props: FacebookAccountInputProps) => {
   return (
     <Row type="flex" justify="start">
       <Input
-        addonBefore={account && <FacebookAvatar uid={account.id} size="large" />}
+        addonBefore={props.account && <FacebookAvatar uid={props.account.id} size="large" />}
         addonAfter={<Icon
           type={loading ? 'loading' : (editable ? 'search' : 'edit')}
           style={{ cursor: 'pointer' }}

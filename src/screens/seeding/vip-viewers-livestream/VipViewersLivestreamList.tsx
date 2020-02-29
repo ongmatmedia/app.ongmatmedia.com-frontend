@@ -22,6 +22,7 @@ const query = graphql`
           amount
           note
           name
+          bought_mins
           created_time
           updated_time 
         }
