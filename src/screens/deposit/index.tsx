@@ -70,7 +70,7 @@ export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
   {},
   ({ loading, data }) => (
     <Card title="Deposit" loading={loading}> 
-      <AutoDepositModal />
+      {/* <AutoDepositModal /> */}
       {data && <Preview payment_methods={data.payment_methods} />}
     </Card>
   ),
