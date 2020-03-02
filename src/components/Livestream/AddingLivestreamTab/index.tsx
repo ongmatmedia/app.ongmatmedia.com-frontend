@@ -25,29 +25,29 @@ export const AddingLivestreamTab = Form.create<AddLivestreamTabProps>()(
       form.validateFields(async (err, values) => {
         if (!err) {
           console.log('Received values of form: ', values);
-          const { name, title, description, videos, time, targets: { rtmps, facebooks } } = values;
-          await create_livestream({
-            name,
-            title,
-            description,
-            videos,
-            time,
-            targets: {
-              rtmps,
-              facebooks
-            }
-          })
-          form.resetFields()
-          notification.open({
-            message: "Congratulation!",
-            description: "You created livestream successfully"
-          })
-          await new Promise(s => {
-            setTimeout(() => {
-              window.location.reload()
-            }, 2000)
-          })
-          props.setActiveTabKey("1")
+          // const { name, title, description, videos, time, targets: { rtmps, facebooks } } = values;
+          // await create_livestream({
+          //   name,
+          //   title,
+          //   description,
+          //   videos,
+          //   time,
+          //   targets: {
+          //     rtmps,
+          //     facebooks
+          //   }
+          // })
+          // form.resetFields()
+          // notification.open({
+          //   message: "Congratulation!",
+          //   description: "You created livestream successfully"
+          // })
+          // await new Promise(s => {
+          //   setTimeout(() => {
+          //     window.location.reload()
+          //   }, 2000)
+          // })
+          // props.setActiveTabKey("1")
         } else {
           console.error(JSON.stringify(err))
         }

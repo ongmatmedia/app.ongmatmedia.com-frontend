@@ -1,27 +1,67 @@
-import React, { ChangeEvent } from 'react'
-import { Row, Col, Input, Icon } from 'antd'
+import { Alert, Col, Icon, Input, Row } from 'antd';
+import { graphql } from 'babel-plugin-relay/macro';
+import React, { useState } from 'react';
+import { GraphQLQueryFetcher } from '../../../graphql/GraphQLWrapper';
+import { VideoInfo } from '../../../types';
 
 interface VideoUrlInputProps {
-  loading: boolean,
-  videoUrlValue: string,
-  setLoadingButton: (value: React.SetStateAction<boolean>) => void,
-  submitVideoUrl: () => Promise<void>,
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void,
+  onSubmitVideo: (videoInfo: VideoInfo & { url: string }) => void,
 }
 
-export const VideoUrlInput = (props: VideoUrlInputProps) => (
-  <Row>
-    <Col span={24}>
-      <Input
-        value={props.videoUrlValue}
-        onChange={props.onChange}
-        addonAfter={props.loading ? <Icon type="loading" /> : <a onClick={async () => {
-          props.setLoadingButton(true)
-          await props.submitVideoUrl()
-        }}>Enter</a>}
-        onKeyDown={e => e.keyCode === 13 && e.preventDefault()}
-        disabled={props.loading}
-      />
-    </Col>{' '}
-  </Row>
-)
+const VideoUrlInputQuery = graphql`
+  query VideoUrlInputQuery($url: String!) {
+    video_info(url: $url) {
+      id,
+      title,
+      description,
+      duration,
+      thumbnail,
+      livestreaming,
+      owner {
+        id,
+        name,
+        avatar
+      }
+    }
+  }
+`
+
+export const VideoUrlInput = (props: VideoUrlInputProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [videoUrlValue, setvideoUrlValue] = useState<string>('')
+  const [error, setError] = useState<string>('')
+
+  const fetchVideoInfo = async () => {
+    setIsLoading(true)
+    try {
+      const data = await GraphQLQueryFetcher<{ video_info: VideoInfo }>(
+        VideoUrlInputQuery,
+        { url: videoUrlValue }
+      )
+
+      props.onSubmitVideo({
+        ...data.video_info,
+        url: videoUrlValue
+      })
+    } catch (error) {
+      setError(error)
+    }
+    setIsLoading(false)
+    setvideoUrlValue('')
+  }
+
+  return (
+    <Row>
+      <Col span={24}>
+        {error && <Alert message={error} type="error" showIcon style={{ marginBottom: 10 }} /> }
+        <Input
+          value={videoUrlValue}
+          onChange={e => setvideoUrlValue(e.target.value)}
+          addonAfter={<Icon type={isLoading ? 'loading' : 'search'} onClick={fetchVideoInfo} />}
+          onKeyDown={e => e.keyCode === 13 && e.preventDefault()}
+          disabled={isLoading}
+        />
+      </Col>
+    </Row>
+  )
+}

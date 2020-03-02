@@ -138,7 +138,5 @@ export class Form {
 
 export const withForm = <T extends {}>(Target: IReactComponent<{ form: Form } & T>) => {
   const C = observer(Target);
-  const form = new Form()
-  form.FormField = p => form.field(p)
-  return (props: T) => <C form={form} {...props} />;
+  return (props: T) => <C form={new Form()} {...props} />;
 };

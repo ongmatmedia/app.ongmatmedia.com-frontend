@@ -7,7 +7,7 @@ import { LivestreamTargetItemSelector } from './LivestreamTargetItemSelector';
 
 
 export const ListTarget = (((props: { value: LivestreamTarget; onChange: Function }) => {
-  const [mode, set_mode] = useState<null | LivestreamFacebookTargetType>(null);
+  const [isSelectingMode, setIsSelectingMode] = useState<boolean>(false);
 
   const FacebookIcon = {
     [LivestreamFacebookTargetType.profile]:
@@ -45,54 +45,49 @@ export const ListTarget = (((props: { value: LivestreamTarget; onChange: Functio
     });
   };
 
+  const { group, page, profile } = LivestreamFacebookTargetType
+
   return (
     <span>
       {props.value.facebooks.length == 0 && props.value.rtmps.length == 0 && (
         <Alert message="Add some targets !" type="warning" showIcon style={{ marginBottom: 10 }} />
       )}
 
-      {[
-        LivestreamFacebookTargetType.profile,
-      ].map((t, i) => (
-        <Card
-          key={i}
-          size="small"
-          title={
-            <span>
-              <Avatar src={FacebookIcon[t]} size={30} style={{ marginRight: 10 }} />
-              <span>Facebook</span>
-            </span>
-          }
-          style={{ marginBottom: 10, borderRadius: 20 }}
-          headStyle={{
-            color: 'white',
-            background: 'linear-gradient(to right, rgb(37, 116, 168), rgb(81, 74, 157))',
-          }}
-        >
-          <ListTargetItem
-            list={props.value.facebooks.filter(a => true)}
-            onRemove={uid => un_select(uid)}
-            type={t}
-          />
+      <Card
+        size="small"
+        title={
+          <span>
+            <Avatar src="https://i.pinimg.com/originals/41/28/2b/41282b58cf85ddaf5d28df96ed91de98.png" size={30} style={{ marginRight: 10 }} />
+            <span>Facebook</span>
+          </span>
+        }
+        style={{ marginBottom: 10, borderRadius: 20 }}
+        headStyle={{
+          color: 'white',
+          background: 'linear-gradient(to right, rgb(37, 116, 168), rgb(81, 74, 157))',
+        }}
+      >
+        <ListTargetItem
+          list={props.value.facebooks.filter(a => true)}
+          onRemove={uid => un_select(uid)}
+        />
 
-          {mode == t ? (
-            <LivestreamTargetItemSelector
-              type={t}
-              selected={props.value.facebooks.filter(a => true).map(p => p.uid)}
-              onSelect={(uid: string, name: string, owner?: string) => select(uid, name, t, owner)}
-              onClose={() => set_mode(null)}
-            />
-          ) : (
+        {isSelectingMode ? (
+          <LivestreamTargetItemSelector
+            selected={props.value.facebooks.filter(a => true).map(p => p.uid)}
+            onSelect={(uid: string, name: string, owner?: string) => select(uid, name, LivestreamFacebookTargetType.group, owner)}
+            onClose={() => setIsSelectingMode(false)}
+          />
+        ) : (
             <Row type="flex" justify="space-around" align="middle" style={{ paddingTop: 10 }}>
               <Col>
-                <Button type="dashed" icon="plus" onClick={() => set_mode(t)}>
-                  Add {t}
+                <Button type="dashed" icon="plus" onClick={() => setIsSelectingMode(true)}>
+                  Add Facebook target
                 </Button>
               </Col>
             </Row>
           )}
-        </Card>
-      ))}
+      </Card>
 
       <Card
         size="small"

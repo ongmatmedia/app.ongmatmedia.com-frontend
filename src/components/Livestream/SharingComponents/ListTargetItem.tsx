@@ -7,7 +7,6 @@ export type TargetListProps = {
   list: Array<{ uid: string; name: string }>;
   onRemove: (uid: string) => void;
   imageRender?: (id: string) => string;
-  type: LivestreamFacebookTargetType;
 };
 
 export const ListTargetItem = (props: TargetListProps) =>
@@ -32,7 +31,7 @@ export const ListTargetItem = (props: TargetListProps) =>
             className="livestream-target-item"
             style={{ padding: 5, borderRadius: 5 }}
           >
-            <Col span={3}>
+            {/* <Col span={3}>
               <Avatar
                 src={
                   props.type == LivestreamFacebookTargetType.group
@@ -41,7 +40,7 @@ export const ListTargetItem = (props: TargetListProps) =>
                 }
                 size={60}
               />
-            </Col>
+            </Col> */}
             <Col span={20}>
               <div style={{ padding: 10, flexWrap: 'wrap' }}>{item.name}</div>
             </Col>

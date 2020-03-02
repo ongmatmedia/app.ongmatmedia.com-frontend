@@ -1,11 +1,11 @@
-import { Alert, Avatar, Col, Icon, Row, Select, Spin } from 'antd';
+import { Alert, Avatar, Button, Col, Icon, List, Row, Select, Spin } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
 import { QueryRenderer } from 'react-relay';
-import { RelayEnvironment } from '../../../graphql/RelayEnvironment';
-import { FacebookAccount, FacebookAccountConnection } from '../../../types';
-import { LivestreamFacebookTargetType } from './LivestreamFacebookTargetType';
 import { FacebookGraphAPI } from '../../../api/FacebookGraphAPI';
+import { RelayEnvironment } from '../../../graphql/RelayEnvironment';
+import { FacebookAccount, FacebookAccountConnection, LivestreamFacebookTargetInput } from '../../../types';
+import { TargetsListReview } from './TargetsListReview';
 
 const getAccountsQuery = graphql`
   query LivestreamTargetItemSelectorTabQuery {
@@ -13,8 +13,8 @@ const getAccountsQuery = graphql`
       edges {
         node {
           id
-          name
           touch_access_token
+          name
         }
       }
     }
@@ -24,7 +24,6 @@ const getAccountsQuery = graphql`
 const { Option } = Select;
 
 export type FacebookAccountTarget = {
-  type: LivestreamFacebookTargetType;
   selected: string[];
   onSelect: (uid: string, name: string, owner?: string) => void;
   onClose: Function;
@@ -38,30 +37,63 @@ const Loading = () => (
   </Row>
 );
 
+const FacebookIcon = {
+  'profile':
+    'https://www.shareicon.net/data/512x512/2016/08/05/806962_user_512x512.png',
+  'group':
+    'https://www.codester.com/static/uploads/items/5415/icon.png',
+  'page':
+    'https://www.socialmediaexaminer.com/wp-content/uploads/2014/07/kl-facebook-pages-app-logo.jpg',
+};
+
+interface Account {
+  id: string, touch_access_token: string, name: string
+}
+
 export const LivestreamTargetItemSelector = (props: FacebookAccountTarget) => {
-  const [groups_pages, set_groups_pages] = useState<Array<{ id: string; name: string }>>([]);
-  const [selected_account, select_account] = useState<FacebookAccount | null>(null);
-  const [loading_groups_pages, set_loading_groups_pages] = useState<boolean>(false);
 
-  const selectable_groups_pages = groups_pages.filter(o => !props.selected.includes(o.id));
+  const [currentAccount, setCurrentAccount] = useState<Account>()
 
-  const load_groups_pages = async (access_token: string) => {
-    set_loading_groups_pages(true);
-    const fb = new FacebookGraphAPI(access_token);
-    const url = `/me/${props.type == LivestreamFacebookTargetType.group ? 'groups' : 'accounts'}`;
-    const { data } = await fb.get<{ data: Array<{ name: string; id: string }> }>(url);
-    if (data) {
-      set_groups_pages(data);
-    } else {
+  const [selectingTarget, setSelectingTarget] = useState<boolean>(false)
+
+  const [targets, setTargets] = useState<LivestreamFacebookTargetInput[]>([])
+
+  const [groupsAndPagesInfo, setGroupsAndPageInfo] = useState<Array<{ id: string, name: string, type: string }>>()
+
+  const [loadingGroupsAndPages, setLoadingGroupsAndPages] = useState<boolean>(false)
+
+  const fetchGroupsOrPageInfo = async (fb: FacebookGraphAPI, type: string) => {
+    const url = `/me/${type == 'page' ? 'accounts' : 'groups'}`
+    try {
+      const { data } = await fb.get<{ data: Array<{ name: string; id: string }> }>(url);
+      return data.map(el => ({ id: el.id, name: el.name, type }))
+    } catch (error) {
+      throw error
     }
-    set_loading_groups_pages(false);
-  };
+  }
 
-  const onSelectAccount = async (acc: FacebookAccount) => {
-    props.type == 'profile'
-      ? props.onSelect(acc.id, acc.name)
-      : (select_account(acc), load_groups_pages(acc.touch_access_token  || ''));
-  };
+  const fetchTargetInfo = async (account) => {
+    setSelectingTarget(true)
+    setCurrentAccount(account)
+    setLoadingGroupsAndPages(true);
+    const fb = new FacebookGraphAPI(account.touch_access_token)
+    try {
+      const pagesInfo = await fetchGroupsOrPageInfo(fb, 'page')
+      console.log(pagesInfo)
+
+      const groupsInfo = await fetchGroupsOrPageInfo(fb, 'group')
+      console.log(groupsInfo[100])
+
+      setGroupsAndPageInfo([
+        ...pagesInfo,
+        ...groupsInfo
+      ])
+
+    } catch (error) {
+      console.error(error)
+    }
+    setLoadingGroupsAndPages(false);
+  }
 
   return (
     <span>
@@ -74,12 +106,11 @@ export const LivestreamTargetItemSelector = (props: FacebookAccountTarget) => {
           const accounts: FacebookAccount[] = accounts_loading
             ? []
             : ((rs.props as any).facebook_accounts as FacebookAccountConnection).edges.map(
-                e => e.node,
-              );
+              e => e.node,
+            );
 
           if (accounts_loading) return <Loading />;
-
-          if (accounts.length == 0) {
+          else if (accounts.length == 0) {
             return (
               <Alert
                 message="Add a facebook account to system to broadcast livestream !"
@@ -87,74 +118,82 @@ export const LivestreamTargetItemSelector = (props: FacebookAccountTarget) => {
               />
             );
           }
-
-          const selectable_accounts = accounts.filter(a => !props.selected.includes(a.id));
-
-          if (selectable_accounts.length == 0) {
+          else {
+            const selectableAccounts = accounts.filter(account => !props.selected.includes(account.id))
             return (
-              <Alert
-                message={`You will broadcast livestream to all your ${props.type}s !`}
-                type="success"
-              />
-            );
+              <>
+                <Select
+                  placeholder="Select a person"
+                  size="large"
+                  onChange={accountId => fetchTargetInfo(selectableAccounts.filter(acc => acc.id == accountId)[0])}
+                  style={{ marginBottom: 20 }}
+                >
+                  {selectableAccounts.map(({ id, name }) => (
+                    <Option value={id} style={{ marginBottom: 10 }} key={id} >
+                      <Avatar src={`http://graph.facebook.com/${id}/picture?type=large`} size="small" style={{ marginRight: 15 }} />
+                      <span>{name}</span>
+                    </Option>
+                  ))}
+                </Select>
+                {selectingTarget && currentAccount && targets.every(el => el.uid !== currentAccount.id) && (
+                  <>
+                    <Button type="primary" style={{ marginBottom: 20 }} size="large" icon="plus" onClick={() => setTargets([
+                      ...targets,
+                      {
+                        uid: currentAccount.id,
+                        name: currentAccount.name,
+                        owner: currentAccount.id,
+                        type: "profile"
+                      }
+                    ])} >
+                      Live in this profile
+                    </Button>
+                  </>
+                )
+                }
+                {
+                  selectingTarget && currentAccount && loadingGroupsAndPages && <Loading />
+                }
+                {
+                  selectingTarget && currentAccount && groupsAndPagesInfo && (
+                    <Select
+                      placeholder="Select a groups or page"
+                      size="large"
+                      style={{ marginBottom: 20 }}
+                      onChange={id => targets.every(el => el.uid !== id) && setTargets([
+                        ...targets,
+                        {
+                          uid: groupsAndPagesInfo.filter(el => el.id == id)[0].id,
+                          name: groupsAndPagesInfo.filter(el => el.id == id)[0].name,
+                          owner: currentAccount.id,
+                          type: groupsAndPagesInfo.filter(el => el.id == id)[0].type
+                        }
+                      ])}
+                    >
+                      {groupsAndPagesInfo.map(({ id, name, type }) => (
+                        <Option value={id} style={{ marginBottom: 10 }} key={id} >
+                          <Avatar src={FacebookIcon[`${type}`]} style={{ marginRight: 10 }} />
+                          <span>{name}</span>
+                        </Option>
+                      ))}
+                    </Select>
+                  )
+                }
+                {
+                  targets.length > 0 && (
+                    <TargetsListReview
+                      list={targets}
+                      onRemove={uid => setTargets([
+                        ...targets.filter(el => el.uid !== uid)
+                      ])} 
+                    />
+                  )
+                }
+              </>
+            )
           }
-
-          return (
-            <Select
-              size="large"
-              showSearch
-              placeholder="Select facebook account"
-              optionFilterProp="children"
-              onChange={uid => onSelectAccount(accounts.filter(a => a.id == uid)[0])}
-            >
-              {accounts.map((account, index) => (
-                <Option value={account.id} key={index}>
-                  <Avatar src={`http://graph.facebook.com/${account.id}/picture?type=large`} />
-                  <span style={{ marginLeft: 10 }}>{account.name}</span>
-                </Option>
-              ))}
-            </Select>
-          );
         }}
       />
-
-      {loading_groups_pages && <Loading />}
-
-      {props.type != 'profile' &&
-        !loading_groups_pages &&
-        (selectable_groups_pages.length > 0 ? (
-          <Select
-            size="large"
-            showSearch
-            placeholder="Select facebook account"
-            optionFilterProp="children"
-            style={{ marginTop: 10 }}
-            onChange={(id: string) => {
-              props.onSelect(
-                id,
-                selectable_groups_pages.filter(a => a.id == id)[0].name,
-                selected_account ? selected_account.id : undefined,
-              );
-            }}
-          >
-            {selectable_groups_pages.map((account, index) => (
-              <Option value={account.id} key={index}>
-                <span style={{ marginLeft: 10 }}>{account.name}</span>
-              </Option>
-            ))}
-          </Select>
-        ) : (
-          selected_account &&
-          (selectable_groups_pages.length > 0 ? (
-            <Alert
-              style={{ marginTop: 10 }}
-              message={`All ${props.type}  of ${selected_account} selected`}
-              type="warning"
-            />
-          ) : (
-            <Alert style={{ marginTop: 10 }} message={`No more ${props.type}`} type="info" />
-          ))
-        ))}
     </span>
   );
 };
