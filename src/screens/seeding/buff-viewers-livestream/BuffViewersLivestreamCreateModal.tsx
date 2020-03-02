@@ -102,7 +102,12 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
                       <Col span={12}><img style={{ width: '100%' }} src={video?.thumbnail} /></Col>
                       <Col span={12}>
                         <Card
-                          title={<Tag color="rgb(25, 188, 198)">{video.owner.name} </Tag>}
+                          title={(
+                            <>
+                              <Tag color="rgb(25, 188, 198)">{video.owner.name} </Tag>
+                              <Icon style={{fontSize:25}} type="video-camera" onClick={() => window.open(`https://fb.com/${video.id}`)} />
+                            </>
+                          )}
                           size="small"
                         >
                           {`${video.title} ${video.description}`.slice(0, 100)}
@@ -151,6 +156,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
               </FormElement>
             ),
           })}
+
 
           {props.form.field<string>({
             name: 'note',

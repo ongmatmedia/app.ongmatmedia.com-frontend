@@ -36,7 +36,7 @@ export const VideoUrlInput = (props: VideoUrlInputProps) => {
         try {
             const data = await GraphQLQueryFetcher<{ video_info: VideoInfo }>(
                 VideoUrlInputQuery,
-                { url: videoUrlValue }
+                { url: videoUrlValue.match(/^[0-9]+$/) ? `https://www.facebook.com/someone/videos/${videoUrlValue}` : videoUrlValue }
             )
 
             props.onSubmitVideo({
