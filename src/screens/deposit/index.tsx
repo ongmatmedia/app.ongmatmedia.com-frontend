@@ -71,7 +71,7 @@ export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
   ({ loading, data }) => (
     <Card title="Deposit" loading={loading}>
       {
-        (window.location.hostname == 'localhost' || window.location.hostname == 'app.ongmatmedia.com') && <AutoDepositModal />
+        (window.location.hostname == 'localhost'|| window.location.hostname.includes('192.168') || window.location.hostname == 'app.ongmatmedia.com') && <AutoDepositModal />
       }
       {data && <Preview payment_methods={data.payment_methods} />}
     </Card>
