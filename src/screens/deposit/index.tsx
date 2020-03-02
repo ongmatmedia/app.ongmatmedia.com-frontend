@@ -3,7 +3,7 @@ import { Card, List, Button, Icon, Tooltip, Row, Col, Spin, Divider, message } f
 import { PaymentInfoModal } from './PaymentInfoModal';
 import { PaymentMethod } from '../../types';
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper';
-import {AutoDepositModal} from './AutoDepositModal'
+import { AutoDepositModal } from './AutoDepositModal'
 
 const graphql = require('babel-plugin-relay/macro');
 
@@ -69,8 +69,10 @@ export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
   query,
   {},
   ({ loading, data }) => (
-    <Card title="Deposit" loading={loading}> 
-      {/* <AutoDepositModal /> */}
+    <Card title="Deposit" loading={loading}>
+      {
+        (window.location.hostname == 'localhost'|| window.location.hostname.includes('192.168') || window.location.hostname == 'app.ongmatmedia.com') && <AutoDepositModal />
+      }
       {data && <Preview payment_methods={data.payment_methods} />}
     </Card>
   ),

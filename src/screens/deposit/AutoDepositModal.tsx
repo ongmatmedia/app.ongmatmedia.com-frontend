@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { Row, Col, Button, Modal, Alert, Spin } from 'antd'
 import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect'
 import { NewDepositInfo } from '../../types'
-import QRCode from 'qrcode.react';
+import { create_deposit } from '../../graphql/create_deposit'
 
 export type AutoDepositModalProps = {
 
@@ -12,23 +12,28 @@ export type AutoDepositModalProps = {
 export const AutoDepositModal = (props: AutoDepositModalProps) => {
     const [visible, set_visible] = useState<boolean>(false)
     const [loading, set_loading] = useState<boolean>(false)
-    const [amount, set_amount] = useState<number>()
+    const [amount, set_amount] = useState<number>(0)
     const [qr, set_qr] = useState<NewDepositInfo | null>()
 
     const create_deposit_request = async () => {
-        set_amount(0)
+        if (amount < 10000) return Modal.warn({ content: 'Nạp tối thiểu 10k' })
         set_loading(true)
         set_qr(null)
-        console.log(amount)
-        await new Promise(S => setTimeout(S, 3000))
+        try {
+            const qr = await create_deposit(amount)
+            console.log(qr, qr.qrdata)
+            set_qr(qr)
+        } catch (e) {
+            Modal.error({ content: e })
+        }
+        set_amount(0)
         set_loading(false)
-        set_qr({ id: '123', qrcode: '123', qrdata: '124', time: 123 })
     }
 
     const clear = () => {
         set_qr(null)
         set_visible(true)
-    }
+    } 
 
     return (
         <Row>
