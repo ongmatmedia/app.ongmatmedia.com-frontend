@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Card, List, Avatar, Icon, Tooltip, Row, Col, Spin, Divider, message } from 'antd';
+import { Card, List, Button, Icon, Tooltip, Row, Col, Spin, Divider, message } from 'antd';
 import { PaymentInfoModal } from './PaymentInfoModal';
 import { PaymentMethod } from '../../types';
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper';
+import {AutoDepositModal} from './AutoDepositModal'
 
 const graphql = require('babel-plugin-relay/macro');
 
@@ -68,14 +69,8 @@ export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
   query,
   {},
   ({ loading, data }) => (
-    <Card title="Deposit">
-      {loading && (
-        <Row type="flex" justify="space-around">
-          <Col style={{ paddingTop: 30 }}>
-            <Spin />
-          </Col>
-        </Row>
-      )}
+    <Card title="Deposit" loading={loading}> 
+      <AutoDepositModal />
       {data && <Preview payment_methods={data.payment_methods} />}
     </Card>
   ),

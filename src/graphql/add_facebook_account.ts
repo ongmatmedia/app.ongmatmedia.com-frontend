@@ -11,8 +11,7 @@ const mutation = graphql`
         user_id
         id
         name
-        cookie
-        access_token
+        cookie 
         live
         created_at
         updated_at

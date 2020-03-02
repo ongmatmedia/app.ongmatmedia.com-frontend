@@ -19,18 +19,16 @@ export const AgencyAction = (props: AgencyActionProps) => {
         onClose={() => set_add_user_modal_visible(false)}
         visible={add_user_modal_visible}
       />
-      <Row gutter={16}>
-        <Col xs={24} md={4}>
+      <Row type="flex" justify="space-between">
+        <Col>
           <Button
             type="primary"
             icon="plus"
             onClick={() => set_add_user_modal_visible(!add_user_modal_visible)}
-            style={{ marginBottom: 20 }}
+            style={{ marginBottom: 20, marginRight: 10 }}
           >
             Add agency
           </Button>
-        </Col>
-        <Col xs={24} md={16}>
           <Button
             style={{ marginBottom: 10 }}
             type="primary"
@@ -42,8 +40,8 @@ export const AgencyAction = (props: AgencyActionProps) => {
               ? 'Click to agency card for selecting'
               : 'Update price for selected agencies'}
           </Button>
-        </Col>
-        <Col xs={24} md={4}>
+        </Col> 
+        <Col >
           <Tooltip
             placement="top"
             title={

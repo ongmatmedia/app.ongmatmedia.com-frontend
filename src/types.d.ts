@@ -7,7 +7,9 @@ export type Scalars = {
   Int: number,
   Float: number,
   Long: any,
+  AWSDateTime: any,
 };
+
 
 export type BuffViewersLivestream = {
   user_id: Scalars['String'],
@@ -89,8 +91,9 @@ export type FacebookAccount = {
   user_id: Scalars['String'],
   id: Scalars['ID'],
   name: Scalars['String'],
-  cookie: Scalars['String'],
-  access_token: Scalars['String'],
+  cookie: Maybe<Scalars['String']>,
+  touch_access_token: Maybe<Scalars['String']>,
+  livestream_access_token: Maybe<Scalars['String']>,
   live: Scalars['Boolean'],
   created_at: Scalars['Long'],
   updated_at: Scalars['Long'],
@@ -106,17 +109,15 @@ export type FacebookAccountEdge = {
   node: FacebookAccount,
 };
 
-export type FacebookAccountInput = {
-  id: Scalars['String'],
+export type FacebookAccountInfo = {
   name: Scalars['String'],
-  cookie: Scalars['String'],
-  access_token: Scalars['String'],
+  id: Scalars['String'],
+  type: Scalars['String'],
 };
 
-export type FacebookAccountQueryFilters = {
-  uid: Maybe<TableStringFilterInput>,
-  name: Maybe<TableStringFilterInput>,
-  tags: Maybe<TableStringFilterInput>,
+export type FacebookAccountInput = {
+  cookie: Maybe<Scalars['String']>,
+  access_token: Maybe<Array<Scalars['String']>>,
 };
 
 export type Livestream = {
@@ -256,8 +257,11 @@ export type Mutation = {
   create_livestream: LivestreamEdge,
   update_livestream: Livestream,
   delete_livestream: Scalars['Boolean'],
+  create_deposit: NewDepositInfo,
   create_buff_viewers_video_task: BuffViewersVideoCudResponse,
   delete_buff_viewers_video_task: BuffViewersVideoCudResponse,
+  create_notification: Notification,
+  set_notification_read: Notification,
 };
 
 
@@ -357,6 +361,11 @@ export type MutationDelete_LivestreamArgs = {
 };
 
 
+export type MutationCreate_DepositArgs = {
+  amount: Scalars['Int']
+};
+
+
 export type MutationCreate_Buff_Viewers_Video_TaskArgs = {
   input: BuffViewersVideoInput
 };
@@ -364,6 +373,51 @@ export type MutationCreate_Buff_Viewers_Video_TaskArgs = {
 
 export type MutationDelete_Buff_Viewers_Video_TaskArgs = {
   id: Scalars['ID']
+};
+
+
+export type MutationCreate_NotificationArgs = {
+  input: NotificationInput
+};
+
+
+export type MutationSet_Notification_ReadArgs = {
+  id: Scalars['ID']
+};
+
+export type NewDepositInfo = {
+  id: Scalars['String'],
+  time: Scalars['Long'],
+  qrcode: Scalars['String'],
+  qrdata: Scalars['String'],
+};
+
+export type Notification = {
+  id: Scalars['ID'],
+  user_id: Maybe<Scalars['String']>,
+  icon: Maybe<Scalars['String']>,
+  time: Scalars['AWSDateTime'],
+  title: Scalars['String'],
+  body: Maybe<Scalars['String']>,
+  ref: Maybe<Scalars['String']>,
+};
+
+export type NotificationConnection = {
+  edges: Array<NotificationEdge>,
+  pageInfo: PageInfo,
+};
+
+export type NotificationEdge = {
+  cursor: Scalars['String'],
+  node: Notification,
+};
+
+export type NotificationInput = {
+  user_id: Maybe<Scalars['String']>,
+  icon: Maybe<Scalars['String']>,
+  title: Scalars['String'],
+  body: Maybe<Scalars['String']>,
+  ref: Maybe<Scalars['String']>,
 };
 
 export type PageInfo = {
@@ -399,6 +453,8 @@ export type PaymentMethod = {
   description: Scalars['String'],
   account: Scalars['String'],
   image_url: Scalars['String'],
+  url: Maybe<Scalars['String']>,
+  qrcode: Maybe<Scalars['String']>,
 };
 
 export type PaymentMethodInput = {
@@ -407,6 +463,8 @@ export type PaymentMethodInput = {
   description: Scalars['String'],
   account: Scalars['String'],
   image_url: Scalars['String'],
+  url: Maybe<Scalars['String']>,
+  qrcode: Maybe<Scalars['String']>,
 };
 
 export type Query = {
@@ -416,7 +474,7 @@ export type Query = {
   users: UserConnection,
   buff_viewers_livestream_tasks: BuffViewersLivestreamConnection,
   buff_viewers_livestream_task: BuffViewersLivestream,
-  facebook_account_info: FacebookAccount,
+  facebook_account_info: FacebookAccountInfo,
   facebook_accounts: Maybe<FacebookAccountConnection>,
   facebook_account: FacebookAccount,
   vip_viewers_livestream_tasks: VipViewersLivestreamConnection,
@@ -427,6 +485,7 @@ export type Query = {
   payment_histories: PaymentHistoryConnection,
   buff_viewers_video_tasks: BuffViewersVideoConnection,
   video_info: VideoInfo,
+  notifications: Array<NotificationConnection>,
 };
 
 
@@ -455,8 +514,7 @@ export type QueryFacebook_Account_InfoArgs = {
 
 export type QueryFacebook_AccountsArgs = {
   after: Maybe<Scalars['String']>,
-  limit: Maybe<Scalars['Int']>,
-  filter: Maybe<FacebookAccountQueryFilters>
+  limit: Maybe<Scalars['Int']>
 };
 
 
@@ -510,6 +568,12 @@ export type QueryVideo_InfoArgs = {
   url: Scalars['String']
 };
 
+
+export type QueryNotificationsArgs = {
+  after: Maybe<Scalars['String']>,
+  limit: Maybe<Scalars['Int']>
+};
+
 export type SendmoneyResponse = {
   payment_history: PaymentHistoryEdge,
   me: User,
@@ -526,6 +590,10 @@ export type ServicePricingInput = {
   buff_viewers_livestream: Scalars['Int'],
   vip_viewers_livestream: Scalars['Int'],
   livestream: LivestreamPricingInput,
+};
+
+export type Subscription = {
+  new_notification: Notification,
 };
 
 export type TableBooleanFilterInput = {
@@ -578,14 +646,12 @@ export type UserEdge = {
 };
 
 export type VideoInfo = {
-  from: Scalars['String'],
   title: Scalars['String'],
   description: Scalars['String'],
   id: Scalars['String'],
   livestreaming: Scalars['Boolean'],
   created_time: Scalars['String'],
   duration: Scalars['Int'],
-  sources: Array<Scalars['String']>,
   owner: VideoOwner,
   thumbnail: Scalars['String'],
 };

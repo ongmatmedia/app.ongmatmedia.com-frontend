@@ -3,6 +3,8 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+scalar AWSDateTime
+
 type BuffViewersLivestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
   user_id: String!
   id: ID!
@@ -83,8 +85,9 @@ type FacebookAccount @aws_api_key @aws_cognito_user_pools @aws_oidc {
   user_id: String!
   id: ID!
   name: String!
-  cookie: String!
-  access_token: String!
+  cookie: String
+  touch_access_token: String
+  livestream_access_token: String
   live: Boolean!
   created_at: Long!
   updated_at: Long!
@@ -100,17 +103,15 @@ type FacebookAccountEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
   node: FacebookAccount!
 }
 
-input FacebookAccountInput {
-  id: String!
+type FacebookAccountInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
   name: String!
-  cookie: String!
-  access_token: String!
+  id: String!
+  type: String!
 }
 
-input FacebookAccountQueryFilters {
-  uid: TableStringFilterInput
-  name: TableStringFilterInput
-  tags: TableStringFilterInput
+input FacebookAccountInput {
+  cookie: String
+  access_token: [String!]
 }
 
 type Livestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -251,8 +252,46 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   create_livestream(task: LivestreamInput!): LivestreamEdge!
   update_livestream(task: LivestreamUpdateInput!): Livestream!
   delete_livestream(id: ID!): Boolean!
+  create_deposit(amount: Int!): NewDepositInfo!
   create_buff_viewers_video_task(input: BuffViewersVideoInput!): BuffViewersVideoCUDResponse!
   delete_buff_viewers_video_task(id: ID!): BuffViewersVideoCUDResponse!
+  create_notification(input: NotificationInput!): Notification!
+  set_notification_read(id: ID!): Notification!
+}
+
+type NewDepositInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  id: String!
+  time: Long!
+  qrcode: String!
+  qrdata: String!
+}
+
+type Notification @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  id: ID!
+  user_id: String
+  icon: String
+  time: AWSDateTime!
+  title: String!
+  body: String
+  ref: String
+}
+
+type NotificationConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  edges: [NotificationEdge!]!
+  pageInfo: PageInfo!
+}
+
+type NotificationEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  cursor: String!
+  node: Notification!
+}
+
+input NotificationInput {
+  user_id: String
+  icon: String
+  title: String!
+  body: String
+  ref: String
 }
 
 type PageInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -288,6 +327,8 @@ type PaymentMethod @aws_api_key @aws_cognito_user_pools @aws_oidc {
   description: String!
   account: String!
   image_url: String!
+  url: String
+  qrcode: String
 }
 
 input PaymentMethodInput {
@@ -296,6 +337,8 @@ input PaymentMethodInput {
   description: String!
   account: String!
   image_url: String!
+  url: String
+  qrcode: String
 }
 
 type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -305,8 +348,8 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   users(after: String, limit: Int): UserConnection!
   buff_viewers_livestream_tasks(after: String, limit: Int, filters: BuffViewersLivestreamQueryFilters): BuffViewersLivestreamConnection!
   buff_viewers_livestream_task(id: ID!): BuffViewersLivestream!
-  facebook_account_info(url: String!): FacebookAccount!
-  facebook_accounts(after: String, limit: Int, filter: FacebookAccountQueryFilters): FacebookAccountConnection
+  facebook_account_info(url: String!): FacebookAccountInfo!
+  facebook_accounts(after: String, limit: Int): FacebookAccountConnection
   facebook_account(uid: ID!): FacebookAccount!
   vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
   vip_viewers_livestream_task(id: String!): VIPViewersLivestream!
@@ -316,6 +359,7 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   payment_histories(after: String, before_time: Long): PaymentHistoryConnection!
   buff_viewers_video_tasks(after: String, limit: Int): BuffViewersVideoConnection!
   video_info(url: String!): VideoInfo!
+  notifications(after: String, limit: Int): [NotificationConnection!]!
 }
 
 type SendmoneyResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -334,6 +378,11 @@ input ServicePricingInput {
   buff_viewers_livestream: Int!
   vip_viewers_livestream: Int!
   livestream: LivestreamPricingInput!
+}
+
+type Subscription @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  new_notification: Notification!
+  @aws_subscribe(mutations: ["create_notification"])
 }
 
 input TableBooleanFilterInput {
@@ -386,14 +435,12 @@ type UserEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
 }
 
 type VideoInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  from: String!
   title: String!
   description: String!
   id: String!
   livestreaming: Boolean!
   created_time: String!
   duration: Int!
-  sources: [String!]!
   owner: VideoOwner!
   thumbnail: String!
 }
