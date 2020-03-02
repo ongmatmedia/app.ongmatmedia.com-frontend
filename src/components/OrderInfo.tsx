@@ -3,7 +3,7 @@ import { Row, Col, Card, Tag } from 'antd'
 
 export type OrderInfoProps = {
     order: Array<{ amount: number, unit: string }>
-    old: Array<{ amount: number, unit: string }>
+    old?: Array<{ amount: number, unit: string }>
     balance: number
 }
 
@@ -26,7 +26,7 @@ export const OrderInfo = (props: OrderInfoProps) => {
                 </Col>
             </Row>
             {
-                total > 0 && [
+                total > 0 && props.old && [
                     <Row>
                         <Col><span style={{ fontSize: 15, fontWeight: 'bold' }}>Your old order</span></Col>
                     </Row>,
