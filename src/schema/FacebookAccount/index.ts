@@ -1,1 +1,0 @@
-export { FacebookAccountResolver } from './FacebookAccountResolver';
