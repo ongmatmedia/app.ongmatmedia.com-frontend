@@ -2,7 +2,7 @@ import { Col, Row } from 'antd';
 import React from 'react';
 import { LivestreamVideo, LivestreamVideoInput, VideoInfo } from '../../../types';
 import { ListVideoPreview } from './ListVideoPreview';
-import { VideoUrlInput } from './VideoUrlInput';
+import { VideoUrlInput } from '../../VideoUrlInput';
 
 interface VideoComposerProps {
   value: LivestreamVideo[],

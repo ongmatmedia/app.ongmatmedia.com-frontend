@@ -1,11 +1,10 @@
-import { Alert, Avatar, Button, Col, Icon, List, Row, Select, Spin } from 'antd';
+import { Alert, Avatar, Button, Col, Icon, Row, Select, Spin } from 'antd';
 import graphql from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
 import { QueryRenderer } from 'react-relay';
 import { FacebookGraphAPI } from '../../../api/FacebookGraphAPI';
 import { RelayEnvironment } from '../../../graphql/RelayEnvironment';
 import { FacebookAccount, FacebookAccountConnection, LivestreamFacebookTargetInput } from '../../../types';
-import { TargetsListReview } from './TargetsListReview';
 
 const getAccountsQuery = graphql`
   query LivestreamTargetItemSelectorTabQuery {
@@ -23,9 +22,9 @@ const getAccountsQuery = graphql`
 
 const { Option } = Select;
 
-export type FacebookAccountTarget = {
+export type LivestreamTargetItemSelectorProps = {
   selected: string[];
-  onSelect: (uid: string, name: string, owner?: string) => void;
+  onSelect: (target: LivestreamFacebookTargetInput) => void;
   onClose: Function;
 };
 
@@ -50,13 +49,11 @@ interface Account {
   id: string, touch_access_token: string, name: string
 }
 
-export const LivestreamTargetItemSelector = (props: FacebookAccountTarget) => {
+export const LivestreamTargetItemSelector = (props: LivestreamTargetItemSelectorProps) => {
 
   const [currentAccount, setCurrentAccount] = useState<Account>()
 
   const [selectingTarget, setSelectingTarget] = useState<boolean>(false)
-
-  const [targets, setTargets] = useState<LivestreamFacebookTargetInput[]>([])
 
   const [groupsAndPagesInfo, setGroupsAndPageInfo] = useState<Array<{ id: string, name: string, type: string }>>()
 
@@ -135,17 +132,16 @@ export const LivestreamTargetItemSelector = (props: FacebookAccountTarget) => {
                     </Option>
                   ))}
                 </Select>
-                {selectingTarget && currentAccount && targets.every(el => el.uid !== currentAccount.id) && (
+                {selectingTarget && currentAccount && (
                   <>
-                    <Button type="primary" style={{ marginBottom: 20 }} size="large" icon="plus" onClick={() => setTargets([
-                      ...targets,
+                    <Button type="primary" style={{ marginBottom: 20 }} size="large" icon="plus" onClick={() => props.selected.every(el => el!== currentAccount.id) && props.onSelect(
                       {
                         uid: currentAccount.id,
                         name: currentAccount.name,
                         owner: currentAccount.id,
                         type: "profile"
                       }
-                    ])} >
+                    )} >
                       Live in this profile
                     </Button>
                   </>
@@ -160,15 +156,14 @@ export const LivestreamTargetItemSelector = (props: FacebookAccountTarget) => {
                       placeholder="Select a groups or page"
                       size="large"
                       style={{ marginBottom: 20 }}
-                      onChange={id => targets.every(el => el.uid !== id) && setTargets([
-                        ...targets,
+                      onChange={id => props.selected.every(el => el !== id) && props.onSelect(
                         {
                           uid: groupsAndPagesInfo.filter(el => el.id == id)[0].id,
                           name: groupsAndPagesInfo.filter(el => el.id == id)[0].name,
                           owner: currentAccount.id,
                           type: groupsAndPagesInfo.filter(el => el.id == id)[0].type
                         }
-                      ])}
+                      )}
                     >
                       {groupsAndPagesInfo.map(({ id, name, type }) => (
                         <Option value={id} style={{ marginBottom: 10 }} key={id} >
@@ -177,16 +172,6 @@ export const LivestreamTargetItemSelector = (props: FacebookAccountTarget) => {
                         </Option>
                       ))}
                     </Select>
-                  )
-                }
-                {
-                  targets.length > 0 && (
-                    <TargetsListReview
-                      list={targets}
-                      onRemove={uid => setTargets([
-                        ...targets.filter(el => el.uid !== uid)
-                      ])} 
-                    />
                   )
                 }
               </>

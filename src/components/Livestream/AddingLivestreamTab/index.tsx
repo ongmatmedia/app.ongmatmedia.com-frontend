@@ -1,8 +1,8 @@
-import { Button, Col, Divider, Form, Input, notification, Row } from 'antd';
+import { Button, Col, Divider, Form, Input, notification, Row, Alert } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
 import { create_livestream } from '../../../graphql/create_livestream';
-import { LivestreamTarget } from '../../../types';
+import { LivestreamTarget, LivestreamFacebookTarget } from '../../../types';
 import { BroadcastTime } from '../SharingComponents/BroadcastTime';
 import { ListTarget } from '../SharingComponents/ListTarget';
 import { VideoComposer } from '../SharingComponents/VideoComposer';
@@ -20,36 +20,41 @@ export const AddingLivestreamTab = Form.create<AddLivestreamTabProps>()(
       return Object.keys(fieldsError).some(field => fieldsError[field]);
     }
 
+    const [error, setError] = useState<string | null>()
+
     const handleSubmit = e => {
       e.preventDefault();
       form.validateFields(async (err, values) => {
         if (!err) {
+          setError(null)
           console.log('Received values of form: ', values);
-          // const { name, title, description, videos, time, targets: { rtmps, facebooks } } = values;
-          // await create_livestream({
-          //   name,
-          //   title,
-          //   description,
-          //   videos,
-          //   time,
-          //   targets: {
-          //     rtmps,
-          //     facebooks
-          //   }
-          // })
-          // form.resetFields()
-          // notification.open({
-          //   message: "Congratulation!",
-          //   description: "You created livestream successfully"
-          // })
-          // await new Promise(s => {
-          //   setTimeout(() => {
-          //     window.location.reload()
-          //   }, 2000)
-          // })
-          // props.setActiveTabKey("1")
-        } else {
-          console.error(JSON.stringify(err))
+          const { name, title, description, videos, time, targets: { rtmps, facebooks } } = values;
+          try {
+            await create_livestream({
+              name,
+              title,
+              description,
+              videos,
+              time,
+              targets: {
+                rtmps,
+                facebooks
+              }
+            })
+            form.resetFields()
+            notification.open({
+              message: "Congratulation!",
+              description: "You created livestream successfully"
+            })
+            await new Promise(s => {
+              setTimeout(() => {
+                window.location.reload()
+              }, 2000)
+            })
+            props.setActiveTabKey("1")
+          } catch ({ name, message }) {
+            setError(`${name}: ${message}`)
+          }
         }
       });
     };
@@ -119,6 +124,13 @@ export const AddingLivestreamTab = Form.create<AddLivestreamTabProps>()(
             </Form.Item>
           </Col>
         </Row>
+        {error && (
+          <Row>
+            <Col xs={24}>
+              <Alert message={error} type="error" showIcon style={{ marginBottom: 10 }} />
+            </Col>
+          </Row>
+        )}
         <Divider />
         <Row>
           <Col xs={24} style={{ textAlign: "center" }}>

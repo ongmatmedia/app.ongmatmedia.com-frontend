@@ -1,9 +1,9 @@
 import { Alert, Avatar, Button, Card, Col, Icon, Input, Row } from 'antd';
 import React, { useState } from 'react';
-import { LivestreamTarget } from '../../../types';
-import { ListTargetItem } from './ListTargetItem';
+import { LivestreamFacebookTargetInput, LivestreamTarget } from '../../../types';
 import { LivestreamFacebookTargetType } from './LivestreamFacebookTargetType';
 import { LivestreamTargetItemSelector } from './LivestreamTargetItemSelector';
+import { TargetsListReview } from './TargetsListReview';
 
 
 export const ListTarget = (((props: { value: LivestreamTarget; onChange: Function }) => {
@@ -18,14 +18,14 @@ export const ListTarget = (((props: { value: LivestreamTarget; onChange: Functio
       'https://www.socialmediaexaminer.com/wp-content/uploads/2014/07/kl-facebook-pages-app-logo.jpg',
   };
 
-  const select = (
-    uid: string,
-    name: string,
-    type: LivestreamFacebookTargetType,
-    owner?: string,
-  ) => {
+  const select = ({
+    uid,
+    name,
+    type,
+    owner,
+  }) => {
     console.log({ uid, name, type, owner });
-    props.onChange({
+    const newTaretFromChild = {
       ...props.value,
       facebooks: [
         ...props.value.facebooks,
@@ -36,16 +36,17 @@ export const ListTarget = (((props: { value: LivestreamTarget; onChange: Functio
           owner,
         },
       ],
-    });
-  };
-  const un_select = (uid: string) => {
-    props.onChange({
-      ...props.value,
-      facebooks: props.value.facebooks.filter(t => t.uid != uid),
-    });
+    }
+    console.log({ newTaretFromChild })
+    props.onChange(newTaretFromChild);
   };
 
-  const { group, page, profile } = LivestreamFacebookTargetType
+  const removeTargetWithUid = (uid: string) => {
+    props.onChange({
+      ...props.value,
+      facebooks: props.value.facebooks.filter(t => t.uid !== uid),
+    });
+  };
 
   return (
     <span>
@@ -67,15 +68,10 @@ export const ListTarget = (((props: { value: LivestreamTarget; onChange: Functio
           background: 'linear-gradient(to right, rgb(37, 116, 168), rgb(81, 74, 157))',
         }}
       >
-        <ListTargetItem
-          list={props.value.facebooks.filter(a => true)}
-          onRemove={uid => un_select(uid)}
-        />
-
         {isSelectingMode ? (
           <LivestreamTargetItemSelector
             selected={props.value.facebooks.filter(a => true).map(p => p.uid)}
-            onSelect={(uid: string, name: string, owner?: string) => select(uid, name, LivestreamFacebookTargetType.group, owner)}
+            onSelect={(target: LivestreamFacebookTargetInput) => select(target)}
             onClose={() => setIsSelectingMode(false)}
           />
         ) : (
@@ -87,6 +83,14 @@ export const ListTarget = (((props: { value: LivestreamTarget; onChange: Functio
               </Col>
             </Row>
           )}
+        {
+          props.value.facebooks.length > 0 && (
+            <TargetsListReview
+              list={props.value.facebooks.filter(a => true)}
+              onRemove={uid => removeTargetWithUid(uid)}
+            />
+          )
+        }
       </Card>
 
       <Card
@@ -112,6 +116,8 @@ export const ListTarget = (((props: { value: LivestreamTarget; onChange: Functio
             {props.value.rtmps.map((rtmp: string, index: number) => (
               <Input
                 key={index}
+                placeholder="Input your RTMP"
+                allowClear
                 value={rtmp}
                 onChange={e =>
                   props.onChange({
@@ -131,6 +137,7 @@ export const ListTarget = (((props: { value: LivestreamTarget; onChange: Functio
                   />
                 }
                 style={{ padding: 5 }}
+                pattern="rtmps:\/\/live-api-s\.facebook\.com:\d+\/rtmp\/.*"
               />
             ))}
           </Col>

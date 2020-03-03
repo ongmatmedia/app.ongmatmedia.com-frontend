@@ -1,9 +1,8 @@
-import React from 'react';
+import graphql from 'babel-plugin-relay/macro';
 import { commitMutation } from 'react-relay';
 import { ConnectionHandler, RecordProxy } from 'relay-runtime';
-import { RelayEnvironment } from './RelayEnvironment';
-import graphql from 'babel-plugin-relay/macro';
 import { LivestreamInput } from '../types';
+import { RelayEnvironment } from './RelayEnvironment';
 
 const mutation = graphql`
   mutation createLivestreamMutation($task: LivestreamInput!) {
