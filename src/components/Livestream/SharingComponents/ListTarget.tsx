@@ -75,7 +75,7 @@ export const ListTarget = (((props: { value: LivestreamTarget; onChange: Functio
             onClose={() => setIsSelectingMode(false)}
           />
         ) : (
-            <Row type="flex" justify="space-around" align="middle" style={{ paddingTop: 10 }}>
+            <Row type="flex" justify="space-around" align="middle" style={{ paddingTop: 10, marginBottom: 15 }}>
               <Col>
                 <Button type="dashed" icon="plus" onClick={() => setIsSelectingMode(true)}>
                   Add Facebook target

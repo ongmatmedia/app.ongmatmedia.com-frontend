@@ -116,7 +116,7 @@ export const LivestreamTargetItemSelector = (props: LivestreamTargetItemSelector
             );
           }
           else {
-            const selectableAccounts = accounts.filter(account => !props.selected.includes(account.id))
+            const selectableAccounts = accounts.filter(account => true)
             return (
               <>
                 <Select
@@ -132,7 +132,7 @@ export const LivestreamTargetItemSelector = (props: LivestreamTargetItemSelector
                     </Option>
                   ))}
                 </Select>
-                {selectingTarget && currentAccount && (
+                {selectingTarget && currentAccount && !props.selected.includes(currentAccount.id) && (
                   <>
                     <Button type="primary" style={{ marginBottom: 20 }} size="large" icon="plus" onClick={() => props.selected.every(el => el!== currentAccount.id) && props.onSelect(
                       {

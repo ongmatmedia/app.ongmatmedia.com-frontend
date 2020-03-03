@@ -1,8 +1,8 @@
-import { Button, Col, Divider, Form, Input, notification, Row, Alert } from 'antd';
+import { Alert, Button, Col, Divider, Form, Input, notification, Row } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
 import { create_livestream } from '../../../graphql/create_livestream';
-import { LivestreamTarget, LivestreamFacebookTarget } from '../../../types';
+import { LivestreamTarget } from '../../../types';
 import { BroadcastTime } from '../SharingComponents/BroadcastTime';
 import { ListTarget } from '../SharingComponents/ListTarget';
 import { VideoComposer } from '../SharingComponents/VideoComposer';
@@ -30,17 +30,7 @@ export const AddingLivestreamTab = Form.create<AddLivestreamTabProps>()(
           console.log('Received values of form: ', values);
           const { name, title, description, videos, time, targets: { rtmps, facebooks } } = values;
           try {
-            await create_livestream({
-              name,
-              title,
-              description,
-              videos,
-              time,
-              targets: {
-                rtmps,
-                facebooks
-              }
-            })
+            await create_livestream(values)
             form.resetFields()
             notification.open({
               message: "Congratulation!",

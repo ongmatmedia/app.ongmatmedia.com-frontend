@@ -1,4 +1,4 @@
-import { Alert, Form, Input, Modal, Spin } from 'antd';
+import { Alert, Form, Input, Modal, Spin, notification } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useEffect, useState } from 'react';
 import { create_livestream } from '../../../graphql/create_livestream';
@@ -27,12 +27,17 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
 
     const { form } = props;
 
+    const hasErrors = (fieldsError) => {
+      return Object.keys(fieldsError).some(field => fieldsError[field]);
+    }
+
     const [broadcastTimeList, setBroadcastTimeList] = useState<number[]>(props.task ? [...props.task.time] : [])
 
     const submit = () => {
       form.validateFields(async (err, values) => {
         if (err) return;
 
+        console.log('Received values of form: ', values);
         set_loading(true);
         try {
           if (props.mode == 'create') {
@@ -43,6 +48,10 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
           }
           form.resetFields();
           props.onClose();
+          notification.open({
+            message: "Congratulation!",
+            description: "You updated livestream successfully"
+          })
         } catch (e) {
           set_error(e.message);
         }
@@ -58,6 +67,7 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
         onCancel={() => (form.resetFields(), props.onClose())}
         onOk={() => submit()}
         destroyOnClose={true}
+        okButtonProps={{disabled: hasErrors(form.getFieldsError())}}
       >
         <Spin spinning={loading}>
           {error && <Alert type="error" message={error} style={{ padding: 5 }} />}

@@ -13,9 +13,6 @@ export const BroadcastTime = (props: BroadcastTimeProps) => (
     {props.now && (
       <Col span={12}>
         <Row>
-          <Col span={24} style={{ cursor: 'pointer' }}>
-            <Checkbox style={{ marginRight: 20 }} checked>Live now</Checkbox>
-          </Col>
           <AddSchedule tagsSchedule={props.value} onChange={props.onChange} />
         </Row>
       </Col>

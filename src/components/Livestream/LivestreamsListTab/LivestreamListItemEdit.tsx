@@ -27,6 +27,8 @@ const LivestreamListItemEditQuery = graphql`
         facebooks {
           uid
           name
+          type
+          owner
         }
       }
     }
