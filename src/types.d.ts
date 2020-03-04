@@ -148,11 +148,15 @@ export type LivestreamEdge = {
 export type LivestreamFacebookTarget = {
   uid: Scalars['String'],
   name: Scalars['String'],
+  type: Scalars['String'],
+  owner: Scalars['String'],
 };
 
 export type LivestreamFacebookTargetInput = {
   uid: Scalars['String'],
   name: Scalars['String'],
+  type: Scalars['String'],
+  owner: Scalars['String'],
 };
 
 export type LivestreamInput = {
@@ -394,7 +398,7 @@ export type NewDepositInfo = {
 
 export type Notification = {
   id: Scalars['ID'],
-  user_id: Maybe<Scalars['String']>,
+  user_id: Scalars['String'],
   icon: Maybe<Scalars['String']>,
   time: Scalars['AWSDateTime'],
   title: Scalars['String'],
@@ -413,7 +417,7 @@ export type NotificationEdge = {
 };
 
 export type NotificationInput = {
-  user_id: Maybe<Scalars['String']>,
+  user_id: Scalars['String'],
   icon: Maybe<Scalars['String']>,
   title: Scalars['String'],
   body: Maybe<Scalars['String']>,
@@ -593,7 +597,12 @@ export type ServicePricingInput = {
 };
 
 export type Subscription = {
-  new_notification: Notification,
+  new_notification: Maybe<Notification>,
+};
+
+
+export type SubscriptionNew_NotificationArgs = {
+  user_id: Scalars['String']
 };
 
 export type TableBooleanFilterInput = {

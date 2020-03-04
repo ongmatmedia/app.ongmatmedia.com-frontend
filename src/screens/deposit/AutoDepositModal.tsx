@@ -21,7 +21,6 @@ export const AutoDepositModal = (props: AutoDepositModalProps) => {
         set_qr(null)
         try {
             const qr = await create_deposit(amount)
-            console.log(qr, qr.qrdata)
             set_qr(qr)
         } catch (e) {
             Modal.error({ content: e })
