@@ -21,7 +21,6 @@ export const InputNumberAutoSelect = (props: InputNumberAutoSelectProps) => {
         set_value(n.toLocaleString(undefined));
         props.onChangeValue(n);
       }
-      console.log(value);
     }
   };
 

@@ -3,70 +3,8 @@ import { Button, Checkbox, Form, Icon, Input, Alert, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { Auth } from 'aws-amplify';
 import { RouterProps, withRouter, RouteComponentProps } from 'react-router';
-
-// interface LoginPageState {
-//     err: string | null,
-//     loading: boolean,
-//     forgot_pass_loading: boolean
-// }
-
-// class LoginPage extends Component<FormComponentProps & RouterProps, LoginPageState> {
-
-//     state: LoginPageState = {
-//         err: null,
-//         loading: false,
-//         forgot_pass_loading: false
-//     }
-
-//     componentDidMount() {
-//         this.setState({ ...this.state, err: null })
-//     }
-
-//     login = async (email: string, password: string) => {
-//         this.setState({ ...this.state, loading: true, err: null })
-//         try {
-//             const rs = await Auth.signIn(email, password)
-//             if (rs.challengeName == 'NEW_PASSWORD_REQUIRED') {
-//                 this.props.history.push('/set-new-pass')
-//                 return
-//             }
-//             this.props.history.push('/')
-//         } catch (e) {
-//             console.error('Error login', e)
-//             this.setState({ ...this.state, err: e.message })
-
-//         }
-//         this.setState({ ...this.state, loading: false })
-//     }
-
-//     forgot_pass = (e: FormEvent) => {
-//         e.preventDefault()
-//         this.props.form.validateFields(async (err, values) => {
-//             if (err) return
-//             await this.setState({ ...this.state, forgot_pass_loading: true })
-
-//             const email = values.email
-//             try {
-//                 await Auth.forgotPassword(email)
-//                 notification.success({ message: 'Check your email for code vertification' })
-//                 this.props.history.push('/reset-pass')
-//             } catch (e) {
-//                 this.setState({ ...this.state, err: e.message })
-//             }
-//             await this.setState({ ...this.state, forgot_pass_loading: false })
-//         })
-//     }
-
-//     submit = (e: FormEvent) => {
-//         e.preventDefault()
-//         this.props.form.validateFields((err, values) => !err && this.login(values.email, values.password))
-//     }
-
-//     render() {
-
-//         const { getFieldDecorator } = this.props.form
-//     }
-// }
+import { AppCycleHook } from '../../AppCycleHook';
+ 
 
 export const LoginView = withRouter<any, any>((props: FormComponentProps & RouteComponentProps) => {
   const [error, set_error] = useState<string | null>(null);
@@ -107,6 +45,7 @@ export const LoginView = withRouter<any, any>((props: FormComponentProps & Route
           if (user.challengeName == 'NEW_PASSWORD_REQUIRED')
             set_new_pass_prompt(username, password);
         }
+        await AppCycleHook.onLoginSuccess()
         props.history.push('/');
       } catch (e) {
         set_error(e.message);

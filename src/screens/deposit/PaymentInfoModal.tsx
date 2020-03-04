@@ -48,16 +48,31 @@ export const PaymentInfoModal = (props: IPaymentInfoModal) => {
               </Row>
             </Card.Grid>
             <Card.Grid style={gridStyle}>{props.data.description}</Card.Grid>
-            <Card.Grid style={{ width: '100%', textAlign: 'center' }}>
-              <Row style={{ marginBottom: 20 }}>
-                <Button type="primary">
-                  <a href="http://fb.com" target="_blank">Go to</a>
-                </Button>
-              </Row>
-              <Row>
-                <QRCode value="http://facebook.github.io/react/" />
-              </Row>
-            </Card.Grid>
+            {
+              (props.data.qrcode || props.data.url) && (
+                <Card.Grid style={{ width: '100%', textAlign: 'center' }}>
+                  {
+                    props.data.url && (
+                      <Row style={{ marginBottom: 20 }}>
+                        <Button type="primary">
+                          <a href={props.data.url} target="_blank">Go to</a>
+                        </Button>
+                      </Row>
+                    )
+                  }
+                  {
+                    props.data.qrcode && (
+                      <Row>
+                        <img
+                          src={`https://1s71m8djfk.execute-api.us-east-1.amazonaws.com/production/qrcode?data=${props.data.qrcode}`}
+                          style={{ width: '100%' }}
+                        />
+                      </Row>
+                    )
+                  }
+                </Card.Grid>
+              )
+            }
           </Card>
         ) : ''}
       </Row>

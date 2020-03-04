@@ -142,11 +142,15 @@ type LivestreamEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
 type LivestreamFacebookTarget @aws_api_key @aws_cognito_user_pools @aws_oidc {
   uid: String!
   name: String!
+  type: String!
+  owner: String!
 }
 
 input LivestreamFacebookTargetInput {
   uid: String!
   name: String!
+  type: String!
+  owner: String!
 }
 
 input LivestreamInput {
@@ -268,7 +272,7 @@ type NewDepositInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
 
 type Notification @aws_api_key @aws_cognito_user_pools @aws_oidc {
   id: ID!
-  user_id: String
+  user_id: String!
   icon: String
   time: AWSDateTime!
   title: String!
@@ -287,7 +291,7 @@ type NotificationEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
 }
 
 input NotificationInput {
-  user_id: String
+  user_id: String!
   icon: String
   title: String!
   body: String
@@ -381,7 +385,7 @@ input ServicePricingInput {
 }
 
 type Subscription @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  new_notification: Notification!
+  new_notification(user_id: String!): Notification
   @aws_subscribe(mutations: ["create_notification"])
 }
 

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { RouterProps } from 'react-router';
 import { Link, withRouter } from 'react-router-dom';
 import { UserInfo } from './UserInfo';
+import { AppCycleHook } from '../../AppCycleHook'
 
 const DrawerLinks: Array<{
   name: string;
@@ -25,7 +26,7 @@ const LogoutButton = withRouter((props: RouterProps) => {
           title: 'Logout now?',
           onOk: async () => {
             props.history.push('/auth/login');
-            await Auth.signOut();
+            await AppCycleHook.logout()
           },
         })
       }
