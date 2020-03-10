@@ -1,4 +1,4 @@
-import { Alert, Button, Col, Divider, Form, Input, notification, Row } from 'antd';
+import { Alert, Button, Col, Divider, Form, Input, InputNumber, notification, Row } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
 import { create_livestream } from '../../../graphql/create_livestream';
@@ -28,7 +28,6 @@ export const AddingLivestreamTab = Form.create<AddLivestreamTabProps>()(
         if (!err) {
           setError(null)
           console.log('Received values of form: ', values);
-          const { name, title, description, videos, time, targets: { rtmps, facebooks } } = values;
           try {
             await create_livestream(values)
             form.resetFields()
@@ -48,8 +47,6 @@ export const AddingLivestreamTab = Form.create<AddLivestreamTabProps>()(
         }
       });
     };
-
-    const [broadcastTimeList, setBroadcastTimeList] = useState<number[]>([])
 
     return (
       <Form layout="vertical" onSubmit={handleSubmit}>
@@ -78,21 +75,29 @@ export const AddingLivestreamTab = Form.create<AddLivestreamTabProps>()(
 
             <Form.Item label="Video URLs">
               {form.getFieldDecorator('videos', {
-                rules: [{ required: false, message: 'Please add some videos !' }],
+                rules: [{ required: true, message: 'Please add some videos !' }],
                 initialValue: []
               })(<VideoComposer value={[]} onChange={videos => form.setFieldsValue({ videos })} />)}
+            </Form.Item>
+            <Form.Item label="Video loop times">
+              {form.getFieldDecorator('loop_times', {
+                rules: [{ required: true, message: 'Please select video loop times !' }],
+                initialValue: []
+              })(
+                <InputNumber min={1} max={100} />
+              )}
             </Form.Item>
           </Col>
           <Col xs={24} md={12}>
             <Form.Item label="Broadcast time">
-              {form.getFieldDecorator('time', {
-                rules: [{ required: false, message: 'Please select time !' }],
-                initialValue: null
+              {form.getFieldDecorator('times', {
+                rules: [{ required: true, message: 'Please select time !' }],
+                initialValue: []
               })(
                 <BroadcastTime
                   now={true}
-                  value={broadcastTimeList}
-                  onChange={(newBroadcastTimeList: number[]) => setBroadcastTimeList([...newBroadcastTimeList])}
+                  value={[]}
+                  onChange={() => {}}
                 />)}
             </Form.Item>
 

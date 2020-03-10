@@ -13,7 +13,7 @@ export const BroadcastTime = (props: BroadcastTimeProps) => (
     {props.now && (
       <Col span={12}>
         <Row>
-          <AddSchedule tagsSchedule={props.value} onChange={props.onChange} />
+          <AddSchedule tagsSchedule={props.value || []} onChange={props.onChange} />
         </Row>
       </Col>
     )}

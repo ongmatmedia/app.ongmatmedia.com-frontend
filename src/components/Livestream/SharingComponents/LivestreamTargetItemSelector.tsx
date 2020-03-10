@@ -120,6 +120,11 @@ export const LivestreamTargetItemSelector = (props: LivestreamTargetItemSelector
             return (
               <>
                 <Select
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    option.props.children && option.props.children[1].props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                  }
                   placeholder="Select a person"
                   size="large"
                   onChange={accountId => fetchTargetInfo(selectableAccounts.filter(acc => acc.id == accountId)[0])}
@@ -134,7 +139,7 @@ export const LivestreamTargetItemSelector = (props: LivestreamTargetItemSelector
                 </Select>
                 {selectingTarget && currentAccount && !props.selected.includes(currentAccount.id) && (
                   <>
-                    <Button type="primary" style={{ marginBottom: 20 }} size="large" icon="plus" onClick={() => props.selected.every(el => el!== currentAccount.id) && props.onSelect(
+                    <Button type="primary" style={{ marginBottom: 20 }} size="large" icon="plus" onClick={() => props.selected.every(el => el !== currentAccount.id) && props.onSelect(
                       {
                         uid: currentAccount.id,
                         name: currentAccount.name,
@@ -153,6 +158,11 @@ export const LivestreamTargetItemSelector = (props: LivestreamTargetItemSelector
                 {
                   selectingTarget && currentAccount && groupsAndPagesInfo && (
                     <Select
+                      showSearch
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        option.props.children && option.props.children[1].props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                      }
                       placeholder="Select a groups or page"
                       size="large"
                       style={{ marginBottom: 20 }}

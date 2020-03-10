@@ -21,7 +21,8 @@ const LivestreamListItemEditQuery = graphql`
       created_time
       title
       description
-      time
+      times
+      loop_times
       targets {
         rtmps
         facebooks {
