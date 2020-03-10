@@ -12,7 +12,7 @@ const mutation = graphql`
         videos {
           thumbnail_url
         }
-        time
+        times
         name
         active
         created_time

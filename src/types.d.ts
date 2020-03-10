@@ -131,7 +131,8 @@ export type Livestream = {
   updated_time: Scalars['Long'],
   title: Scalars['String'],
   description: Maybe<Scalars['String']>,
-  time: Array<Scalars['Long']>,
+  times: Array<Scalars['Long']>,
+  loop_times: Scalars['Int'],
   targets: LivestreamTarget,
   errors: Array<Scalars['String']>,
 };
@@ -162,9 +163,10 @@ export type LivestreamFacebookTargetInput = {
 export type LivestreamInput = {
   videos: Array<LivestreamVideoInput>,
   name: Scalars['String'],
-  time: Array<Scalars['Long']>,
+  times: Array<Scalars['Long']>,
   title: Scalars['String'],
   description: Scalars['String'],
+  loop_times: Scalars['Int'],
   targets: LivestreamTargetInput,
 };
 
@@ -222,7 +224,8 @@ export type LivestreamUpdateInput = {
   active: Maybe<Scalars['Boolean']>,
   title: Maybe<Scalars['String']>,
   description: Maybe<Scalars['String']>,
-  time: Maybe<Array<Scalars['Long']>>,
+  times: Array<Scalars['Long']>,
+  loop_times: Scalars['Int'],
   targets: Maybe<LivestreamTargetInput>,
 };
 
@@ -398,7 +401,7 @@ export type NewDepositInfo = {
 
 export type Notification = {
   id: Scalars['ID'],
-  user_id: Maybe<Scalars['String']>,
+  user_id: Scalars['String'],
   icon: Maybe<Scalars['String']>,
   time: Scalars['AWSDateTime'],
   title: Scalars['String'],
@@ -417,7 +420,7 @@ export type NotificationEdge = {
 };
 
 export type NotificationInput = {
-  user_id: Maybe<Scalars['String']>,
+  user_id: Scalars['String'],
   icon: Maybe<Scalars['String']>,
   title: Scalars['String'],
   body: Maybe<Scalars['String']>,
@@ -597,7 +600,12 @@ export type ServicePricingInput = {
 };
 
 export type Subscription = {
-  new_notification: Notification,
+  new_notification: Maybe<Notification>,
+};
+
+
+export type SubscriptionNew_NotificationArgs = {
+  user_id: Scalars['String']
 };
 
 export type TableBooleanFilterInput = {

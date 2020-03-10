@@ -9,15 +9,6 @@ import { TargetsListReview } from './TargetsListReview';
 export const ListTarget = (((props: { value: LivestreamTarget; onChange: Function }) => {
   const [isSelectingMode, setIsSelectingMode] = useState<boolean>(false);
 
-  const FacebookIcon = {
-    [LivestreamFacebookTargetType.profile]:
-      'https://www.shareicon.net/data/512x512/2016/08/05/806962_user_512x512.png',
-    [LivestreamFacebookTargetType.group]:
-      'https://www.codester.com/static/uploads/items/5415/icon.png',
-    [LivestreamFacebookTargetType.page]:
-      'https://www.socialmediaexaminer.com/wp-content/uploads/2014/07/kl-facebook-pages-app-logo.jpg',
-  };
-
   const select = ({
     uid,
     name,

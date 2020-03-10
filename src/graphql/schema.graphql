@@ -125,7 +125,8 @@ type Livestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
   updated_time: Long!
   title: String!
   description: String
-  time: [Long!]!
+  times: [Long!]!
+  loop_times: Int!
   targets: LivestreamTarget!
   errors: [String!]!
 }
@@ -156,9 +157,10 @@ input LivestreamFacebookTargetInput {
 input LivestreamInput {
   videos: [LivestreamVideoInput!]!
   name: String!
-  time: [Long!]!
+  times: [Long!]!
   title: String!
   description: String!
+  loop_times: Int!
   targets: LivestreamTargetInput!
 }
 
@@ -216,7 +218,8 @@ input LivestreamUpdateInput {
   active: Boolean
   title: String
   description: String
-  time: [Long!]
+  times: [Long!]!
+  loop_times: Int!
   targets: LivestreamTargetInput
 }
 
@@ -272,7 +275,7 @@ type NewDepositInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
 
 type Notification @aws_api_key @aws_cognito_user_pools @aws_oidc {
   id: ID!
-  user_id: String
+  user_id: String!
   icon: String
   time: AWSDateTime!
   title: String!
@@ -291,7 +294,7 @@ type NotificationEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
 }
 
 input NotificationInput {
-  user_id: String
+  user_id: String!
   icon: String
   title: String!
   body: String
@@ -385,7 +388,7 @@ input ServicePricingInput {
 }
 
 type Subscription @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  new_notification: Notification!
+  new_notification(user_id: String!): Notification
   @aws_subscribe(mutations: ["create_notification"])
 }
 

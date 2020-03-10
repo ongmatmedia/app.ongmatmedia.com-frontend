@@ -1,4 +1,4 @@
-import { Alert, Form, Input, Modal, Spin, notification } from 'antd';
+import { Alert, Form, Input, InputNumber, Modal, notification, Spin } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useEffect, useState } from 'react';
 import { create_livestream } from '../../../graphql/create_livestream';
@@ -30,9 +30,7 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
     const hasErrors = (fieldsError) => {
       return Object.keys(fieldsError).some(field => fieldsError[field]);
     }
-
-    const [broadcastTimeList, setBroadcastTimeList] = useState<number[]>(props.task ? [...props.task.time] : [])
-
+    
     const submit = () => {
       form.validateFields(async (err, values) => {
         if (err) return;
@@ -67,7 +65,7 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
         onCancel={() => (form.resetFields(), props.onClose())}
         onOk={() => submit()}
         destroyOnClose={true}
-        okButtonProps={{disabled: hasErrors(form.getFieldsError())}}
+        okButtonProps={{ disabled: hasErrors(form.getFieldsError()) }}
       >
         <Spin spinning={loading}>
           {error && <Alert type="error" message={error} style={{ padding: 5 }} />}
@@ -100,15 +98,24 @@ export const CreateEditLivestreamModal = Form.create<CreateLivestreamModalProps>
               })(<VideoComposer value={[]} onChange={videos => form.setFieldsValue({ videos })} />)}
             </Form.Item>
 
+            <Form.Item label="Video loop times">
+              {form.getFieldDecorator('loop_times', {
+                rules: [{ required: true, message: 'Please select video loop times !' }],
+                initialValue: props.task ? props.task.loop_times : 0
+              })(
+                <InputNumber min={1} max={100} />
+              )}
+            </Form.Item>
+
             <Form.Item label="Broadcast time">
-              {form.getFieldDecorator('time', {
+              {form.getFieldDecorator('times', {
                 rules: [{ required: true, message: 'Please select time !' }],
-                initialValue: props.task ? props.task.time : null,
+                initialValue: props.task ? props.task.times : null,
               })(
                 <BroadcastTime
                   now={true}
-                  value={broadcastTimeList}
-                  onChange={(newBroadcastTimeList: number[]) => setBroadcastTimeList([...newBroadcastTimeList])}
+                  value={new Array<number>()}
+                  onChange={() => {}}
                 />)}
             </Form.Item>
 
