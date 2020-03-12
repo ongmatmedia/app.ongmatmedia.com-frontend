@@ -5,9 +5,7 @@ import * as firebase from "firebase/app";
 import "firebase/messaging";
 
 
-const initializedFirebaseApp = firebase.initializeApp(FirebaseConfig);
-const FirebaseMessaging = initializedFirebaseApp.messaging();
-FirebaseMessaging.usePublicVapidKey(FirebaseConfigVAPIDKEY);
+
 
 
 export class AppCycleHook {
@@ -22,6 +20,9 @@ export class AppCycleHook {
         await GraphQLSubscription.subscriblePrivateEvents()
         // Enable push
         if (Notification.permission == 'granted') {
+            const initializedFirebaseApp = firebase.initializeApp(FirebaseConfig);
+            const FirebaseMessaging = initializedFirebaseApp.messaging();
+            FirebaseMessaging.usePublicVapidKey(FirebaseConfigVAPIDKEY);
             console.log({ token: await FirebaseMessaging.getToken() })
         }
     }
@@ -32,7 +33,6 @@ export class AppCycleHook {
             await new Promise((s, r) => Notification.requestPermission(state => state == 'granted' ? s() : r())).catch(e => console.log('Please enable notification'))
             const sw = await navigator.serviceWorker.register('/sw.js')
             firebase.messaging().useServiceWorker(sw)
-            console.log({ token: await FirebaseMessaging.getToken() })
         } catch{ }
     }
 }

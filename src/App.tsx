@@ -28,7 +28,7 @@ export class App {
 
         // Load title
         const splited_hostname = window.location.hostname.split('.')
-        const title = splited_hostname.length > 0 ? splited_hostname.reverse()[0] : window.location.hostname
+        const title = splited_hostname.sort((a,b) => b.length - a.length)[0]
         window.document.title = title.charAt(0).toUpperCase() + title.slice(1);
 
         // Load i18n
