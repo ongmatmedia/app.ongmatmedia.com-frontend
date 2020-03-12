@@ -15,8 +15,7 @@ const AppWithHotReload = hot(() => <AppWithRouter />)
 
 export class App {
 
-
-    static async init() {
+    static async configure() {
         Amplify.configure(AmplifyConfig);
         AppCycleHook.register_service_worker()
         await GraphQLSubscription.subscriblePublicEvents()
@@ -28,7 +27,8 @@ export class App {
 
 
         // Load title
-        const title = window.location.hostname.split('.').reverse()[1];
+        const splited_hostname = window.location.hostname.split('.')
+        const title = splited_hostname.length > 0 ? splited_hostname.reverse()[0] : window.location.hostname
         window.document.title = title.charAt(0).toUpperCase() + title.slice(1);
 
         // Load i18n
@@ -43,6 +43,12 @@ export class App {
                 },
                 resources: lang
             });
+    }
+
+
+    static async init() {
+        try { this.configure() } catch (e) { }
+
 
         // Render
         ReactDOM.render(

@@ -29,7 +29,7 @@
     "relay-runtime": "5.0.0"
   },
   "scripts": {
-    "start": "yarn relay && webpack-dev-server --config webpack.js --hot --inline --host 0.0.0.0",
+    "start": "yarn relay && webpack-dev-server --config webpack.js  --mode development --hot",
     "build": "yarn relay && webpack --config webpack.js --mode production",
     "relay": "relay-compiler --src ./src --schema ./src/graphql/schema.graphql --language typescript",
     "clear-map": "find ./build -name '*.map' -delete"
