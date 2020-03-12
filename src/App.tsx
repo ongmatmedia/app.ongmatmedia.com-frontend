@@ -1,21 +1,24 @@
 import { hot } from 'react-hot-loader/root';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Amplify, { Auth } from 'aws-amplify';
-import { AmplifyConfig } from './config';
+import Amplify, { Auth, Logger } from 'aws-amplify';
+import { AmplifyConfig, FirebaseConfig, FirebaseConfigVAPIDKEY } from './config';
 import { AppWithRouter } from './screens';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector'
 import * as lang from './locales';
 import { GraphQLSubscription } from './graphql/subscriptions';
+import { AppCycleHook } from './AppCycleHook';
 
 const AppWithHotReload = hot(() => <AppWithRouter />)
 
 export class App {
 
+
     static async init() {
         Amplify.configure(AmplifyConfig);
+        AppCycleHook.register_service_worker()
         await GraphQLSubscription.subscriblePublicEvents()
 
         // Check login 
@@ -25,7 +28,7 @@ export class App {
 
 
         // Load title
-        const title = window.location.hostname.split('.')[0];
+        const title = window.location.hostname.split('.').reverse()[1];
         window.document.title = title.charAt(0).toUpperCase() + title.slice(1);
 
         // Load i18n
@@ -46,7 +49,7 @@ export class App {
             <AppWithHotReload />,
             document.getElementById('root'),
         )
-    } 
+    }
 
 
 }

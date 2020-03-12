@@ -50,7 +50,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 
     const { t } = useTranslation('buff_viewers_livestream_create_modal');
 
-    const viewers_amount = new Array(50).fill(0).map((_, index) => (index + 1) * 100)
+    const viewers_amount = new Array(100).fill(0).map((_, index) => (index + 1) * 50)
     const limits_mins = [10, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300]
 
     const submit = () =>

@@ -12,14 +12,7 @@ export const MainLayout = ({ Content, Menu }: MainLayoutProps) => {
   return (
     <Layout style={{ height: '100vh' }}>
       <Header />
-      <Layout
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'flex-start',
-          alignItems: 'stretch',
-        }}
-      >
+      <Layout >
         <Layout style={{ flex: 1, padding: 10 }}>
           <Layout.Content>
             <Content />

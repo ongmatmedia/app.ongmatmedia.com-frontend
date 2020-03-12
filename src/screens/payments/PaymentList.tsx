@@ -16,6 +16,7 @@ export const PaymentList = (props: PaymentListProps) => (
   <Fragment>
     <Table
       loading={props.loading && props.payment_histories.length == 0}
+      rowKey="id"
       columns={[
         {
           title: 'Time',
@@ -97,7 +98,7 @@ export const PaymentList = (props: PaymentListProps) => (
       pagination={false}
     />
     {props.has_more && (
-      <Row type="flex" justify="space-around" align="middle">
+      <Row type="flex" justify="space-around" align="middle" >
         <Col>
           <Button
             loading={props.loading}

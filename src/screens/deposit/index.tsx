@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, List, Button, Icon, Tooltip, Row, Col, Spin, Divider, message } from 'antd';
+import { Card, List, Button, Icon, Tooltip, Row, Col, Spin, Divider, message, Modal } from 'antd';
 import { PaymentInfoModal } from './PaymentInfoModal';
 import { PaymentMethod } from '../../types';
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper';
@@ -70,8 +70,16 @@ export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
   {},
   ({ loading, data }) => (
     <Card title="Deposit" loading={loading}>
+
       {
-        (window.location.hostname == 'localhost'|| window.location.hostname.includes('192.168') || window.location.hostname == 'app.ongmatmedia.com') && <AutoDepositModal />
+        (window.location.hostname == 'localhost' || window.location.hostname.includes('192.168') || window.location.hostname == 'app.ongmatmedia.com') && (
+          <Row style={{ marginBottom: 10 }}>
+            <Button icon="sync" type="primary" onClick={() => Modal.info({
+              title: 'QRPAY',
+              content: <AutoDepositModal />
+            })}>Nạp auto</Button>
+          </Row>
+        )
       }
       {data && <Preview payment_methods={data.payment_methods} />}
     </Card>

@@ -15,3 +15,15 @@ export const AmplifyConfig = {
   },
 };
 
+export const FirebaseConfig = {
+  apiKey: "AIzaSyA1DPukkSEaW9z61Sdf33gF0h6GbqfBXG4",
+  authDomain: "ongmatmedia-bdb50.firebaseapp.com",
+  databaseURL: "https://ongmatmedia-bdb50.firebaseio.com",
+  projectId: "ongmatmedia-bdb50",
+  storageBucket: "ongmatmedia-bdb50.appspot.com",
+  messagingSenderId: "626079383120",
+  appId: "1:626079383120:web:0f1a66ef4bb0492d7f1b55",
+  measurementId: "G-EV9FXMXP0J"
+}
+
+export const FirebaseConfigVAPIDKEY = 'BHTar4YMvOMDzZOqKW8j-ThYbvqvPfCnBfOUzN8QI1fIvHM5rQETDFWXEffWFxZXyly4lTBNtgwf5TqZEp0gDUE'

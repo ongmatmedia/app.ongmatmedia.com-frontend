@@ -75,7 +75,7 @@ export const LazyGrahQLQueryRenderer = <T extends {}>(props: {
 export const GraphQLQueryFetcher = async  <T extends {}>(query: GraphQLTaggedNode, variables: any) => {
   try {
     return (await fetchQuery(RelayEnvironment, query, variables)) as T;
-  } catch (e) { 
-    throw (e as any).source.errors[0].message
+  } catch (e) {  
+    throw (e as any).errors[0].message
   }
 };
