@@ -51,7 +51,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
     const { t } = useTranslation('buff_viewers_livestream_create_modal');
 
     const viewers_amount = new Array(100).fill(0).map((_, index) => (index + 1) * 50)
-    const limits_mins = [10, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300]
+    const limits_mins = [10, 30, 45, 60, 90, 120, 150, 180, 210, 240, 270, 300]
 
     const submit = () =>
       props.form.submit(async data => {
@@ -105,7 +105,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
                           title={(
                             <>
                               <Tag color="rgb(25, 188, 198)">{video.owner.name} </Tag>
-                              <Icon style={{fontSize:25}} type="video-camera" onClick={() => window.open(`https://fb.com/${video.id}`)} />
+                              <Icon style={{ fontSize: 25 }} type="video-camera" onClick={() => window.open(`https://fb.com/${video.id}`)} />
                             </>
                           )}
                           size="small"

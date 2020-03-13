@@ -17,14 +17,16 @@ export class AppCycleHook {
     }
 
     static async onLoginSuccess() {
-        await GraphQLSubscription.subscriblePrivateEvents()
-        // Enable push
-        if (Notification.permission == 'granted') {
-            const initializedFirebaseApp = firebase.initializeApp(FirebaseConfig);
-            const FirebaseMessaging = initializedFirebaseApp.messaging();
-            FirebaseMessaging.usePublicVapidKey(FirebaseConfigVAPIDKEY);
-            console.log({ token: await FirebaseMessaging.getToken() })
-        }
+        try {
+            await GraphQLSubscription.subscriblePrivateEvents()
+            // Enable push
+            if (Notification.permission == 'granted') {
+                const initializedFirebaseApp = firebase.initializeApp(FirebaseConfig);
+                const FirebaseMessaging = initializedFirebaseApp.messaging();
+                FirebaseMessaging.usePublicVapidKey(FirebaseConfigVAPIDKEY);
+                console.log({ token: await FirebaseMessaging.getToken() })
+            }
+        } catch (e) { }
     }
 
     static async register_service_worker() {
