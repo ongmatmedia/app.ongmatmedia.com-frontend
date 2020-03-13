@@ -23,6 +23,8 @@ const LivestreamsListTabQuery = graphql`
           created_time
           updated_time
           times
+          title
+          description
         }
       }
     }

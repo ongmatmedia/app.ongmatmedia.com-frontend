@@ -8,12 +8,17 @@ const mutation = graphql`
     update_livestream(task: $task) {
       id
       videos {
-        thumbnail_url
-      }
+        title
+          is_livestream
+          video_id
+          thumbnail_url
+          url
+        }
       times
       name
       active
       updated_time
+      user_id
     }
   }
 `;

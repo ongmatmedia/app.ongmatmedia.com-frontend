@@ -13,6 +13,7 @@ import { SeedingPage } from './seeding';
 import { BuffViewers } from './seeding/buff-viewers';
 import { BuffViewersLivestream } from './seeding/buff-viewers-livestream';
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream';
+import { LivestreamTabs } from '../components/Livestream';
 
 export const AppWithRouter = () => (
   <HashRouter>
@@ -63,6 +64,10 @@ export const AppWithRouter = () => (
 
       <Route exact path="/deposit">
         <MainLayout Content={DepositPage} />
+      </Route>
+
+      <Route exact path="/livestream">
+        <MainLayout Content={LivestreamTabs} />
       </Route>
  
 

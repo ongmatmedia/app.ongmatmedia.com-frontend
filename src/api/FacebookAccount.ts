@@ -1,10 +1,5 @@
 import { API } from './API';
-
-enum LivestreamFacebookTargetType {
-  profile = 'profile',
-  group = 'group',
-  page = 'page',
-}
+import { LivestreamFacebookTargetType } from '../routes/livestream/list/CreateEditLivestreamModal/LivestreamFacebookTargetType';
 
 export type FacebookAccountInfo = {
   user_id: string;

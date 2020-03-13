@@ -21,6 +21,8 @@ export class App {
         // Check login 
         if (!window.location.hash.match(/#\/auth\/([a-z]+)/) && !(await Auth.currentUserInfo())) {
             window.location.href = '/#/auth/login'
+        } else {
+            GraphQLSubscription.subscriblePrivateEvents()
         }
 
 

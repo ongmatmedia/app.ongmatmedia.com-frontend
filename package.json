@@ -33,7 +33,8 @@
     "start": "react-app-rewired start",
     "build": "yarn relay && react-app-rewired build; yarn clear-map",
     "relay": "relay-compiler --src ./src --schema ./src/graphql/schema.graphql --language typescript",
-    "clear-map": "find ./build -name '*.map' -delete"
+    "clear-map": "find ./build -name '*.map' -delete",
+    "clear": "rm -vrf node_modules yarn.lock package-lock.json"
   },
   "browserslist": [],
   "devDependencies": {

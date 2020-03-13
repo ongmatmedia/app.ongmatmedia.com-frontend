@@ -6,6 +6,7 @@ import { LivestreamTarget } from '../../../types';
 import { BroadcastTime } from '../SharingComponents/BroadcastTime';
 import { ListTarget } from '../SharingComponents/ListTarget';
 import { VideoComposer } from '../SharingComponents/VideoComposer';
+import { sleep } from '../../../helpers/utils';
 
 export type AddLivestreamTabProps = FormComponentProps & {
   setActiveTabKey: Function
@@ -27,7 +28,7 @@ export const AddingLivestreamTab = Form.create<AddLivestreamTabProps>()(
       form.validateFields(async (err, values) => {
         if (!err) {
           setError(null)
-          console.log('Received values of form: ', values);
+          // console.log('Received values of form: ', values);
           try {
             await create_livestream(values)
             form.resetFields()
@@ -35,11 +36,7 @@ export const AddingLivestreamTab = Form.create<AddLivestreamTabProps>()(
               message: "Congratulation!",
               description: "You created livestream successfully"
             })
-            await new Promise(s => {
-              setTimeout(() => {
-                window.location.reload()
-              }, 2000)
-            })
+            await sleep(1000)
             props.setActiveTabKey("1")
           } catch ({ name, message }) {
             setError(`${name}: ${message}`)
