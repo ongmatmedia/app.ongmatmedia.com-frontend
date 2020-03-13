@@ -131,7 +131,8 @@ export type Livestream = {
   updated_time: Scalars['Long'],
   title: Scalars['String'],
   description: Maybe<Scalars['String']>,
-  time: Array<Scalars['Long']>,
+  times: Array<Scalars['Long']>,
+  loop_times: Scalars['Int'],
   targets: LivestreamTarget,
   errors: Array<Scalars['String']>,
 };
@@ -162,9 +163,10 @@ export type LivestreamFacebookTargetInput = {
 export type LivestreamInput = {
   videos: Array<LivestreamVideoInput>,
   name: Scalars['String'],
-  time: Array<Scalars['Long']>,
+  times: Array<Scalars['Long']>,
   title: Scalars['String'],
   description: Scalars['String'],
+  loop_times: Scalars['Int'],
   targets: LivestreamTargetInput,
 };
 
@@ -222,7 +224,8 @@ export type LivestreamUpdateInput = {
   active: Maybe<Scalars['Boolean']>,
   title: Maybe<Scalars['String']>,
   description: Maybe<Scalars['String']>,
-  time: Maybe<Array<Scalars['Long']>>,
+  times: Array<Scalars['Long']>,
+  loop_times: Scalars['Int'],
   targets: Maybe<LivestreamTargetInput>,
 };
 

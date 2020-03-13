@@ -22,6 +22,8 @@ const query = graphql`
       description
       account
       image_url
+      url
+      qrcode
     }
   }
 `;
