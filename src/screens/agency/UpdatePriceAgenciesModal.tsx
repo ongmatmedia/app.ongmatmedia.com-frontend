@@ -18,7 +18,6 @@ export const UpdatePriceAgenciesModal = withForm<UpdatePriceAgenciesModalProps>(
   const submit = async () =>
     props.form.submit(async values => {
       set_loading(true);
-      console.log(JSON.stringify(values));
       try {
         set_error(null);
 

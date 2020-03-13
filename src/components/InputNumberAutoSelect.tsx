@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { AutoSelectInput } from './AutoSelectInput';
+import { InputProps } from 'antd/lib/input';
 
 type InputNumberAutoSelectProps = {
   onChangeValue: (newValue: number) => any;
@@ -20,7 +21,6 @@ export const InputNumberAutoSelect = (props: InputNumberAutoSelectProps) => {
         set_value(n.toLocaleString(undefined));
         props.onChangeValue(n);
       }
-      console.log(value);
     }
   };
 

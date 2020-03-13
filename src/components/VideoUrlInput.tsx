@@ -1,11 +1,11 @@
 import { Alert, Col, Icon, Input, Row } from 'antd';
 import { graphql } from 'babel-plugin-relay/macro';
 import React, { useState } from 'react';
-import { GraphQLQueryFetcher } from '../graphql/GraphQLWrapper';
 import { VideoInfo } from '../types';
+import { GraphQLQueryFetcher } from '../graphql/GraphQLWrapper'
 
 interface VideoUrlInputProps {
-  onSubmitVideo: (videoInfo: VideoInfo & { url: string }) => void,
+    onSubmitVideo: (videoInfo: VideoInfo & { url: string }) => void,
 }
 
 const VideoUrlInputQuery = graphql`
@@ -27,41 +27,41 @@ const VideoUrlInputQuery = graphql`
 `
 
 export const VideoUrlInput = (props: VideoUrlInputProps) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [videoUrlValue, setvideoUrlValue] = useState<string>('')
-  const [error, setError] = useState<string>('')
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [videoUrlValue, setvideoUrlValue] = useState<string>('')
+    const [error, setError] = useState<string>('')
 
-  const fetchVideoInfo = async () => {
-    setIsLoading(true)
-    try {
-      const data = await GraphQLQueryFetcher<{ video_info: VideoInfo }>(
-        VideoUrlInputQuery,
-        { url: videoUrlValue }
-      )
+    const fetchVideoInfo = async () => {
+        setIsLoading(true)
+        try {
+            const data = await GraphQLQueryFetcher<{ video_info: VideoInfo }>(
+                VideoUrlInputQuery,
+                { url: videoUrlValue.match(/^[0-9]+$/) ? `https://www.facebook.com/someone/videos/${videoUrlValue}` : videoUrlValue }
+            )
 
-      props.onSubmitVideo({
-        ...data.video_info,
-        url: videoUrlValue
-      })
-    } catch (error) {
-      setError(error)
+            props.onSubmitVideo({
+                ...data.video_info,
+                url: videoUrlValue
+            })
+        } catch (error) {
+            setError(error)
+        }
+        setIsLoading(false)
+        setvideoUrlValue('')
     }
-    setIsLoading(false)
-    setvideoUrlValue('')
-  }
 
-  return (
-    <Row>
-      <Col span={24}>
-        {error && <Alert message={error} type="error" showIcon style={{ marginBottom: 10 }} /> }
-        <Input
-          value={videoUrlValue}
-          onChange={e => setvideoUrlValue(e.target.value)}
-          addonAfter={<Icon type={isLoading ? 'loading' : 'search'} onClick={fetchVideoInfo} />}
-          onKeyDown={e => e.keyCode === 13 && e.preventDefault()}
-          disabled={isLoading}
-        />
-      </Col>
-    </Row>
-  )
+    return (
+        <Row>
+            <Col span={24}>
+                {error && <Alert message={error} type="error" showIcon style={{ marginBottom: 10 }} />}
+                <Input
+                    value={videoUrlValue}
+                    onChange={e => setvideoUrlValue(e.target.value)}
+                    addonAfter={<Icon type={isLoading ? 'loading' : 'search'} onClick={fetchVideoInfo} />}
+                    onKeyDown={e => e.keyCode === 13 && e.preventDefault()}
+                    disabled={isLoading}
+                />
+            </Col>
+        </Row>
+    )
 }

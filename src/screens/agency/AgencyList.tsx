@@ -7,6 +7,7 @@ import { UpdatePriceAgenciesModal } from './UpdatePriceAgenciesModal';
 import graphql from 'babel-plugin-relay/macro';
 import { UserConnection, User } from '../../types';
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper';
+import { AgencyStatics } from './AgencyStatics'
 
 const query = graphql`
   query AgencyListQuery {
@@ -111,6 +112,7 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection; me: User }>(
               }}
             />
           </div>
+          <AgencyStatics users={data.users.edges.map(n => n.node)} />
           <List
             grid={{
               gutter: 16,
@@ -121,10 +123,11 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection; me: User }>(
               xl: 6,
               xxl: 8,
             }}
-            dataSource={data.users.edges.map(n => n.node)}
+            dataSource={data.users.edges.map(n => n.node).sort(
+              (a, b) => b.balance / b.price_percent - a.balance / a.price_percent
+            )}
             renderItem={item => {
               const percent = item.price_percent;
-
               const balance = item.balance.toLocaleString(undefined, { maximumFractionDigits: 0 });
 
               return (
@@ -145,7 +148,7 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection; me: User }>(
                         <Col style={{ paddingRight: 5 }}>
                           {/* <Avatar>{item.username.substring(0, 1)}</Avatar> */}
                         </Col>
-                        <Col>{item.username}</Col>
+                        <Col><span style={{ fontWeight: 'bold' }}>{item.username}</span></Col>
                       </Row>
                     }
                     actions={[
@@ -187,6 +190,7 @@ export const AgencyList = GraphQLWrapper<{ users: UserConnection; me: User }>(
                         <Tag color="#108ee9">{balance} $</Tag>
                       </Col>
                     </Row>
+                    
                   </Card>
                 </List.Item>
               );

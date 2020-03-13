@@ -6,11 +6,12 @@ export type FormItemProps = PropsWithChildren<{
     label: string
     right?: JSX.Element
     require?: boolean
-    error?:string
+    error?: string
+    noMargin?: boolean
 }>
 
 export const FormElement = (props: FormItemProps) => (
-    <Row style={{ marginBottom: 20 }}>
+    <Row style={{ marginBottom: props.noMargin ? 10 : 40 }}>
         <Row type="flex" justify="space-between" align="middle">
             <Col>
                 <h3>
@@ -30,7 +31,7 @@ export const FormElement = (props: FormItemProps) => (
             </Col>
         </Row>
         {
-            props.error && <Row><Alert type="error" message={props.error} style={{marginTop: 5}}/></Row>
+            props.error && <Row><Alert type="error" message={props.error} style={{ marginTop: 5 }} /></Row>
         }
     </Row>
 )
