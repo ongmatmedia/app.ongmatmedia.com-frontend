@@ -15,6 +15,7 @@ const DrawerLinks: Array<{
     { name: 'seeding_icon_title', icon: 'alert', to: '/seeding' },
     { name: 'payments_icon_title', icon: 'bars', to: '/payments' },
     { name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
+    { name: 'account_icon_title', icon: 'user', to: '/account' },
   ];
 
 const LogoutButton = withRouter((props: RouterProps) => {

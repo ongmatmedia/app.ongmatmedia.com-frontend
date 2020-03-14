@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import graphql from 'babel-plugin-relay/macro';
-import { QueryRenderer } from 'react-relay';
 import { List } from 'antd';
-import { LivestreamListItem } from './LivestreamListItem';
-import { Livestream } from '../../../types';
-import { LivestreamListItemEdit } from './LivestreamListItemEdit';
+import graphql from 'babel-plugin-relay/macro';
+import React from 'react';
+import { QueryRenderer } from 'react-relay';
 import { delete_livestream } from '../../../graphql/delete_livestream';
 import { RelayEnvironment } from '../../../graphql/RelayEnvironment';
+import { Livestream } from '../../../types';
+import { LivestreamListItem } from './LivestreamListItem';
 
 const LivestreamsListTabQuery = graphql`
   query LivestreamsListTabQuery {
@@ -15,33 +14,38 @@ const LivestreamsListTabQuery = graphql`
         node {
           id
           videos {
+            title
+            is_livestream
+            video_id
             thumbnail_url
+            url
           }
-          status
           name
           active
+          status
           created_time
-          updated_time
-          times
           title
           description
+          times
+          loop_times
+          targets {
+            rtmps
+            facebooks {
+              uid
+              name
+              type
+              owner
+            }
+          }
         }
       }
     }
   }
 `;
 
-const LivestreamsListView = (props: { loading: boolean; list: Livestream[] }) => {
-  const [edit_livestream_id, set_edit_livestream_id] = useState<string | null>(null);
-
+const LivestreamsListView = (props: { loading: boolean; list: Livestream[], onNavigateCreateUpdateTab: Function, onSelectLiveToUpdate: (live: Livestream) => void }) => {
   return (
     <>
-      {edit_livestream_id && (
-        <LivestreamListItemEdit
-          id={edit_livestream_id}
-          onClose={() => set_edit_livestream_id(null)}
-        />
-      )}
       <List
         grid={{
           gutter: 10,
@@ -58,7 +62,8 @@ const LivestreamsListView = (props: { loading: boolean; list: Livestream[] }) =>
           <List.Item>
             <LivestreamListItem
               live={live}
-              onEdit={() => set_edit_livestream_id(live.id)}
+              onNavigateCreateUpdateTab={props.onNavigateCreateUpdateTab}
+              onSelectLiveToUpdate={props.onSelectLiveToUpdate}
               onDelete={() => delete_livestream(live.id)}
               onPause={() => console.log('Pause')}
             />
@@ -69,7 +74,7 @@ const LivestreamsListView = (props: { loading: boolean; list: Livestream[] }) =>
   );
 };
 
-export const LivestreamsListTab = () => (
+export const LivestreamsListTab = (props: { onNavigateCreateUpdateTab: Function, onSelectLiveToUpdate: (live: Livestream) => void }) => (
   <QueryRenderer
     variables={{ limit: 150 }}
     environment={RelayEnvironment}
@@ -78,6 +83,8 @@ export const LivestreamsListTab = () => (
       <LivestreamsListView
         loading={rs.props == null}
         list={rs.props ? (rs.props as any).livestream_tasks.edges.map(e => e.node) : []}
+        onNavigateCreateUpdateTab={props.onNavigateCreateUpdateTab}
+        onSelectLiveToUpdate={props.onSelectLiveToUpdate}
       />
     )}
   />
