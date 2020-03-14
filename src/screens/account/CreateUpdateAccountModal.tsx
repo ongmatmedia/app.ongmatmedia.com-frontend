@@ -4,15 +4,17 @@ import React, { useState } from 'react';
 import { sleep } from '../../helpers/utils';
 
 export type UpdateAccountModalProps = FormComponentProps & {
-  visible: boolean;
-  onClose: Function;
+  visible: boolean
+  onClose: Function
   accountId: string
+  mode: 'create' | 'update'
 };
 
-export const UpdateAccountModal = Form.create<UpdateAccountModalProps>()(
+export const CreateUpdateAccountModal = Form.create<UpdateAccountModalProps>()(
   (props: UpdateAccountModalProps) => {
     const { form } = props;
     const [loading, set_loading] = useState<boolean>(false);
+    console.log({props})
 
     const submit = async () => {
       form.validateFields(async (err, values) => {
@@ -20,6 +22,11 @@ export const UpdateAccountModal = Form.create<UpdateAccountModalProps>()(
         set_loading(true)
         console.log({ values })
         // Perform an asynchorounous operation
+        if(props.mode === 'create') {
+
+        } else if(props.mode === 'update') {
+
+        }
         await sleep(2)
         // End asynchorounous operation
         form.resetFields();
@@ -38,10 +45,11 @@ export const UpdateAccountModal = Form.create<UpdateAccountModalProps>()(
       >
         <Spin spinning={loading}>
           <Form layout="vertical">
-            <Form.Item label="Account id">
-              {form.getFieldDecorator('id', {
-                rules: [{ required: false, message: 'Please input your account id' }],
-              })(<Input value={props.accountId} />)}
+            <Form.Item label="Data">
+              {form.getFieldDecorator('data', {
+                rules: [{ required: true, message: 'Please input your data (cookies,access token,etc) !' }],
+                initialValue: props.mode === 'update' ? props.accountId : ''
+              })(<Input.TextArea rows={5} />)}
             </Form.Item>
           </Form>
         </Spin>

@@ -6,6 +6,7 @@ export type ViewAccountModalProps = {
   onClose: Function;
   accountId: string
   onUpdate: Function
+  onChangeModeModal: Function
 };
 
 export const ViewAccountModal = (props: ViewAccountModalProps) => {
@@ -19,6 +20,7 @@ export const ViewAccountModal = (props: ViewAccountModalProps) => {
         onCancel={() => props.onClose()}
         onOk={() => {
           props.onClose()
+          props.onChangeModeModal('update')
           props.onUpdate()
         }}
       >

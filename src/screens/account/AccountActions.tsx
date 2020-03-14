@@ -1,24 +1,29 @@
-import React, { useState } from 'react';
-import { Button, Checkbox } from 'antd';
-import { AddAccountModal } from './AddAccountModal';
+import { Button, Checkbox, Col, Row } from 'antd';
+import React from 'react';
 
 export const AccountActions = (props: {
   removeable: boolean
   onChangeSelectedAccounts: Function
   isSelectingAllAccounts: boolean
+  onOpenCreateUpdateModal: Function
+  onChangeModeModal: Function
 }) => {
-  const [modal_visible, set_modal_visible] = useState<boolean>(false);
-
   return (
-    <div style={{ marginBottom: 20 }}>
-      <AddAccountModal onClose={() => set_modal_visible(false)} visible={modal_visible} />
-      <Button type="primary" icon="plus" onClick={() => set_modal_visible(true)} style={{ marginRight: 15 }}>
-        Add account
-      </Button>
-      <Button type="danger" icon="delete" disabled={!props.removeable}>
-        Remove accounts
-      </Button>
-      <Checkbox defaultChecked={false} checked={props.isSelectingAllAccounts} onChange={e => props.onChangeSelectedAccounts()} style={{ float: "right", verticalAlign: "middle" }}>{props.isSelectingAllAccounts ? 'Deselect all accounts' : 'Select all accounts'}</Checkbox>
-    </div>
+    <Row style={{ marginBottom: 20 }} gutter={8}>
+      <Col md={16} xs={24}>
+        <Button type="primary" icon="plus" onClick={() => {
+          props.onChangeModeModal('create')
+          props.onOpenCreateUpdateModal()
+        }} style={{ marginRight: 15, marginTop: 10 }}>
+          Add account
+        </Button>
+        <Button type="danger" icon="delete" disabled={!props.removeable} style={{ marginTop: 10 }}>
+          Remove accounts
+        </Button>
+      </Col>
+      <Col md={{ offset: 4, span: 4 }} xs={24} style={{ marginTop: 10 }}>
+        <Checkbox defaultChecked={false} checked={props.isSelectingAllAccounts} onChange={e => props.onChangeSelectedAccounts()}>{props.isSelectingAllAccounts ? 'Deselect all accounts' : 'Select all accounts'}</Checkbox>
+      </Col>
+    </Row >
   );
 };
