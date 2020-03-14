@@ -1,8 +1,9 @@
 import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
+import { LivestreamTabs } from '../components/Livestream';
 import { AuthLayout } from '../layouts/auth';
 import { MainLayout } from '../layouts/main';
-import { AccountPage } from './account';
+import { AccountScreen } from './account';
 import { AgencyPage } from './agency';
 import { Login, ResetPassword } from './auth';
 import { SetNewPasswordPage } from './auth/set-new-pass';
@@ -13,7 +14,6 @@ import { SeedingPage } from './seeding';
 import { BuffViewers } from './seeding/buff-viewers';
 import { BuffViewersLivestream } from './seeding/buff-viewers-livestream';
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream';
-import { LivestreamTabs } from '../components/Livestream';
 
 export const AppWithRouter = () => (
   <HashRouter>
@@ -32,10 +32,6 @@ export const AppWithRouter = () => (
 
       <Route exact path="/auth/reset-password">
         <AuthLayout Content={ResetPassword} />
-      </Route>
-
-      <Route exact path="/accounts">
-        <MainLayout Content={AccountPage} />
       </Route>
 
       <Route exact path="/seeding">
@@ -68,6 +64,10 @@ export const AppWithRouter = () => (
 
       <Route exact path="/livestream">
         <MainLayout Content={LivestreamTabs} />
+      </Route>
+
+      <Route exact path="/account">
+        <MainLayout Content={AccountScreen} />
       </Route>
  
 

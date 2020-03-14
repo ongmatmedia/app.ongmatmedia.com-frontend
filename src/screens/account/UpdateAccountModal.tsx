@@ -1,14 +1,16 @@
 import { Form, Input, Modal, Spin } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import React, { useState } from 'react';
+import { sleep } from '../../helpers/utils';
 
-export type AccountAddModalProps = FormComponentProps & {
+export type UpdateAccountModalProps = FormComponentProps & {
   visible: boolean;
   onClose: Function;
+  accountId: string
 };
 
-export const AddAccountModal = Form.create<AccountAddModalProps>()(
-  (props: AccountAddModalProps) => {
+export const UpdateAccountModal = Form.create<UpdateAccountModalProps>()(
+  (props: UpdateAccountModalProps) => {
     const { form } = props;
     const [loading, set_loading] = useState<boolean>(false);
 
@@ -16,9 +18,9 @@ export const AddAccountModal = Form.create<AccountAddModalProps>()(
       form.validateFields(async (err, values) => {
         if (err) return;
         set_loading(true)
-        console.log({values})
+        console.log({ values })
         // Perform an asynchorounous operation
-
+        await sleep(2)
         // End asynchorounous operation
         form.resetFields();
         set_loading(false);
@@ -29,17 +31,17 @@ export const AddAccountModal = Form.create<AccountAddModalProps>()(
     return (
       <Modal
         visible={props.visible}
-        title="Add your account data"
-        okText="Import"
+        title="Update Account information"
+        okText="Save account"
         onCancel={() => props.onClose()}
         onOk={() => submit()}
       >
         <Spin spinning={loading}>
           <Form layout="vertical">
-            <Form.Item label="Data">
-              {form.getFieldDecorator('data', {
-                rules: [{ required: true, message: 'Please input your data (cookies,access token,etc) !' }],
-              })(<Input.TextArea rows={5} />)}
+            <Form.Item label="Account id">
+              {form.getFieldDecorator('id', {
+                rules: [{ required: false, message: 'Please input your account id' }],
+              })(<Input value={props.accountId} />)}
             </Form.Item>
           </Form>
         </Spin>

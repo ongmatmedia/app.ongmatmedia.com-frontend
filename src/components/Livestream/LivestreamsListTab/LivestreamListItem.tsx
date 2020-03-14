@@ -6,12 +6,13 @@ import { Livestream } from '../../../types';
 
 export type LivestreamListItem = {
   live: Livestream;
-  onEdit: Function;
+  onNavigateCreateUpdateTab: Function;
+  onSelectLiveToUpdate: Function,
   onPause: Function;
   onDelete: Function;
 };
 
-export const LivestreamListItem = (props: LivestreamListItem) => (console.log({ props }), (
+export const LivestreamListItem = (props: LivestreamListItem) => (
   <Card
     hoverable
     bordered
@@ -21,7 +22,10 @@ export const LivestreamListItem = (props: LivestreamListItem) => (console.log({ 
         type="edit"
         style={{ color: '#1890ff' }}
         key="edit"
-        onClick={() => props.onEdit()}
+        onClick={() => {
+          props.onSelectLiveToUpdate(props.live)
+          props.onNavigateCreateUpdateTab()
+        }}
       />,
       <Popconfirm
         placement="topRight"
@@ -94,4 +98,4 @@ export const LivestreamListItem = (props: LivestreamListItem) => (console.log({ 
       description={<span>{props.live.title}</span>}
     />
   </Card>
-))
+)
