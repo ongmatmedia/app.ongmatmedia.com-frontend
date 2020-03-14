@@ -1,2 +1,2 @@
-export { Login } from './login';
-export { ResetPassword } from './reset-pass';
+export { Login } from './login'
+export { ResetPassword } from './reset-pass'
