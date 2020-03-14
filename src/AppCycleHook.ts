@@ -4,10 +4,6 @@ import { FirebaseConfigVAPIDKEY, FirebaseConfig } from './config';
 import * as firebase from "firebase/app";
 import "firebase/messaging";
 
-
-
-
-
 export class AppCycleHook {
     static async logout() {
         Auth.signOut()
@@ -26,7 +22,8 @@ export class AppCycleHook {
                 FirebaseMessaging.usePublicVapidKey(FirebaseConfigVAPIDKEY);
                 console.log({ token: await FirebaseMessaging.getToken() })
             }
-        } catch (e) { }
+        } catch (e) {
+         }
     }
 
     static async register_service_worker() {

@@ -1,6 +1,7 @@
 import { Avatar, Card, Col, List, Row } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import { AccountActions } from "./AccountActions";
+import { AccountStatistic } from "./AccountStatistic";
 
 interface AccountListPresentationProps {
   loading: boolean
@@ -8,6 +9,8 @@ interface AccountListPresentationProps {
   selectedAccounts: string[]
   onSelectAccount: (accounts: Array<string>) => void
   onOpenViewAccountModal: (id: string) => void
+  onOpenCreateUpdateModal: Function
+  onChangeModeModal: Function
 }
 
 export const AccountListPresentation = (props: AccountListPresentationProps) => {
@@ -16,7 +19,8 @@ export const AccountListPresentation = (props: AccountListPresentationProps) => 
 
   return (
     <>
-      <AccountActions removeable={!!props.selectedAccounts.length} onChangeSelectedAccounts={() => isSelectingAllAccounts ? props.onSelectAccount([]) : props.onSelectAccount([...props.accounts.map(account => account.id)])} isSelectingAllAccounts={isSelectingAllAccounts} />
+      <AccountActions removeable={!!props.selectedAccounts.length} onChangeSelectedAccounts={() => isSelectingAllAccounts ? props.onSelectAccount([]) : props.onSelectAccount([...props.accounts.map(account => account.id)])} isSelectingAllAccounts={isSelectingAllAccounts} onOpenCreateUpdateModal={props.onOpenCreateUpdateModal} onChangeModeModal={props.onChangeModeModal} />
+      <AccountStatistic accounts={props.accounts} />
       <List
         grid={{
           gutter: 10,
