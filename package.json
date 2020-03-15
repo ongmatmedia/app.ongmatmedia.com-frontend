@@ -34,7 +34,7 @@
     "relay": "relay-compiler --src ./src --schema ./src/graphql/schema.graphql --language typescript",
     "clear-map": "find ./build -name '*.map' -delete",
     "clear": "rm -vrf node_modules yarn.lock package-lock.json",
-    "pretty": "prettier --write \"**/*.ts\""
+    "pretty": "prettier --write \"**/*.{ts,tsx}\""
   },
   "browserslist": [],
   "devDependencies": {
