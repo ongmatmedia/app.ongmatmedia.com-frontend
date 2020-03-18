@@ -2,7 +2,7 @@ import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import { AuthLayout } from '../layouts/auth';
 import { MainLayout } from '../layouts/main';
-import { AccountPage } from './account';
+import { AccountScreen } from './account';
 import { AgencyPage } from './agency';
 import { Login, ResetPassword } from './auth';
 import { SetNewPasswordPage } from './auth/set-new-pass';
@@ -15,6 +15,8 @@ import { BuffViewersLivestream } from './seeding/buff-viewers-livestream';
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream';
 import { ProtectedRoute } from '../store/App';
 import { withAppState } from '../store/App';
+import { Result, Button } from 'antd';
+import { LivestreamTabs } from '../components/Livestream';
 
 export const AppWithRouter = withAppState(props => (
   <HashRouter>
@@ -38,7 +40,7 @@ export const AppWithRouter = withAppState(props => (
       </ProtectedRoute>
 
       <ProtectedRoute exact path="/accounts">
-        <MainLayout Content={AccountPage} />
+        <MainLayout Content={AccountScreen} />
       </ProtectedRoute>
 
       <ProtectedRoute exact path="/seeding">
@@ -69,13 +71,29 @@ export const AppWithRouter = withAppState(props => (
         <MainLayout Content={DepositPage} />
       </ProtectedRoute>
 
+      <ProtectedRoute exact path="/livestream">
+				<MainLayout Content={LivestreamTabs} />
+			</ProtectedRoute>
+
+			<ProtectedRoute exact path="/account">
+				<MainLayout Content={AccountScreen} />
+			</ProtectedRoute>
+
       <ProtectedRoute>
-        <span>404 not found for logged user</span>
+        <Result
+          status="404"
+          title="404"
+          subTitle="Sorry, the page you visited does not exist."
+        />
       </ProtectedRoute>
 
 
       <Route>
-        <span>404 not found for guest</span>
+        <Result
+          status="404"
+          title="404"
+          subTitle="Sorry, you must log in first"
+        />
       </Route>
 
 

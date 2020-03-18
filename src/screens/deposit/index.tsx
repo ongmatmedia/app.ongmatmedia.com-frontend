@@ -1,34 +1,47 @@
-import React, { useState } from 'react';
-import { Card, List, Button, Icon, Tooltip, Row, Col, Spin, Divider, message, Modal } from 'antd';
-import { PaymentInfoModal } from './PaymentInfoModal';
-import { PaymentMethod } from '../../types';
-import { GraphQLWrapper } from '../../graphql/GraphQLWrapper';
+import React, { useState } from 'react'
+import {
+	Card,
+	List,
+	Button,
+	Icon,
+	Tooltip,
+	Row,
+	Col,
+	Spin,
+	Divider,
+	message,
+	Modal,
+} from 'antd'
+import { PaymentInfoModal } from './PaymentInfoModal'
+import { PaymentMethod } from '../../types'
+import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
 import { AutoDepositModal } from './AutoDepositModal'
 
-const graphql = require('babel-plugin-relay/macro');
+const graphql = require('babel-plugin-relay/macro')
 
 type DepositMethod = {
-  name: string;
-  account: string;
-  cover: string;
-  icon: string;
-};
+	name: string
+	account: string
+	cover: string
+	icon: string
+}
 
 const query = graphql`
-  query depositQuery {
-    payment_methods {
-      name
-      owner
-      description
-      account
-      image_url
-      url
-      qrcode
-    }
-  }
-`;
+	query depositQuery {
+		payment_methods {
+			name
+			owner
+			description
+			account
+			image_url
+			url
+			qrcode
+		}
+	}
+`
 
 const Preview = (props: { payment_methods: PaymentMethod[] }) => {
+	 
 
   const [paymentInfoModalIsVisible, setVisibleForPaymentInfoModal] = useState(false);
   const [currentPaymentMethod, setCurrentPaymentMethod] = useState<PaymentMethod | null>(null);

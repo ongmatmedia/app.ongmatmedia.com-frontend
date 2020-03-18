@@ -1,12 +1,20 @@
-import React, { ReactNode, FunctionComponent, Component, useState, useEffect } from 'react';
-import { QueryRenderer } from 'react-relay';
-import { GraphQLTaggedNode, fetchQuery } from 'relay-runtime';
+import React, {
+	ReactNode,
+	FunctionComponent,
+	Component,
+	useState,
+	useEffect,
+} from 'react'
+import { QueryRenderer } from 'react-relay'
+import { GraphQLTaggedNode, fetchQuery } from 'relay-runtime'
 import { RelayEnvironment } from './RelayEnvironment'
 
 export const GraphQLWrapper = <T extends {}, P = {}>(
-  query: GraphQLTaggedNode,
-  variables: any,
-  C: FunctionComponent<{ loading: boolean; data: T | null, error?: string } & P>,
+	query: GraphQLTaggedNode,
+	variables: any,
+	C: FunctionComponent<
+		{ loading: boolean; data: T | null; error?: string } & P
+	>,
 ) => (props: P) => (
   <QueryRenderer
     environment={RelayEnvironment}
@@ -22,9 +30,13 @@ export const GraphQLWrapper = <T extends {}, P = {}>(
 );
 
 export const SmartGrahQLQueryRenderer = <T extends {}>(props: {
-  query: GraphQLTaggedNode;
-  variables: any;
-  render: FunctionComponent<{ loading: boolean; data: T | null, error?: string }>;
+	query: GraphQLTaggedNode
+	variables: any
+	render: FunctionComponent<{
+		loading: boolean
+		data: T | null
+		error?: string
+	}>
 }) => (
     <QueryRenderer
       environment={RelayEnvironment}
@@ -42,16 +54,18 @@ export const SmartGrahQLQueryRenderer = <T extends {}>(props: {
 
 
 export const LazyGrahQLQueryRenderer = <T extends {}>(props: {
-  query: GraphQLTaggedNode
-  render: FunctionComponent<{ loading: boolean; data: T | null, fetch: Function, error?: string }>
+	query: GraphQLTaggedNode
+	render: FunctionComponent<{
+		loading: boolean
+		data: T | null
+		fetch: Function
+		error?: string
+	}>
 }) => {
-  const [variables, set_variables] = useState<any>(null)
+	const [variables, set_variables] = useState<any>(null)
 
-  if (variables == null) return <props.render
-    loading={false}
-    data={null}
-    fetch={set_variables}
-  />
+	if (variables == null)
+		return <props.render loading={false} data={null} fetch={set_variables} />
 
   return (
     <QueryRenderer
