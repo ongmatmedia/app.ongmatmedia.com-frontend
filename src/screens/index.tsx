@@ -2,7 +2,7 @@ import React from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import { AuthLayout } from '../layouts/auth';
 import { MainLayout } from '../layouts/main';
-import { AccountPage } from './account';
+import { AccountScreen } from './account';
 import { AgencyPage } from './agency';
 import { Login, ResetPassword } from './auth';
 import { SetNewPasswordPage } from './auth/set-new-pass';
@@ -20,17 +20,17 @@ export const AppWithRouter = withAppState(props => (
   <HashRouter>
     <Switch>
 
-      <Route exact path="/auth/login">
-        <AuthLayout Content={Login} />
-      </Route>
+			<Route exact path="/auth/login">
+				<AuthLayout Content={Login} />
+			</Route>
 
-      <Route exact path="/auth/set-new-password">
-        <AuthLayout Content={SetNewPasswordPage} />
-      </Route>
+			<Route exact path="/auth/set-new-password">
+				<AuthLayout Content={SetNewPasswordPage} />
+			</Route>
 
-      <Route exact path="/auth/reset-password">
-        <AuthLayout Content={ResetPassword} />
-      </Route>
+			<Route exact path="/auth/reset-password">
+				<AuthLayout Content={ResetPassword} />
+			</Route>
 
 
       <ProtectedRoute exact path="/">
@@ -38,7 +38,7 @@ export const AppWithRouter = withAppState(props => (
       </ProtectedRoute>
 
       <ProtectedRoute exact path="/accounts">
-        <MainLayout Content={AccountPage} />
+        <MainLayout Content={AccountScreen} />
       </ProtectedRoute>
 
       <ProtectedRoute exact path="/seeding">

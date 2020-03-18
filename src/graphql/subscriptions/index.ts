@@ -1,7 +1,7 @@
-import { listen_for_new_notification } from "./new_notification"
-import { Disposable } from "react-relay"
-import { Auth } from "aws-amplify"
-
+import { listen_for_new_notification } from './new_notification'
+import { Disposable } from 'react-relay'
+import { Auth } from 'aws-amplify'
+import { listen_for_update_livestream } from './on_update_livestream'
 
 export class GraphQLSubscription {
 

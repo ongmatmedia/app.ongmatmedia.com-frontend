@@ -1,6 +1,4 @@
-import * as en from './en';
-import * as vi from './vi';
+import * as en from './en'
+import * as vi from './vi'
 
-export {
-  en, vi
-}
+export { en, vi }

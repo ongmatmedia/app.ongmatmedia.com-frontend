@@ -1,0 +1,10 @@
+node_modules
+dist
+tests
+.gitignore
+.prettierignore
+src/bin
+**/*.lock
+**/*.graphql
+**/*.graphql.ts
+**/__generated__/**

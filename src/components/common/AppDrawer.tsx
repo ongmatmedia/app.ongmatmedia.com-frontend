@@ -52,49 +52,57 @@ export const AppDrawer = (withRouter as any)((props: RouteComponentProps & { onC
     i18n.changeLanguage(lng);
   };
 
-  return (
-    <div
-      onClick={() => props.onClick()}
-      style={{
-        width: 260,
-        display: 'flex',
-        flexDirection: 'row',
-        flexWrap: 'wrap',
-        padding: 10,
-      }}
-    >
-      <UserInfo
-        render={(loading, user) => (
-          <Card style={{ width: '100%' }} size="small" loading={loading}>
-            <Row type="flex" justify="start" align="middle">
-              <Col>
-                <Avatar src="https://hammockweb.com/slider/img/user.png" size={60} />
-              </Col>
-              <Col style={{ paddingLeft: 20 }}>
-                <Row>
-                  <Col style={{ wordBreak: 'break-all', fontWeight: 'bold' }}>
-                    {user && user.username}
-                  </Col>
-                </Row>
-                <Row>
-                  <Col style={{ color: 'rgb(0, 131, 227)', fontWeight: 'bold' }}>
-                    {user && user.balance.toLocaleString(undefined, { maximumFractionDigits: 0 })}
-                    <Icon
-                      type="dollar"
-                      style={{
-                        fontSize: 16,
-                        verticalAlign: '-0.2em',
-                        paddingLeft: 3,
-                        color: 'white',
-                      }}
-                    />
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </Card>
-        )}
-      />
+	return (
+		<div
+			onClick={() => props.onClick()}
+			style={{
+				width: 260,
+				display: 'flex',
+				flexDirection: 'row',
+				flexWrap: 'wrap',
+				padding: 10,
+			}}
+		>
+			<UserInfo
+				render={(loading, user) => (
+					<Card style={{ width: '100%' }} size="small" loading={loading}>
+						<Row type="flex" justify="start" align="middle">
+							<Col>
+								<Avatar
+									src="https://hammockweb.com/slider/img/user.png"
+									size={60}
+								/>
+							</Col>
+							<Col style={{ paddingLeft: 20 }}>
+								<Row>
+									<Col style={{ wordBreak: 'break-all', fontWeight: 'bold' }}>
+										{user && user.username}
+									</Col>
+								</Row>
+								<Row>
+									<Col
+										style={{ color: 'rgb(0, 131, 227)', fontWeight: 'bold' }}
+									>
+										{user &&
+											user.balance.toLocaleString(undefined, {
+												maximumFractionDigits: 0,
+											})}
+										<Icon
+											type="dollar"
+											style={{
+												fontSize: 16,
+												verticalAlign: '-0.2em',
+												paddingLeft: 3,
+												color: 'white',
+											}}
+										/>
+									</Col>
+								</Row>
+							</Col>
+						</Row>
+					</Card>
+				)}
+			/>
 
       {DrawerLinks.map(app => <DrawerApp icon={app.icon} name={t(app.name)} onClick={() => props.history.push(app.to)} />)}
       <DrawerApp icon="logout" name={t('logout_icon_title')} onClick={() => Modal.confirm({
@@ -123,4 +131,4 @@ export const AppDrawer = (withRouter as any)((props: RouteComponentProps & { onC
       </div>
     </div>
   );
-}) as any as FunctionComponentElement<{ onClick: Function }>
+}) as any as FunctionComponent<{ onClick: Function }>
