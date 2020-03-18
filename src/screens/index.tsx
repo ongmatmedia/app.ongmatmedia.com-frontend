@@ -15,22 +15,24 @@ import { BuffViewersLivestream } from './seeding/buff-viewers-livestream';
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream';
 import { ProtectedRoute } from '../store/App';
 import { withAppState } from '../store/App';
+import { Result, Button } from 'antd';
+import { LivestreamTabs } from '../components/Livestream';
 
 export const AppWithRouter = withAppState(props => (
   <HashRouter>
     <Switch>
 
-			<Route exact path="/auth/login">
-				<AuthLayout Content={Login} />
-			</Route>
+      <Route exact path="/auth/login">
+        <AuthLayout Content={Login} />
+      </Route>
 
-			<Route exact path="/auth/set-new-password">
-				<AuthLayout Content={SetNewPasswordPage} />
-			</Route>
+      <Route exact path="/auth/set-new-password">
+        <AuthLayout Content={SetNewPasswordPage} />
+      </Route>
 
-			<Route exact path="/auth/reset-password">
-				<AuthLayout Content={ResetPassword} />
-			</Route>
+      <Route exact path="/auth/reset-password">
+        <AuthLayout Content={ResetPassword} />
+      </Route>
 
 
       <ProtectedRoute exact path="/">
@@ -43,7 +45,7 @@ export const AppWithRouter = withAppState(props => (
 
       <ProtectedRoute exact path="/seeding">
         <MainLayout Content={SeedingPage} />
-      </ProtectedRoute> 
+      </ProtectedRoute>
 
       <ProtectedRoute exact path="/seeding/vip-viewers-livestream">
         <MainLayout Content={VipViewersLivestream} />
@@ -69,13 +71,29 @@ export const AppWithRouter = withAppState(props => (
         <MainLayout Content={DepositPage} />
       </ProtectedRoute>
 
+      <ProtectedRoute exact path="/livestream">
+				<MainLayout Content={LivestreamTabs} />
+			</ProtectedRoute>
+
+			<ProtectedRoute exact path="/account">
+				<MainLayout Content={AccountScreen} />
+			</ProtectedRoute>
+
       <ProtectedRoute>
-        <span>404 not found for logged user</span>
+        <Result
+          status="404"
+          title="404"
+          subTitle="Sorry, the page you visited does not exist."
+        />
       </ProtectedRoute>
 
 
       <Route>
-        <span>404 not found for guest</span>
+        <Result
+          status="404"
+          title="404"
+          subTitle="Sorry, you must log in first"
+        />
       </Route>
 
 

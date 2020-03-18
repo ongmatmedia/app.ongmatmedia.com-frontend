@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "antd": "3.19.6",
+    "antd": "3.26.13",
     "apollo-link": "^1.2.13",
     "apollo-link-ws": "^1.0.19",
     "aws-amplify": "1.1.29",
