@@ -4,6 +4,7 @@ import React, { useState } from 'react'
 export interface IAddSchedule {
 	tagsSchedule: number[]
 	onChange: (listTimeSchedule: number[]) => void
+	mode:string
 }
 
 export const AddSchedule = (props: IAddSchedule) => {
@@ -14,9 +15,13 @@ export const AddSchedule = (props: IAddSchedule) => {
 			)
 	}
 
+	console.log(props.mode)
+
+	const scheduleData = props.mode !== 'create' ? props.tagsSchedule.filter(tag => tag !== 0) : (props.tagsSchedule || [])
+
 	return (
 		<div>
-			{(props.tagsSchedule || []).map((tag, index) => (
+			{scheduleData.map((tag, index) => (
 				<Tag
 					style={{ display: 'inline' }}
 					key={tag}

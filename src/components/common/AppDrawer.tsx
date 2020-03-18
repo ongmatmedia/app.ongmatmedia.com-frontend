@@ -6,17 +6,22 @@ import { RouterProps } from 'react-router'
 import { Link, withRouter } from 'react-router-dom'
 import { UserInfo } from './UserInfo'
 import { AppCycleHook } from '../../AppCycleHook'
+import { ThemeType } from 'antd/lib/icon'
 
 const DrawerLinks: Array<{
 	name: string
 	icon: string
 	to: string
 }> = [
-	{ name: 'seeding_icon_title', icon: 'alert', to: '/seeding' },
-	{ name: 'payments_icon_title', icon: 'bars', to: '/payments' },
-	{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
-	{ name: 'account_icon_title', icon: 'user', to: '/account' },
-]
+		{ name: 'notification_icon_title', icon: 'sound', to: '/notification' },
+		{ name: 'seeding_icon_title', icon: 'alert', to: '/seeding' },
+		{ name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
+		{ name: 'account_icon_title', icon: 'team', to: '/account' },
+		{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
+		{ name: 'agency_icon_title', icon: 'user', to: '/agency' },
+		{ name: 'payments_icon_title', icon: 'bars', to: '/payments' },
+		{ name: 'setting_icon_title', icon: 'setting', to: '/setting' },
+	]
 
 const LogoutButton = withRouter((props: RouterProps) => {
 	const { t, i18n } = useTranslation('app_drawer')

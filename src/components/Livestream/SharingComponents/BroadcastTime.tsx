@@ -6,6 +6,7 @@ export interface BroadcastTimeProps {
 	value: number[]
 	onChange: (newBroadcastTime: number[]) => void
 	now: boolean
+	mode:string
 }
 
 export const BroadcastTime = (props: BroadcastTimeProps) => (
@@ -16,6 +17,7 @@ export const BroadcastTime = (props: BroadcastTimeProps) => (
 					<AddSchedule
 						tagsSchedule={props.value || []}
 						onChange={props.onChange}
+						mode={props.mode}
 					/>
 				</Row>
 			</Col>

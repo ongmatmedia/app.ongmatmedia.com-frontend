@@ -4,7 +4,7 @@ import { requestSubscription } from 'react-relay'
 
 const subscription = graphql`
 	subscription newNotificationSubscription($user_id: String!) {
-		new_notification(user_id: $user_id) {
+		on_new_notification(user_id: $user_id) {
 			id
 			user_id
 			icon

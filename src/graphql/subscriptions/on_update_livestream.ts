@@ -7,14 +7,19 @@ const subscription = graphql`
 	subscription onUpdateLivestreamSubscription($user_id: String!) {
 		on_update_livestream(user_id: $user_id) {
 			id
+			title
+			description
 			status
 			user_id
 			videos {
-				title
-				is_livestream
-				video_id
-				url
+				thumbnail_url
 			}
+			status
+			name
+			active
+			created_time
+			updated_time
+			times
 		}
 	}
 `

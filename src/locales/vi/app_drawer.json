@@ -1,7 +1,11 @@
 {
+  "notification_icon_title": "Thông báo",
   "seeding_icon_title": "Tương tác",
   "payments_icon_title": "Lịch sử",
   "deposit_icon_title": "Nạp tiền",
   "logout_icon_title": "Đăng xuất",
-  "account_icon_title": "Tài khoản"
+  "account_icon_title": "Farm",
+  "livestream_icon_title": "Livestream",
+  "agency_icon_title": "Đại lý",
+  "setting_icon_title": "Cài đặt"
 }

@@ -11,13 +11,14 @@ import {
 	Spin,
 } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { create_livestream } from '../../../graphql/create_livestream'
 import { update_livestream } from '../../../graphql/update_livestream'
 import { Livestream, LivestreamTarget } from '../../../types'
 import { BroadcastTime } from '../SharingComponents/BroadcastTime'
 import { ListTarget } from '../SharingComponents/ListTarget'
 import { VideoComposer } from '../SharingComponents/VideoComposer'
+import { sleep } from '../../../helpers/utils'
 
 export type CreateUpdateLivestreamTabProps = FormComponentProps & {
 	setActiveTabKey: Function
@@ -35,6 +36,10 @@ export const CreateUpdateLivestreamTab = Form.create<
 		return Object.keys(fieldsError).some(field => fieldsError[field])
 	}
 
+	useEffect(() => {
+		if(props.mode === 'create') form.resetFields()
+	}, [])
+
 	const [error, setError] = useState<string | null>()
 	const [loading, setLoading] = useState<boolean>(false)
 
@@ -43,7 +48,7 @@ export const CreateUpdateLivestreamTab = Form.create<
 		form.validateFields(async (err, values) => {
 			if (!err) {
 				setError(null)
-				// console.log('Received values of form: ', values);
+				console.log('Received values of form: ', values);
 				try {
 					setLoading(true)
 					if (props.mode == 'create') {
@@ -60,9 +65,11 @@ export const CreateUpdateLivestreamTab = Form.create<
 						description: 'You saved livestream successfully',
 					})
 					props.setActiveTabKey('1')
-				} catch ({ name, message }) {
-					setError(`${name}: ${message}`)
-				}
+					await sleep(2)
+					window.location.reload()
+				} catch ({errors}) {
+          setError(errors[0].message)
+        }
 			}
 		})
 	}
@@ -123,7 +130,7 @@ export const CreateUpdateLivestreamTab = Form.create<
 										message: 'Please select video loop times !',
 									},
 								],
-								initialValue: props.task ? props.task.loop_times : 0,
+								initialValue: props.task ? props.task.loop_times : 1,
 							})(<InputNumber min={1} max={100} />)}
 						</Form.Item>
 					</Col>
@@ -132,7 +139,7 @@ export const CreateUpdateLivestreamTab = Form.create<
 							{form.getFieldDecorator('times', {
 								rules: [{ required: true, message: 'Please select time !' }],
 								initialValue: props.task ? props.task.times : null,
-							})(<BroadcastTime now={true} value={[]} onChange={() => {}} />)}
+							})(<BroadcastTime mode={props.mode} now={true} value={[]} onChange={() => {}} />)}
 						</Form.Item>
 
 						<Form.Item label="Target">
