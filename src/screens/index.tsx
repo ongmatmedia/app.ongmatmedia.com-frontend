@@ -43,7 +43,7 @@ export const AppWithRouter = withAppState(props => (
 
       <ProtectedRoute exact path="/seeding">
         <MainLayout Content={SeedingPage} />
-      </ProtectedRoute>
+      </ProtectedRoute> 
 
       <ProtectedRoute exact path="/seeding/vip-viewers-livestream">
         <MainLayout Content={VipViewersLivestream} />

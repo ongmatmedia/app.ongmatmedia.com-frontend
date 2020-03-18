@@ -48,7 +48,6 @@ export const LoginView = withRouter<any, any>(
 				try {
 					const user = await Auth.signIn({ password, username })
 
-<<<<<<< HEAD
         if (user.challengeName) {
           if (user.challengeName == 'NEW_PASSWORD_REQUIRED')
             set_new_pass_prompt(username, password);
@@ -62,22 +61,6 @@ export const LoginView = withRouter<any, any>(
       }
     });
   };
-=======
-					if (user.challengeName) {
-						if (user.challengeName == 'NEW_PASSWORD_REQUIRED')
-							set_new_pass_prompt(username, password)
-					}
-					await AppCycleHook.onLoginSuccess()
-					props.history.push('/')
-				} catch (e) {
-					set_error(e.message)
-					set_loading(false)
-					e.code == 'PasswordResetRequiredException' &&
-						reset_password_prompt(username)
-				}
-			})
-		}
->>>>>>> 0341275fef166bce46dd7905582e25a5e6f06614
 
 		return (
 			<Form id="auth-form">
