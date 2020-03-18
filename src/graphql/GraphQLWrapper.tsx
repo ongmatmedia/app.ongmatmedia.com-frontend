@@ -16,18 +16,20 @@ export const GraphQLWrapper = <T extends {}, P = {}>(
 		{ loading: boolean; data: T | null; error?: string } & P
 	>,
 ) => (props: P) => (
-  <QueryRenderer
-    environment={RelayEnvironment}
-    query={query as any}
-    variables={variables}
-    render={rs => <C
-      loading={rs.props == null}
-      data={((rs.props as any) as T) || null}
-      error={rs.error && JSON.stringify(rs.error)}
-      {...props}
-    />}
-  />
-);
+	<QueryRenderer
+		environment={RelayEnvironment}
+		query={query as any}
+		variables={variables}
+		render={rs => (
+			<C
+				loading={rs.props == null}
+				data={((rs.props as any) as T) || null}
+				error={rs.error && JSON.stringify(rs.error)}
+				{...props}
+			/>
+		)}
+	/>
+)
 
 export const SmartGrahQLQueryRenderer = <T extends {}>(props: {
 	query: GraphQLTaggedNode
@@ -38,20 +40,19 @@ export const SmartGrahQLQueryRenderer = <T extends {}>(props: {
 		error?: string
 	}>
 }) => (
-    <QueryRenderer
-      environment={RelayEnvironment}
-      query={props.query as any}
-      variables={props.variables}
-      render={rs => (
-        <props.render
-          loading={rs.props == null}
-          data={((rs.props as any) as T) || null}
-          error={rs.error && JSON.stringify(rs.error)}
-        />
-      )}
-    />
-  );
-
+	<QueryRenderer
+		environment={RelayEnvironment}
+		query={props.query as any}
+		variables={props.variables}
+		render={rs => (
+			<props.render
+				loading={rs.props == null}
+				data={((rs.props as any) as T) || null}
+				error={rs.error && JSON.stringify(rs.error)}
+			/>
+		)}
+	/>
+)
 
 export const LazyGrahQLQueryRenderer = <T extends {}>(props: {
 	query: GraphQLTaggedNode
@@ -67,28 +68,33 @@ export const LazyGrahQLQueryRenderer = <T extends {}>(props: {
 	if (variables == null)
 		return <props.render loading={false} data={null} fetch={set_variables} />
 
-  return (
-    <QueryRenderer
-      environment={RelayEnvironment}
-      query={props.query as any}
-      variables={variables}
-      render={rs => {
-        console.log(rs)
-        return <props.render
-          loading={rs.props == null && !rs.error}
-          data={((rs.props as any) as T) || null}
-          fetch={set_variables}
-          error={rs.error && JSON.stringify(rs.error)}
-        />
-      }}
-    />
-  );
+	return (
+		<QueryRenderer
+			environment={RelayEnvironment}
+			query={props.query as any}
+			variables={variables}
+			render={rs => {
+				console.log(rs)
+				return (
+					<props.render
+						loading={rs.props == null && !rs.error}
+						data={((rs.props as any) as T) || null}
+						fetch={set_variables}
+						error={rs.error && JSON.stringify(rs.error)}
+					/>
+				)
+			}}
+		/>
+	)
 }
 
-export const GraphQLQueryFetcher = async  <T extends {}>(query: GraphQLTaggedNode, variables: any) => {
-  try {
-    return (await fetchQuery(RelayEnvironment, query, variables)) as T;
-  } catch (e) {
-    throw (e as any).errors[0].message
-  }
-};
+export const GraphQLQueryFetcher = async <T extends {}>(
+	query: GraphQLTaggedNode,
+	variables: any,
+) => {
+	try {
+		return (await fetchQuery(RelayEnvironment, query, variables)) as T
+	} catch (e) {
+		throw (e as any).errors[0].message
+	}
+}

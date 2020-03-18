@@ -54,13 +54,14 @@ export const LivestreamListItem = (props: LivestreamListItem) => (
 							style={{ marginRight: 10 }}
 						/>
 					)}
-					{props.live.status == 'created' && !!props.live.times.filter(time => time > Date.now()).length && (
-						<Avatar
-							src="https://www.pikpng.com/pngl/b/49-491478_flat-clock-icon-png-clock-icon-transparent-png.png"
-							size="large"
-							style={{ marginRight: 5, width: 20, height: 20 }}
-						/>
-					)}
+					{props.live.status == 'created' &&
+						!!props.live.times.filter(time => time > Date.now()).length && (
+							<Avatar
+								src="https://www.pikpng.com/pngl/b/49-491478_flat-clock-icon-png-clock-icon-transparent-png.png"
+								size="large"
+								style={{ marginRight: 5, width: 20, height: 20 }}
+							/>
+						)}
 					{props.live.status == 'created' &&
 						props.live.times.every(time => time < Date.now()) && (
 							<Avatar

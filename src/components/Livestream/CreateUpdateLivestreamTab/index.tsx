@@ -37,7 +37,7 @@ export const CreateUpdateLivestreamTab = Form.create<
 	}
 
 	useEffect(() => {
-		if(props.mode === 'create') form.resetFields()
+		if (props.mode === 'create') form.resetFields()
 	}, [])
 
 	const [error, setError] = useState<string | null>()
@@ -48,7 +48,7 @@ export const CreateUpdateLivestreamTab = Form.create<
 		form.validateFields(async (err, values) => {
 			if (!err) {
 				setError(null)
-				console.log('Received values of form: ', values);
+				console.log('Received values of form: ', values)
 				try {
 					setLoading(true)
 					if (props.mode == 'create') {
@@ -67,9 +67,9 @@ export const CreateUpdateLivestreamTab = Form.create<
 					props.setActiveTabKey('1')
 					await sleep(2)
 					window.location.reload()
-				} catch ({errors}) {
-          setError(errors[0].message)
-        }
+				} catch ({ errors }) {
+					setError(errors[0].message)
+				}
 			}
 		})
 	}
@@ -139,7 +139,14 @@ export const CreateUpdateLivestreamTab = Form.create<
 							{form.getFieldDecorator('times', {
 								rules: [{ required: true, message: 'Please select time !' }],
 								initialValue: props.task ? props.task.times : null,
-							})(<BroadcastTime mode={props.mode} now={true} value={[]} onChange={() => {}} />)}
+							})(
+								<BroadcastTime
+									mode={props.mode}
+									now={true}
+									value={[]}
+									onChange={() => {}}
+								/>,
+							)}
 						</Form.Item>
 
 						<Form.Item label="Target">

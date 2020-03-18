@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Button, Form, Input, Alert } from 'antd';
-import FormItem from 'antd/lib/form/FormItem';
-import { FormComponentProps } from 'antd/lib/form';
-import { Auth } from 'aws-amplify';
-import { RouterProps, withRouter } from 'react-router';
-import { AppState } from '../../store/App';
+import React, { useState } from 'react'
+import { Button, Form, Input, Alert } from 'antd'
+import FormItem from 'antd/lib/form/FormItem'
+import { FormComponentProps } from 'antd/lib/form'
+import { Auth } from 'aws-amplify'
+import { RouterProps, withRouter } from 'react-router'
+import { AppState } from '../../store/App'
 
 interface SetNewPasswordPageState {
 	err: string | null
@@ -22,21 +22,25 @@ const SetNewPasswordPageView = withRouter<any, any>(
 		const [loading, set_loading] = useState<boolean>(false)
 		const [err, set_err] = useState<string | null>(null)
 
-  const set_pass = async (username: string, old_password: string, new_password: string) => {
-    set_loading(true);
-    try {
-      const rs = await Auth.signIn(username, old_password);
-      if (rs.challengeName == 'NEW_PASSWORD_REQUIRED') {
-        await Auth.completeNewPassword(rs, new_password, {});
-      }
-      await AppState.on_login_success()
-      props.history.push('/');
-    } catch (e) {
-      console.error('Error login', e);
-      set_err(e.message);
-    }
-    set_loading(false);
-  };
+		const set_pass = async (
+			username: string,
+			old_password: string,
+			new_password: string,
+		) => {
+			set_loading(true)
+			try {
+				const rs = await Auth.signIn(username, old_password)
+				if (rs.challengeName == 'NEW_PASSWORD_REQUIRED') {
+					await Auth.completeNewPassword(rs, new_password, {})
+				}
+				await AppState.on_login_success()
+				props.history.push('/')
+			} catch (e) {
+				console.error('Error login', e)
+				set_err(e.message)
+			}
+			set_loading(false)
+		}
 
 		const submit = () => {
 			props.form.validateFields(async (err, values) => {
