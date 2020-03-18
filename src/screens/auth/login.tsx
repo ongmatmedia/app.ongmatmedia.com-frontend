@@ -3,8 +3,8 @@ import { Button, Checkbox, Form, Icon, Input, Alert, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { Auth } from 'aws-amplify';
 import { RouterProps, withRouter, RouteComponentProps } from 'react-router';
-import { AppCycleHook } from '../../AppCycleHook';
- 
+import { AppState } from '../../store/App';
+
 
 export const LoginView = withRouter<any, any>((props: FormComponentProps & RouteComponentProps) => {
   const [error, set_error] = useState<string | null>(null);
@@ -45,8 +45,8 @@ export const LoginView = withRouter<any, any>((props: FormComponentProps & Route
           if (user.challengeName == 'NEW_PASSWORD_REQUIRED')
             set_new_pass_prompt(username, password);
         }
-        await AppCycleHook.onLoginSuccess()
-        props.history.push('/');
+        await AppState.on_login_success()
+        props.history.push(localStorage.getItem('login_redirect') || '/')
       } catch (e) {
         set_error(e.message);
         set_loading(false);

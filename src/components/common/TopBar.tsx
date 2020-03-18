@@ -16,7 +16,7 @@ export const TopBar = props => {
 
         <Link to="/">
           <img
-            src="https://freeiconshop.com/wp-content/uploads/edd/play-flat.png"
+            src="https://lh3.googleusercontent.com/proxy/uh3qm_FBWVDEM9PNxuERvgOjRjQaAERUQPuhVdM_lMXIlB2pA6_pxP1k7gwoYIcrx0Y0uotq-wpwy4Cte0N7gOaB8qsB9GnPYlg8Sd3unz-qM6LTNbABg5cGkYsczu_s5w"
             style={{
               width: 35,
               borderRadius: 20,

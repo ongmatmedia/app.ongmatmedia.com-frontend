@@ -13,13 +13,12 @@ import { SeedingPage } from './seeding';
 import { BuffViewers } from './seeding/buff-viewers';
 import { BuffViewersLivestream } from './seeding/buff-viewers-livestream';
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream';
+import { ProtectedRoute } from '../store/App';
+import { withAppState } from '../store/App';
 
-export const AppWithRouter = () => (
+export const AppWithRouter = withAppState(props => (
   <HashRouter>
     <Switch>
-      <Route exact path="/">
-        <MainLayout Content={() => <HomePage />} />
-      </Route>
 
       <Route exact path="/auth/login">
         <AuthLayout Content={Login} />
@@ -33,43 +32,54 @@ export const AppWithRouter = () => (
         <AuthLayout Content={ResetPassword} />
       </Route>
 
-      <Route exact path="/accounts">
+
+      <ProtectedRoute exact path="/">
+        <MainLayout Content={() => <HomePage />} />
+      </ProtectedRoute>
+
+      <ProtectedRoute exact path="/accounts">
         <MainLayout Content={AccountPage} />
-      </Route>
+      </ProtectedRoute>
 
-      <Route exact path="/seeding">
+      <ProtectedRoute exact path="/seeding">
         <MainLayout Content={SeedingPage} />
-      </Route>
+      </ProtectedRoute>
 
-      <Route exact path="/seeding/vip-viewers-livestream">
+      <ProtectedRoute exact path="/seeding/vip-viewers-livestream">
         <MainLayout Content={VipViewersLivestream} />
-      </Route>
+      </ProtectedRoute>
 
-      <Route exact path="/seeding/buff-viewers-livestream">
+      <ProtectedRoute exact path="/seeding/buff-viewers-livestream">
         <MainLayout Content={BuffViewersLivestream} />
-      </Route>
+      </ProtectedRoute>
 
-      <Route exact path="/seeding/buff-viewers">
+      <ProtectedRoute exact path="/seeding/buff-viewers">
         <MainLayout Content={BuffViewers} />
-      </Route>
+      </ProtectedRoute>
 
-      <Route exact path="/payments">
+      <ProtectedRoute exact path="/payments">
         <MainLayout Content={Payments} />
-      </Route>
+      </ProtectedRoute>
 
-      <Route exact path="/agency">
+      <ProtectedRoute exact path="/agency">
         <MainLayout Content={AgencyPage} />
-      </Route>
+      </ProtectedRoute>
 
-      <Route exact path="/deposit">
+      <ProtectedRoute exact path="/deposit">
         <MainLayout Content={DepositPage} />
-      </Route>
- 
+      </ProtectedRoute>
+
+      <ProtectedRoute>
+        <span>404 not found for logged user</span>
+      </ProtectedRoute>
+
 
       <Route>
-        <span>Not found</span>
+        <span>404 not found for guest</span>
       </Route>
+
 
     </Switch>
   </HashRouter>
-);
+))
+

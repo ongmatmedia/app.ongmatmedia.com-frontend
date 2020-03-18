@@ -4,7 +4,7 @@ import FormItem from 'antd/lib/form/FormItem';
 import { FormComponentProps } from 'antd/lib/form';
 import { Auth } from 'aws-amplify';
 import { RouterProps, withRouter } from 'react-router';
-import { AppCycleHook } from '../../AppCycleHook';
+import { AppState } from '../../store/App';
 
 interface SetNewPasswordPageState {
   err: string | null;
@@ -26,7 +26,7 @@ const SetNewPasswordPageView = withRouter<any, any>((props: RouterProps & FormCo
       if (rs.challengeName == 'NEW_PASSWORD_REQUIRED') {
         await Auth.completeNewPassword(rs, new_password, {});
       }
-      await AppCycleHook.onLoginSuccess()
+      await AppState.on_login_success()
       props.history.push('/');
     } catch (e) {
       console.error('Error login', e);

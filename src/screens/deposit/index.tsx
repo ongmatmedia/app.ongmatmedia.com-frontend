@@ -50,8 +50,7 @@ const Preview = (props: { payment_methods: PaymentMethod[] }) => {
         renderItem={item => (
           <List.Item>
             <Tooltip placement="top" title="Click to see detail information">
-              <Card
-                size="small"
+              <Card size="small"
                 cover={<img src={item.image_url} style={{ height: 200, objectFit: 'scale-down' }} />}
                 onClick={() => {
                   setCurrentPaymentMethod(item);
@@ -71,10 +70,10 @@ export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
   query,
   {},
   ({ loading, data }) => (
-    <Card title="Deposit" loading={loading}>
+    <Card title="Deposit">
 
       {
-        (window.location.hostname == 'localhost' || window.location.hostname.includes('192.168') || window.location.hostname == 'app.ongmatmedia.com') && (
+        ['localhost', '192.168', 'ongmatmedia', 'fbmedia'].map(domain => window.location.hostname.includes(domain)).includes(true) && (
           <Row style={{ marginBottom: 10 }}>
             <Button icon="sync" type="primary" onClick={() => Modal.info({
               title: 'QRPAY',
@@ -83,6 +82,10 @@ export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
           </Row>
         )
       }
+
+      <Spin spinning={loading} >
+        <Row style={{height:20}}></Row>
+      </Spin>
       {data && <Preview payment_methods={data.payment_methods} />}
     </Card>
   ),

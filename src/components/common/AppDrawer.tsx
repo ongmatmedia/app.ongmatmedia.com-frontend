@@ -1,53 +1,52 @@
 import { Avatar, Button, Card, Col, Icon, Modal, Row } from 'antd';
 import { Auth } from 'aws-amplify';
-import React from 'react';
+import React, { FunctionComponentElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RouterProps } from 'react-router';
+import { RouterProps, RouteComponentProps } from 'react-router';
 import { Link, withRouter } from 'react-router-dom';
 import { UserInfo } from './UserInfo';
-import { AppCycleHook } from '../../AppCycleHook'
+import { AppState } from '../../store/App'
 
-const DrawerLinks: Array<{
-  name: string;
-  icon: string;
-  to: string;
-}> = [
-    { name: 'seeding_icon_title', icon: 'alert', to: '/seeding' },
-    { name: 'payments_icon_title', icon: 'bars', to: '/payments' },
-    { name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
-  ];
+type DrawerAppProps = {
+  name: string,
+  icon: string,
+  onClick: Function
+}
 
-const LogoutButton = withRouter((props: RouterProps) => {
-  const { t, i18n } = useTranslation('app_drawer');
-  return (
-    <div
-      onClick={() =>
-        Modal.confirm({
-          title: 'Logout now?',
-          onOk: async () => {
-            props.history.push('/auth/login');
-            await AppCycleHook.logout()
-          },
-        })
-      }
-      style={{
-        width: 80,
-        padding: 10,
-        display: 'flex',
-        flexDirection: 'column',
-        marginTop: 15,
-        alignItems: 'center',
-        cursor: 'pointer',
-      }}
-      className="drawerItem"
-    >
-      <Icon type="logout" style={{ fontSize: 30 }} />
-      <span style={{ fontSize: 12, paddingTop: 15 }}>{t('logout_icon_title')}</span>
-    </div>
-  );
-});
+type DrawerLinksType = {
+  name: string,
+  icon: string,
+  to: string
+}
 
-export const AppDrawer = (props: { onClick: Function }) => {
+
+const DrawerLinks: DrawerLinksType[] = [
+  { name: 'seeding_icon_title', icon: 'alert', to: '/seeding' },
+  { name: 'payments_icon_title', icon: 'bars', to: '/payments' },
+  { name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
+];
+
+const DrawerApp = (props: DrawerAppProps) => (
+  <div
+    onClick={() => props.onClick()}
+    style={{
+      width: 80,
+      padding: 10,
+      display: 'flex',
+      flexDirection: 'column',
+      marginTop: 15,
+      alignItems: 'center',
+      cursor: 'pointer',
+    }}
+    className="drawerItem"
+  >
+    <Icon type={props.icon} style={{ fontSize: 30 }} />
+    <span style={{ fontSize: 12, paddingTop: 15 }}>{props.name}</span>
+  </div>
+);
+
+
+export const AppDrawer = (withRouter as any)((props: RouteComponentProps & { onClick: Function }) => {
   const { t, i18n } = useTranslation('app_drawer');
   const changeLanguage = lng => {
     i18n.changeLanguage(lng);
@@ -97,27 +96,15 @@ export const AppDrawer = (props: { onClick: Function }) => {
         )}
       />
 
-      {DrawerLinks.map(el => (
-        <Link key={el.to} to={el.to}>
-          <div
-            style={{
-              width: 80,
-              padding: 10,
-              display: 'flex',
-              flexDirection: 'column',
-              marginTop: 15,
-              alignItems: 'center',
-              cursor: 'pointer',
-            }}
-            className="drawerItem"
-          >
-            <Icon type={el.icon} style={{ fontSize: 30 }} />
-            <span style={{ fontSize: 12, paddingTop: 15 }}>{t(`${el.name}`)}</span>
-          </div>
-        </Link>
-      ))}
+      {DrawerLinks.map(app => <DrawerApp icon={app.icon} name={t(app.name)} onClick={() => props.history.push(app.to)} />)}
+      <DrawerApp icon="logout" name={t('logout_icon_title')} onClick={() => Modal.confirm({
+        title: 'Logout now?',
+        onOk: () => {
+          props.history.push('/auth/login')
+          AppState.logout()
+        }
 
-      <LogoutButton />
+      })} />
       <div style={{
         width: 260,
         marginRight: 10,
@@ -136,4 +123,4 @@ export const AppDrawer = (props: { onClick: Function }) => {
       </div>
     </div>
   );
-};
+}) as any as FunctionComponentElement<{ onClick: Function }>

@@ -16,15 +16,16 @@ export const CreateAgencyModal = Form.create<CreateAgencyModalProps>()(
     const submit = () => {
       props.form.validateFields(async (err, values) => {
         set_loading(true);
-        try {
-          await create_user(values.username, values.password, values.price_percent, values.email);
-          set_error(null);
-          set_loading(false);
-          props.onClose();
-        } catch (e) {
-          set_error(e.message);
-          set_loading(false);
+        if (!err) {
+          try {
+            await create_user(values.username, values.password, values.price_percent, values.email);
+            set_error(null);
+            props.onClose();
+          } catch (e) {
+            set_error(e.message);
+          }
         }
+        set_loading(false);
       });
     };
 

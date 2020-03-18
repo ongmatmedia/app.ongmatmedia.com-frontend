@@ -11,6 +11,7 @@ export class GraphQLSubscription {
     }
 
     private static dispose_list: Set<Disposable> = new Set()
+
     static async subscriblePrivateEvents() {
 
         // Get current user
@@ -18,7 +19,7 @@ export class GraphQLSubscription {
 
         // Active private events
         this.unsubscribeAll()
-        this.dispose_list.add(await listen_for_new_notification())
+        // this.dispose_list.add(await listen_for_new_notification())
     }
 
     static unsubscribeAll() {
