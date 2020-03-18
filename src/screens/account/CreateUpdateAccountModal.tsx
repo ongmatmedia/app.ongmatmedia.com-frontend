@@ -1,63 +1,63 @@
-import { Form, Input, Modal, Spin } from 'antd'
-import { FormComponentProps } from 'antd/lib/form'
-import React, { useState } from 'react'
-import { sleep } from '../../helpers/utils'
+import { Form, Modal, Tabs, Collapse } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
+import React from 'react';
+import { ChromeExtensionTab } from './facebook_tab/ChromeExtensionTab';
+import { FacebookLoginTab } from './facebook_tab/FacebookLoginTab';
+import { FacebookCookieTab } from './facebook_tab/FacebookCookieTab';
+import { FacebookQR } from './facebook_tab/FacebookQR';
 
-export type UpdateAccountModalProps = FormComponentProps & {
+const { TabPane } = Tabs
+const { Panel } = Collapse
+
+const isMobileDevice = () => {
+	return (navigator.userAgent.indexOf('IEMobile') !== -1) || 'ontouchstart' in window || navigator.msMaxTouchPoints && window.innerWidth < 760
+};
+
+export type CreateUpdateAccountModalProps = FormComponentProps & {
 	visible: boolean
 	onClose: Function
 	accountId: string
 	mode: 'create' | 'update'
 }
 
-export const CreateUpdateAccountModal = Form.create<UpdateAccountModalProps>()(
-	(props: UpdateAccountModalProps) => {
-		const { form } = props
-		const [loading, set_loading] = useState<boolean>(false)
-		console.log({ props })
-
-		const submit = async () => {
-			form.validateFields(async (err, values) => {
-				if (err) return
-				set_loading(true)
-				console.log({ values })
-				// Perform an asynchorounous operation
-				if (props.mode === 'create') {
-				} else if (props.mode === 'update') {
-				}
-				await sleep(2)
-				// End asynchorounous operation
-				form.resetFields()
-				set_loading(false)
-				props.onClose()
-			})
-		}
-
-		return (
-			<Modal
-				visible={props.visible}
-				title="Update Account information"
-				okText="Save account"
-				onCancel={() => props.onClose()}
-				onOk={() => submit()}
-			>
-				<Spin spinning={loading}>
-					<Form layout="vertical">
-						<Form.Item label="Data">
-							{form.getFieldDecorator('data', {
-								rules: [
-									{
-										required: true,
-										message:
-											'Please input your data (cookies,access token,etc) !',
-									},
-								],
-								initialValue: props.mode === 'update' ? props.accountId : '',
-							})(<Input.TextArea rows={5} />)}
-						</Form.Item>
-					</Form>
-				</Spin>
-			</Modal>
-		)
-	},
+export const CreateUpdateAccountModal = Form.create<CreateUpdateAccountModalProps>()(
+	(props: CreateUpdateAccountModalProps) => (
+		<Modal
+			visible={props.visible}
+			onCancel={() => props.onClose()}
+			footer={null}
+		>
+			{!isMobileDevice() ? (
+				<Tabs defaultActiveKey="1">
+					<TabPane tab="Extension" key="1">
+						<ChromeExtensionTab />
+					</TabPane>
+					<TabPane tab="App password" key="2">
+						<FacebookLoginTab />
+					</TabPane>
+					<TabPane tab="Cookie" key="3">
+						<FacebookCookieTab onCloseModal={props.onClose} />
+					</TabPane>
+					<TabPane tab="QRcode" key="4">
+						<FacebookQR />
+					</TabPane>
+				</Tabs>
+			) : (
+					<Collapse defaultActiveKey={['1']}>
+						<Panel header="Extension" key="1">
+							<ChromeExtensionTab />
+						</Panel>
+						<Panel header="App password" key="2">
+							<FacebookLoginTab />
+						</Panel>
+						<Panel header="Cookie" key="3" disabled>
+							<FacebookCookieTab onCloseModal={props.onClose} />
+						</Panel>
+						<Panel header="QRcode" key="3" disabled>
+							<FacebookQR />
+						</Panel>
+					</Collapse>
+				)}
+		</Modal>
+	)
 )

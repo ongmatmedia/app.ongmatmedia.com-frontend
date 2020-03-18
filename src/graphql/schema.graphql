@@ -63,6 +63,16 @@ input BuffViewersLivestreamQueryFilters {
   created_time: TableIntFilterInput!
 }
 
+type BuffViewersLivestreamStatus @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  available_viewers: Int!
+  total_viewers: Int!
+}
+
+input BuffViewersLivestreamStatusInput {
+  available_viewers: Int!
+  total_viewers: Int!
+}
+
 type BuffViewersLivestreamTaskCUDResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
   buff: BuffViewersLivestreamEdge!
   me: User!
@@ -150,7 +160,8 @@ type FacebookAccountInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
 
 input FacebookAccountInput {
   cookie: String
-  access_token: [String!]
+  username: String
+  password: String
 }
 
 type Livestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -251,6 +262,7 @@ input LivestreamTargetInput {
 }
 
 input LivestreamUpdateInput {
+  user_id: String
   id: ID!
   videos: [LivestreamVideoInput!]
   name: String
@@ -258,8 +270,8 @@ input LivestreamUpdateInput {
   active: Boolean
   title: String
   description: String
-  times: [Long!]!
-  loop_times: Int!
+  times: [Long!]
+  loop_times: Int
   targets: LivestreamTargetInput
 }
 
@@ -289,10 +301,9 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   update_info(payment_methods: [PaymentMethodInput!]!, facebook_uid: String!): Boolean!
   create_buff_viewers_livestream_task(input: BuffViewersLivestreamInput!): BuffViewersLivestreamTaskCUDResponse!
   delete_buff_viewers_livestream_task(id: ID!): BuffViewersLivestreamTaskCUDResponse!
-  log_buff_viewers_livestream_viewers(event: BuffViewersLivestreamLogEventInput!): BuffViewersLivestreamLogEvent!
   update_buff_viewers_livestream(event: BuffViewersLivestreamUpdateEventInput!): BuffViewersLivestreamUpdateEvent!
+  log_buff_viewers_livestream_viewers(event: BuffViewersLivestreamLogEventInput!): BuffViewersLivestreamLogEvent!
   add_facebook_account(input: FacebookAccountInput!): FacebookAccountEdge!
-  update_facebook_account(input: FacebookAccountInput!): FacebookAccount!
   delete_facebook_account(id: ID!): Boolean!
   create_vip_viewers_livestream_task(input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskCUDResponse!
   update_vip_viewers_livestream_task(input: VIPViewersLivestreamUpdateInput!): VipViewersLivestreamTaskCUDResponse!
@@ -396,10 +407,9 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   payment_methods: [PaymentMethod!]!
   users(after: String, limit: Int): UserConnection!
   buff_viewers_livestream_tasks(after: String, limit: Int, filters: BuffViewersLivestreamQueryFilters): BuffViewersLivestreamConnection!
-  buff_viewers_livestream_task(id: ID!): BuffViewersLivestream!
+  buff_viewers_system_status: BuffViewersLivestreamStatus!
   facebook_account_info(url: String!): FacebookAccountInfo!
   facebook_accounts(after: String, limit: Int): FacebookAccountConnection
-  facebook_account(uid: ID!): FacebookAccount!
   vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
   vip_viewers_livestream_task(id: String!): VIPViewersLivestream!
   livestream_subscription(user_id: ID): LivestreamSubscription
@@ -430,13 +440,13 @@ input ServicePricingInput {
 }
 
 type Subscription @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  on_buff_viewers_livestream_update(user_id: String): BuffViewersLivestreamUpdateEvent
+  @aws_subscribe(mutations: ["update_buff_viewers_livestream"])
   on_buff_viewers_livestream_viewers_update(user_id: String!): BuffViewersLivestreamLogEvent
   @aws_subscribe(mutations: ["log_buff_viewers_livestream_viewers"])
-  on_buff_viewers_livestream_update(user_id: String!): BuffViewersLivestreamUpdateEvent
-  @aws_subscribe(mutations: ["update_buff_viewers_livestream"])
   on_update_livestream(user_id: String!): Livestream
   @aws_subscribe(mutations: ["update_livestream"])
-  new_notification(user_id: String!): Notification
+  on_new_notification(user_id: String!): Notification
   @aws_subscribe(mutations: ["create_notification"])
 }
 

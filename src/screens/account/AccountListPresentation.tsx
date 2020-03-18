@@ -1,7 +1,9 @@
-import { Avatar, Card, Col, List, Row } from 'antd'
-import React from 'react'
+import { Avatar, Card, Col, List, Row, notification } from 'antd'
+import React, { useState } from 'react'
 import { AccountActions } from './AccountActions'
 import { AccountStatistic } from './AccountStatistic'
+import { AsyncForEach } from '../../helpers/ArrayLoop'
+import { delete_facebook_account } from '../../graphql/delete_facebook_account'
 
 interface AccountListPresentationProps {
 	loading: boolean
@@ -17,7 +19,27 @@ export const AccountListPresentation = (
 	props: AccountListPresentationProps,
 ) => {
 	const isSelectingAllAccounts =
-		props.selectedAccounts.length === props.accounts.length
+		props.selectedAccounts.length === props.accounts.length && !!props.accounts.length
+
+	const [removingAccount, setRemovingAccount] = useState<boolean>(false)
+
+	const removeSelectedAccount = () => {
+		setRemovingAccount(true)
+		AsyncForEach<string, void>(
+			props.selectedAccounts,
+			async id => {
+				await delete_facebook_account(id)
+			},
+		)
+		setRemovingAccount(false)
+		props.onSelectAccount([])
+		notification.success(
+			{
+				message: `Operation: Delete account${props.selectedAccounts.length > 1 ? 's' : ''}`,
+				description: 'Successfully',
+			}
+		)
+	}
 
 	return (
 		<>
@@ -27,12 +49,14 @@ export const AccountListPresentation = (
 					isSelectingAllAccounts
 						? props.onSelectAccount([])
 						: props.onSelectAccount([
-								...props.accounts.map(account => account.id),
-						  ])
+							...props.accounts.map(account => account.id),
+						])
 				}
 				isSelectingAllAccounts={isSelectingAllAccounts}
 				onOpenCreateUpdateModal={props.onOpenCreateUpdateModal}
 				onChangeModeModal={props.onChangeModeModal}
+				removingAccount={removingAccount}
+				onRemoveSelectedAccounts={() => removeSelectedAccount()}
 			/>
 			<AccountStatistic accounts={props.accounts} />
 			<List
@@ -71,10 +95,10 @@ export const AccountListPresentation = (
 									onClick={() =>
 										props.selectedAccounts.includes(id)
 											? props.onSelectAccount([
-													...props.selectedAccounts.filter(
-														idAccount => idAccount !== id,
-													),
-											  ])
+												...props.selectedAccounts.filter(
+													idAccount => idAccount !== id,
+												),
+											])
 											: props.onSelectAccount([...props.selectedAccounts, id])
 									}
 								>

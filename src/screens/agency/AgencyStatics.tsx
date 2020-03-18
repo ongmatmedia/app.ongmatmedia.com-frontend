@@ -7,7 +7,7 @@ export type AgencyStaticsProps = {
 }
 export const AgencyStatics = (props: AgencyStaticsProps) => (
 	<Row gutter={16} style={{ marginBottom: 10 }}>
-		<Col md={3}>
+		<Col md={4} xs={12} style={{ marginTop: 10 }}>
 			<Card>
 				<Statistic
 					title="Total user"
@@ -17,7 +17,7 @@ export const AgencyStatics = (props: AgencyStaticsProps) => (
 				/>
 			</Card>
 		</Col>
-		<Col md={3}>
+		<Col md={4} xs={12} style={{ marginTop: 10 }}>
 			<Card>
 				<Statistic
 					valueStyle={{ color: 'rgb(64, 169, 255)' }}

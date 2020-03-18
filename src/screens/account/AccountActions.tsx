@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Row } from 'antd'
+import { Button, Checkbox, Col, Row, Popconfirm } from 'antd'
 import React from 'react'
 
 export const AccountActions = (props: {
@@ -7,6 +7,8 @@ export const AccountActions = (props: {
 	isSelectingAllAccounts: boolean
 	onOpenCreateUpdateModal: Function
 	onChangeModeModal: Function
+	removingAccount: boolean
+	onRemoveSelectedAccounts: Function
 }) => {
 	return (
 		<Row style={{ marginBottom: 20 }} gutter={8}>
@@ -22,14 +24,22 @@ export const AccountActions = (props: {
 				>
 					Add account
 				</Button>
-				<Button
-					type="danger"
-					icon="delete"
-					disabled={!props.removeable}
-					style={{ marginTop: 10 }}
+				<Popconfirm
+					title="Are you sure delete that account(s)?"
+					okText="I'm sure"
+					cancelText="No"
+					onConfirm={() => props.onRemoveSelectedAccounts()}
 				>
-					Remove accounts
+					<Button
+						type="danger"
+						icon="delete"
+						disabled={!props.removeable}
+						style={{ marginTop: 10 }}
+						loading={props.removingAccount}
+					>
+						Remove accounts
 				</Button>
+				</Popconfirm>
 			</Col>
 			<Col md={{ offset: 4, span: 4 }} xs={24} style={{ marginTop: 10 }}>
 				<Checkbox

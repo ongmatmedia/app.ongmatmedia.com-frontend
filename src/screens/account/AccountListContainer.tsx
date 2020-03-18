@@ -57,7 +57,7 @@ export const AccountListContainer = () => {
 					/>
 					<AccountListPresentation
 						loading={rs.props == null}
-						// accounts={rs.props ? (rs.props as any).facebook_accounts.edges.map(el => el.node) : []}
+						accounts={rs.props ? (rs.props as any).facebook_accounts.edges.map(el => el.node) : []}
 						selectedAccounts={selectedAccounts}
 						onOpenCreateUpdateModal={() =>
 							setModalCreateUpdateAccountIsVisible(true)
@@ -70,32 +70,32 @@ export const AccountListContainer = () => {
 							setViewingAccount(id)
 							setModalViewAccountIsVisible(true)
 						}}
-						accounts={[
-							{
-								id: '100005137867313',
-								name: 'Dang Tien Nguyen',
-							},
-							{
-								id: '100005137867314',
-								name: 'Dang Tien Nguyen',
-							},
-							{
-								id: '100005137867315',
-								name: 'Dang Tien Nguyen',
-							},
-							{
-								id: '100005137867316',
-								name: 'Dang Tien Nguyen',
-							},
-							{
-								id: '100005137867317',
-								name: 'Dang Tien Nguyen',
-							},
-							{
-								id: '100005137867318',
-								name: 'Dang Tien Nguyen',
-							},
-						]}
+						// accounts={[
+						// 	{
+						// 		id: '100005137867313',
+						// 		name: 'Dang Tien Nguyen',
+						// 	},
+						// 	{
+						// 		id: '100005137867314',
+						// 		name: 'Dang Tien Nguyen',
+						// 	},
+						// 	{
+						// 		id: '100005137867315',
+						// 		name: 'Dang Tien Nguyen',
+						// 	},
+						// 	{
+						// 		id: '100005137867316',
+						// 		name: 'Dang Tien Nguyen',
+						// 	},
+						// 	{
+						// 		id: '100005137867317',
+						// 		name: 'Dang Tien Nguyen',
+						// 	},
+						// 	{
+						// 		id: '100005137867318',
+						// 		name: 'Dang Tien Nguyen',
+						// 	},
+						// ]}
 					/>
 				</>
 			)}
