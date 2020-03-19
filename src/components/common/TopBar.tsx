@@ -36,7 +36,7 @@ export const TopBar = props => {
 			>
 				<Link to="/">
 					<img
-						src="https://freeiconshop.com/wp-content/uploads/edd/play-flat.png"
+						src="https://ongmatmedia.com/img/logo.png"
 						style={{
 							width: 35,
 							borderRadius: 20,
