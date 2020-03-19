@@ -57,7 +57,11 @@ export const AccountListContainer = () => {
 					/>
 					<AccountListPresentation
 						loading={rs.props == null}
-						accounts={rs.props ? (rs.props as any).facebook_accounts.edges.map(el => el.node) : []}
+						accounts={
+							rs.props
+								? (rs.props as any).facebook_accounts.edges.map(el => el.node)
+								: []
+						}
 						selectedAccounts={selectedAccounts}
 						onOpenCreateUpdateModal={() =>
 							setModalCreateUpdateAccountIsVisible(true)

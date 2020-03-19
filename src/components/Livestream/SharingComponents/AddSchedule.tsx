@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 export interface IAddSchedule {
 	tagsSchedule: number[]
 	onChange: (listTimeSchedule: number[]) => void
-	mode:string
+	mode: string
 }
 
 export const AddSchedule = (props: IAddSchedule) => {
@@ -17,7 +17,10 @@ export const AddSchedule = (props: IAddSchedule) => {
 
 	console.log(props.mode)
 
-	const scheduleData = props.mode !== 'create' ? props.tagsSchedule.filter(tag => tag !== 0) : (props.tagsSchedule || [])
+	const scheduleData =
+		props.mode !== 'create'
+			? props.tagsSchedule.filter(tag => tag !== 0)
+			: props.tagsSchedule || []
 
 	return (
 		<div>

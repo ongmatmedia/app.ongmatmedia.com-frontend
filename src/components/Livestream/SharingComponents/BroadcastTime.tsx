@@ -6,7 +6,7 @@ export interface BroadcastTimeProps {
 	value: number[]
 	onChange: (newBroadcastTime: number[]) => void
 	now: boolean
-	mode:string
+	mode: string
 }
 
 export const BroadcastTime = (props: BroadcastTimeProps) => (

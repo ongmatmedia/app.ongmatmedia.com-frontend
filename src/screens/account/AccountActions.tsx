@@ -38,7 +38,7 @@ export const AccountActions = (props: {
 						loading={props.removingAccount}
 					>
 						Remove accounts
-				</Button>
+					</Button>
 				</Popconfirm>
 			</Col>
 			<Col md={{ offset: 4, span: 4 }} xs={24} style={{ marginTop: 10 }}>

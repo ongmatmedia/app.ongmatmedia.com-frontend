@@ -1,10 +1,9 @@
-import React, { useState, FunctionComponent } from 'react';
-import { Button, Checkbox, Form, Icon, Input, Alert, Modal } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
-import { Auth } from 'aws-amplify';
-import { RouterProps, withRouter, RouteComponentProps } from 'react-router';
-import { AppState } from '../../store/App';
-
+import React, { useState, FunctionComponent } from 'react'
+import { Button, Checkbox, Form, Icon, Input, Alert, Modal } from 'antd'
+import { FormComponentProps } from 'antd/lib/form'
+import { Auth } from 'aws-amplify'
+import { RouterProps, withRouter, RouteComponentProps } from 'react-router'
+import { AppState } from '../../store/App'
 
 export const LoginView = withRouter<any, any>(
 	(props: FormComponentProps & RouteComponentProps) => {
@@ -48,19 +47,20 @@ export const LoginView = withRouter<any, any>(
 				try {
 					const user = await Auth.signIn({ password, username })
 
-        if (user.challengeName) {
-          if (user.challengeName == 'NEW_PASSWORD_REQUIRED')
-            set_new_pass_prompt(username, password);
-        }
-        await AppState.on_login_success()
-        props.history.push(localStorage.getItem('login_redirect') || '/')
-      } catch (e) {
-        set_error(e.message);
-        set_loading(false);
-        e.code == 'PasswordResetRequiredException' && reset_password_prompt(username);
-      }
-    });
-  };
+					if (user.challengeName) {
+						if (user.challengeName == 'NEW_PASSWORD_REQUIRED')
+							set_new_pass_prompt(username, password)
+					}
+					await AppState.on_login_success()
+					props.history.push(localStorage.getItem('login_redirect') || '/')
+				} catch (e) {
+					set_error(e.message)
+					set_loading(false)
+					e.code == 'PasswordResetRequiredException' &&
+						reset_password_prompt(username)
+				}
+			})
+		}
 
 		return (
 			<Form id="auth-form">

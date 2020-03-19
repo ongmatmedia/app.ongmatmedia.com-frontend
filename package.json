@@ -59,6 +59,8 @@
     "create-react-app": "3.0.1",
     "customize-cra": "0.2.13",
     "graphql": "14.4.0",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.8",
     "prettier": "^1.19.1",
     "react-hot-loader": "4.11.1",
     "react-scripts": "3.0.1",
@@ -70,5 +72,15 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-pwa-manifest": "^4.2.0"
-  }
+  },
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"**/*.{ts,tsx}": [
+			"prettier --write"
+		]
+	}
 }
