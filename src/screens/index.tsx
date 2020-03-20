@@ -17,6 +17,7 @@ import { ProtectedRoute } from '../store/App'
 import { withAppState } from '../store/App'
 import { Result, Button } from 'antd'
 import { LivestreamTabs } from './livestream'
+import { Error404Page } from '../components/common/Error404'
 
 export const AppWithRouter = withAppState(props => (
 	<HashRouter>
@@ -78,19 +79,11 @@ export const AppWithRouter = withAppState(props => (
 			</ProtectedRoute>
 
 			<ProtectedRoute>
-				<Result
-					status="404"
-					title="404"
-					subTitle="Sorry, the page you visited does not exist."
-				/>
+				<Error404Page />
 			</ProtectedRoute>
 
 			<Route>
-				<Result
-					status="404"
-					title="404"
-					subTitle="Sorry, you must log in first"
-				/>
+				<Error404Page />
 			</Route>
 		</Switch>
 	</HashRouter>
