@@ -3,6 +3,7 @@ import { ConnectionHandler, RecordProxy } from 'relay-runtime'
 import { RelayEnvironment } from './RelayEnvironment'
 const graphql = require('babel-plugin-relay/macro')
 import { NewDepositInfo } from '../types'
+import { GraphQLError } from './GraphqlError'
 
 const mutation = graphql`
 	mutation createDepositMutation($amount: Int!) {
@@ -21,7 +22,8 @@ export const create_deposit = async (amount: number) => {
 			mutation,
 			onCompleted: r => success((r as any).create_deposit),
 			onError: error => {
-				reject(error)
+				const { errors } = error as any as GraphQLError
+				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
 			},
 		})
 	}) as Promise<NewDepositInfo>

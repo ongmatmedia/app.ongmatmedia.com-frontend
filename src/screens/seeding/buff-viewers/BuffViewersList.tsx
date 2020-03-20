@@ -197,7 +197,7 @@ const columns: ColumnProps<BuffViewersData>[] = [
 										await delete_buff_viewers_livestream(item.id)
 										notification.success({ message: 'Success' })
 									} catch (e) {
-										notification.error({ message: 'Error' })
+										notification.error({ message: e })
 									}
 								},
 							})

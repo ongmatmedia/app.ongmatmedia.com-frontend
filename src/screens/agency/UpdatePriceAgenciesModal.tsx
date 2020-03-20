@@ -35,7 +35,7 @@ export const UpdatePriceAgenciesModal = withForm<UpdatePriceAgenciesModalProps>(
 					set_loading(false)
 					props.onClose()
 				} catch (e) {
-					set_error(e.source.errors[0].message)
+					set_error(e)
 					set_loading(false)
 				}
 			})

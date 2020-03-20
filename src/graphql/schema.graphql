@@ -164,6 +164,10 @@ input FacebookAccountInput {
   password: String
 }
 
+input FacebookAccountUpdateInput {
+  live: Boolean
+}
+
 type Livestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
   user_id: String!
   id: ID!
@@ -303,6 +307,7 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   delete_buff_viewers_livestream_task(id: ID!): BuffViewersLivestreamTaskCUDResponse!
   update_buff_viewers_livestream(event: BuffViewersLivestreamUpdateEventInput!): BuffViewersLivestreamUpdateEvent!
   log_buff_viewers_livestream_viewers(event: BuffViewersLivestreamLogEventInput!): BuffViewersLivestreamLogEvent!
+  update_facebook_account(input: FacebookAccountUpdateInput!): FacebookAccount!
   add_facebook_account(input: FacebookAccountInput!): FacebookAccountEdge!
   delete_facebook_account(id: ID!): Boolean!
   create_vip_viewers_livestream_task(input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskCUDResponse!
@@ -312,6 +317,7 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   create_livestream(task: LivestreamInput!): LivestreamEdge!
   update_livestream(task: LivestreamUpdateInput!): Livestream!
   delete_livestream(id: ID!): Boolean!
+  stop_livestream(id: ID!): Livestream!
   create_deposit(amount: Int!): NewDepositInfo!
   create_buff_viewers_video_task(input: BuffViewersVideoInput!): BuffViewersVideoCUDResponse!
   delete_buff_viewers_video_task(id: ID!): BuffViewersVideoCUDResponse!
@@ -410,6 +416,7 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   buff_viewers_system_status: BuffViewersLivestreamStatus!
   facebook_account_info(url: String!): FacebookAccountInfo!
   facebook_accounts(after: String, limit: Int): FacebookAccountConnection
+  facebook_account(id: ID!): FacebookAccount!
   vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
   vip_viewers_livestream_task(id: String!): VIPViewersLivestream!
   livestream_subscription(user_id: ID): LivestreamSubscription

@@ -67,8 +67,8 @@ export const CreateUpdateLivestreamTab = Form.create<
 					props.setActiveTabKey('1')
 					await sleep(2)
 					window.location.reload()
-				} catch ({ errors }) {
-					setError(errors[0].message)
+				} catch (message) {
+					setError(message)
 				}
 			}
 		})

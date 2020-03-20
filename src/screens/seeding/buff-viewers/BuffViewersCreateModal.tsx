@@ -12,6 +12,7 @@ import {
 	Select,
 	Spin,
 	Tag,
+	Slider,
 } from 'antd'
 import React, { useState } from 'react'
 import { VideoInput } from './VideoInput'
@@ -253,6 +254,7 @@ export const BuffViewersCreateModal = withForm<BuffViewersCreateModalProps>(
 										</Col>
 									</Row>
 									{error && <Alert type="error" message={error} />}
+									
 									<Select
 										onChange={setValue}
 										placeholder="Click to select viewers amount when livestream"

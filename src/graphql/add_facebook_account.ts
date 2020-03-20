@@ -2,6 +2,7 @@ import { commitMutation } from 'react-relay'
 import { ConnectionHandler, RecordProxy } from 'relay-runtime'
 import { FacebookAccountInput } from '../types'
 import { RelayEnvironment } from './RelayEnvironment'
+import { GraphQLError } from './GraphqlError'
 const graphql = require('babel-plugin-relay/macro')
 
 const mutation = graphql`
@@ -44,7 +45,8 @@ export const add_facebook_account = async (account: FacebookAccountInput) =>
 				success()
 			},
 			onError: error => {
-				reject(error)
+				const { errors } = error as any as GraphQLError
+				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
 			},
 		})
 	})

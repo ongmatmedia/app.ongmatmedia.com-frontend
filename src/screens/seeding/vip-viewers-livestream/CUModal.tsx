@@ -80,7 +80,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 					set_loading(false)
 					props.onClose()
 				} catch (e) {
-					set_error(e.message)
+					set_error(e)
 					set_loading(false)
 				}
 			})
