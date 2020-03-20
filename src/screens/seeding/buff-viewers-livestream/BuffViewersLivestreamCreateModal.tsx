@@ -72,8 +72,12 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 				set_error(null)
 				set_loading(true)
 				try {
-					await create_buff_viewers_livestream(data)
-					notification.success({ message: 'Create success' })
+					const inputData = {
+						...data,
+						note: 'add_from_web'
+					}
+					await create_buff_viewers_livestream(inputData)
+					notification.success({ message: 'Successfully' })
 					props.onClose()
 				} catch (e) {
 					set_error(e)
@@ -186,7 +190,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 									<Row><Col>
 										{[1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000].map(amount => <Button
 											style={{ margin: 5, width: 100 }}
-											type={amount == value ? 'primary' : 'danger'}
+											type={amount == value ? 'primary' : 'dashed'}
 											onClick={() => setValue(amount)}
 										>{amount}</Button>)}
 									</Col> </Row>
@@ -218,7 +222,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 								</FormElement>
 							),
 					})}
-
+{/* 
 					{props.form.field<string>({
 						name: 'note',
 						require: t('form.note_input.validatingErrorMessage'),
@@ -243,7 +247,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 									/>
 								</FormElement>
 							),
-					})}
+					})} */}
 
 					{props.data && props.form.data.limit_mins && props.form.data.amount && (
 						<OrderInfo
