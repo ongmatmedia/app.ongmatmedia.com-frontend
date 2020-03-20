@@ -33,8 +33,8 @@ export const FacebookCookieTab = Form.create<FacebookCookieTabProps>()(
 							message: `Operation: Add account`,
 							description: 'Successfully',
 						})
-					} catch ({ errors }) {
-						setError(errors[0].message)
+					} catch (message) {
+						setError(message)
 					}
 				}
 				setLoading(false)

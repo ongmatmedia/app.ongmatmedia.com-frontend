@@ -2,6 +2,7 @@ import { commitMutation } from 'react-relay'
 import { RelayEnvironment } from './RelayEnvironment'
 import graphql from 'babel-plugin-relay/macro'
 import { LivestreamUpdateInput } from '../types'
+import { GraphQLError } from './GraphqlError'
 
 const mutation = graphql`
 	mutation updateLivestreamMutation($task: LivestreamUpdateInput!) {
@@ -32,7 +33,8 @@ export const update_livestream = async (task: LivestreamUpdateInput) =>
 				success()
 			},
 			onError: error => {
-				reject(error)
+				const { errors } = error as any as GraphQLError
+				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
 			},
 		})
 	})

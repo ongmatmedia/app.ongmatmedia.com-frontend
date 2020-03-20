@@ -2,6 +2,7 @@ import { commitMutation } from 'react-relay'
 import { RelayEnvironment } from './RelayEnvironment'
 import graphql from 'babel-plugin-relay/macro'
 import { ServicePricing } from '../types'
+import { GraphQLError } from './GraphqlError'
 
 const mutation = graphql`
 	mutation updatePriceForUserMutation(
@@ -44,7 +45,8 @@ export const update_price_for_user = (
 				success()
 			},
 			onError: error => {
-				reject(error)
+				const { errors } = error as any as GraphQLError
+				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
 			},
 		})
 	})

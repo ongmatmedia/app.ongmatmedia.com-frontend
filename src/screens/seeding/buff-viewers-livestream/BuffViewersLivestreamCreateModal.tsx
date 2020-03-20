@@ -11,6 +11,8 @@ import {
 	Select,
 	Spin,
 	Tag,
+	Slider,
+	Button,
 } from 'antd'
 import { graphql } from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
@@ -23,6 +25,7 @@ import { FormElement } from '../../../components/form/FormElement'
 import { OrderInfo } from '../../../components/OrderInfo'
 import { VideoUrlInput } from '../../../components/VideoUrlInput'
 import Moment from 'react-moment'
+import { BuffViewersLivestreamSystemStatus } from './BuffViewersLivestreamSystemStatus'
 
 const query = graphql`
 	query BuffViewersLivestreamCreateModalQuery {
@@ -62,9 +65,6 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 
 		const { t } = useTranslation('buff_viewers_livestream_create_modal')
 
-		const viewers_amount = new Array(100)
-			.fill(0)
-			.map((_, index) => (index + 1) * 50)
 		const limits_mins = [10, 30, 45, 60, 90, 120, 150, 180, 210, 240, 270, 300]
 
 		const submit = () =>
@@ -76,7 +76,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 					notification.success({ message: 'Create success' })
 					props.onClose()
 				} catch (e) {
-					set_error(e.message)
+					set_error(e)
 				}
 				set_loading(false)
 			})
@@ -105,51 +105,58 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 							set_touched,
 							touched,
 						}) => (
-							<FormElement
-								label={t('form.facebook_video_input.title')}
-								icon="user"
-								error={error}
-							>
-								<VideoUrlInput
-									onSubmitVideo={info => {
-										set_video(info)
-										setValues({
-											id: info.id,
-											uid: info.owner.id,
-											name: info.title || info.description,
-										})
-									}}
-								/>
-								{video && (
-									<Row style={{ marginTop: 10 }}>
-										<Col span={12}>
-											<img style={{ width: '100%' }} src={video?.thumbnail} />
-										</Col>
-										<Col span={12}>
-											<Card
-												title={
-													<>
-														<Tag color="rgb(25, 188, 198)">
-															{video.owner.name}{' '}
-														</Tag>
-														<Icon
-															style={{ fontSize: 25 }}
-															type="video-camera"
-															onClick={() =>
-																window.open(`https://fb.com/${video.id}`)
-															}
-														/>
-													</>
-												}
-												size="small"
-											>
-												{`${video.title} ${video.description}`.slice(0, 100)}
-											</Card>
-										</Col>
-									</Row>
-								)}
-							</FormElement>
-						),
+								<FormElement
+									label={t('form.facebook_video_input.title')}
+									icon="user"
+									error={error}
+								>
+									<Alert
+										style={{ marginBottom: 5 }}
+										message="Nhập video URL rồi bấm nút kính lúp bên cạnh để xác nhận video"
+										type="info"
+										showIcon
+									/>
+
+									<VideoUrlInput
+										onSubmitVideo={info => {
+											set_video(info)
+											setValues({
+												id: info.id,
+												uid: info.owner.id,
+												name: info.title || info.description,
+											})
+										}}
+									/>
+									{video && (
+										<Row style={{ marginTop: 10 }}>
+											<Col span={12}>
+												<img style={{ width: '100%' }} src={video?.thumbnail} />
+											</Col>
+											<Col span={12}>
+												<Card
+													title={
+														<>
+															<Tag color="rgb(25, 188, 198)">
+																{video.owner.name}{' '}
+															</Tag>
+															<Icon
+																style={{ fontSize: 25 }}
+																type="video-camera"
+																onClick={() =>
+																	window.open(`https://fb.com/${video.id}`)
+																}
+															/>
+														</>
+													}
+													size="small"
+												>
+													{`${video.title} ${video.description}`.slice(0, 100)}
+												</Card>
+											</Col>
+										</Row>
+									)}
+								</FormElement>
+							),
 					})}
 
 					{props.form.field<number>({
@@ -163,22 +170,29 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 							set_touched,
 							touched,
 						}) => (
-							<FormElement
-								label={t('form.viewer_amount_select.title')}
-								icon="eye"
-								error={error}
-							>
-								<Select
-									onChange={setValue}
-									placeholder={t('form.viewer_amount_select.placeholder')}
-									style={{ width: '100%' }}
+								<FormElement
+									label={t('form.viewer_amount_select.title')}
+									icon="eye"
+									error={error}
 								>
-									{viewers_amount.map(amount => (
-										<Select.Option value={amount}>{amount}</Select.Option>
-									))}
-								</Select>
-							</FormElement>
-						),
+									<BuffViewersLivestreamSystemStatus />
+									<Row> <Col>
+										{[50, 100, 150, 200, 250, 300, 500, 600, 700, 800, 900].map(amount => <Button
+											style={{ margin: 5, width: 100 }}
+											type={amount == value ? 'primary' : 'dashed'}
+											onClick={() => setValue(amount)}
+										>{amount}</Button>)}
+									</Col> </Row>
+									<Row><Col>
+										{[1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000].map(amount => <Button
+											style={{ margin: 5, width: 100 }}
+											type={amount == value ? 'primary' : 'danger'}
+											onClick={() => setValue(amount)}
+										>{amount}</Button>)}
+									</Col> </Row>
+
+								</FormElement>
+							),
 					})}
 
 					{props.form.field<number>({
@@ -192,26 +206,23 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 							set_touched,
 							touched,
 						}) => (
-							<FormElement
-								label={t('form.limit_mins_viewers.title')}
-								icon="eye"
-							>
-								<Select
-									onChange={setValue}
-									placeholder={t('form.limit_mins_viewers.placeholder')}
-									style={{ width: '100%' }}
+								<FormElement
+									label={t('form.limit_mins_viewers.title')}
+									icon="eye"
 								>
-									{limits_mins.map(amount => (
-										<Select.Option value={amount}>{amount}</Select.Option>
-									))}
-								</Select>
-							</FormElement>
-						),
+									{limits_mins.map(amount => <Button
+										style={{ margin: 5, width: 100 }}
+										type={amount == value ? 'primary' : 'dashed'}
+										onClick={() => setValue(amount)}
+									>{amount}</Button>)}
+								</FormElement>
+							),
 					})}
 
 					{props.form.field<string>({
 						name: 'note',
 						require: t('form.note_input.validatingErrorMessage'),
+						initalValue: 'No note',
 						render: ({
 							error,
 							loading,
@@ -220,18 +231,18 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 							set_touched,
 							touched,
 						}) => (
-							<FormElement
-								label={t('form.note_input.title')}
-								icon="eye"
-								error={error}
-							>
-								<Input.TextArea
-									placeholder={t('form.note_input.placeholder')}
-									value={value}
-									onChange={e => setValue(e.target.value)}
-								/>
-							</FormElement>
-						),
+								<FormElement
+									label={t('form.note_input.title')}
+									icon="eye"
+									error={error}
+								>
+									<Input.TextArea
+										placeholder={t('form.note_input.placeholder')}
+										value={value}
+										onChange={e => setValue(e.target.value)}
+									/>
+								</FormElement>
+							),
 					})}
 
 					{props.data && props.form.data.limit_mins && props.form.data.amount && (

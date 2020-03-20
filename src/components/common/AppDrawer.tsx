@@ -132,6 +132,7 @@ export const AppDrawer = ((withRouter as any)(
 					style={{
 						width: 260,
 						marginRight: 10,
+						marginTop: 20,
 						textAlign: 'center',
 					}}
 				>

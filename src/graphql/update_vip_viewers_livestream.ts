@@ -2,6 +2,7 @@ import { commitMutation } from 'react-relay'
 import { RelayEnvironment } from './RelayEnvironment'
 import graphql from 'babel-plugin-relay/macro'
 import { VipViewersLivestreamUpdateInput } from '../types'
+import { GraphQLError } from './GraphqlError'
 
 const mutation = graphql`
 	mutation updateVipViewersLivestreamMutation(
@@ -39,7 +40,10 @@ export const update_vip_viewers_livestream = async (
 			mutation,
 			variables: { input },
 			updater: async store => s(),
-			onError: r,
+			onError: error => {
+				const { errors } = error as any as GraphQLError
+				r(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
+			}
 		})
 	})
 }

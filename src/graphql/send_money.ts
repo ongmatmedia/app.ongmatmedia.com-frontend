@@ -1,6 +1,7 @@
 import { commitMutation } from 'react-relay'
 import { RelayEnvironment } from './RelayEnvironment'
 import graphql from 'babel-plugin-relay/macro'
+import { GraphQLError } from './GraphqlError'
 
 const mutation = graphql`
 	mutation sendMoneyMutation($note: String!, $amount: Int!, $user_id: String!) {
@@ -43,7 +44,8 @@ export const send_money = (
 				success()
 			},
 			onError: error => {
-				reject(error)
+				const { errors } = error as any as GraphQLError
+				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
 			},
 		})
 	})

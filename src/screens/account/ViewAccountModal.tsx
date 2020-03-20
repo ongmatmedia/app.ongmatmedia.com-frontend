@@ -36,8 +36,8 @@ export const ViewAccountModal = (props: ViewAccountModalProps) => {
 				message: `Operation: Delete account'}`,
 				description: 'Successfully',
 			})
-		} catch ({ name, message }) {
-			setError(`${name}: ${message}`)
+		} catch (message) {
+			setError(message)
 		}
 		set_loading(false)
 	}

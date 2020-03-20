@@ -6,6 +6,7 @@ import {
 } from 'relay-runtime'
 import { RelayEnvironment } from './RelayEnvironment'
 import graphql from 'babel-plugin-relay/macro'
+import { GraphQLError } from './GraphqlError'
 
 const mutation = graphql`
 	mutation deleteLivestreamMutation($id: ID!) {
@@ -29,7 +30,8 @@ export const delete_livestream = async (id: string) =>
 				success()
 			},
 			onError: error => {
-				reject(error)
+				const { errors } = error as any as GraphQLError
+				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
 			},
 		})
 	})

@@ -2,6 +2,7 @@ import graphql from 'babel-plugin-relay/macro'
 import { RelayEnvironment } from './RelayEnvironment'
 import { commitMutation, ConnectionHandler, RecordProxy } from 'relay-runtime'
 import { LivestreamSubscriptionInput } from '../types'
+import { GraphQLError } from './GraphqlError'
 
 const mutation = graphql`
 	mutation updateLivestreamSubscriptionMutation(
@@ -57,6 +58,9 @@ export const update_livestream_subscription = (
 			updater: store => {
 				s()
 			},
-			onError: reject,
+			onError: error => {
+				const { errors } = error as any as GraphQLError
+				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
+			}
 		})
 	})

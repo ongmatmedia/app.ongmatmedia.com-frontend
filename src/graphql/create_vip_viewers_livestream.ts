@@ -3,6 +3,7 @@ import { ConnectionHandler, RecordProxy } from 'relay-runtime'
 import { RelayEnvironment } from './RelayEnvironment'
 import graphql from 'babel-plugin-relay/macro'
 import { VipViewersLivestreamInput } from '../types'
+import { GraphQLError } from './GraphqlError'
 
 const mutation = graphql`
 	mutation createVipViewersLivestreamMutation(
@@ -50,7 +51,10 @@ export const create_vip_viewers_livestream = async (
 				ConnectionHandler.insertEdgeAfter(list, vip)
 				s()
 			},
-			onError: e => r(e.message),
+			onError: error => {
+				const { errors } = error as any as GraphQLError
+				r(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
+			}
 		})
 	})
 }

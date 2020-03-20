@@ -26,8 +26,8 @@ export const CreateAgencyModal = Form.create<CreateAgencyModalProps>()(
 					set_error(null)
 					set_loading(false)
 					props.onClose()
-				} catch (e) {
-					set_error(e.message)
+				} catch (message) {
+					set_error(message)
 					set_loading(false)
 				}
 			})

@@ -2,6 +2,7 @@ import { commitMutation } from 'react-relay'
 import { ConnectionHandler, RecordProxy } from 'relay-runtime'
 import { RelayEnvironment } from './RelayEnvironment'
 import graphql from 'babel-plugin-relay/macro'
+import { GraphQLError } from './GraphqlError'
 
 const mutation = graphql`
 	mutation deleteFacebookAccountMutation($id: ID!) {
@@ -28,7 +29,8 @@ export const delete_facebook_account = async (id: string) =>
 				success()
 			},
 			onError: error => {
-				reject(error)
+				const { errors } = error as any as GraphQLError
+				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
 			},
 		})
 	})

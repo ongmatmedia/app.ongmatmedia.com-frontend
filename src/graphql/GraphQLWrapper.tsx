@@ -24,7 +24,7 @@ export const GraphQLWrapper = <T extends {}, P = {}>(
 			<C
 				loading={rs.props == null}
 				data={((rs.props as any) as T) || null}
-				error={rs.error && JSON.stringify(rs.error)}
+				error={rs.error && (console.log(rs), JSON.stringify(rs.error))}
 				{...props}
 			/>
 		)}
@@ -40,19 +40,19 @@ export const SmartGrahQLQueryRenderer = <T extends {}>(props: {
 		error?: string
 	}>
 }) => (
-	<QueryRenderer
-		environment={RelayEnvironment}
-		query={props.query as any}
-		variables={props.variables}
-		render={rs => (
-			<props.render
-				loading={rs.props == null}
-				data={((rs.props as any) as T) || null}
-				error={rs.error && JSON.stringify(rs.error)}
-			/>
-		)}
-	/>
-)
+		<QueryRenderer
+			environment={RelayEnvironment}
+			query={props.query as any}
+			variables={props.variables}
+			render={rs => (
+				<props.render
+					loading={rs.props == null}
+					data={((rs.props as any) as T) || null}
+					error={rs.error && JSON.stringify(rs.error)}
+				/>
+			)}
+		/>
+	)
 
 export const LazyGrahQLQueryRenderer = <T extends {}>(props: {
 	query: GraphQLTaggedNode
