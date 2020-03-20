@@ -6,7 +6,7 @@ import {
 	VideoInfo,
 } from '../../../types'
 import { ListVideoPreview } from './ListVideoPreview'
-import { VideoUrlInput } from '../../VideoUrlInput'
+import { VideoUrlInput } from '../../../components/VideoUrlInput'
 
 interface VideoComposerProps {
 	value: LivestreamVideo[]

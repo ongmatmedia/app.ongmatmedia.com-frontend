@@ -1,9 +1,6 @@
+import graphql from 'babel-plugin-relay/macro'
 import { commitMutation } from 'react-relay'
-import {
-	ConnectionHandler,
-	RecordSourceProxy,
-	RecordProxy,
-} from 'relay-runtime'
+import { ConnectionHandler, RecordProxy } from 'relay-runtime'
 import { RelayEnvironment } from './RelayEnvironment'
 import graphql from 'babel-plugin-relay/macro'
 import { GraphQLError } from './GraphqlError'

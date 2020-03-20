@@ -6,6 +6,7 @@ import { delete_livestream } from '../../../graphql/delete_livestream'
 import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
 import { Livestream } from '../../../types'
 import { LivestreamListItem } from './LivestreamListItem'
+import { stop_livestream } from '../../../graphql/stop_livestream'
 
 const LivestreamsListTabQuery = graphql`
 	query LivestreamsListTabQuery {
@@ -69,8 +70,8 @@ const LivestreamsListView = (props: {
 							live={live}
 							onNavigateCreateUpdateTab={props.onNavigateCreateUpdateTab}
 							onSelectLiveToUpdate={props.onSelectLiveToUpdate}
-							onDelete={() => delete_livestream(live.id)}
-							onPause={() => console.log('Pause')}
+							onDeleteLivestream={() => delete_livestream(live.id)}
+							onStopLivestream={() => stop_livestream(live.id)}
 						/>
 					</List.Item>
 				)}

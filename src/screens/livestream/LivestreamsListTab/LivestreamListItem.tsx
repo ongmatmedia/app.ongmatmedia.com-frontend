@@ -8,8 +8,8 @@ export type LivestreamListItem = {
 	live: Livestream
 	onNavigateCreateUpdateTab: Function
 	onSelectLiveToUpdate: Function
-	onPause: Function
-	onDelete: Function
+	onStopLivestream: Function
+	onDeleteLivestream: Function
 }
 
 export const LivestreamListItem = (props: LivestreamListItem) => (
@@ -21,9 +21,10 @@ export const LivestreamListItem = (props: LivestreamListItem) => (
 		}
 		actions={
 			props.live.status == 'created' &&
-			props.live.times.every(time => time < Date.now())
+				props.live.times.every(time => time < Date.now())
 				? [<Button disabled>Livestream is ended</Button>]
-				: [
+				: props.live.status === 'playing' ? (
+					[
 						<Icon
 							type="edit"
 							style={{ color: '#1890ff' }}
@@ -35,14 +36,46 @@ export const LivestreamListItem = (props: LivestreamListItem) => (
 						/>,
 						<Popconfirm
 							placement="topRight"
+							title="Do you want to stop this task"
+							onConfirm={() => props.onStopLivestream()}
+							okText="Yes"
+							cancelText="No"
+						>
+							<Icon type="pause-circle" style={{ color: 'red' }} />
+						</Popconfirm>
+						,
+						<Popconfirm
+							placement="topRight"
 							title="Do you want to delete this task"
-							onConfirm={() => props.onDelete()}
+							onConfirm={() => props.onDeleteLivestream()}
 							okText="Yes"
 							cancelText="No"
 						>
 							<Icon type="delete" style={{ color: 'red' }} />
 						</Popconfirm>,
-				  ]
+					]
+				) : (
+						[
+							<Icon
+								type="edit"
+								style={{ color: '#1890ff' }}
+								key="edit"
+								onClick={() => {
+									props.onSelectLiveToUpdate(props.live)
+									props.onNavigateCreateUpdateTab()
+								}}
+							/>,
+							<Popconfirm
+								placement="topRight"
+								title="Do you want to delete this task"
+								onConfirm={() => props.onDeleteLivestream()}
+								okText="Yes"
+								cancelText="No"
+							>
+								<Icon type="delete" style={{ color: 'red' }} />
+							</Popconfirm>,
+						]
+					)
 		}
 	>
 		<Meta
@@ -82,22 +115,22 @@ export const LivestreamListItem = (props: LivestreamListItem) => (
 								<div>
 									{props.live.times[props.live.times.length - 1] >=
 										Date.now() && (
-										<>
-											<span>Next: </span>
-											<Moment format="DD/MM/YYYY H:mm">
-												{props.live.times.reduce((a, b) => {
-													const mile = Date.now()
-													return b - mile <= a - mile
-														? b - mile < 0
-															? a
-															: b
-														: a - mile < 0
-														? b
-														: a
-												})}
-											</Moment>
-										</>
-									)}
+											<>
+												<span>Next: </span>
+												<Moment format="DD/MM/YYYY H:mm">
+													{props.live.times.reduce((a, b) => {
+														const mile = Date.now()
+														return b - mile <= a - mile
+															? b - mile < 0
+																? a
+																: b
+															: a - mile < 0
+																? b
+																: a
+													})}
+												</Moment>
+											</>
+										)}
 								</div>
 							</>
 						}
@@ -113,13 +146,13 @@ export const LivestreamListItem = (props: LivestreamListItem) => (
 												? a
 												: b
 											: a - mile < 0
-											? b
-											: a
+												? b
+												: a
 									})}
 								</Moment>
 							) : (
-								<span>--/--/-- --:--</span>
-							)}
+									<span>--/--/-- --:--</span>
+								)}
 						</span>
 					</Popover>
 				</span>

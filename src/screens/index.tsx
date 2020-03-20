@@ -16,7 +16,7 @@ import { VipViewersLivestream } from './seeding/vip-viewers-livestream'
 import { ProtectedRoute } from '../store/App'
 import { withAppState } from '../store/App'
 import { Result, Button } from 'antd'
-import { LivestreamTabs } from '../components/Livestream'
+import { LivestreamTabs } from './livestream'
 
 export const AppWithRouter = withAppState(props => (
 	<HashRouter>
