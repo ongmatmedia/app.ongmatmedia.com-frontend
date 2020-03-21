@@ -9,22 +9,26 @@ import { BreadCrumb } from '../../../components/common/BreadCrumb'
 export const BuffViewersLivestream = () => {
 	const { t, i18n } = useTranslation('buff_viewers_livestream')
 	return (
-		<Card title={(
-			<BreadCrumb routes={[
-				{
-					path:'/',
-					breadcrumbName: 'Home'
-				},
-				{
-					path: '/seeding',
-					breadcrumbName: "Seeding"
-				},
-				{
-					path: '/seeding/buff-viewers-livestream',
-					breadcrumbName: "Buff viewers livestream"
-				}
-			]} />
-		)}>
+		<Card
+			title={
+				<BreadCrumb
+					routes={[
+						{
+							path: '/',
+							breadcrumbName: 'Home',
+						},
+						{
+							path: '/seeding',
+							breadcrumbName: 'Seeding',
+						},
+						{
+							path: '/seeding/buff-viewers-livestream',
+							breadcrumbName: 'Buff viewers livestream',
+						},
+					]}
+				/>
+			}
+		>
 			<BuffViewersLivestreamAction onChangeSearch={() => {}} />
 			<BuffViewersLivestreamSystemStatus />
 			<BuffViewersLivestreamList />

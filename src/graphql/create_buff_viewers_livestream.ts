@@ -46,9 +46,9 @@ export const create_buff_viewers_livestream = async (
 				s()
 			},
 			onError: error => {
-				const { errors } = error as any as GraphQLError
+				const { errors } = (error as any) as GraphQLError
 				r(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
-			}
+			},
 		})
 	})
 }

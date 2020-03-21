@@ -42,7 +42,7 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
 			icon:
 				'https://cdn1.iconfinder.com/data/icons/antivirus-flat/512/signal_service_online_stream-512.png',
 			serviceName: t('buff_livestream_title'),
-		}
+		},
 	]
 
 	return <ListAppBlock children={cards} />

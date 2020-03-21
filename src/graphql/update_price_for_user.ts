@@ -45,7 +45,7 @@ export const update_price_for_user = (
 				success()
 			},
 			onError: error => {
-				const { errors } = error as any as GraphQLError
+				const { errors } = (error as any) as GraphQLError
 				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
 			},
 		})

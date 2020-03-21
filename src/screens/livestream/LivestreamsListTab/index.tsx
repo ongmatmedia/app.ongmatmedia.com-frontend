@@ -50,8 +50,9 @@ const LivestreamsListView = (props: {
 	onNavigateCreateUpdateTab: Function
 	onSelectLiveToUpdate: (live: Livestream) => void
 }) => {
-
-	const [loadingOnStopLivestream, setLoadingOnStopLivestream] = useState<boolean>(false)
+	const [loadingOnStopLivestream, setLoadingOnStopLivestream] = useState<
+		boolean
+	>(false)
 
 	return (
 		<>
@@ -93,21 +94,21 @@ export const LivestreamsListTab = (props: {
 	onNavigateCreateUpdateTab: Function
 	onSelectLiveToUpdate: (live: Livestream) => void
 }) => (
-		<QueryRenderer
-			variables={{ limit: 150 }}
-			environment={RelayEnvironment}
-			query={LivestreamsListTabQuery}
-			render={rs => (
-				<LivestreamsListView
-					loading={rs.props == null}
-					list={
-						rs.props
-							? (rs.props as any).livestream_tasks.edges.map(e => e.node)
-							: []
-					}
-					onNavigateCreateUpdateTab={props.onNavigateCreateUpdateTab}
-					onSelectLiveToUpdate={props.onSelectLiveToUpdate}
-				/>
-			)}
-		/>
-	)
+	<QueryRenderer
+		variables={{ limit: 150 }}
+		environment={RelayEnvironment}
+		query={LivestreamsListTabQuery}
+		render={rs => (
+			<LivestreamsListView
+				loading={rs.props == null}
+				list={
+					rs.props
+						? (rs.props as any).livestream_tasks.edges.map(e => e.node)
+						: []
+				}
+				onNavigateCreateUpdateTab={props.onNavigateCreateUpdateTab}
+				onSelectLiveToUpdate={props.onSelectLiveToUpdate}
+			/>
+		)}
+	/>
+)

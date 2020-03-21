@@ -18,69 +18,69 @@ import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream'
 
 export const AppWithRouter = withAppState(props => {
-
 	return (
-	<HashRouter>
-		<Switch>
-			<Route exact path="/auth/login">
-				<AuthLayout Content={Login} />
-			</Route>
+		<HashRouter>
+			<Switch>
+				<Route exact path="/auth/login">
+					<AuthLayout Content={Login} />
+				</Route>
 
-			<Route exact path="/auth/set-new-password">
-				<AuthLayout Content={SetNewPasswordPage} />
-			</Route>
+				<Route exact path="/auth/set-new-password">
+					<AuthLayout Content={SetNewPasswordPage} />
+				</Route>
 
-			<Route exact path="/auth/reset-password">
-				<AuthLayout Content={ResetPassword} />
-			</Route>
+				<Route exact path="/auth/reset-password">
+					<AuthLayout Content={ResetPassword} />
+				</Route>
 
-			<ProtectedRoute exact path="/">
-				<MainLayout Content={() => <HomePage />} />
-			</ProtectedRoute>
+				<ProtectedRoute exact path="/">
+					<MainLayout Content={() => <HomePage />} />
+				</ProtectedRoute>
 
-			<ProtectedRoute exact path="/accounts">
-				<MainLayout Content={AccountScreen} />
-			</ProtectedRoute>
+				<ProtectedRoute exact path="/accounts">
+					<MainLayout Content={AccountScreen} />
+				</ProtectedRoute>
 
-			<ProtectedRoute exact path="/seeding">
-				<MainLayout Content={SeedingPage} />
-			</ProtectedRoute>
+				<ProtectedRoute exact path="/seeding">
+					<MainLayout Content={SeedingPage} />
+				</ProtectedRoute>
 
-			<ProtectedRoute exact path="/seeding/vip-viewers-livestream">
-				<MainLayout Content={VipViewersLivestream} />
-			</ProtectedRoute>
+				<ProtectedRoute exact path="/seeding/vip-viewers-livestream">
+					<MainLayout Content={VipViewersLivestream} />
+				</ProtectedRoute>
 
-			<ProtectedRoute exact path="/seeding/buff-viewers-livestream">
-				<MainLayout Content={BuffViewersLivestream} />
-			</ProtectedRoute>
+				<ProtectedRoute exact path="/seeding/buff-viewers-livestream">
+					<MainLayout Content={BuffViewersLivestream} />
+				</ProtectedRoute>
 
-			<ProtectedRoute exact path="/seeding/buff-viewers">
-				<MainLayout Content={BuffViewers} />
-			</ProtectedRoute>
+				<ProtectedRoute exact path="/seeding/buff-viewers">
+					<MainLayout Content={BuffViewers} />
+				</ProtectedRoute>
 
-			<ProtectedRoute exact path="/payments">
-				<MainLayout Content={Payments} />
-			</ProtectedRoute>
+				<ProtectedRoute exact path="/payments">
+					<MainLayout Content={Payments} />
+				</ProtectedRoute>
 
-			<ProtectedRoute exact path="/agency">
-				<MainLayout Content={AgencyPage} />
-			</ProtectedRoute>
+				<ProtectedRoute exact path="/agency">
+					<MainLayout Content={AgencyPage} />
+				</ProtectedRoute>
 
-			<ProtectedRoute exact path="/deposit">
-				<MainLayout Content={DepositPage} />
-			</ProtectedRoute>
+				<ProtectedRoute exact path="/deposit">
+					<MainLayout Content={DepositPage} />
+				</ProtectedRoute>
 
-			<ProtectedRoute exact path="/livestream">
-				<MainLayout Content={LivestreamTabs} />
-			</ProtectedRoute>
+				<ProtectedRoute exact path="/livestream">
+					<MainLayout Content={LivestreamTabs} />
+				</ProtectedRoute>
 
-			<ProtectedRoute>
-				<Error404Page />
-			</ProtectedRoute>
+				<ProtectedRoute>
+					<Error404Page />
+				</ProtectedRoute>
 
-			<Route>
-				<Error404Page />
-			</Route>
-		</Switch>
-	</HashRouter>
-)})
+				<Route>
+					<Error404Page />
+				</Route>
+			</Switch>
+		</HashRouter>
+	)
+})

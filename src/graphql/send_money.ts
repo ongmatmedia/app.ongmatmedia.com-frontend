@@ -44,7 +44,7 @@ export const send_money = (
 				success()
 			},
 			onError: error => {
-				const { errors } = error as any as GraphQLError
+				const { errors } = (error as any) as GraphQLError
 				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
 			},
 		})

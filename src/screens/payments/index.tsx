@@ -69,22 +69,27 @@ export const Payments = () => {
 	}, [])
 
 	return (
-		<Card title={
-			<BreadCrumb routes={[
-				{
-					path: '/',
-					breadcrumbName: 'Home'
-				},
-				{
-					path: '/me',
-					breadcrumbName: 'My account'
-				},
-				{
-					path: '/payments',
-					breadcrumbName: 'Payments history'
-				}
-			]} />
-		} size="small">
+		<Card
+			title={
+				<BreadCrumb
+					routes={[
+						{
+							path: '/',
+							breadcrumbName: 'Home',
+						},
+						{
+							path: '/me',
+							breadcrumbName: 'My account',
+						},
+						{
+							path: '/payments',
+							breadcrumbName: 'Payments history',
+						},
+					]}
+				/>
+			}
+			size="small"
+		>
 			<PaymentListAction
 				onChangeDate={d => load({ before_time: d.getTime() })}
 				onSearch={set_search}
