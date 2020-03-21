@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
 import { User } from '../../types'
 import { BreadCrumb } from '../../components/common/BreadCrumb'
+import { ListAppBlock } from '../../components/common/ListAppBlock'
 
 type SeedingService = {
 	name: string
@@ -35,76 +36,14 @@ const query = graphql`
 export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
 	const { t, i18n } = useTranslation('seeding_page')
 
-	const cards: SeedingService[] = [
+	const cards = [
 		{
-			cover:
-				'https://techcrunch.com/wp-content/uploads/2015/08/facebook-live.png?w=730&crop=1',
 			link: '/seeding/buff-viewers-livestream',
-			description: (
-				<span>
-					{props.data && (
-						<Tag color="#108ee9">
-							{Math.ceil(
-								props.data.me.pricing
-									? props.data.me.pricing.buff_viewers_livestream
-									: NaN,
-							).toLocaleString()}
-							<Icon
-								type="dollar"
-								style={{
-									fontSize: 16,
-									verticalAlign: '-0.2em',
-									paddingLeft: 3,
-									color: 'white',
-								}}
-							/>
-						</Tag>
-					)}
-					{t('buff_livestream_description')}
-				</span>
-			),
 			icon:
 				'https://cdn1.iconfinder.com/data/icons/antivirus-flat/512/signal_service_online_stream-512.png',
-			name: t('buff_livestream_title'),
+			serviceName: t('buff_livestream_title'),
 		}
 	]
 
-	return (
-		<Card style={{ height: 'calc(100vh - 65px)' }} title={(
-			<BreadCrumb routes={[
-				{
-					path:'/',
-					breadcrumbName: 'Home'
-				},
-				{
-					path: '/seeding',
-					breadcrumbName: "Seeding"
-				}
-			]} />
-		)}>
-			<List
-				grid={{
-					gutter: 24,
-					xs: 2,
-					sm: 3,
-					md: 6
-				}}
-				dataSource={cards}
-				renderItem={item => (
-					<List.Item>
-						<Link to={item.link}>
-							<Card style={{ textAlign: 'center', backgroundColor: 'white', borderRadius: 10, boxShadow: '0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.05)' }}>
-								<Row style={{ marginBottom: 15 }}>
-									<Avatar src={item.icon} size={40} style={{}} />
-								</Row>
-								<Row>
-									{item.name}
-								</Row>
-							</Card>
-						</Link>
-					</List.Item>
-				)}
-			/>
-		</Card>
-	)
+	return <ListAppBlock children={cards} />
 })
