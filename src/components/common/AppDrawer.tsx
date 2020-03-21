@@ -1,11 +1,10 @@
 import { Avatar, Button, Card, Col, Icon, Modal, Row } from 'antd'
-import { Auth } from 'aws-amplify'
-import React, { FunctionComponentElement, FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import { useTranslation } from 'react-i18next'
-import { RouterProps, RouteComponentProps } from 'react-router'
-import { Link, withRouter } from 'react-router-dom'
-import { UserInfo } from './UserInfo'
+import { RouteComponentProps } from 'react-router'
+import { withRouter } from 'react-router-dom'
 import { AppState } from '../../store/App'
+import { UserInfo } from './UserInfo'
 
 type DrawerAppProps = {
 	name: string

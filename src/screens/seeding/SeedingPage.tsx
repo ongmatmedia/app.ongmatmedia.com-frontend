@@ -1,4 +1,4 @@
-import { Avatar, Card, Icon, List, Tag } from 'antd'
+import { Avatar, Card, Icon, List, Tag, Breadcrumb, Divider, Row } from 'antd'
 import graphql from 'babel-plugin-relay/macro'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
@@ -35,28 +35,6 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
 	const { t, i18n } = useTranslation('seeding_page')
 
 	const cards: SeedingService[] = [
-		// {
-		//   cover: 'https://cdn.mos.cms.futurecdn.net/daz7oJeNjzogqkdhSUKPiY.jpg',
-		//   link: '/seeding/vip-viewers-livestream',
-		//   description: (
-		//     <span>
-		//       {props.data && (
-		//         <Tag color="#108ee9">
-		//           {Math.ceil(
-		//             props.data.me.pricing ? props.data.me.pricing.vip_viewers_livestream : NaN,
-		//           ).toLocaleString()}
-		//           <Icon
-		//             type="dollar"
-		//             style={{ fontSize: 16, verticalAlign: '-0.2em', paddingLeft: 3, color: 'white' }}
-		//           />
-		//         </Tag>
-		//       )}
-		//       {t('vip_livestream_description')}
-		//     </span>
-		//   ),
-		//   icon: 'https://www.logolynx.com/images/logolynx/72/723a8b2156ff3429b6b93830df4a0475.png',
-		//   name: t('vip_livestream_title'),
-		// },
 		{
 			cover:
 				'https://techcrunch.com/wp-content/uploads/2015/08/facebook-live.png?w=730&crop=1',
@@ -87,49 +65,37 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
 			icon:
 				'https://cdn1.iconfinder.com/data/icons/antivirus-flat/512/signal_service_online_stream-512.png',
 			name: t('buff_livestream_title'),
-		},
-		// {
-		//   cover:
-		//     'https://wordpress.mediatel.co.uk/wp-content/uploads/2019/05/bigstock-Social-Influencer-Concept-Med-227207743.jpg',
-		//   link: '/seeding/buff-viewers',
-		//   description: (
-		//     <span>
-		//       {props.data && (
-		//         <Tag color="#108ee9">
-		//           {Math.ceil(
-		//             props.data.me.pricing ? props.data.me.pricing.buff_viewers_livestream : NaN,
-		//           ).toLocaleString()}
-		//           <Icon
-		//             type="dollar"
-		//             style={{ fontSize: 16, verticalAlign: '-0.2em', paddingLeft: 3, color: 'white' }}
-		//           />
-		//         </Tag>
-		//       )}
-		//       {t('buff_viewers_description')}
-		//     </span>
-		//   ),
-		//   icon: 'https://cdn1.iconfinder.com/data/icons/marketing-32/512/Growth_icon-512.png',
-		//   name: t('buff_viewers_title'),
-		// },
+		}
 	]
 
 	return (
-		<Card title={t('seeding_page:title')}>
+		<Card style={{height: 'calc(100vh - 65px)'}} title={(
+			<Breadcrumb separator=">">
+				<Breadcrumb.Item href="/">Home</Breadcrumb.Item>
+				<Breadcrumb.Item href="/seeding">Seeding</Breadcrumb.Item>
+				<Breadcrumb.Item href="/seeding/buff-viewers">Buff viewers</Breadcrumb.Item>
+			</Breadcrumb>
+		)}>
 			<List
 				grid={{
-					gutter: 16,
-					xs: 1,
-					sm: 2,
-					md: 4,
-					lg: 4,
-					xl: 4,
-					xxl: 6,
+					gutter: 24,
+					xs: 2,
+					sm: 3,
+					md: 6
 				}}
 				dataSource={cards}
 				renderItem={item => (
 					<List.Item>
 						<Link to={item.link}>
-							<Card
+							<Card style={{ textAlign: 'center', backgroundColor: 'white', borderRadius: 10, boxShadow: '0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.05)' }}>
+								<Row style={{ marginBottom: 15 }}>
+									<Avatar src={item.icon} size={40} style={{  }} />
+								</Row>
+								<Row>
+									{item.name}
+								</Row>
+							</Card>
+							{/* <Card
 								cover={
 									<img
 										src={item.cover}
@@ -142,7 +108,7 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
 									title={item.name}
 									description={item.description}
 								/>
-							</Card>
+							</Card> */}
 						</Link>
 					</List.Item>
 				)}
