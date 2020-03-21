@@ -5,6 +5,7 @@ import { PaymentList } from './PaymentList'
 import { PaymentListAction } from './PaymentListAction'
 import { PaymentHistory, PaymentHistoryConnection } from '../../types'
 import { GraphQLQueryFetcher } from '../../graphql/GraphQLWrapper'
+import { BreadCrumb } from '../../components/common/BreadCrumb'
 
 const query = graphql`
 	query paymentsQuery($after: String, $before_time: Long) {
@@ -68,7 +69,22 @@ export const Payments = () => {
 	}, [])
 
 	return (
-		<Card title="Payment histories" size="small">
+		<Card title={
+			<BreadCrumb routes={[
+				{
+					path: '/',
+					breadcrumbName: 'Home'
+				},
+				{
+					path: '/me',
+					breadcrumbName: 'My account'
+				},
+				{
+					path: '/payments',
+					breadcrumbName: 'Payments history'
+				}
+			]} />
+		} size="small">
 			<PaymentListAction
 				onChangeDate={d => load({ before_time: d.getTime() })}
 				onSearch={set_search}

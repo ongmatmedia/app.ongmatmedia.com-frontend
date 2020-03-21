@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
 import { User } from '../../types'
+import { BreadCrumb } from '../../components/common/BreadCrumb'
 
 type SeedingService = {
 	name: string
@@ -69,12 +70,17 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
 	]
 
 	return (
-		<Card style={{height: 'calc(100vh - 65px)'}} title={(
-			<Breadcrumb separator=">">
-				<Breadcrumb.Item href="/">Home</Breadcrumb.Item>
-				<Breadcrumb.Item href="/seeding">Seeding</Breadcrumb.Item>
-				<Breadcrumb.Item href="/seeding/buff-viewers">Buff viewers</Breadcrumb.Item>
-			</Breadcrumb>
+		<Card style={{ height: 'calc(100vh - 65px)' }} title={(
+			<BreadCrumb routes={[
+				{
+					path:'/',
+					breadcrumbName: 'Home'
+				},
+				{
+					path: '/seeding',
+					breadcrumbName: "Seeding"
+				}
+			]} />
 		)}>
 			<List
 				grid={{
@@ -89,26 +95,12 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
 						<Link to={item.link}>
 							<Card style={{ textAlign: 'center', backgroundColor: 'white', borderRadius: 10, boxShadow: '0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.05)' }}>
 								<Row style={{ marginBottom: 15 }}>
-									<Avatar src={item.icon} size={40} style={{  }} />
+									<Avatar src={item.icon} size={40} style={{}} />
 								</Row>
 								<Row>
 									{item.name}
 								</Row>
 							</Card>
-							{/* <Card
-								cover={
-									<img
-										src={item.cover}
-										style={{ width: '100%', height: 170 }}
-									/>
-								}
-							>
-								<Card.Meta
-									avatar={<Avatar src={item.icon} />}
-									title={item.name}
-									description={item.description}
-								/>
-							</Card> */}
 						</Link>
 					</List.Item>
 				)}

@@ -25,7 +25,6 @@ const DrawerLinks: DrawerLinksType[] = [
 	{ name: 'account_icon_title', icon: 'team', to: '/account' },
 	{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
 	{ name: 'agency_icon_title', icon: 'user', to: '/agency' },
-	{ name: 'payments_icon_title', icon: 'bars', to: '/payments' },
 	{ name: 'setting_icon_title', icon: 'setting', to: '/setting' },
 ]
 
