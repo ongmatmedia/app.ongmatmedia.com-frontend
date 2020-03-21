@@ -18,6 +18,7 @@ import { withAppState } from '../store/App'
 import { Result, Button } from 'antd'
 import { LivestreamTabs } from './livestream'
 import { Error404Page } from '../components/common/Error404'
+import { TimeSeriesBlock } from '../components/common/TimeSeriesBlock'
 
 export const AppWithRouter = withAppState(props => (
 	<HashRouter>
@@ -76,6 +77,10 @@ export const AppWithRouter = withAppState(props => (
 
 			<ProtectedRoute exact path="/account">
 				<MainLayout Content={AccountScreen} />
+			</ProtectedRoute>
+
+			<ProtectedRoute exact path="/ex">
+				<MainLayout Content={TimeSeriesBlock} />
 			</ProtectedRoute>
 
 			<ProtectedRoute>
