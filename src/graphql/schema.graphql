@@ -9,13 +9,13 @@ type BuffViewersLivestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
   id: ID!
   user_id: String!
   video_id: String!
-  uid: String!
+  uid: String
   status: String!
-  name: String!
-  note: String!
+  name: String
+  note: String
   amount: Int!
   created_time: Long!
-  end_time: Long!
+  end_time: Long
   limit_mins: Int!
   logs: [BuffViewersLivestreamLog!]!
 }
@@ -31,9 +31,9 @@ type BuffViewersLivestreamEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
 
 input BuffViewersLivestreamInput {
   id: String!
-  uid: String!
-  name: String!
-  note: String!
+  uid: String
+  name: String
+  note: String
   amount: Int!
   limit_mins: Int!
 }
@@ -299,10 +299,10 @@ scalar Long
 
 type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   create_user(price_percent: Int!, email: String!, password: String!, username: String!): UserEdge!
-  update_price_for_user(price: ServicePricingInput!, price_percent: Int!, user_id: String!): UserEdge!
+  update_profile(input: UserUpdateInput!): User!
+  update_price_for_user(price: ServicePricingInput!, price_percent: Int!, user_id: String!): User!
   send_money(note: String!, amount: Int!, user_id: String!): SendmoneyResponse!
   set_user_password(password: String!, user_id: String!): Boolean!
-  update_info(payment_methods: [PaymentMethodInput!]!, facebook_uid: String!): Boolean!
   create_buff_viewers_livestream_task(input: BuffViewersLivestreamInput!): BuffViewersLivestreamTaskCUDResponse!
   delete_buff_viewers_livestream_task(id: ID!): BuffViewersLivestreamTaskCUDResponse!
   update_buff_viewers_livestream(event: BuffViewersLivestreamUpdateEventInput!): BuffViewersLivestreamUpdateEvent!
@@ -486,6 +486,9 @@ type User @aws_api_key @aws_cognito_user_pools @aws_oidc {
   username: String!
   email: String!
   facebook_uid: String!
+  admin_page_uid: String!
+  admin_theme: String!
+  domain: String!
   id: ID!
   balance: Long!
   pricing: ServicePricing
@@ -504,6 +507,15 @@ type UserConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
 type UserEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
   cursor: String!
   node: User!
+}
+
+input UserUpdateInput {
+  email: String
+  facebook_uid: String
+  admin_page_uid: String
+  admin_theme: String
+  pricing: ServicePricingInput
+  payment_methods: [PaymentMethodInput!]
 }
 
 type VideoInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
