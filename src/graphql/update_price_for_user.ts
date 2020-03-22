@@ -15,7 +15,6 @@ const mutation = graphql`
 			price_percent: $price_percent
 			price: $price
 		) {
-			node {
 				id
 				price_percent
 				balance
@@ -28,7 +27,6 @@ const mutation = graphql`
 						p1080
 					}
 				}
-			}
 		}
 	}
 `
