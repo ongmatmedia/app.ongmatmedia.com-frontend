@@ -1,7 +1,6 @@
+import { Button, Card, Icon, message, Modal, Row } from 'antd'
 import React, { CSSProperties } from 'react'
-import { Modal, Row, Avatar, Col, Card, message, Icon, Button } from 'antd'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import QRCode from 'qrcode.react'
 import { PaymentMethod } from '../../types'
 
 interface IPaymentInfoModal {

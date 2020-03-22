@@ -15,18 +15,16 @@ const mutation = graphql`
 			price_percent: $price_percent
 			price: $price
 		) {
-			node {
-				id
-				price_percent
-				balance
-				pricing {
-					buff_viewers_livestream
-					vip_viewers_livestream
-					livestream {
-						p480
-						p720
-						p1080
-					}
+			id
+			price_percent
+			balance
+			pricing {
+				buff_viewers_livestream
+				vip_viewers_livestream
+				livestream {
+					p480
+					p720
+					p1080
 				}
 			}
 		}

@@ -6,6 +6,11 @@ import { MainLayout } from '../layouts/main'
 import { ProtectedRoute, withAppState } from '../store/App'
 import { AccountScreen } from './account'
 import { AgencyPage } from './agency'
+import { AdminInformationPage } from './agency/AdminInformationPage'
+import { BankInformationPage } from './agency/BankInformationPage'
+import { CollaboratorSettingsPage } from './agency/CollaboratorSettingsPage'
+import { CollaboratorsListPage } from './agency/CollaboratorsListPage'
+import { SetDefaultPricePage } from './agency/SetDefaultPricePage'
 import { Login, ResetPassword } from './auth'
 import { SetNewPasswordPage } from './auth/set-new-pass'
 import { DepositPage } from './deposit'
@@ -63,6 +68,26 @@ export const AppWithRouter = withAppState(props => {
 
 				<ProtectedRoute exact path="/agency">
 					<MainLayout Content={AgencyPage} />
+				</ProtectedRoute>
+
+				<ProtectedRoute exact path="/agency/collaborators">
+					<MainLayout Content={CollaboratorsListPage} />
+				</ProtectedRoute>
+
+				<ProtectedRoute exact path="/agency/bank-information">
+					<MainLayout Content={BankInformationPage} />
+				</ProtectedRoute>
+
+				<ProtectedRoute exact path="/agency/default-price">
+					<MainLayout Content={SetDefaultPricePage} />
+				</ProtectedRoute>
+
+				<ProtectedRoute exact path="/agency/admin-information">
+					<MainLayout Content={AdminInformationPage} />
+				</ProtectedRoute>
+
+				<ProtectedRoute exact path="/agency/setting">
+					<MainLayout Content={CollaboratorSettingsPage} />
 				</ProtectedRoute>
 
 				<ProtectedRoute exact path="/deposit">

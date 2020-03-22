@@ -1,12 +1,9 @@
-import { Avatar, Card, Icon, List, Tag, Breadcrumb, Divider, Row } from 'antd'
 import graphql from 'babel-plugin-relay/macro'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { ListAppBlock } from '../../components/common/ListAppBlock'
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
 import { User } from '../../types'
-import { BreadCrumb } from '../../components/common/BreadCrumb'
-import { ListAppBlock } from '../../components/common/ListAppBlock'
 
 type SeedingService = {
 	name: string
@@ -38,7 +35,7 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
 
 	const cards = [
 		{
-			link: '/seeding/buff-viewers-livestream',
+			link: '/buff-viewers-livestream',
 			icon:
 				'https://cdn1.iconfinder.com/data/icons/antivirus-flat/512/signal_service_online_stream-512.png',
 			serviceName: t('buff_livestream_title'),

@@ -16,6 +16,7 @@ export const NoteReading = (props: { note: string }) => {
 				marginTop: 10,
 				cursor: props.note.length > 35 ? 'pointer' : '',
 				fontSize: 13,
+				textAlign: 'left',
 			}}
 			onClick={() => setCollapsed(!collapsed)}
 		>

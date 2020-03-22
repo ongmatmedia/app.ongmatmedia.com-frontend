@@ -51,7 +51,7 @@ export const LoginView = withRouter<any, any>(
 						if (user.challengeName == 'NEW_PASSWORD_REQUIRED')
 							set_new_pass_prompt(username, password)
 					}
-					await AppState.on_login_success()
+					AppState.on_login_success()
 					props.history.push(localStorage.getItem('login_redirect') || '/')
 				} catch (e) {
 					set_error(e.message)
