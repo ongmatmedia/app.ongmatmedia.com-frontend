@@ -514,7 +514,6 @@ input UserUpdateInput {
   facebook_uid: String
   admin_page_uid: String
   admin_theme: String
-  pricing: ServicePricingInput
   payment_methods: [PaymentMethodInput!]
 }
 
