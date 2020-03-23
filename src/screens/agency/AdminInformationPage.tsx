@@ -1,9 +1,11 @@
-import { Alert, Button, Card, Form, Input, notification } from 'antd'
+import { Alert, Button, Card, Form, Input, notification, Spin } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import React, { useState } from 'react'
 import { BreadCrumb } from '../../components/common/BreadCrumb'
 import { update_profile } from '../../graphql/update_profile'
 import graphql from 'babel-plugin-relay/macro'
+import { QueryRenderer } from 'react-relay'
+import { RelayEnvironment } from '../../graphql/RelayEnvironment'
 
 type AdminInformationPageProps = FormComponentProps & {}
 
@@ -70,41 +72,52 @@ export const AdminInformationPage = Form.create<AdminInformationPageProps>()(
 		}
 
 		return (
-			<Card title={<BreadCrumb />}>
-				{error && <Alert type="error" message={error} />}
-				<Form {...formItemLayout}>
-					<Form.Item label="Name">
-						{props.form.getFieldDecorator('name', {
-							rules: [{ required: false }],
-						})(<Input placeholder="Name" />)}
-					</Form.Item>
-					<Form.Item label="Phone">
-						{props.form.getFieldDecorator('phone', {
-							rules: [{ required: false }],
-						})(<Input placeholder="Phone" />)}
-					</Form.Item>
-					<Form.Item label="Email">
-						{props.form.getFieldDecorator('email', {
-							rules: [{ required: false }],
-						})(<Input placeholder="Email" />)}
-					</Form.Item>
-					<Form.Item label="Facebook ID">
-						{props.form.getFieldDecorator('facebook_uid', {
-							rules: [{ required: false }],
-						})(<Input placeholder="Facebook ID" />)}
-					</Form.Item>
-					<Form.Item label="Page ID">
-						{props.form.getFieldDecorator('admin_page_uid', {
-							rules: [{ required: false }],
-						})(<Input placeholder="Page ID" />)}
-					</Form.Item>
-					<Form.Item {...tailFormItemLayout}>
-						<Button type="primary" onClick={submit} loading={loading}>
-							Save information
+			<QueryRenderer
+				environment={RelayEnvironment}
+				query={query}
+				variables={{}}
+				render={rs => (
+					<Spin spinning={rs.props == null} >
+						<Card title={<BreadCrumb />}>
+							{error && <Alert type="error" message={error} />}
+							<Form {...formItemLayout}>
+								<Form.Item label="Name">
+									{props.form.getFieldDecorator('name', 
+									{
+										rules: [{ required: false }],
+									})(<Input placeholder="Name" />)}
+								</Form.Item>
+								<Form.Item label="Phone">
+									{props.form.getFieldDecorator('phone', {
+										rules: [{ required: false }],
+									})(<Input placeholder="Phone" />)}
+								</Form.Item>
+								<Form.Item label="Email">
+									{props.form.getFieldDecorator('email', {
+										rules: [{ required: false }],
+									})(<Input placeholder="Email" />)}
+								</Form.Item>
+								<Form.Item label="Facebook ID">
+									{props.form.getFieldDecorator('facebook_uid', {
+										rules: [{ required: false }],
+									})(<Input placeholder="Facebook ID" />)}
+								</Form.Item>
+								<Form.Item label="Page ID">
+									{props.form.getFieldDecorator('admin_page_uid', {
+										rules: [{ required: false }],
+									})(<Input placeholder="Page ID" />)}
+								</Form.Item>
+								<Form.Item {...tailFormItemLayout}>
+									<Button type="primary" onClick={submit} loading={loading}>
+										Save information
 						</Button>
-					</Form.Item>
-				</Form>
-			</Card>
+								</Form.Item>
+							</Form>
+						</Card>
+					</Spin>
+				)
+				}
+			/>
 		)
-	},
+	}
 )

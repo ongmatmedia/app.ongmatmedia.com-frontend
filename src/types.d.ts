@@ -717,11 +717,11 @@ export type User = {
   name?: Maybe<Scalars['String']>;
   phone?: Maybe<Scalars['String']>;
   username: Scalars['String'];
-  email: Scalars['String'];
-  facebook_uid: Scalars['String'];
-  admin_page_uid: Scalars['String'];
-  admin_theme: Scalars['String'];
-  domain: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
+  facebook_uid?: Maybe<Scalars['String']>;
+  admin_page_uid?: Maybe<Scalars['String']>;
+  admin_theme?: Maybe<Scalars['String']>;
+  domain?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   balance: Scalars['Long'];
   pricing?: Maybe<ServicePricing>;

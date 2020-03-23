@@ -30,6 +30,9 @@ export const CreateUpdateBankModal = Form.create<CreateUpdateBankModalProps>()(
 									values
 								]
 							})
+							notification.success({
+								message: 'Add bank successfully'
+							})
 							props.onClose()
 						} else {
 							await update_profile({
@@ -39,7 +42,7 @@ export const CreateUpdateBankModal = Form.create<CreateUpdateBankModalProps>()(
 								]
 							})
 							notification.success({
-								message: 'Add bank successfully'
+								message: 'Update bank successfully'
 							})
 							props.onClose()
 						}

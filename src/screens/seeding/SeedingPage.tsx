@@ -36,7 +36,7 @@ export const SeedingPage = GraphQLWrapper<{ me: User }>(query, {}, props => {
 	const cards = [
 		{
 			link: '/buff-viewers-livestream',
-			icon:
+			cover:
 				'https://cdn1.iconfinder.com/data/icons/antivirus-flat/512/signal_service_online_stream-512.png',
 			serviceName: t('buff_livestream_title'),
 		},

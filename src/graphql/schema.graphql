@@ -480,11 +480,11 @@ type User @aws_api_key @aws_cognito_user_pools @aws_oidc {
   name: String
   phone: String
   username: String!
-  email: String!
-  facebook_uid: String!
-  admin_page_uid: String!
-  admin_theme: String!
-  domain: String!
+  email: String
+  facebook_uid: String
+  admin_page_uid: String
+  admin_theme: String
+  domain: String
   id: ID!
   balance: Long!
   pricing: ServicePricing

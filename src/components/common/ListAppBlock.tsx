@@ -38,7 +38,7 @@ export const ListAppBlock = (withRouter as any)(
 								>
 									<Row style={{ marginBottom: 15 }}>
 										{item.cover ? (
-											<Avatar src={item.icon} size={40} />
+											<Avatar src={item.cover} size={40} />
 										) : (
 											<Icon type={item.icon} style={{ fontSize: 40 }} />
 										)}

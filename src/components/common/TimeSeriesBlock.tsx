@@ -177,7 +177,7 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 												</Col>
 											</Row>
 										</Col>
-										<NoteReading note={payment.note} />
+										<NoteReading note={payment.note} collapse={true} />
 									</Row>
 								</Card>
 							</List.Item>

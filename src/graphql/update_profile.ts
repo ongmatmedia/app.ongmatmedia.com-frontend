@@ -28,15 +28,6 @@ export const update_profile = async (input: UserUpdateInput) =>
 			variables: { input },
 			mutation,
 			updater: store => {
-				try {
-					const updated_info = store.getRootField('update_profile').getLinkedRecord('node')
-					const id = updated_info.getDataID()
-					const payment_methods = updated_info.getLinkedRecords('payment_methods')
-					const me = store.get(id)
-					me.setValue<any>(payment_methods, 'payment_methods')
-				} catch (e) {
-					console.log(e)
-				}
 				success()
 			},
 			onError: error => {
