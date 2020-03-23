@@ -1,23 +1,11 @@
+import { Button, Card, List, Modal, Row, Spin, Tooltip } from 'antd'
+import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
-import {
-	Card,
-	List,
-	Button,
-	Icon,
-	Tooltip,
-	Row,
-	Col,
-	Spin,
-	Divider,
-	message,
-	Modal,
-} from 'antd'
-import { PaymentInfoModal } from './PaymentInfoModal'
-import { PaymentMethod } from '../../types'
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
+import { PaymentMethod } from '../../types'
 import { AutoDepositModal } from './AutoDepositModal'
+import { PaymentInfoModal } from './PaymentInfoModal'
 
-const graphql = require('babel-plugin-relay/macro')
 
 type DepositMethod = {
 	name: string
@@ -33,9 +21,6 @@ const query = graphql`
 			owner
 			description
 			account
-			image_url
-			url
-			qrcode
 		}
 	}
 `
@@ -72,12 +57,6 @@ const Preview = (props: { payment_methods: PaymentMethod[] }) => {
 						<Tooltip placement="top" title="Click to see detail information">
 							<Card
 								size="small"
-								cover={
-									<img
-										src={item.image_url}
-										style={{ height: 200, objectFit: 'scale-down' }}
-									/>
-								}
 								onClick={() => {
 									setCurrentPaymentMethod(item)
 									setVisibleForPaymentInfoModal(true)

@@ -1,4 +1,4 @@
-import { Button, Card, Col, List, Row, Icon, Popconfirm, Spin } from 'antd'
+import { Button, Card, Col, List, Row, Icon, Popconfirm, Spin, notification } from 'antd'
 import Text from 'antd/lib/typography/Text'
 import React, { useState } from 'react'
 import { BreadCrumb } from '../../components/common/BreadCrumb'
@@ -7,6 +7,7 @@ import { CreateUpdateBankModal } from './CreateUpdateBankModal'
 import graphql from 'babel-plugin-relay/macro'
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
 import { User, PaymentMethod } from '../../types'
+import { update_profile } from '../../graphql/update_profile'
 
 export interface Bank {
 	name: string
@@ -19,6 +20,7 @@ export interface Bank {
 const query = graphql`
 	query BankInformationPageQuery {
 		me {
+			id
 			payment_methods {
 				name
       	owner
@@ -32,14 +34,13 @@ const query = graphql`
 export const BankInformationPage = GraphQLWrapper<{
 	me: User
 }>(query, {}, ({ loading, data }) => {
-
 	if (loading)
 		return (
 			<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
 				<Row type="flex" justify="space-around">
 					<Col>
 						<Spin
-							indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}
+							indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
 						/>
 					</Col>
 				</Row>
@@ -53,6 +54,7 @@ export const BankInformationPage = GraphQLWrapper<{
 	] = useState<boolean>(false)
 	const [selectedBank, setSelectedBank] = useState<PaymentMethod | null>()
 	const [modalMode, setModalMode] = useState<'create' | 'update'>()
+	const [deleting, setDeleting] = useState<boolean>(false)
 
 	return (
 		<Card title={<BreadCrumb />} style={{ height: 'calc(100vh - 65px)' }}>
@@ -72,7 +74,7 @@ export const BankInformationPage = GraphQLWrapper<{
 				onClose={() => setCreateUpdateBankModalVisible(false)}
 				mode={modalMode}
 				seletedBank={selectedBank}
-				banks={data.me.payment_methods}
+				paymentMethods={banks}
 			/>
 			<List
 				grid={{
@@ -86,63 +88,74 @@ export const BankInformationPage = GraphQLWrapper<{
 				dataSource={banks}
 				renderItem={item => (
 					<List.Item>
-						<Card
-							type="inner"
-							style={{
-								textAlign: 'center',
-								backgroundColor: 'white',
-								borderRadius: 10,
-								boxShadow:
-									'0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.05)',
-								cursor: 'pointer',
-							}}
-							onClick={() => {
-								setSelectedBank(item)
-								setModalMode('update')
-								setCreateUpdateBankModalVisible(true)
-							}}
-							title={<Text strong>{item.name}</Text>}
-							extra={
-								<Popconfirm
-									title="Are you sure delete this bank?"
-									onConfirm={() =>
-										setBanks([
-											...banks.filter(
-												bank => bank.account !== item.account,
-											),
-										])
-									}
-									okText="Yes"
-									cancelText="No"
-								>
-									<Icon type="delete" style={{ color: 'red' }} />
-								</Popconfirm>
-							}
-							headStyle={{ textAlign: 'left' }}
+						<Spin
+							indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}
+							spinning={deleting}
 						>
-							<Row style={{ marginBottom: 15 }}>
-								{Object.keys(item).map(
-									keyName =>
-										keyName !== 'description' &&
-										keyName !== 'name' && (
-											<Col xs={24}>
-												<Row>
-													<Col span={12} style={{ textAlign: 'left' }}>
-														<Text strong>
-															{keyName.charAt(0).toUpperCase() +
-																keyName.substring(1).replace(/_/g, ' ')}
-														</Text>
-													</Col>
-													<Col span={12} style={{ textAlign: 'right' }}>
-														{item[keyName]}
-													</Col>
-												</Row>
-											</Col>
-										),
-								)}
-								<NoteReading note={item.description} />
-							</Row>
-						</Card>
+							<Card
+								type="inner"
+								style={{
+									textAlign: 'center',
+									backgroundColor: 'white',
+									borderRadius: 10,
+									boxShadow:
+										'0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.05)',
+								}}
+								title={<Text strong>{item.name}</Text>}
+								extra={
+									<Popconfirm
+										title="Are you sure delete this bank?"
+										onConfirm={async () => {
+											setDeleting(true)
+											await update_profile({
+												payment_methods: [
+													...banks.filter(paymentMethod => paymentMethod.account !== item.account),
+												]
+											})
+											notification.success({
+												message: 'Delete bank successfully'
+											})
+											setDeleting(false)
+										}
+										}
+										okText="Yes"
+										cancelText="No"
+									>
+										<Icon type="delete" style={{ color: 'red' }} />
+									</Popconfirm>
+								}
+								headStyle={{ textAlign: 'left' }}
+							>
+								<Row
+									style={{ marginBottom: 15, cursor: 'pointer' }}
+									onClick={() => {
+										setSelectedBank(item)
+										setModalMode('update')
+										setCreateUpdateBankModalVisible(true)
+									}} >
+									{Object.keys(item).map(
+										keyName =>
+											keyName !== 'description' &&
+											keyName !== 'name' && (
+												<Col xs={24}>
+													<Row>
+														<Col span={12} style={{ textAlign: 'left' }}>
+															<Text strong>
+																{keyName.charAt(0).toUpperCase() +
+																	keyName.substring(1).replace(/_/g, ' ')}
+															</Text>
+														</Col>
+														<Col span={12} style={{ textAlign: 'right' }}>
+															{item[keyName]}
+														</Col>
+													</Row>
+												</Col>
+											),
+									)}
+									<NoteReading note={item.description} />
+								</Row>
+							</Card>
+						</Spin>
 					</List.Item>
 				)}
 			/>

@@ -1,15 +1,50 @@
-import { Alert, Button, Card, Form, Input } from 'antd'
+import { Alert, Button, Card, Form, Input, notification } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import React, { useState } from 'react'
 import { BreadCrumb } from '../../components/common/BreadCrumb'
+import { update_profile } from '../../graphql/update_profile'
+import graphql from 'babel-plugin-relay/macro'
 
 type AdminInformationPageProps = FormComponentProps & {}
 
+const query = graphql`
+	query AdminInformationPageQuery {
+		me {
+			id
+			name
+  		phone
+  		username
+  		email
+  		facebook_uid
+  		admin_page_uid
+		}
+	}
+`
+
 export const AdminInformationPage = Form.create<AdminInformationPageProps>()(
 	(props: AdminInformationPageProps) => {
-		const [loading, set_loading] = useState<boolean>(false)
-		const [error, set_error] = useState<string | null>(null)
-		const { form } = props
+		const [loading, setLoading] = useState<boolean>(false)
+		const [error, setError] = useState<string | null>(null)
+
+		const submit = () => {
+			props.form.validateFields(async (err, values) => {
+				if (!err) {
+					setError(null)
+					setLoading(true)
+					try {
+						await update_profile({
+							...values
+						})
+						notification.success({
+							message: 'Update admin information successfully'
+						})
+					} catch (error) {
+						setError(error)
+					}
+					setLoading(false)
+				}
+			})
+		}
 
 		const formItemLayout = {
 			labelCol: {
@@ -38,33 +73,33 @@ export const AdminInformationPage = Form.create<AdminInformationPageProps>()(
 			<Card title={<BreadCrumb />}>
 				{error && <Alert type="error" message={error} />}
 				<Form {...formItemLayout}>
-					<Form.Item label="Full name">
+					<Form.Item label="Name">
 						{props.form.getFieldDecorator('name', {
-							rules: [{ required: true }],
-						})(<Input placeholder="Full name" />)}
+							rules: [{ required: false }],
+						})(<Input placeholder="Name" />)}
 					</Form.Item>
 					<Form.Item label="Phone">
 						{props.form.getFieldDecorator('phone', {
-							rules: [{ required: true }],
+							rules: [{ required: false }],
 						})(<Input placeholder="Phone" />)}
 					</Form.Item>
 					<Form.Item label="Email">
 						{props.form.getFieldDecorator('email', {
-							rules: [{ required: true }],
+							rules: [{ required: false }],
 						})(<Input placeholder="Email" />)}
 					</Form.Item>
 					<Form.Item label="Facebook ID">
-						{props.form.getFieldDecorator('fb_id', {
-							rules: [{ required: true }],
+						{props.form.getFieldDecorator('facebook_uid', {
+							rules: [{ required: false }],
 						})(<Input placeholder="Facebook ID" />)}
 					</Form.Item>
 					<Form.Item label="Page ID">
-						{props.form.getFieldDecorator('page_id', {
-							rules: [{ required: true }],
+						{props.form.getFieldDecorator('admin_page_uid', {
+							rules: [{ required: false }],
 						})(<Input placeholder="Page ID" />)}
 					</Form.Item>
 					<Form.Item {...tailFormItemLayout}>
-						<Button type="primary" htmlType="submit" loading={loading}>
+						<Button type="primary" onClick={submit} loading={loading}>
 							Save information
 						</Button>
 					</Form.Item>

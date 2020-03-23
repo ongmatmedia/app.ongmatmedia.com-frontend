@@ -304,7 +304,7 @@ export type LivestreamVideoInput = {
 
 export type Mutation = {
   create_user: UserEdge;
-  update_profile: User;
+  update_profile: UserEdge;
   update_price_for_user: User;
   send_money: SendmoneyResponse;
   set_user_password: Scalars['Boolean'];
@@ -532,9 +532,6 @@ export type PaymentMethod = {
   owner: Scalars['String'];
   description: Scalars['String'];
   account: Scalars['String'];
-  image_url: Scalars['String'];
-  url?: Maybe<Scalars['String']>;
-  qrcode?: Maybe<Scalars['String']>;
 };
 
 export type PaymentMethodInput = {
@@ -542,9 +539,6 @@ export type PaymentMethodInput = {
   owner: Scalars['String'];
   description: Scalars['String'];
   account: Scalars['String'];
-  image_url: Scalars['String'];
-  url?: Maybe<Scalars['String']>;
-  qrcode?: Maybe<Scalars['String']>;
 };
 
 export type Query = {
@@ -720,6 +714,8 @@ export type TableStringFilterInput = {
 };
 
 export type User = {
+  name?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   username: Scalars['String'];
   email: Scalars['String'];
   facebook_uid: Scalars['String'];
@@ -747,7 +743,9 @@ export type UserEdge = {
 };
 
 export type UserUpdateInput = {
+  name?: Maybe<Scalars['String']>;
   email?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   facebook_uid?: Maybe<Scalars['String']>;
   admin_page_uid?: Maybe<Scalars['String']>;
   admin_theme?: Maybe<Scalars['String']>;

@@ -1,15 +1,35 @@
-import { Alert, Form, Spin, Card, Button } from 'antd'
+import { Alert, Form, Spin, Card, Button, notification } from 'antd'
 import React, { useState } from 'react'
 import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect'
 import { withForm } from '../../libs/Form'
 import { BreadCrumb } from '../../components/common/BreadCrumb'
+import { update_price_for_user } from '../../graphql/update_price_for_user'
 
-interface SetDefaultPricePageProps {}
+interface SetDefaultPricePageProps { }
 
 export const SetDefaultPricePage = withForm<SetDefaultPricePageProps>(props => {
 	const [loading, set_loading] = useState<boolean>(false)
 	const [error, set_error] = useState<string | null>(null)
-	const { form } = props
+
+	const submit = () =>
+		props.form.submit(async values => {
+			set_loading(true)
+			try {
+				set_error(null)
+				await update_price_for_user('default', values.price_percent, {
+					buff_viewers_livestream: values.buff_viewers_livestream,
+					vip_viewers_livestream: values.vip_viewers_livestream,
+					livestream: { p1080: 1000, p480: 1000, p720: 1000 },
+				})
+				notification.success({
+					message: 'Update default price successfully',
+				})
+				set_loading(false)
+			} catch (e) {
+				set_error(e)
+			}
+			set_loading(false)
+		})
 
 	const formItemLayout = {
 		labelCol: {
@@ -43,7 +63,7 @@ export const SetDefaultPricePage = withForm<SetDefaultPricePageProps>(props => {
 				style={{ marginBottom: 15 }}
 				showIcon
 				type="info"
-				message="Alert set default price"
+				message="You are setting default price for new user. Example: User that logged in via Facebook, Google,..."
 			/>
 			<Form {...formItemLayout}>
 				<Form.Item label="Price percent">
@@ -65,7 +85,7 @@ export const SetDefaultPricePage = withForm<SetDefaultPricePageProps>(props => {
 					{props.form.field<number>({
 						name: 'vip_viewers_livestream',
 						require: 'Vip viewers livestream price is required',
-						initalValue: 0,
+						initalValue: 1000,
 						render: ({ value, setValue, error }) => (
 							<div>
 								<InputNumberAutoSelect
@@ -80,7 +100,7 @@ export const SetDefaultPricePage = withForm<SetDefaultPricePageProps>(props => {
 					{props.form.field<number>({
 						name: 'buff_viewers_livestream',
 						require: 'Buff viewers livestream price is required',
-						initalValue: 0,
+						initalValue: 1000,
 						render: ({ value, setValue, error }) => (
 							<div>
 								<InputNumberAutoSelect
@@ -92,7 +112,7 @@ export const SetDefaultPricePage = withForm<SetDefaultPricePageProps>(props => {
 					})}
 				</Form.Item>
 				<Form.Item {...tailFormItemLayout}>
-					<Button type="primary" htmlType="submit" loading={loading}>
+					<Button type="primary" onClick={submit} loading={loading}>
 						Save prices
 					</Button>
 				</Form.Item>

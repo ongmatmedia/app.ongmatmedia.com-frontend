@@ -1,45 +1,52 @@
-import React, { useState, useEffect } from 'react'
-import { Form, Modal, Spin, Alert, Input, Icon } from 'antd'
+import { Alert, Form, Input, Modal, notification, Spin } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
-import { Bank } from './BankInformationPage'
-import { PaymentMethod } from '../../types'
+import React, { useState } from 'react'
 import { update_profile } from '../../graphql/update_profile'
+import { PaymentMethod } from '../../types'
 
 type CreateUpdateBankModalProps = FormComponentProps & {
 	visible: boolean
 	mode: 'create' | 'update'
 	onClose: Function
-	banks: PaymentMethod[]
+	paymentMethods: PaymentMethod[]
 	seletedBank: PaymentMethod
 }
 
 export const CreateUpdateBankModal = Form.create<CreateUpdateBankModalProps>()(
 	(props: CreateUpdateBankModalProps) => {
-		const [loading, set_loading] = useState<boolean>(false)
-		const [error, set_error] = useState<string | null>(null)
+		const [loading, setLoading] = useState<boolean>(false)
+		const [error, setError] = useState<string | null>(null)
 
 		const submit = () => {
 			props.form.validateFields(async (err, values: PaymentMethod) => {
 				if (!err) {
-					set_error(null)
-					set_loading(true)
+					setError(null)
+					setLoading(true)
 					try {
 						if (props.mode == 'create') {
 							await update_profile({
 								payment_methods: [
-									...props.banks,
+									...props.paymentMethods,
 									values
 								]
 							})
 							props.onClose()
 						} else {
-
+							await update_profile({
+								payment_methods: [
+									...props.paymentMethods.filter(paymentMethod => paymentMethod.account !== values.account),
+									values
+								]
+							})
+							notification.success({
+								message: 'Add bank successfully'
+							})
 							props.onClose()
 						}
-					} catch (message) {
-						set_error(message)
+					} catch (error) {
+						setError(error)
 					}
-					set_loading(false)
+					setLoading(false)
 				}
 			})
 		}

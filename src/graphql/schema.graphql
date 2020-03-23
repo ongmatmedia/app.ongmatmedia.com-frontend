@@ -299,7 +299,7 @@ scalar Long
 
 type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   create_user(price_percent: Int!, email: String!, password: String!, username: String!): UserEdge!
-  update_profile(input: UserUpdateInput!): User!
+  update_profile(input: UserUpdateInput!): UserEdge!
   update_price_for_user(price: ServicePricingInput!, price_percent: Int!, user_id: String!): User!
   send_money(note: String!, amount: Int!, user_id: String!): SendmoneyResponse!
   set_user_password(password: String!, user_id: String!): Boolean!
@@ -392,9 +392,6 @@ type PaymentMethod @aws_api_key @aws_cognito_user_pools @aws_oidc {
   owner: String!
   description: String!
   account: String!
-  image_url: String!
-  url: String
-  qrcode: String
 }
 
 input PaymentMethodInput {
@@ -402,9 +399,6 @@ input PaymentMethodInput {
   owner: String!
   description: String!
   account: String!
-  image_url: String!
-  url: String
-  qrcode: String
 }
 
 type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -483,6 +477,8 @@ input TableStringFilterInput {
 }
 
 type User @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  name: String
+  phone: String
   username: String!
   email: String!
   facebook_uid: String!
@@ -510,11 +506,12 @@ type UserEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
 }
 
 input UserUpdateInput {
+  name: String
   email: String
+  phone: String
   facebook_uid: String
   admin_page_uid: String
   admin_theme: String
-  pricing: ServicePricingInput
   payment_methods: [PaymentMethodInput!]
 }
 
