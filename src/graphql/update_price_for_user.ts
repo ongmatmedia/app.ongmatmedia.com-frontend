@@ -15,17 +15,16 @@ const mutation = graphql`
 			price_percent: $price_percent
 			price: $price
 		) {
-				id
-				price_percent
-				balance
-				pricing {
-					buff_viewers_livestream
-					vip_viewers_livestream
-					livestream {
-						p480
-						p720
-						p1080
-					}
+			id
+			price_percent
+			balance
+			pricing {
+				buff_viewers_livestream
+				vip_viewers_livestream
+				livestream {
+					p480
+					p720
+					p1080
 				}
 		}
 	}
@@ -43,7 +42,7 @@ export const update_price_for_user = (
 				success()
 			},
 			onError: error => {
-				const { errors } = error as any as GraphQLError
+				const { errors } = (error as any) as GraphQLError
 				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
 			},
 		})

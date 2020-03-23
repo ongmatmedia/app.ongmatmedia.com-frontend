@@ -1,28 +1,33 @@
 import graphql from 'babel-plugin-relay/macro'
 import { commitMutation } from 'react-relay'
-import { ConnectionHandler, RecordProxy } from 'relay-runtime'
+import { UserUpdateInput } from '../types'
 import { GraphQLError } from './GraphqlError'
 import { RelayEnvironment } from './RelayEnvironment'
+import { commitLocalUpdate } from 'relay-runtime'
 
 const mutation = graphql`
-	mutation deleteLivestreamMutation($id: ID!) {
-		delete_livestream(id: $id)
+	mutation updateProfileMutation($input: UserUpdateInput!) {
+		update_profile(input: $input) {
+			node {
+				id
+      	payment_methods {
+        name
+        owner
+        account
+        description
+      }
+			}
+		}
 	}
 `
 
-const share_updater = (store, id: string) => {
-	const list = store.get(`client:root:livestream_tasks`) as RecordProxy
-	ConnectionHandler.deleteNode(list, id)
-}
-
-export const delete_livestream = async (id: string) =>
+export const update_profile = async (input: UserUpdateInput) =>
 	new Promise(async (success: Function, reject: Function) => {
+
 		commitMutation(RelayEnvironment as any, {
-			variables: { id },
+			variables: { input },
 			mutation,
-			optimisticUpdater: store => share_updater(store, id),
 			updater: store => {
-				share_updater(store, id)
 				success()
 			},
 			onError: error => {

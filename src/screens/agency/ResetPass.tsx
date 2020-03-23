@@ -23,8 +23,8 @@ export const ResetPass = (props: ResetPassModalProps) => {
 			await set_user_password(props.user.id, value)
 			set_loading(false)
 			props.onClose()
-		} catch (e) { 
-			set_error(e )
+		} catch (e) {
+			set_error(e)
 			set_loading(false)
 		}
 	}

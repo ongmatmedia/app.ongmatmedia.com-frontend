@@ -254,7 +254,7 @@ export const BuffViewersCreateModal = withForm<BuffViewersCreateModalProps>(
 										</Col>
 									</Row>
 									{error && <Alert type="error" message={error} />}
-									
+
 									<Select
 										onChange={setValue}
 										placeholder="Click to select viewers amount when livestream"

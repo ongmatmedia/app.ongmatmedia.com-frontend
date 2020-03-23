@@ -36,7 +36,7 @@ export const create_livestream = async (task: LivestreamInput) =>
 				success()
 			},
 			onError: error => {
-				const { errors } = error as any as GraphQLError
+				const { errors } = (error as any) as GraphQLError
 				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
 			},
 		})

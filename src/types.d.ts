@@ -15,13 +15,13 @@ export type BuffViewersLivestream = {
   id: Scalars['ID'];
   user_id: Scalars['String'];
   video_id: Scalars['String'];
-  uid: Scalars['String'];
+  uid?: Maybe<Scalars['String']>;
   status: Scalars['String'];
-  name: Scalars['String'];
-  note: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  note?: Maybe<Scalars['String']>;
   amount: Scalars['Int'];
   created_time: Scalars['Long'];
-  end_time: Scalars['Long'];
+  end_time?: Maybe<Scalars['Long']>;
   limit_mins: Scalars['Int'];
   logs: Array<BuffViewersLivestreamLog>;
 };
@@ -37,9 +37,9 @@ export type BuffViewersLivestreamEdge = {
 
 export type BuffViewersLivestreamInput = {
   id: Scalars['String'];
-  uid: Scalars['String'];
-  name: Scalars['String'];
-  note: Scalars['String'];
+  uid?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  note?: Maybe<Scalars['String']>;
   amount: Scalars['Int'];
   limit_mins: Scalars['Int'];
 };
@@ -82,7 +82,7 @@ export type BuffViewersLivestreamStatusInput = {
 export type BuffViewersLivestreamTaskCudResponse = {
   buff: BuffViewersLivestreamEdge;
   me: User;
-  payment_history: Maybe<PaymentHistoryEdge>;
+  payment_history?: Maybe<PaymentHistoryEdge>;
 };
 
 export type BuffViewersLivestreamUpdateEvent = {
@@ -90,7 +90,7 @@ export type BuffViewersLivestreamUpdateEvent = {
   id: Scalars['ID'];
   video_id: Scalars['String'];
   status: Scalars['String'];
-  end_time: Maybe<Scalars['Long']>;
+  end_time?: Maybe<Scalars['Long']>;
 };
 
 export type BuffViewersLivestreamUpdateEventInput = {
@@ -98,7 +98,7 @@ export type BuffViewersLivestreamUpdateEventInput = {
   id: Scalars['ID'];
   video_id: Scalars['String'];
   status: Scalars['String'];
-  end_time: Maybe<Scalars['Long']>;
+  end_time?: Maybe<Scalars['Long']>;
 };
 
 export type BuffViewersVideo = {
@@ -120,7 +120,7 @@ export type BuffViewersVideoConnection = {
 export type BuffViewersVideoCudResponse = {
   buff: BuffViewersVideoEdge;
   me: User;
-  payment_history: Maybe<PaymentHistoryEdge>;
+  payment_history?: Maybe<PaymentHistoryEdge>;
 };
 
 export type BuffViewersVideoEdge = {
@@ -140,9 +140,9 @@ export type FacebookAccount = {
   user_id: Scalars['String'];
   id: Scalars['ID'];
   name: Scalars['String'];
-  cookie: Maybe<Scalars['String']>;
-  touch_access_token: Maybe<Scalars['String']>;
-  livestream_access_token: Maybe<Scalars['String']>;
+  cookie?: Maybe<Scalars['String']>;
+  touch_access_token?: Maybe<Scalars['String']>;
+  livestream_access_token?: Maybe<Scalars['String']>;
   live: Scalars['Boolean'];
   created_at: Scalars['Long'];
   updated_at: Scalars['Long'];
@@ -154,7 +154,7 @@ export type FacebookAccountConnection = {
 };
 
 export type FacebookAccountEdge = {
-  cursor: Maybe<Scalars['String']>;
+  cursor?: Maybe<Scalars['String']>;
   node: FacebookAccount;
 };
 
@@ -165,13 +165,13 @@ export type FacebookAccountInfo = {
 };
 
 export type FacebookAccountInput = {
-  cookie: Maybe<Scalars['String']>;
-  username: Maybe<Scalars['String']>;
-  password: Maybe<Scalars['String']>;
+  cookie?: Maybe<Scalars['String']>;
+  username?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
 };
 
 export type FacebookAccountUpdateInput = {
-  live: Maybe<Scalars['Boolean']>;
+  live?: Maybe<Scalars['Boolean']>;
 };
 
 export type Livestream = {
@@ -184,7 +184,7 @@ export type Livestream = {
   created_time: Scalars['Long'];
   updated_time: Scalars['Long'];
   title: Scalars['String'];
-  description: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
   times: Array<Scalars['Long']>;
   loop_times: Scalars['Int'];
   targets: LivestreamTarget;
@@ -258,7 +258,7 @@ export type LivestreamSubscriptionInput = {
 export type LivestreamSubscriptionUpdateResponse = {
   livestream_subscription: LivestreamSubscription;
   me: User;
-  payment_history: Maybe<PaymentHistoryEdge>;
+  payment_history?: Maybe<PaymentHistoryEdge>;
 };
 
 export type LivestreamTarget = {
@@ -272,17 +272,17 @@ export type LivestreamTargetInput = {
 };
 
 export type LivestreamUpdateInput = {
-  user_id: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
-  videos: Maybe<Array<LivestreamVideoInput>>;
-  name: Maybe<Scalars['String']>;
-  status: Maybe<Scalars['String']>;
-  active: Maybe<Scalars['Boolean']>;
-  title: Maybe<Scalars['String']>;
-  description: Maybe<Scalars['String']>;
-  times: Maybe<Array<Scalars['Long']>>;
-  loop_times: Maybe<Scalars['Int']>;
-  targets: Maybe<LivestreamTargetInput>;
+  videos?: Maybe<Array<LivestreamVideoInput>>;
+  name?: Maybe<Scalars['String']>;
+  status?: Maybe<Scalars['String']>;
+  active?: Maybe<Scalars['Boolean']>;
+  title?: Maybe<Scalars['String']>;
+  description?: Maybe<Scalars['String']>;
+  times?: Maybe<Array<Scalars['Long']>>;
+  loop_times?: Maybe<Scalars['Int']>;
+  targets?: Maybe<LivestreamTargetInput>;
 };
 
 export type LivestreamVideo = {
@@ -304,10 +304,10 @@ export type LivestreamVideoInput = {
 
 export type Mutation = {
   create_user: UserEdge;
-  update_price_for_user: UserEdge;
+  update_profile: UserEdge;
+  update_price_for_user: User;
   send_money: SendmoneyResponse;
   set_user_password: Scalars['Boolean'];
-  update_info: Scalars['Boolean'];
   create_buff_viewers_livestream_task: BuffViewersLivestreamTaskCudResponse;
   delete_buff_viewers_livestream_task: BuffViewersLivestreamTaskCudResponse;
   update_buff_viewers_livestream: BuffViewersLivestreamUpdateEvent;
@@ -339,6 +339,11 @@ export type MutationCreate_UserArgs = {
 };
 
 
+export type MutationUpdate_ProfileArgs = {
+  input: UserUpdateInput;
+};
+
+
 export type MutationUpdate_Price_For_UserArgs = {
   price: ServicePricingInput;
   price_percent: Scalars['Int'];
@@ -356,12 +361,6 @@ export type MutationSend_MoneyArgs = {
 export type MutationSet_User_PasswordArgs = {
   password: Scalars['String'];
   user_id: Scalars['String'];
-};
-
-
-export type MutationUpdate_InfoArgs = {
-  payment_methods: Array<PaymentMethodInput>;
-  facebook_uid: Scalars['String'];
 };
 
 
@@ -418,7 +417,7 @@ export type MutationDelete_Vip_Viewers_Livestream_TaskArgs = {
 export type MutationUpdate_Livestream_SubscriptionArgs = {
   days: Scalars['Int'];
   data: LivestreamSubscriptionInput;
-  user_id: Maybe<Scalars['ID']>;
+  user_id?: Maybe<Scalars['ID']>;
 };
 
 
@@ -476,11 +475,11 @@ export type NewDepositInfo = {
 export type Notification = {
   id: Scalars['ID'];
   user_id: Scalars['String'];
-  icon: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
   time: Scalars['AWSDateTime'];
   title: Scalars['String'];
-  body: Maybe<Scalars['String']>;
-  ref: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['String']>;
+  ref?: Maybe<Scalars['String']>;
 };
 
 export type NotificationConnection = {
@@ -495,15 +494,15 @@ export type NotificationEdge = {
 
 export type NotificationInput = {
   user_id: Scalars['String'];
-  icon: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
   title: Scalars['String'];
-  body: Maybe<Scalars['String']>;
-  ref: Maybe<Scalars['String']>;
+  body?: Maybe<Scalars['String']>;
+  ref?: Maybe<Scalars['String']>;
 };
 
 export type PageInfo = {
-  next_token: Maybe<Scalars['String']>;
-  prev_token: Maybe<Scalars['String']>;
+  next_token?: Maybe<Scalars['String']>;
+  prev_token?: Maybe<Scalars['String']>;
 };
 
 export type PaymentHistory = {
@@ -512,9 +511,9 @@ export type PaymentHistory = {
   total: Scalars['Int'];
   sender_username: Scalars['String'];
   sender_id: Scalars['String'];
-  receiver_username: Maybe<Scalars['String']>;
+  receiver_username?: Maybe<Scalars['String']>;
   service: Scalars['String'];
-  receiver_id: Maybe<Scalars['String']>;
+  receiver_id?: Maybe<Scalars['String']>;
   balance_after: Scalars['Long'];
   note: Scalars['String'];
 };
@@ -533,9 +532,6 @@ export type PaymentMethod = {
   owner: Scalars['String'];
   description: Scalars['String'];
   account: Scalars['String'];
-  image_url: Scalars['String'];
-  url: Maybe<Scalars['String']>;
-  qrcode: Maybe<Scalars['String']>;
 };
 
 export type PaymentMethodInput = {
@@ -543,9 +539,6 @@ export type PaymentMethodInput = {
   owner: Scalars['String'];
   description: Scalars['String'];
   account: Scalars['String'];
-  image_url: Scalars['String'];
-  url: Maybe<Scalars['String']>;
-  qrcode: Maybe<Scalars['String']>;
 };
 
 export type Query = {
@@ -556,11 +549,11 @@ export type Query = {
   buff_viewers_livestream_tasks: BuffViewersLivestreamConnection;
   buff_viewers_system_status: BuffViewersLivestreamStatus;
   facebook_account_info: FacebookAccountInfo;
-  facebook_accounts: Maybe<FacebookAccountConnection>;
+  facebook_accounts?: Maybe<FacebookAccountConnection>;
   facebook_account: FacebookAccount;
   vip_viewers_livestream_tasks: VipViewersLivestreamConnection;
   vip_viewers_livestream_task: VipViewersLivestream;
-  livestream_subscription: Maybe<LivestreamSubscription>;
+  livestream_subscription?: Maybe<LivestreamSubscription>;
   livestream_tasks: LivestreamConnection;
   livestream_task: Livestream;
   payment_histories: PaymentHistoryConnection;
@@ -571,15 +564,15 @@ export type Query = {
 
 
 export type QueryUsersArgs = {
-  after: Maybe<Scalars['String']>;
-  limit: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
 };
 
 
 export type QueryBuff_Viewers_Livestream_TasksArgs = {
-  after: Maybe<Scalars['String']>;
-  limit: Maybe<Scalars['Int']>;
-  filters: Maybe<BuffViewersLivestreamQueryFilters>;
+  after?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  filters?: Maybe<BuffViewersLivestreamQueryFilters>;
 };
 
 
@@ -589,8 +582,8 @@ export type QueryFacebook_Account_InfoArgs = {
 
 
 export type QueryFacebook_AccountsArgs = {
-  after: Maybe<Scalars['String']>;
-  limit: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
 };
 
 
@@ -600,9 +593,9 @@ export type QueryFacebook_AccountArgs = {
 
 
 export type QueryVip_Viewers_Livestream_TasksArgs = {
-  after: Maybe<Scalars['String']>;
-  limit: Maybe<Scalars['Int']>;
-  filters: Maybe<VipViewersLivestreamQueryFilters>;
+  after?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  filters?: Maybe<VipViewersLivestreamQueryFilters>;
 };
 
 
@@ -612,14 +605,14 @@ export type QueryVip_Viewers_Livestream_TaskArgs = {
 
 
 export type QueryLivestream_SubscriptionArgs = {
-  user_id: Maybe<Scalars['ID']>;
+  user_id?: Maybe<Scalars['ID']>;
 };
 
 
 export type QueryLivestream_TasksArgs = {
-  after: Maybe<Scalars['String']>;
-  limit: Maybe<Scalars['Int']>;
-  filters: Maybe<LivestreamQueryFilters>;
+  after?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
+  filters?: Maybe<LivestreamQueryFilters>;
 };
 
 
@@ -629,14 +622,14 @@ export type QueryLivestream_TaskArgs = {
 
 
 export type QueryPayment_HistoriesArgs = {
-  after: Maybe<Scalars['String']>;
-  before_time: Maybe<Scalars['Long']>;
+  after?: Maybe<Scalars['String']>;
+  before_time?: Maybe<Scalars['Long']>;
 };
 
 
 export type QueryBuff_Viewers_Video_TasksArgs = {
-  after: Maybe<Scalars['String']>;
-  limit: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
 };
 
 
@@ -646,8 +639,8 @@ export type QueryVideo_InfoArgs = {
 
 
 export type QueryNotificationsArgs = {
-  after: Maybe<Scalars['String']>;
-  limit: Maybe<Scalars['Int']>;
+  after?: Maybe<Scalars['String']>;
+  limit?: Maybe<Scalars['Int']>;
 };
 
 export type SendmoneyResponse = {
@@ -669,15 +662,15 @@ export type ServicePricingInput = {
 };
 
 export type Subscription = {
-  on_buff_viewers_livestream_update: Maybe<BuffViewersLivestreamUpdateEvent>;
-  on_buff_viewers_livestream_viewers_update: Maybe<BuffViewersLivestreamLogEvent>;
-  on_update_livestream: Maybe<Livestream>;
-  on_new_notification: Maybe<Notification>;
+  on_buff_viewers_livestream_update?: Maybe<BuffViewersLivestreamUpdateEvent>;
+  on_buff_viewers_livestream_viewers_update?: Maybe<BuffViewersLivestreamLogEvent>;
+  on_update_livestream?: Maybe<Livestream>;
+  on_new_notification?: Maybe<Notification>;
 };
 
 
 export type SubscriptionOn_Buff_Viewers_Livestream_UpdateArgs = {
-  user_id: Maybe<Scalars['String']>;
+  user_id?: Maybe<Scalars['String']>;
 };
 
 
@@ -696,39 +689,44 @@ export type SubscriptionOn_New_NotificationArgs = {
 };
 
 export type TableBooleanFilterInput = {
-  ne: Maybe<Scalars['Boolean']>;
-  eq: Maybe<Scalars['Boolean']>;
+  ne?: Maybe<Scalars['Boolean']>;
+  eq?: Maybe<Scalars['Boolean']>;
 };
 
 export type TableIntFilterInput = {
-  ne: Maybe<Scalars['Int']>;
-  eq: Maybe<Scalars['Int']>;
-  le: Maybe<Scalars['Int']>;
-  lt: Maybe<Scalars['Int']>;
-  ge: Maybe<Scalars['Int']>;
-  gt: Maybe<Scalars['Int']>;
-  between: Maybe<Scalars['Int']>;
+  ne?: Maybe<Scalars['Int']>;
+  eq?: Maybe<Scalars['Int']>;
+  le?: Maybe<Scalars['Int']>;
+  lt?: Maybe<Scalars['Int']>;
+  ge?: Maybe<Scalars['Int']>;
+  gt?: Maybe<Scalars['Int']>;
+  between?: Maybe<Scalars['Int']>;
 };
 
 export type TableStringFilterInput = {
-  ne: Maybe<Scalars['String']>;
-  eq: Maybe<Scalars['String']>;
-  le: Maybe<Scalars['String']>;
-  lt: Maybe<Scalars['String']>;
-  ge: Maybe<Scalars['String']>;
-  gt: Maybe<Scalars['String']>;
-  between: Maybe<Scalars['String']>;
+  ne?: Maybe<Scalars['String']>;
+  eq?: Maybe<Scalars['String']>;
+  le?: Maybe<Scalars['String']>;
+  lt?: Maybe<Scalars['String']>;
+  ge?: Maybe<Scalars['String']>;
+  gt?: Maybe<Scalars['String']>;
+  between?: Maybe<Scalars['String']>;
 };
 
 export type User = {
+  name?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
   username: Scalars['String'];
-  email: Scalars['String'];
-  facebook_uid: Scalars['String'];
+  email?: Maybe<Scalars['String']>;
+  facebook_uid?: Maybe<Scalars['String']>;
+  admin_page_uid?: Maybe<Scalars['String']>;
+  admin_theme?: Maybe<Scalars['String']>;
+  domain?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   balance: Scalars['Long'];
-  pricing: Maybe<ServicePricing>;
+  pricing?: Maybe<ServicePricing>;
   price_percent: Scalars['Int'];
-  payment_methods: Maybe<Array<PaymentMethod>>;
+  payment_methods?: Maybe<Array<PaymentMethod>>;
   creator_id: Scalars['String'];
   created_at: Scalars['Long'];
   updated_at: Scalars['Long'];
@@ -742,6 +740,16 @@ export type UserConnection = {
 export type UserEdge = {
   cursor: Scalars['String'];
   node: User;
+};
+
+export type UserUpdateInput = {
+  name?: Maybe<Scalars['String']>;
+  email?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+  facebook_uid?: Maybe<Scalars['String']>;
+  admin_page_uid?: Maybe<Scalars['String']>;
+  admin_theme?: Maybe<Scalars['String']>;
+  payment_methods?: Maybe<Array<PaymentMethodInput>>;
 };
 
 export type VideoInfo = {
@@ -813,16 +821,16 @@ export type VipViewersLivestreamQueryFilters = {
 export type VipViewersLivestreamTaskCudResponse = {
   vip: VipViewersLivestreamEdge;
   me: User;
-  payment_history: Maybe<PaymentHistoryEdge>;
+  payment_history?: Maybe<PaymentHistoryEdge>;
 };
 
 export type VipViewersLivestreamUpdateInput = {
   id: Scalars['String'];
-  active: Maybe<Scalars['Boolean']>;
-  note: Maybe<Scalars['String']>;
-  amount: Maybe<Scalars['Int']>;
-  name: Maybe<Scalars['String']>;
-  auto_disable_after: Maybe<Scalars['Int']>;
-  parallel: Maybe<Scalars['Int']>;
-  bought_mins: Maybe<Scalars['Int']>;
+  active?: Maybe<Scalars['Boolean']>;
+  note?: Maybe<Scalars['String']>;
+  amount?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  auto_disable_after?: Maybe<Scalars['Int']>;
+  parallel?: Maybe<Scalars['Int']>;
+  bought_mins?: Maybe<Scalars['Int']>;
 };

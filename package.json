@@ -75,12 +75,12 @@
   },
 	"husky": {
 		"hooks": {
-			"pre-commit": "lint-staged"
+			"pre-commit": "lint-staged --allow-empty"
 		}
 	},
 	"lint-staged": {
 		"**/*.{ts,tsx}": [
-			"prettier --write"
+      "prettier --write"
 		]
 	}
 }
