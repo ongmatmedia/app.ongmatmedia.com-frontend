@@ -487,7 +487,9 @@ type User @aws_api_key @aws_cognito_user_pools @aws_oidc {
   domain: String
   id: ID!
   balance: Long!
+  default_pricing: ServicePricing
   pricing: ServicePricing
+  default_price_percent: Int
   price_percent: Int!
   payment_methods: [PaymentMethod!]
   creator_id: String!

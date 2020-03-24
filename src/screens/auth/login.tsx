@@ -1,5 +1,5 @@
 import React, { useState, FunctionComponent } from 'react'
-import { Button, Checkbox, Form, Icon, Input, Alert, Modal } from 'antd'
+import { Button, Checkbox, Form, Icon, Input, Alert, Modal, Avatar } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
 import { Auth } from 'aws-amplify'
 import { RouterProps, withRouter, RouteComponentProps } from 'react-router'
@@ -100,7 +100,7 @@ export const LoginView = withRouter<any, any>(
 					}}
 				>
 					<Button
-						type="primary"
+						type="default"
 						block
 						size="large"
 						onClick={() => login()}
@@ -108,6 +108,24 @@ export const LoginView = withRouter<any, any>(
 					>
 						{' '}
 						Login
+					</Button>
+					<Button
+						icon="google-plus"
+						type="danger"
+						block
+						size="large"
+						style={{ marginTop: 15 }}
+					>
+						Google+
+					</Button>
+					<Button
+						icon="facebook"
+						type="primary"
+						block
+						size="large"
+						style={{ marginTop: 15 }}
+					>
+						Facebook
 					</Button>
 					<div
 						style={{

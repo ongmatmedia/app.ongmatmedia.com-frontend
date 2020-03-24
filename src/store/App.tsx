@@ -19,6 +19,7 @@ import {
 	withRouter,
 	RouteComponentProps,
 } from 'react-router-dom'
+import { isMobileDevice, toggleFullScreen } from '../helpers/utils'
 
 class App {
 	@observable authenticated: boolean = false
@@ -51,6 +52,7 @@ class App {
 
 	async on_login_success() {
 		try {
+			if (isMobileDevice()) toggleFullScreen()
 			this.authenticated = true
 			await GraphQLSubscription.subscriblePrivateEvents()
 			// Enable push

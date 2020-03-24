@@ -1,31 +1,16 @@
-import {
-	Alert,
-	Avatar,
-	Card,
-	Col,
-	Icon,
-	Input,
-	Modal,
-	notification,
-	Row,
-	Select,
-	Spin,
-	Tag,
-	Slider,
-	Button,
-} from 'antd'
+import { Alert, Button, Card, Col, Icon, Modal, notification, Row, Spin, Tag } from 'antd'
 import { graphql } from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { User, VideoInfo } from '../../../types'
-import { withForm } from '../../../libs/Form'
-import { create_buff_viewers_livestream } from '../../../graphql/create_buff_viewers_livestream'
-import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper'
 import { FormElement } from '../../../components/form/FormElement'
 import { OrderInfo } from '../../../components/OrderInfo'
 import { VideoUrlInput } from '../../../components/VideoUrlInput'
-import Moment from 'react-moment'
+import { create_buff_viewers_livestream } from '../../../graphql/create_buff_viewers_livestream'
+import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper'
+import { withForm } from '../../../libs/Form'
+import { User, VideoInfo } from '../../../types'
 import { BuffViewersLivestreamSystemStatus } from './BuffViewersLivestreamSystemStatus'
+import { isMobileDevice } from '../../../helpers/utils'
 
 const query = graphql`
 	query BuffViewersLivestreamCreateModalQuery {
@@ -91,9 +76,10 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 				onOk={() => submit()}
 				onCancel={() => props.onClose()}
 				destroyOnClose
-				closable={false}
+				closable={true}
 				okButtonProps={{ loading }}
 				title={t('title')}
+				style={{ top: isMobileDevice() ? 0 : 50 }}
 			>
 				<Spin spinning={props.loading}>
 					{error && <Alert type="error" message={error} />}

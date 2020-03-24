@@ -69,7 +69,9 @@ export const TopBar = withRouter(props => {
 						style={{
 							border: '2px solid white',
 							cursor: 'pointer',
-							marginBottom: isMobileDevice() ? 10 : 17,
+							marginBottom: isMobileDevice() ? 7 : 17,
+							marginLeft: 7,
+							marginRight: 7
 						}}
 						size={isMobileDevice() ? 40 : 33}
 					/>

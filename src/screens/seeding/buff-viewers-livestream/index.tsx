@@ -1,37 +1,23 @@
-import React from 'react'
-import { BuffViewersLivestreamList } from './BuffViewersLivestreamList'
 import { Card } from 'antd'
-import { BuffViewersLivestreamAction } from './BuffViewersLivestreamAction'
-import { useTranslation } from 'react-i18next'
-import { BuffViewersLivestreamSystemStatus } from './BuffViewersLivestreamSystemStatus'
+import React, { useState } from 'react'
 import { BreadCrumb } from '../../../components/common/BreadCrumb'
+import { BuffViewersLivestreamAction } from './BuffViewersLivestreamAction'
+import { BuffViewersLivestreamList } from './BuffViewersLivestreamList'
+import { BuffViewersLivetreamStatistics } from './BuffViewersLivetreamStatistics'
 
 export const BuffViewersLivestream = () => {
-	const { t, i18n } = useTranslation('buff_viewers_livestream')
+
+	const [videoIdSearch, setVideoIdSearch] = useState<string>()
+
 	return (
 		<Card
 			title={
-				<BreadCrumb
-					routes={[
-						{
-							path: '/',
-							breadcrumbName: 'Home',
-						},
-						{
-							path: '/seeding',
-							breadcrumbName: 'Seeding',
-						},
-						{
-							path: '/seeding/buff-viewers-livestream',
-							breadcrumbName: 'Buff viewers livestream',
-						},
-					]}
-				/>
+				<BreadCrumb />
 			}
 		>
-			<BuffViewersLivestreamAction onChangeSearch={() => {}} />
-			<BuffViewersLivestreamSystemStatus />
-			<BuffViewersLivestreamList />
+			<BuffViewersLivetreamStatistics />
+			<BuffViewersLivestreamAction onChangeSearch={id => setVideoIdSearch(id)} />
+			<BuffViewersLivestreamList videoIdSearch={videoIdSearch} />
 		</Card>
 	)
 }

@@ -1,25 +1,12 @@
-import {
-	Avatar,
-	Col,
-	Icon,
-	message,
-	Modal,
-	notification,
-	Row,
-	Table,
-	Tag,
-} from 'antd'
-import { ColumnProps } from 'antd/lib/table'
+import { Card, Col, Divider, Icon, List, Row, Skeleton } from 'antd'
+import Text from 'antd/lib/typography/Text'
 import { graphql } from 'babel-plugin-relay/macro'
-import React from 'react'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
+import React, { useState } from 'react'
 import Moment from 'react-moment'
-import {
-	BuffViewersLivestream,
-	BuffViewersLivestreamConnection,
-} from '../../../types'
-import { delete_buff_viewers_livestream } from '../../../graphql/delete_buff_viewers_livestream'
 import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper'
+import { groupTimeIntoDayMap } from '../../../helpers/utils'
+import { BuffViewersLivestreamConnection } from '../../../types'
+import { BuffViewersDetailModal } from './BuffViewersLivestreamDetailModal'
 
 const query = graphql`
 	query BuffViewersLivestreamListQuery {
@@ -27,142 +14,141 @@ const query = graphql`
 			edges {
 				node {
 					id
-					uid
-					amount
-					note
-					name
-					created_time
+  				user_id
+  				uid
+  				status
+  				name
+  				note
+  				amount
+  				created_time
+  				end_time
+  				limit_mins
+  				logs {
+						time
+						amount
+					}
 				}
 			}
 		}
 	}
 `
 
-const IconFont = Icon.createFromIconfontCN({
-	scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
-})
-
-const columns: ColumnProps<BuffViewersLivestream>[] = [
+export const BuffViewersLivestreamList = GraphQLWrapper<
 	{
-		title: 'Info',
-		key: 'uid',
-		align: 'center',
-		render: (item: BuffViewersLivestream) => (
-			<Row type="flex" align="middle" justify="space-between">
-				<Col xs={24} md={4} xl={2} xxl={2}>
-					<Row type="flex" justify="space-around">
-						<Col>
-							<Avatar
-								src={`http://graph.facebook.com/${item.uid}/picture?type=large`}
-								size={60}
-							/>
-						</Col>
-					</Row>
-				</Col>
-				<Col>
-					<Row type="flex" justify="space-around">
-						{' '}
-						<Col style={{ minWidth: 300, paddingBottom: 10, paddingTop: 10 }}>
-							<Tag color="#2db7f5">
-								<Moment format="DD/MM/YYYY H:mm">{item.created_time}</Moment>
-							</Tag>
-							<Tag color="#108ee9">
-								<Moment toNow>{item.created_time}</Moment>
-							</Tag>
-							<CopyToClipboard
-								text={item.uid}
-								onCopy={() => message.info('Video owner UID copied')}
-							>
-								<Tag color="#108ee9">
-									<span>{item.uid}</span> &nbsp;
-									<Icon type="copy" />
-								</Tag>
-							</CopyToClipboard>
-						</Col>
-					</Row>
-				</Col>
-				<Col style={{ maxWidth: 300 }}>{item.name}</Col>
-			</Row>
-		),
+		buff_viewers_livestream_tasks: BuffViewersLivestreamConnection,
 	},
 	{
-		title: 'Action',
-		key: 'address',
-		align: 'center',
-		render: (item: BuffViewersLivestream) => (
-			<Row align="middle">
-				<Col>
-					<Icon
-						type="video-camera"
-						style={{
-							color: 'black',
-							margin: 10,
-							fontSize: 20,
-							cursor: 'pointer',
-						}}
-						onClick={() => window.open(`https://fb.com/${item.id}`)}
-					/>
-					<Icon
-						type="message"
-						style={{
-							color: 'black',
-							margin: 10,
-							fontSize: 20,
-							cursor: 'pointer',
-						}}
-						onClick={() => window.open(`https://m.me/${item.uid}`)}
-					/>
-					<IconFont
-						type="icon-facebook"
-						style={{
-							color: 'black',
-							margin: 10,
-							fontSize: 20,
-							cursor: 'pointer',
-						}}
-						onClick={() => window.open(`https://fb.com/${item.uid}`)}
-					/>
-					<Icon
-						type="delete"
-						style={{
-							color: 'red',
-							margin: 10,
-							fontSize: 20,
-							cursor: 'pointer',
-						}}
-						onClick={() =>
-							Modal.confirm({
-								title: 'Confirm!',
-								content: (
-									<span>
-										Delete <span style={{ color: 'red' }}> {item.name}</span> ?
-									</span>
-								),
-								onOk: async () => {
-									try {
-										await delete_buff_viewers_livestream(item.id)
-										notification.success({ message: 'Success' })
-									} catch (e) {
-										notification.error({ message: e })
-									}
-								},
-							})
-						}
-					/>
-				</Col>
-			</Row>
-		),
-	},
-]
+		videoIdSearch: string
+	}>(query, {}, ({ data, loading, videoIdSearch }) => {
 
-export const BuffViewersLivestreamList = GraphQLWrapper<{
-	buff_viewers_livestream_tasks: BuffViewersLivestreamConnection
-}>(query, {}, ({ data, loading }) => (
-	<Table
-		loading={loading}
-		columns={columns}
-		dataSource={
-			data ? data.buff_viewers_livestream_tasks.edges.map(e => e.node) : []
+		if (loading) {
+			return <Skeleton active loading paragraph={{ rows: 5 }} />
+		} else if (!loading && data) {
+
+			const [buffViewersDetailModalVisible, setBuffViewersDetailModalVisible] = useState<boolean>(false)
+
+			const buffViewersLivestreamTasks = data?.buff_viewers_livestream_tasks.edges.map(e => ({
+				...e.node,
+				time: e.node.created_time
+			}))
+			const timeSeriesBuffViewersLivestreamData = groupTimeIntoDayMap(buffViewersLivestreamTasks).filter(el => el.data.some(buff => !!buff.id.match(videoIdSearch))).map(el => ({
+				time: el.time,
+				data: el.data.filter(buff => !!buff.id.match(videoIdSearch))
+			}))
+			return (
+				<>
+					<BuffViewersDetailModal onClose={() => setBuffViewersDetailModalVisible(false)} visible={buffViewersDetailModalVisible} />
+					<List
+						size="large"
+						dataSource={timeSeriesBuffViewersLivestreamData}
+						renderItem={item => (
+							<>
+								<div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15 }}>
+									<Icon type="calendar" /> {item.time}
+								</div>
+								<List
+									grid={{ gutter: 16, xs: 1, sm: 2, md: 4, xxl: 8 }}
+									dataSource={item.data}
+									renderItem={buffViewersLivestream => (
+										<List.Item
+											style={{
+												borderRadius: 15,
+												boxShadow:
+													'0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.05)',
+												cursor: 'pointer'
+											}}
+											onClick={() => setBuffViewersDetailModalVisible(true)}
+										>
+											<Skeleton loading={loading} active>
+												<Card
+													extra={
+														<Text strong>
+															{`100/${buffViewersLivestream.amount}`}
+														</Text>
+													}
+													type="inner"
+													title={buffViewersLivestream.status}
+													headStyle={{ textAlign: 'left' }}
+												>
+													<Row>
+														<Col xs={24}>
+															<Row>
+																<Col span={12}>
+																	<Text strong>ID</Text>
+																</Col>
+																<Col span={12} style={{ textAlign: 'right' }}>
+																	{buffViewersLivestream.id}
+																</Col>
+															</Row>
+														</Col>
+													</Row>
+													<Row>
+														<Col xs={24}>
+															<Row>
+																<Col span={12}>
+																	<Text strong>Min</Text>
+																</Col>
+																<Col span={12} style={{ textAlign: 'right' }}>
+																	{buffViewersLivestream.limit_mins} minutes
+															</Col>
+															</Row>
+														</Col>
+													</Row>
+													<Row>
+														<Col xs={24}>
+															<Row>
+																<Col span={12}>
+																	<Text strong>Bought at</Text>
+																</Col>
+																<Col span={12} style={{ textAlign: 'right' }}>
+																	<Moment toNow>{buffViewersLivestream.created_time}</Moment>
+																</Col>
+															</Row>
+														</Col>
+													</Row>
+													<Row>
+														<Col xs={24}>
+															<Row>
+																<Col span={12}>
+																	<Text strong>Remain</Text>
+																</Col>
+																<Col span={12} style={{ textAlign: 'right' }}>
+																	<Moment toNow>{buffViewersLivestream.created_time}</Moment>
+																</Col>
+															</Row>
+														</Col>
+													</Row>
+												</Card>
+											</Skeleton>
+										</List.Item>
+									)}
+								/>
+								<Divider />
+							</>
+						)}
+					/>
+				</>
+			)
 		}
-	/>
-))
+	}
+	)

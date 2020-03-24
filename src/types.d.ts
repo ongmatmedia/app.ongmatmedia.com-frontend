@@ -724,7 +724,9 @@ export type User = {
   domain?: Maybe<Scalars['String']>;
   id: Scalars['ID'];
   balance: Scalars['Long'];
+  default_pricing?: Maybe<ServicePricing>;
   pricing?: Maybe<ServicePricing>;
+  default_price_percent?: Maybe<Scalars['Int']>;
   price_percent: Scalars['Int'];
   payment_methods?: Maybe<Array<PaymentMethod>>;
   creator_id: Scalars['String'];

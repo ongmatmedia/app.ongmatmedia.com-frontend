@@ -35,7 +35,7 @@ export const create_user = (
 ) =>
 	new Promise(async (success: Function, reject: Function) => {
 		commitMutation(RelayEnvironment as any, {
-			variables: { username, password, price_percent, email },
+			variables: { username: username.toLowerCase(), password, price_percent, email },
 			mutation,
 			updater: store => {
 				const list = store.get(`client:root:users`) as RecordProxy
