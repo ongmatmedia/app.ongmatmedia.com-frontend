@@ -2,8 +2,8 @@ import { Col, DatePicker, Icon, Input, Row } from 'antd'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Fab } from 'react-tiny-fab'
-import 'react-tiny-fab/dist/styles.css'
 import { BuffViewersLivestreamCreateModal } from './BuffViewersLivestreamCreateModal'
+import 'react-tiny-fab/dist/styles.css'
 
 export type BuffViewersLivestreamActionProps = {
 	onChangeSearch: (v: string) => any
@@ -20,10 +20,7 @@ export const BuffViewersLivestreamAction = (
 	const { t, i18n } = useTranslation('buff_viewers_livestream')
 
 	return (
-		<Row
-			style={{ marginBottom: 10 }}
-			gutter={12}
-		>
+		<Row style={{ marginBottom: 10 }} gutter={12}>
 			{create_modal_visible && (
 				<BuffViewersLivestreamCreateModal
 					onClose={() => set_create_modal_visible(false)}
@@ -33,10 +30,9 @@ export const BuffViewersLivestreamAction = (
 				<Fab
 					mainButtonStyles={{ backgroundColor: 'rgb(64, 169, 255)' }}
 					icon={<Icon type="plus" />}
-					event='click'
+					event="click"
 					onClick={() => set_create_modal_visible(true)}
-				>
-				</Fab>
+				></Fab>
 			)}
 			<Col xs={12} sm={{ span: 4, offset: 12 }}>
 				<DatePicker onChange={(date, dateString) => console.log(date)} />

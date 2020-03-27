@@ -12,7 +12,6 @@ export const ListTarget = (((props: {
 	const [isSelectingMode, setIsSelectingMode] = useState<boolean>(false)
 
 	const select = ({ uid, name, type, owner }) => {
-		console.log({ uid, name, type, owner })
 		const newTaretFromChild = {
 			...props.value,
 			facebooks: [
@@ -25,7 +24,6 @@ export const ListTarget = (((props: {
 				},
 			],
 		}
-		console.log({ newTaretFromChild })
 		props.onChange(newTaretFromChild)
 	}
 

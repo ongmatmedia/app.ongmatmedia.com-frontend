@@ -18,7 +18,7 @@ module.exports = {
             'Access-Control-Allow-Origin': '*',
         },
         useLocalIp:true,
-        historyApiFallback: true
+        historyApiFallback: true,
     },
     entry: [path.join(__dirname, '/src/index.tsx')],
     module: {

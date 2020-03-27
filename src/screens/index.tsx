@@ -1,7 +1,6 @@
 import React from 'react'
 import { HashRouter, Route, Switch } from 'react-router-dom'
 import { Error404Page } from '../components/common/Error404'
-import { AuthLayout } from '../layouts/auth'
 import { MainLayout } from '../layouts/main'
 import { ProtectedRoute, withAppState } from '../store/App'
 import { AccountScreen } from './account'
@@ -11,99 +10,107 @@ import { BankInformationPage } from './agency/BankInformationPage'
 import { CollaboratorSettingsPage } from './agency/CollaboratorSettingsPage'
 import { CollaboratorsListPage } from './agency/CollaboratorsListPage'
 import { SetDefaultPricePage } from './agency/SetDefaultPricePage'
-import { Login, ResetPassword } from './auth'
-import { SetNewPasswordPage } from './auth/set-new-pass'
+import { Login } from './auth'
 import { DepositPage } from './deposit'
 import { HomePage } from './HomePage'
-import { LivestreamTabs } from './livestream'
+import { LivestreamPage } from './livestream'
+import { LivestreamsListPage } from './livestream/LivestreamsListPage'
 import { Payments } from './payments'
 import { SeedingPage } from './seeding'
 import { BuffViewers } from './seeding/buff-viewers'
 import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream'
+import { CreateUpdateLivestreamPage } from './livestream/CreateUpdateLivestreamPage'
+import { FacebookAccountsContainer } from './account/FacebookAccountsPage/FacebookAccountsContainer'
+
+const LoginWrapper = ProtectedRoute(<Login />)
 
 export const AppWithRouter = withAppState(props => {
 	return (
 		<HashRouter>
 			<Switch>
-				<Route exact path="/auth/login">
-					<AuthLayout Content={Login} />
-				</Route>
-
-				<Route exact path="/auth/set-new-password">
-					<AuthLayout Content={SetNewPasswordPage} />
-				</Route>
-
-				<Route exact path="/auth/reset-password">
-					<AuthLayout Content={ResetPassword} />
-				</Route>
-
-				<ProtectedRoute exact path="/">
+				<LoginWrapper exact path="/">
 					<MainLayout Content={() => <HomePage />} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/accounts">
+				<LoginWrapper exact path="/farm">
 					<MainLayout Content={AccountScreen} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/seeding">
+				<LoginWrapper exact path="/farm/facebook">
+					<MainLayout Content={FacebookAccountsContainer} />
+				</LoginWrapper>
+
+				<LoginWrapper exact path="/seeding">
 					<MainLayout Content={SeedingPage} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/seeding/vip-viewers-livestream">
+				<LoginWrapper exact path="/seeding/vip-viewers-livestream">
 					<MainLayout Content={VipViewersLivestream} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/seeding/buff-viewers-livestream">
+				<LoginWrapper exact path="/seeding/buff-viewers-livestream">
 					<MainLayout Content={BuffViewersLivestream} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/seeding/buff-viewers">
+				<LoginWrapper exact path="/seeding/buff-viewers">
 					<MainLayout Content={BuffViewers} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/payments">
+				<LoginWrapper exact path="/payments">
 					<MainLayout Content={Payments} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/agency">
+				<LoginWrapper exact path="/agency">
 					<MainLayout Content={AgencyPage} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/agency/collaborators">
+				<LoginWrapper exact path="/agency/collaborators">
 					<MainLayout Content={CollaboratorsListPage} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/agency/bank-information">
+				<LoginWrapper exact path="/agency/bank-information">
 					<MainLayout Content={BankInformationPage} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/agency/default-price">
+				<LoginWrapper exact path="/agency/default-price">
 					<MainLayout Content={SetDefaultPricePage} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/agency/admin-information">
+				<LoginWrapper exact path="/agency/admin-information">
 					<MainLayout Content={AdminInformationPage} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/agency/setting">
+				<LoginWrapper exact path="/agency/setting">
 					<MainLayout Content={CollaboratorSettingsPage} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/deposit">
+				<LoginWrapper exact path="/deposit">
 					<MainLayout Content={DepositPage} />
-				</ProtectedRoute>
+				</LoginWrapper>
 
-				<ProtectedRoute exact path="/livestream">
-					<MainLayout Content={LivestreamTabs} />
-				</ProtectedRoute>
+				<LoginWrapper exact path="/livestream">
+					<MainLayout Content={LivestreamPage} />
+				</LoginWrapper>
 
-				<ProtectedRoute>
+				<LoginWrapper exact path="/livestream/all-livestreams">
+					<MainLayout Content={LivestreamsListPage} />
+				</LoginWrapper>
+
+				<LoginWrapper exact path="/livestream/create-livestream">
+					<MainLayout Content={CreateUpdateLivestreamPage} />
+				</LoginWrapper>
+
+				<LoginWrapper exact path="/livestream/update-livestream">
+					<MainLayout Content={CreateUpdateLivestreamPage} />
+				</LoginWrapper>
+
+				<LoginWrapper>
 					<Error404Page />
-				</ProtectedRoute>
+				</LoginWrapper>
 
 				<Route>
-					<Error404Page />
+					<Login />
 				</Route>
 			</Switch>
 		</HashRouter>

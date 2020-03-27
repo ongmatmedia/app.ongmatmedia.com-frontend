@@ -5,6 +5,7 @@ import { RouteComponentProps } from 'react-router'
 import { withRouter } from 'react-router-dom'
 import { AppState } from '../../store/App'
 import { UserInfo } from './UserInfo'
+import { Auth } from 'aws-amplify'
 
 type DrawerAppProps = {
 	name: string
@@ -22,8 +23,9 @@ const DrawerLinks: DrawerLinksType[] = [
 	{ name: 'notification_icon_title', icon: 'sound', to: '/notification' },
 	{ name: 'seeding_icon_title', icon: 'alert', to: '/seeding' },
 	{ name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
-	{ name: 'account_icon_title', icon: 'team', to: '/account' },
+	{ name: 'account_icon_title', icon: 'team', to: '/farm' },
 	{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
+	{ name: 'payments_icon_title', icon: 'credit-card', to: '/payments' },
 	{ name: 'agency_icon_title', icon: 'user', to: '/agency' },
 	{ name: 'setting_icon_title', icon: 'setting', to: '/setting' },
 ]
@@ -119,10 +121,7 @@ export const AppDrawer = ((withRouter as any)(
 					onClick={() =>
 						Modal.confirm({
 							title: 'Logout now?',
-							onOk: () => {
-								props.history.push('/auth/login')
-								AppState.logout()
-							},
+							onOk: () => Auth.signOut({ global: true }),
 						})
 					}
 				/>

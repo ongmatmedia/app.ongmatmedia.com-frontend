@@ -3,11 +3,10 @@ import { Avatar, Icon, Card, Popconfirm, Button, Popover } from 'antd'
 import Meta from 'antd/lib/card/Meta'
 import Moment from 'react-moment'
 import { Livestream } from '../../../types'
+import { Link } from 'react-router-dom'
 
 export type LivestreamListItem = {
 	live: Livestream
-	onNavigateCreateUpdateTab: Function
-	onSelectLiveToUpdate: Function
 	onStopLivestream: Function
 	onDeleteLivestream: Function
 }
@@ -25,15 +24,14 @@ export const LivestreamListItem = (props: LivestreamListItem) => (
 				? [<Button disabled>Livestream is ended</Button>]
 				: props.live.status === 'playing'
 				? [
-						<Icon
-							type="edit"
-							style={{ color: '#1890ff' }}
-							key="edit"
-							onClick={() => {
-								props.onSelectLiveToUpdate(props.live)
-								props.onNavigateCreateUpdateTab()
+						<Link
+							to={{
+								pathname: '/livestream/update-livestream',
+								state: { live: props.live },
 							}}
-						/>,
+						>
+							<Icon type="edit" style={{ color: '#1890ff' }} key="edit" />
+						</Link>,
 						<Popconfirm
 							placement="topRight"
 							title="Do you want to stop this task"
@@ -59,8 +57,7 @@ export const LivestreamListItem = (props: LivestreamListItem) => (
 							style={{ color: '#1890ff' }}
 							key="edit"
 							onClick={() => {
-								props.onSelectLiveToUpdate(props.live)
-								props.onNavigateCreateUpdateTab()
+								// Navigate to update page with state
 							}}
 						/>,
 						<Popconfirm

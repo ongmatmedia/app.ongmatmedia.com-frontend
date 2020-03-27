@@ -1,4 +1,15 @@
-import { Button, Card, Col, List, Row, Icon, Popconfirm, Spin, notification } from 'antd'
+import {
+	Button,
+	Card,
+	Col,
+	List,
+	Row,
+	Icon,
+	Popconfirm,
+	Spin,
+	notification,
+	Avatar,
+} from 'antd'
 import Text from 'antd/lib/typography/Text'
 import React, { useState } from 'react'
 import { BreadCrumb } from '../../components/common/BreadCrumb'
@@ -8,6 +19,7 @@ import graphql from 'babel-plugin-relay/macro'
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
 import { User, PaymentMethod } from '../../types'
 import { update_profile } from '../../graphql/update_profile'
+import { exportBankIcon } from '../../helpers/utils'
 
 export interface Bank {
 	name: string
@@ -23,9 +35,9 @@ const query = graphql`
 			id
 			payment_methods {
 				name
-      	owner
-      	description
-      	account
+				owner
+				description
+				account
 			}
 		}
 	}
@@ -96,6 +108,17 @@ export const BankInformationPage = GraphQLWrapper<{
 								boxShadow:
 									'0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.05)',
 							}}
+							cover={
+								<Row type="flex" justify="center">
+									<Col xs={24}>
+										<Avatar
+											src={exportBankIcon(item.name)}
+											size={100}
+											shape="square"
+										/>
+									</Col>
+								</Row>
+							}
 							title={<Text strong>{item.name}</Text>}
 							extra={
 								<Popconfirm
@@ -104,19 +127,25 @@ export const BankInformationPage = GraphQLWrapper<{
 										setDeletedBank(item.account)
 										await update_profile({
 											payment_methods: [
-												...data.me.payment_methods.filter(paymentMethod => paymentMethod.account !== item.account),
-											]
+												...data.me.payment_methods.filter(
+													paymentMethod =>
+														paymentMethod.account !== item.account,
+												),
+											],
 										})
 										notification.success({
-											message: 'Delete bank successfully'
+											message: 'Delete bank successfully',
 										})
 										setDeletedBank('')
-									}
-									}
+									}}
 									okText="Yes"
 									cancelText="No"
 								>
-									{item.account !== deletedBank ? <Icon type="delete" style={{ color: 'red' }} /> : <Icon type="loading" style={{ color: 'blue' }} />}
+									{item.account !== deletedBank ? (
+										<Icon type="delete" style={{ color: 'red' }} />
+									) : (
+										<Icon type="loading" style={{ color: 'blue' }} />
+									)}
 								</Popconfirm>
 							}
 							headStyle={{ textAlign: 'left' }}
@@ -127,7 +156,8 @@ export const BankInformationPage = GraphQLWrapper<{
 									setSelectedBank(item)
 									setModalMode('update')
 									setCreateUpdateBankModalVisible(true)
-								}} >
+								}}
+							>
 								{Object.keys(item).map(
 									keyName =>
 										keyName !== 'description' &&
@@ -156,4 +186,3 @@ export const BankInformationPage = GraphQLWrapper<{
 		</Card>
 	)
 })
-

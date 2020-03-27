@@ -1,35 +1,44 @@
-import React, { FunctionComponent, PropsWithChildren, Component } from 'react'
-import { observable } from 'mobx'
-import Amplify, { Auth } from 'aws-amplify'
-import { GraphQLSubscription } from '../graphql/subscriptions'
-import {
-	FirebaseConfigVAPIDKEY,
-	FirebaseConfig,
-	AmplifyConfig,
-} from '../config'
+import Amplify, { Auth, Hub } from 'aws-amplify'
 import * as firebase from 'firebase/app'
-import { app } from 'firebase'
 import i18next from 'i18next'
-import { initReactI18next } from 'react-i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
-import * as lang from '../locales'
+import { observable } from 'mobx'
+import { observer } from 'mobx-react'
+import React, { Component, FunctionComponent } from 'react'
+import { initReactI18next } from 'react-i18next'
+import { Route, withRouter } from 'react-router-dom'
 import {
-	Redirect,
-	Route,
-	withRouter,
-	RouteComponentProps,
-} from 'react-router-dom'
+	AmplifyConfig,
+	FirebaseConfig,
+	FirebaseConfigVAPIDKEY,
+} from '../config'
+import { GraphQLSubscription } from '../graphql/subscriptions'
 import { isMobileDevice, toggleFullScreen } from '../helpers/utils'
+import * as lang from '../locales'
 
 class App {
-	@observable authenticated: boolean = false
-	private firebase: app.App
+	@observable logged: boolean = false
+
+	private firebase: firebase.app.App
 
 	async init() {
 		Amplify.configure(AmplifyConfig)
-		await GraphQLSubscription.subscriblePublicEvents()
 		const user = await Auth.currentUserInfo()
-		if (user) this.authenticated = true
+		if (user) {
+			this.on_login_success()
+		} else {
+			!window.location.search.includes('?code=') &&
+				(await Auth.federatedSignIn({ provider: 'ongmat' as any }))
+			await new Promise(s => {
+				Hub.listen('auth', ({ payload: { event, data } }) => {
+					console.log(event, data)
+					if (event == 'signIn') {
+						this.on_login_success()
+						s()
+					}
+				})
+			})
+		}
 
 		// Load title
 		const splited_hostname = window.location.hostname.split('.')
@@ -52,8 +61,8 @@ class App {
 
 	async on_login_success() {
 		try {
+			this.logged = true
 			if (isMobileDevice()) toggleFullScreen()
-			this.authenticated = true
 			await GraphQLSubscription.subscriblePrivateEvents()
 			// Enable push
 			if (Notification.permission == 'granted') {
@@ -69,10 +78,8 @@ class App {
 	}
 
 	async logout() {
-		this.authenticated = false
-		localStorage.setItem('login_redirect', '/')
+		this.logged = false
 		Auth.signOut()
-		await GraphQLSubscription.unsubscribeAll()
 	}
 
 	async service_worker_register() {
@@ -85,18 +92,20 @@ class App {
 		firebase.messaging().useServiceWorker(sw)
 	}
 }
+
 export const AppState = new App()
 
 export const withAppState = <P extends {}>(
-	C: FunctionComponent<P & App>,
-) => props => <C {...props} {...AppState} />
+	C: FunctionComponent<P & { appState: App }>,
+) => {
+	const X = observer(C)
+	return props => <X {...props} appState={AppState} />
+}
 
-export const ProtectedRoute = withRouter(
-	withAppState(({ authenticated, ...rest }) => {
-		if (!authenticated) {
-			localStorage.setItem('login_redirect', (rest as any).path)
-			return <Redirect to="/auth/login" />
-		}
-		return <Route {...rest} render={p => <Component {...p} />} />
-	}),
-)
+export const ProtectedRoute = (DefaultComponent: any) =>
+	withRouter(
+		withAppState(({ appState, ...rest }) => {
+			if (!appState.logged) return DefaultComponent
+			return <Route {...rest} render={p => <Component {...p} />} />
+		}),
+	)

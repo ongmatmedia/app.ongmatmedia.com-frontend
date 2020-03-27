@@ -1,12 +1,27 @@
 import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { QueryRenderer } from 'react-relay'
-import { RelayEnvironment } from '../../graphql/RelayEnvironment'
-import { AccountListPresentation } from './AccountListPresentation'
-import { ViewAccountModal } from './ViewAccountModal'
-import { CreateUpdateAccountModal } from './CreateUpdateAccountModal'
+import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
+import { CreateUpdateAccountModal } from '../CreateUpdateAccountModal'
+import { ViewAccountModal } from '../ViewAccountModal'
+import { FacebookAccountsPresentation } from './FacebookAccountsPresentation'
+import { Card } from 'antd'
+import { BreadCrumb } from '../../../components/common/BreadCrumb'
 
-export const AccountListContainer = () => {
+const query = graphql`
+	query FacebookAccountsContainerQuery {
+		facebook_accounts {
+			edges {
+				node {
+					id
+					name
+				}
+			}
+		}
+	}
+`
+
+export const FacebookAccountsContainer = () => {
 	const [selectedAccounts, setSelectedAccounts] = useState<string[]>([])
 
 	const [modalViewAccountIsVisible, setModalViewAccountIsVisible] = useState<
@@ -25,21 +40,10 @@ export const AccountListContainer = () => {
 	return (
 		<QueryRenderer
 			environment={RelayEnvironment}
-			query={graphql`
-				query AccountListContainerQuery {
-					facebook_accounts {
-						edges {
-							node {
-								id
-								name
-							}
-						}
-					}
-				}
-			`}
+			query={query}
 			variables={{}}
 			render={rs => (
-				<>
+				<Card title={<BreadCrumb />} style={{ height: 'calc(100vh - 70px)' }}>
 					<ViewAccountModal
 						visible={modalViewAccountIsVisible}
 						onClose={() => setModalViewAccountIsVisible(false)}
@@ -55,7 +59,7 @@ export const AccountListContainer = () => {
 						accountId={viewingAccount}
 						mode={modalMode}
 					/>
-					<AccountListPresentation
+					<FacebookAccountsPresentation
 						loading={rs.props == null}
 						accounts={
 							rs.props
@@ -74,34 +78,11 @@ export const AccountListContainer = () => {
 							setViewingAccount(id)
 							setModalViewAccountIsVisible(true)
 						}}
-						// accounts={[
-						// 	{
-						// 		id: '100005137867313',
-						// 		name: 'Dang Tien Nguyen',
-						// 	},
-						// 	{
-						// 		id: '100005137867314',
-						// 		name: 'Dang Tien Nguyen',
-						// 	},
-						// 	{
-						// 		id: '100005137867315',
-						// 		name: 'Dang Tien Nguyen',
-						// 	},
-						// 	{
-						// 		id: '100005137867316',
-						// 		name: 'Dang Tien Nguyen',
-						// 	},
-						// 	{
-						// 		id: '100005137867317',
-						// 		name: 'Dang Tien Nguyen',
-						// 	},
-						// 	{
-						// 		id: '100005137867318',
-						// 		name: 'Dang Tien Nguyen',
-						// 	},
-						// ]}
+						fabIsVisble={
+							!modalViewAccountIsVisible && !modalCreateUpdateAccountIsVisible
+						}
 					/>
-				</>
+				</Card>
 			)}
 		/>
 	)

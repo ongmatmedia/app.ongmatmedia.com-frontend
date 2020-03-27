@@ -14,9 +14,6 @@ export const AddSchedule = (props: IAddSchedule) => {
 				(props.tagsSchedule || []).filter(tag => tag !== removedTag),
 			)
 	}
-
-	console.log(props.mode)
-
 	const scheduleData =
 		props.mode !== 'create'
 			? props.tagsSchedule.filter(tag => tag !== 0)

@@ -1,4 +1,4 @@
-import { List, Spin } from 'antd'
+import { List, Spin, Card } from 'antd'
 import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { QueryRenderer } from 'react-relay'
@@ -7,9 +7,10 @@ import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
 import { Livestream } from '../../../types'
 import { LivestreamListItem } from './LivestreamListItem'
 import { stop_livestream } from '../../../graphql/stop_livestream'
+import { BreadCrumb } from '../../../components/common/BreadCrumb'
 
-const LivestreamsListTabQuery = graphql`
-	query LivestreamsListTabQuery {
+const LivestreamsListPageQuery = graphql`
+	query LivestreamsListPageQuery {
 		livestream_tasks {
 			edges {
 				node {
@@ -47,15 +48,13 @@ const LivestreamsListTabQuery = graphql`
 const LivestreamsListView = (props: {
 	loading: boolean
 	list: Livestream[]
-	onNavigateCreateUpdateTab: Function
-	onSelectLiveToUpdate: (live: Livestream) => void
 }) => {
 	const [loadingOnStopLivestream, setLoadingOnStopLivestream] = useState<
 		boolean
 	>(false)
 
 	return (
-		<>
+		<Card title={<BreadCrumb />}>
 			<Spin spinning={loadingOnStopLivestream}>
 				<List
 					grid={{
@@ -73,8 +72,6 @@ const LivestreamsListView = (props: {
 						<List.Item>
 							<LivestreamListItem
 								live={live}
-								onNavigateCreateUpdateTab={props.onNavigateCreateUpdateTab}
-								onSelectLiveToUpdate={props.onSelectLiveToUpdate}
 								onDeleteLivestream={() => delete_livestream(live.id)}
 								onStopLivestream={async () => {
 									setLoadingOnStopLivestream(true)
@@ -86,18 +83,15 @@ const LivestreamsListView = (props: {
 					)}
 				/>
 			</Spin>
-		</>
+		</Card>
 	)
 }
 
-export const LivestreamsListTab = (props: {
-	onNavigateCreateUpdateTab: Function
-	onSelectLiveToUpdate: (live: Livestream) => void
-}) => (
+export const LivestreamsListPage = () => (
 	<QueryRenderer
 		variables={{ limit: 150 }}
 		environment={RelayEnvironment}
-		query={LivestreamsListTabQuery}
+		query={LivestreamsListPageQuery}
 		render={rs => (
 			<LivestreamsListView
 				loading={rs.props == null}
@@ -106,8 +100,6 @@ export const LivestreamsListTab = (props: {
 						? (rs.props as any).livestream_tasks.edges.map(e => e.node)
 						: []
 				}
-				onNavigateCreateUpdateTab={props.onNavigateCreateUpdateTab}
-				onSelectLiveToUpdate={props.onSelectLiveToUpdate}
 			/>
 		)}
 	/>

@@ -9,9 +9,26 @@ export const AmplifyConfig = {
 		region: 'us-east-1',
 		userPoolWebClientId: '5jsn7g62sgsc69vcitn1ld8co4',
 		userPoolId: 'us-east-1_SNJlNZ7oX',
+		identityPoolId: 'us-east-1:7fde0c27-0753-4966-832a-7c0c34953f18',
 	},
 	Analytics: {
 		disabled: true,
+	},
+	social: {
+		FB: '640686576709781',
+	},
+	oauth: {
+		domain: 'ongmatmedia.auth.us-east-1.amazoncognito.com',
+		scope: [
+			'phone',
+			'email',
+			'profile',
+			'openid',
+			'aws.cognito.signin.user.admin',
+		],
+		redirectSignIn: 'http://localhost:8080',
+		redirectSignOut: 'http://localhost:8080',
+		responseType: 'code',
 	},
 }
 

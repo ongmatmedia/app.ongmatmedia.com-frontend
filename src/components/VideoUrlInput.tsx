@@ -47,6 +47,7 @@ export const VideoUrlInput = (props: VideoUrlInputProps) => {
 				...data.video_info,
 				url: videoUrlValue,
 			})
+			setError('')
 		} catch (error) {
 			console.log(error)
 			setError(error)

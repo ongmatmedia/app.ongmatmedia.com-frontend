@@ -3,17 +3,17 @@ import { Card, List, Row, Avatar, Icon } from 'antd'
 import { BreadCrumb } from './BreadCrumb'
 import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
 
-interface ListAppBlockProps {
-	children: Array<{
-		icon?: string
-		cover?: string
-		serviceName: string
-		link: string
-	}>
-}
-
 export const ListAppBlock = (withRouter as any)(
-	(props: ListAppBlockProps & RouteComponentProps) => {
+	(
+		props: {
+			children: Array<{
+				icon?: string
+				cover?: string
+				serviceName: string
+				link: string
+			}>
+		} & RouteComponentProps,
+	) => {
 		return (
 			<Card style={{ height: 'calc(100vh - 65px)' }} title={<BreadCrumb />}>
 				<List
@@ -26,7 +26,17 @@ export const ListAppBlock = (withRouter as any)(
 					dataSource={props.children}
 					renderItem={item => (
 						<List.Item>
-							<Link to={`${props.location.pathname}${item.link}`}>
+							<Link
+								to={`${
+									props.location.pathname[props.location.pathname.length - 1] ==
+									'/'
+										? props.location.pathname.slice(
+												0,
+												props.location.pathname.length - 1,
+										  )
+										: props.location.pathname
+								}${item.link}`}
+							>
 								<Card
 									style={{
 										textAlign: 'center',
@@ -43,7 +53,10 @@ export const ListAppBlock = (withRouter as any)(
 											<Icon type={item.icon} style={{ fontSize: 40 }} />
 										)}
 									</Row>
-									<Row>{item.serviceName}</Row>
+									<Row>
+										{item.serviceName.charAt(0).toLocaleUpperCase() +
+											item.serviceName.substring(1).toLocaleLowerCase()}
+									</Row>
 								</Card>
 							</Link>
 						</List.Item>
