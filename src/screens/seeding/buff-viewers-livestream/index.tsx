@@ -6,17 +6,14 @@ import { BuffViewersLivestreamList } from './BuffViewersLivestreamList'
 import { BuffViewersLivetreamStatistics } from './BuffViewersLivetreamStatistics'
 
 export const BuffViewersLivestream = () => {
-
 	const [videoIdSearch, setVideoIdSearch] = useState<string>()
 
 	return (
-		<Card
-			title={
-				<BreadCrumb />
-			}
-		>
+		<Card title={<BreadCrumb />}>
 			<BuffViewersLivetreamStatistics />
-			<BuffViewersLivestreamAction onChangeSearch={id => setVideoIdSearch(id)} />
+			<BuffViewersLivestreamAction
+				onChangeSearch={id => setVideoIdSearch(id)}
+			/>
 			<BuffViewersLivestreamList videoIdSearch={videoIdSearch} />
 		</Card>
 	)

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@auth0/auth0-spa-js": "^1.6.5",
     "antd": "3.26.13",
     "apollo-link": "^1.2.13",
     "apollo-link-ws": "^1.0.19",

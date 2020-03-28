@@ -14,11 +14,11 @@ const query = graphql`
 		me {
 			id
 			name
-  		phone
-  		username
-  		email
-  		facebook_uid
-  		admin_page_uid
+			phone
+			username
+			email
+			facebook_uid
+			admin_page_uid
 		}
 	}
 `
@@ -35,10 +35,10 @@ export const AdminInformationPage = Form.create<AdminInformationPageProps>()(
 					setLoading(true)
 					try {
 						await update_profile({
-							...values
+							...values,
 						})
 						notification.success({
-							message: 'Update admin information successfully'
+							message: 'Update admin information successfully',
 						})
 					} catch (error) {
 						setError(error)
@@ -77,39 +77,38 @@ export const AdminInformationPage = Form.create<AdminInformationPageProps>()(
 				query={query}
 				variables={{}}
 				render={(rs: any) => (
-					<Spin spinning={rs.props == null} >
+					<Spin spinning={rs.props == null}>
 						<Card title={<BreadCrumb />}>
 							{error && <Alert type="error" message={error} />}
 							<Form {...formItemLayout}>
 								<Form.Item label="Name">
-									{props.form.getFieldDecorator('name',
-										{
-											rules: [{ required: false }],
-											initialValue: rs.props?.me?.name
-										})(<Input placeholder="Name" />)}
+									{props.form.getFieldDecorator('name', {
+										rules: [{ required: false }],
+										initialValue: rs.props?.me?.name,
+									})(<Input placeholder="Name" />)}
 								</Form.Item>
 								<Form.Item label="Phone">
 									{props.form.getFieldDecorator('phone', {
 										rules: [{ required: false }],
-										initialValue: rs.props?.me?.phone
+										initialValue: rs.props?.me?.phone,
 									})(<Input placeholder="Phone" />)}
 								</Form.Item>
 								<Form.Item label="Email">
 									{props.form.getFieldDecorator('email', {
 										rules: [{ required: false }],
-										initialValue: rs.props?.me?.email
+										initialValue: rs.props?.me?.email,
 									})(<Input placeholder="Email" />)}
 								</Form.Item>
 								<Form.Item label="Facebook ID">
 									{props.form.getFieldDecorator('facebook_uid', {
 										rules: [{ required: false }],
-										initialValue: rs.props?.me?.facebook_uid
+										initialValue: rs.props?.me?.facebook_uid,
 									})(<Input placeholder="Facebook ID" />)}
 								</Form.Item>
 								<Form.Item label="Page ID">
 									{props.form.getFieldDecorator('admin_page_uid', {
 										rules: [{ required: false }],
-										initialValue: rs.props?.me?.admin_page_uid
+										initialValue: rs.props?.me?.admin_page_uid,
 									})(<Input placeholder="Page ID" />)}
 								</Form.Item>
 								<Form.Item {...tailFormItemLayout}>
@@ -120,9 +119,8 @@ export const AdminInformationPage = Form.create<AdminInformationPageProps>()(
 							</Form>
 						</Card>
 					</Spin>
-				)
-				}
+				)}
 			/>
 		)
-	}
+	},
 )

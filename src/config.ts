@@ -4,7 +4,7 @@ export const GraphQLEndpoint =
 export const AmplifyConfig = {
 	aws_appsync_graphqlEndpoint: GraphQLEndpoint,
 	aws_appsync_region: 'us-east-1',
-	aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
+	aws_appsync_authenticationType: 'OPENID_CONNECT',
 	Auth: {
 		region: 'us-east-1',
 		userPoolWebClientId: '5jsn7g62sgsc69vcitn1ld8co4',
@@ -14,21 +14,8 @@ export const AmplifyConfig = {
 	Analytics: {
 		disabled: true,
 	},
-	social: {
-		FB: '640686576709781',
-	},
-	oauth: {
-		domain: 'ongmatmedia.auth.us-east-1.amazoncognito.com',
-		scope: [
-			'phone',
-			'email',
-			'profile',
-			'openid',
-			'aws.cognito.signin.user.admin',
-		],
-		redirectSignIn: 'http://localhost:8080',
-		redirectSignOut: 'http://localhost:8080',
-		responseType: 'code',
+	API: {
+		graphql_endpoint: GraphQLEndpoint,
 	},
 }
 
@@ -45,3 +32,9 @@ export const FirebaseConfig = {
 
 export const FirebaseConfigVAPIDKEY =
 	'BHTar4YMvOMDzZOqKW8j-ThYbvqvPfCnBfOUzN8QI1fIvHM5rQETDFWXEffWFxZXyly4lTBNtgwf5TqZEp0gDUE'
+
+export const AUTH0_CONFIG = {
+	domain: 'ongmatmedia.auth0.com',
+	client_id: 'spiiEFrf1tPlIPksv1vB3EPKLr9uNg50',
+	redirect_uri: window.location.origin,
+}

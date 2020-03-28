@@ -1,44 +1,34 @@
 import React from 'react'
-import { HashRouter, Route, Switch } from 'react-router-dom'
+import { HashRouter, Switch } from 'react-router-dom'
 import { Error404Page } from '../components/common/Error404'
 import { MainLayout } from '../layouts/main'
 import { ProtectedRoute, withAppState } from '../store/App'
-import { AccountScreen } from './account'
+import { FacebookAccountsContainer } from './account/FacebookAccountsPage/FacebookAccountsContainer'
 import { AgencyPage } from './agency'
 import { AdminInformationPage } from './agency/AdminInformationPage'
 import { BankInformationPage } from './agency/BankInformationPage'
 import { CollaboratorSettingsPage } from './agency/CollaboratorSettingsPage'
 import { CollaboratorsListPage } from './agency/CollaboratorsListPage'
 import { SetDefaultPricePage } from './agency/SetDefaultPricePage'
-import { Login } from './auth'
+import { AdminContact } from './contact/AdminContact'
 import { DepositPage } from './deposit'
 import { HomePage } from './HomePage'
-import { LivestreamPage } from './livestream'
-import { LivestreamsListPage } from './livestream/LivestreamsListPage'
+import { NotificationPage } from './notification'
 import { Payments } from './payments'
 import { SeedingPage } from './seeding'
 import { BuffViewers } from './seeding/buff-viewers'
 import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
 import { VipViewersLivestream } from './seeding/vip-viewers-livestream'
-import { CreateUpdateLivestreamPage } from './livestream/CreateUpdateLivestreamPage'
-import { FacebookAccountsContainer } from './account/FacebookAccountsPage/FacebookAccountsContainer'
+import { LoadingPage } from './loading/LoadingPage'
 
-const LoginWrapper = ProtectedRoute(<Login />)
+const LoginWrapper = ProtectedRoute(<LoadingPage />)
 
-export const AppWithRouter = withAppState(props => {
+export const AppWithRouter = withAppState(() => {
 	return (
 		<HashRouter>
 			<Switch>
 				<LoginWrapper exact path="/">
 					<MainLayout Content={() => <HomePage />} />
-				</LoginWrapper>
-
-				<LoginWrapper exact path="/farm">
-					<MainLayout Content={AccountScreen} />
-				</LoginWrapper>
-
-				<LoginWrapper exact path="/farm/facebook">
-					<MainLayout Content={FacebookAccountsContainer} />
 				</LoginWrapper>
 
 				<LoginWrapper exact path="/seeding">
@@ -89,7 +79,15 @@ export const AppWithRouter = withAppState(props => {
 					<MainLayout Content={DepositPage} />
 				</LoginWrapper>
 
-				<LoginWrapper exact path="/livestream">
+				<LoginWrapper exact path="/notification">
+					<MainLayout Content={NotificationPage} />
+				</LoginWrapper>
+
+				<LoginWrapper exact path="/contact">
+					<MainLayout Content={AdminContact} />
+				</LoginWrapper>
+
+				{/* <LoginWrapper exact path="/livestream">
 					<MainLayout Content={LivestreamPage} />
 				</LoginWrapper>
 
@@ -103,15 +101,23 @@ export const AppWithRouter = withAppState(props => {
 
 				<LoginWrapper exact path="/livestream/update-livestream">
 					<MainLayout Content={CreateUpdateLivestreamPage} />
-				</LoginWrapper>
+				</LoginWrapper> */}
+
+				{/* <LoginWrapper exact path="/farm">
+					<MainLayout Content={AccountScreen} />
+				</LoginWrapper> */}
+
+				{/* <LoginWrapper exact path="/farm/facebook">
+					<MainLayout Content={FacebookAccountsContainer} />
+				</LoginWrapper> */}
+
+				{/* <LoginWrapper exact path="/pricing">
+					<MainLayout Content={PricingPage} />
+				</LoginWrapper> */}
 
 				<LoginWrapper>
 					<Error404Page />
 				</LoginWrapper>
-
-				<Route>
-					<Login />
-				</Route>
 			</Switch>
 		</HashRouter>
 	)

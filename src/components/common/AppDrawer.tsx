@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom'
 import { AppState } from '../../store/App'
 import { UserInfo } from './UserInfo'
 import { Auth } from 'aws-amplify'
+import { Auth0Service } from '../../helpers/Auth0'
 
 type DrawerAppProps = {
 	name: string
@@ -22,12 +23,13 @@ type DrawerLinksType = {
 const DrawerLinks: DrawerLinksType[] = [
 	{ name: 'notification_icon_title', icon: 'sound', to: '/notification' },
 	{ name: 'seeding_icon_title', icon: 'alert', to: '/seeding' },
-	{ name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
-	{ name: 'account_icon_title', icon: 'team', to: '/farm' },
+	// { name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
+	// { name: 'account_icon_title', icon: 'team', to: '/farm' },
 	{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
 	{ name: 'payments_icon_title', icon: 'credit-card', to: '/payments' },
 	{ name: 'agency_icon_title', icon: 'user', to: '/agency' },
 	{ name: 'setting_icon_title', icon: 'setting', to: '/setting' },
+	{ name: 'admin_info_icon_title', icon: 'contacts', to: '/contact' },
 ]
 
 const DrawerApp = (props: DrawerAppProps) => (
@@ -121,7 +123,7 @@ export const AppDrawer = ((withRouter as any)(
 					onClick={() =>
 						Modal.confirm({
 							title: 'Logout now?',
-							onOk: () => Auth.signOut({ global: true }),
+							onOk: () => Auth0Service.logout(),
 						})
 					}
 				/>

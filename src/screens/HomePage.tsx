@@ -18,6 +18,29 @@ const dataMoneyOne = {
 			label: 'Send money',
 			fill: false,
 			lineTension: 0.1,
+			backgroundColor: '#ff1e56',
+			borderColor: '#ff1e56',
+			borderCapStyle: 'butt',
+			borderDash: [],
+			borderDashOffset: 0.0,
+			borderJoinStyle: 'miter',
+			pointBorderColor: '#ff1e56',
+			pointBackgroundColor: '#fff',
+			pointBorderWidth: 1,
+			pointHoverRadius: 5,
+			pointHoverBackgroundColor: '#ff1e56',
+			pointHoverBorderColor: '#ff1e56',
+			pointHoverBorderWidth: 2,
+			pointRadius: 1,
+			pointHitRadius: 10,
+			data: [...range(1, 7)].map(el => getRandomInt(100000, 1000000)),
+		},
+		{
+			yAxisID: 'y-axis-1',
+			type: 'line',
+			label: 'Receive money',
+			fill: false,
+			lineTension: 0.1,
 			backgroundColor: '#ffa41b',
 			borderColor: '#ffa41b',
 			borderCapStyle: 'butt',
@@ -33,30 +56,7 @@ const dataMoneyOne = {
 			pointHoverBorderWidth: 2,
 			pointRadius: 1,
 			pointHitRadius: 10,
-			data: [...range(1, 100)].map(el => getRandomInt(100000, 1000000)),
-		},
-		{
-			yAxisID: 'y-axis-1',
-			type: 'line',
-			label: 'Receive money',
-			fill: false,
-			lineTension: 0.1,
-			backgroundColor: '#2b580c',
-			borderColor: '#2b580c',
-			borderCapStyle: 'butt',
-			borderDash: [],
-			borderDashOffset: 0.0,
-			borderJoinStyle: 'miter',
-			pointBorderColor: '#2b580c',
-			pointBackgroundColor: '#fff',
-			pointBorderWidth: 1,
-			pointHoverRadius: 5,
-			pointHoverBackgroundColor: '#2b580c',
-			pointHoverBorderColor: '#2b580c',
-			pointHoverBorderWidth: 2,
-			pointRadius: 1,
-			pointHitRadius: 10,
-			data: [...range(1, 100)].map(el => getRandomInt(100000, 1000000)),
+			data: [...range(1, 7)].map(el => getRandomInt(100000, 1000000)),
 		},
 		{
 			yAxisID: 'y-axis-2',
@@ -64,22 +64,22 @@ const dataMoneyOne = {
 			label: 'Total money',
 			fill: false,
 			lineTension: 0.1,
-			backgroundColor: '#36A2EB',
-			borderColor: '#36A2EB',
+			backgroundColor: '#00bdaa',
+			borderColor: '#00bdaa',
 			borderCapStyle: 'butt',
 			borderDash: [],
 			borderDashOffset: 0.0,
 			borderJoinStyle: 'miter',
-			pointBorderColor: '#36A2EB',
+			pointBorderColor: '#00bdaa',
 			pointBackgroundColor: '#fff',
 			pointBorderWidth: 1,
 			pointHoverRadius: 5,
-			pointHoverBackgroundColor: '#36A2EB',
-			pointHoverBorderColor: '#36A2EB',
+			pointHoverBackgroundColor: '#00bdaa',
+			pointHoverBorderColor: '#00bdaa',
 			pointHoverBorderWidth: 2,
 			pointRadius: 1,
 			pointHitRadius: 10,
-			data: [...range(1, 100)].map(el => getRandomInt(10000000, 1000000000)),
+			data: [...range(1, 7)].map(el => getRandomInt(10000000, 1000000000)),
 		},
 	],
 }
@@ -127,7 +127,14 @@ const options = {
 		},
 	},
 	scales: {
-		xAxes: [{ display: true }],
+		xAxes: [
+			{
+				display: true,
+				gridLines: {
+					display: false,
+				},
+			},
+		],
 		yAxes: [
 			{
 				type: 'linear',
@@ -135,12 +142,11 @@ const options = {
 				position: 'left',
 				id: 'y-axis-1',
 				gridLines: {
-					display: false,
+					display: true,
 				},
 				labels: {
 					show: true,
 				},
-				beginAtZero: false,
 				ticks: {
 					callback: (value: number) => {
 						return nFormatter(value, 1)
@@ -153,12 +159,11 @@ const options = {
 				position: 'right',
 				id: 'y-axis-2',
 				gridLines: {
-					display: false,
+					display: true,
 				},
 				labels: {
 					show: true,
 				},
-				beginAtZero: false,
 				ticks: {
 					callback: (value: number) => {
 						return nFormatter(value, 1)
@@ -200,7 +205,7 @@ export const HomePage = withRouter(props => (
 						<Alert
 							style={{ marginBottom: 20 }}
 							showIcon
-							type={item.type}
+							type={item.type as 'success' | 'info' | 'warning' | 'error'}
 							message={item.message}
 						/>
 					)}
@@ -211,18 +216,18 @@ export const HomePage = withRouter(props => (
 					<Col sm={12} xs={24}>
 						<Card>
 							<Statistic
-								title="Balance"
+								title={<Text strong>{'Balance'.toLocaleUpperCase()}</Text>}
 								value={Number(1000000).toLocaleString()}
 								prefix={<Icon type="dollar" />}
-								valueStyle={{ color: '#000839' }}
+								valueStyle={{ color: '#856c8b' }}
 							/>
 						</Card>
 					</Col>
 					<Col sm={12} xs={24}>
 						<Card>
 							<Statistic
-								valueStyle={{ color: '#ffa41b' }}
-								title="Send money"
+								valueStyle={{ color: '#ff1e56' }}
+								title={<Text strong>{'Send money'.toLocaleUpperCase()}</Text>}
 								value={Number(200000).toLocaleString()}
 								prefix={<Icon type="rise" />}
 							/>
@@ -231,18 +236,20 @@ export const HomePage = withRouter(props => (
 					<Col sm={12} xs={24} style={{ marginTop: 10 }}>
 						<Card>
 							<Statistic
-								valueStyle={{ color: '#2b580c' }}
-								title="Receive money"
+								valueStyle={{ color: '#ffa41b' }}
+								title={
+									<Text strong>{'Receive money'.toLocaleUpperCase()}</Text>
+								}
 								value={Number(800000).toLocaleString()}
-								prefix={<Icon type="fall" />}
+								prefix={<Icon type="thunderbolt" theme="filled" />}
 							/>
 						</Card>
 					</Col>
 					<Col sm={12} xs={24} style={{ marginTop: 10 }}>
 						<Card>
 							<Statistic
-								valueStyle={{ color: 'rgb(64, 169, 255)' }}
-								title="Total"
+								valueStyle={{ color: '#00bdaa' }}
+								title={<Text strong>{'Total'.toLocaleUpperCase()}</Text>}
 								value={Number(10000000).toLocaleString()}
 								prefix={<Icon type="money-collect" />}
 							/>

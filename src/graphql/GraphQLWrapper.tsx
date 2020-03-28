@@ -1,12 +1,6 @@
-import React, {
-	ReactNode,
-	FunctionComponent,
-	Component,
-	useState,
-	useEffect,
-} from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import { QueryRenderer } from 'react-relay'
-import { GraphQLTaggedNode, fetchQuery } from 'relay-runtime'
+import { fetchQuery, GraphQLTaggedNode } from 'relay-runtime'
 import { RelayEnvironment } from './RelayEnvironment'
 
 export const GraphQLWrapper = <T extends {}, P = {}>(

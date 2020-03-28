@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Text from 'antd/lib/typography/Text'
 import { Col } from 'antd'
 
-export const NoteReading = (props: { note: string, collapse:boolean }) => {
+export const NoteReading = (props: { note: string; collapse: boolean }) => {
 	const [collapsed, setCollapsed] = useState<boolean>(true)
 
 	return (

@@ -1,5 +1,21 @@
+import Amplify, { API, graphqlOperation } from 'aws-amplify'
 import { Environment, Network, RecordSource, Store } from 'relay-runtime'
-import { API, graphqlOperation } from 'aws-amplify'
+import { Auth0Service } from '../helpers/Auth0'
+
+Amplify.configure({
+	API: {
+		graphql_headers: async () => {
+			try {
+				const access_token = await Auth0Service.getAccessToken()
+				return {
+					authorization: access_token,
+				}
+			} catch (error) {
+				console.error({ error })
+			}
+		},
+	},
+})
 
 function fetchQuery(operation, variables) {
 	return API.graphql(graphqlOperation(operation.text, variables))

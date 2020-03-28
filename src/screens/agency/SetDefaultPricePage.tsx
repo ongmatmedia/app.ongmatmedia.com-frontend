@@ -1,4 +1,14 @@
-import { Alert, Form, Spin, Card, Button, notification, Icon, Row, Col } from 'antd'
+import {
+	Alert,
+	Form,
+	Spin,
+	Card,
+	Button,
+	notification,
+	Icon,
+	Row,
+	Col,
+} from 'antd'
 import React, { useState } from 'react'
 import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect'
 import { withForm } from '../../libs/Form'
@@ -8,7 +18,7 @@ import graphql from 'babel-plugin-relay/macro'
 import { QueryRenderer } from 'react-relay'
 import { RelayEnvironment } from '../../graphql/RelayEnvironment'
 
-interface SetDefaultPricePageProps { }
+interface SetDefaultPricePageProps {}
 
 const query = graphql`
 	query SetDefaultPricePageQuery {
@@ -87,59 +97,63 @@ export const SetDefaultPricePage = withForm<SetDefaultPricePageProps>(props => {
 							</Row>
 						</Card>
 					) : (
-							<Card title={<BreadCrumb />}>
-								{error && (
-									<Alert type="error" message={error} style={{ marginBottom: 15 }} />
-								)}
+						<Card title={<BreadCrumb />}>
+							{error && (
 								<Alert
+									type="error"
+									message={error}
 									style={{ marginBottom: 15 }}
-									showIcon
-									type="info"
-									message="You are setting default price for new user. Example: User that logged in via Facebook, Google,..."
 								/>
-								<Form {...formItemLayout}>
-									<Form.Item label="Price percent">
-										{props.form.field<number>({
-											name: 'price_percent',
-											require: 'Price percent is required',
-											initalValue: rs.props?.me?.default_price_percent || 100,
-											render: ({ value, setValue, error }) => (
-												<div>
-													<InputNumberAutoSelect
-														defaultValue={value}
-														onChangeValue={setValue}
-													/>
-												</div>
-											),
-										})}
-									</Form.Item>
-									<Form.Item label="Buff viewers livestream pricing">
-										{props.form.field<number>({
-											name: 'buff_viewers_livestream',
-											require: 'Buff viewers livestream price is required',
-											initalValue: rs.props?.me?.default_pricing?.buff_viewers_livestream || 1000,
-											render: ({ value, setValue, error }) => (
-												<div>
-													<InputNumberAutoSelect
-														defaultValue={value}
-														onChangeValue={setValue}
-													/>
-												</div>
-											),
-										})}
-									</Form.Item>
-									<Form.Item {...tailFormItemLayout}>
-										<Button type="primary" onClick={submit} loading={loading}>
-											Save prices
+							)}
+							<Alert
+								style={{ marginBottom: 15 }}
+								showIcon
+								type="info"
+								message="You are setting default price for new user. Example: User that logged in via Facebook, Google,..."
+							/>
+							<Form {...formItemLayout}>
+								<Form.Item label="Price percent">
+									{props.form.field<number>({
+										name: 'price_percent',
+										require: 'Price percent is required',
+										initalValue: rs.props?.me?.default_price_percent || 100,
+										render: ({ value, setValue, error }) => (
+											<div>
+												<InputNumberAutoSelect
+													defaultValue={value}
+													onChangeValue={setValue}
+												/>
+											</div>
+										),
+									})}
+								</Form.Item>
+								<Form.Item label="Buff viewers livestream pricing">
+									{props.form.field<number>({
+										name: 'buff_viewers_livestream',
+										require: 'Buff viewers livestream price is required',
+										initalValue:
+											rs.props?.me?.default_pricing?.buff_viewers_livestream ||
+											1000,
+										render: ({ value, setValue, error }) => (
+											<div>
+												<InputNumberAutoSelect
+													defaultValue={value}
+													onChangeValue={setValue}
+												/>
+											</div>
+										),
+									})}
+								</Form.Item>
+								<Form.Item {...tailFormItemLayout}>
+									<Button type="primary" onClick={submit} loading={loading}>
+										Save prices
 									</Button>
-									</Form.Item>
-								</Form>
-							</Card>
-						)}
+								</Form.Item>
+							</Form>
+						</Card>
+					)}
 				</>
-			)
-			}
+			)}
 		/>
 	)
-}
-)
+})

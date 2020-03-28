@@ -3,10 +3,11 @@ import { GraphQLSubscription } from './graphql/subscriptions'
 import { FirebaseConfigVAPIDKEY, FirebaseConfig } from './config'
 import * as firebase from 'firebase/app'
 import 'firebase/messaging'
+import { Auth0Service } from './helpers/Auth0'
 
 export class AppCycleHook {
 	static async logout() {
-		Auth.signOut()
+		await Auth0Service.logout()
 		await GraphQLSubscription.unsubscribeAll()
 
 		// Clear notification token

@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8" />
-  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' />
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#2574a8">
-  <title>Facebook services</title>
-  <script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/7.10.0/firebase-analytics.js"></script>
-  <link rel="icon" href="https://ongmatmedia.com/img/logo.png" type="image/gif" sizes="16x16">
-  <link rel="manifest" href="./manifest.json">
-  <style>
-    html,
+html,
     body {
       padding: 0;
       margin: 0;
@@ -577,63 +562,3 @@
         opacity: 1;
       }
     }
-  </style>
-</head>
-
-<body style="margin: 0">
-  <noscript>You need to enable JavaScript to run this app.</noscript>
-
-  <div id="root" style="margin: 0; padding: 0">
-    <div style="display: flex; flex-direction: row; justify-content: center; height: 100vh ">
-      <div class="container">
-        <div class="car-wrapper">
-          <div class="car-wrapper_inner">
-
-            <div class="car_outter">
-              <div class="car">
-                <div class="body">
-                  <div></div>
-                </div>
-                <div class="decos">
-                  <div class="line-bot"></div>
-                  <div class="door">
-                    <div class="handle"></div>
-                    <div class="bottom"></div>
-                  </div>
-                  <div class="window"></div>
-                  <div class="light"></div>
-                  <div class="light-front"></div>
-                  <div class="antenna"></div>
-                  <div class="ice-cream">
-                    <div class="cone"></div>
-                  </div>
-                </div>
-                <div>
-                  <div class="wheel"></div>
-                  <div class="wheel"></div>
-                </div>
-                <div class="wind">
-                  <div class="p p1"></div>
-                  <div class="p p2"></div>
-                  <div class="p p3"></div>
-                  <div class="p p4"></div>
-                  <div class="p p5"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="background-stuff">
-          <div class="bg"></div>
-          <div class="bg bg-2"></div>
-          <div class="bg bg-3"></div>
-          <div class="ground"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</body>
-
-</html>

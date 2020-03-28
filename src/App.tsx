@@ -34,14 +34,12 @@ export class App {
 		const splited_hostname = window.location.hostname.split('.')
 		const title = splited_hostname.sort((a, b) => b.length - a.length)[0]
 		window.document.title = title.charAt(0).toUpperCase() + title.slice(1)
-
-
 	}
 
 	static async init() {
 		try {
 			this.configure()
-		} catch (e) { }
+		} catch (e) {}
 
 		// Render
 		ReactDOM.render(<AppWithHotReload />, document.getElementById('root'))

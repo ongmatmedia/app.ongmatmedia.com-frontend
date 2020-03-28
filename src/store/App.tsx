@@ -1,4 +1,4 @@
-import Amplify, { Auth, Hub } from 'aws-amplify'
+import Amplify, { Auth } from 'aws-amplify'
 import * as firebase from 'firebase/app'
 import i18next from 'i18next'
 import LanguageDetector from 'i18next-browser-languagedetector'
@@ -8,11 +8,12 @@ import React, { Component, FunctionComponent } from 'react'
 import { initReactI18next } from 'react-i18next'
 import { Route, withRouter } from 'react-router-dom'
 import {
-	AmplifyConfig,
 	FirebaseConfig,
 	FirebaseConfigVAPIDKEY,
+	AmplifyConfig,
 } from '../config'
 import { GraphQLSubscription } from '../graphql/subscriptions'
+import { Auth0Service } from '../helpers/Auth0'
 import { isMobileDevice, toggleFullScreen } from '../helpers/utils'
 import * as lang from '../locales'
 
@@ -22,23 +23,9 @@ class App {
 	private firebase: firebase.app.App
 
 	async init() {
-		Amplify.configure(AmplifyConfig)
-		const user = await Auth.currentUserInfo()
-		if (user) {
-			this.on_login_success()
-		} else {
-			!window.location.search.includes('?code=') &&
-				(await Auth.federatedSignIn({ provider: 'ongmat' as any }))
-			await new Promise(s => {
-				Hub.listen('auth', ({ payload: { event, data } }) => {
-					console.log(event, data)
-					if (event == 'signIn') {
-						this.on_login_success()
-						s()
-					}
-				})
-			})
-		}
+		await Amplify.configure(AmplifyConfig)
+		await Auth0Service.login()
+		await this.on_login_success()
 
 		// Load title
 		const splited_hostname = window.location.hostname.split('.')
@@ -79,7 +66,7 @@ class App {
 
 	async logout() {
 		this.logged = false
-		Auth.signOut()
+		await Auth0Service.logout()
 	}
 
 	async service_worker_register() {

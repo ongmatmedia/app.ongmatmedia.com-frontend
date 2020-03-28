@@ -47,7 +47,7 @@ export const TopBar = withRouter(props => {
 				</Link>
 			</div>
 			<div style={{ display: 'flex' }}>
-				<Badge count={35} offset={[-17, 15]}>
+				<Badge offset={[-17, 15]}>
 					<Icon
 						type="bell"
 						style={{
@@ -71,7 +71,7 @@ export const TopBar = withRouter(props => {
 							cursor: 'pointer',
 							marginBottom: isMobileDevice() ? 7 : 17,
 							marginLeft: 7,
-							marginRight: 7
+							marginRight: 7,
 						}}
 						size={isMobileDevice() ? 40 : 33}
 					/>

@@ -21,13 +21,6 @@ import { exportBankIcon } from '../../helpers/utils'
 import { PaymentMethod } from '../../types'
 import { AutoDepositModal } from './AutoDepositModal'
 
-type DepositMethod = {
-	name: string
-	account: string
-	cover: string
-	icon: string
-}
-
 const query = graphql`
 	query depositQuery {
 		payment_methods {
@@ -111,31 +104,46 @@ const Preview = (props: { payment_methods: PaymentMethod[] }) => (
 export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
 	query,
 	{},
-	({ loading, data }) => (
-		<Card title={<BreadCrumb />}>
-			{['localhost', '192.168', 'ongmatmedia', 'fbmedia']
-				.map(domain => window.location.hostname.includes(domain))
-				.includes(true) && (
-				<Row style={{ marginBottom: 10 }}>
-					<Button
-						icon="sync"
-						type="primary"
-						onClick={() =>
-							Modal.info({
-								title: 'QRPAY',
-								content: <AutoDepositModal />,
-							})
-						}
-					>
-						Nạp auto
-					</Button>
-				</Row>
-			)}
+	({ loading, data }) => {
+		if (loading)
+			return (
+				<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
+					<Row type="flex" justify="space-around">
+						<Col>
+							<Spin
+								indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
+							/>
+						</Col>
+					</Row>
+				</Card>
+			)
 
-			<Spin spinning={loading}>
-				<Row style={{ height: 20 }}></Row>
-			</Spin>
-			{data && <Preview payment_methods={data.payment_methods} />}
-		</Card>
-	),
+		return (
+			<Card title={<BreadCrumb />}>
+				{['localhost', '192.168', 'ongmatmedia', 'fbmedia']
+					.map(domain => window.location.hostname.includes(domain))
+					.includes(true) && (
+					<Row style={{ marginBottom: 10 }}>
+						<Button
+							icon="sync"
+							type="primary"
+							onClick={() =>
+								Modal.info({
+									title: 'QRPAY',
+									content: <AutoDepositModal />,
+								})
+							}
+						>
+							Nạp auto
+						</Button>
+					</Row>
+				)}
+
+				<Spin spinning={loading}>
+					<Row style={{ height: 20 }}></Row>
+				</Spin>
+				{data && <Preview payment_methods={data.payment_methods} />}
+			</Card>
+		)
+	},
 )

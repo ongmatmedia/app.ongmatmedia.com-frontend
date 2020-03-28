@@ -1,4 +1,15 @@
-import { Alert, Button, Card, Col, Icon, Modal, notification, Row, Spin, Tag } from 'antd'
+import {
+	Alert,
+	Button,
+	Card,
+	Col,
+	Icon,
+	Modal,
+	notification,
+	Row,
+	Spin,
+	Tag,
+} from 'antd'
 import { graphql } from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'

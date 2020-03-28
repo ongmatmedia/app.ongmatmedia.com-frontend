@@ -26,8 +26,9 @@ const mutation = graphql`
 					p720
 					p1080
 				}
+			}
 		}
-	}}
+	}
 `
 export const update_price_for_user = (
 	user_id: string,
