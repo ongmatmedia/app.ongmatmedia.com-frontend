@@ -20,10 +20,10 @@ export const NoteReading = (props: { note: string; collapse: boolean }) => {
 			}}
 			onClick={() => setCollapsed(!collapsed)}
 		>
-			{props.collapse && props.note.length > 40 ? (
+			{props.collapse && props.note.length > 30 ? (
 				collapsed ? (
 					<>
-						<Text>{props.note.substring(0, 40)}</Text>
+						<Text>{props.note.substring(0, 30)}</Text>
 						<span onClick={() => setCollapsed(false)}> [...]</span>
 					</>
 				) : (

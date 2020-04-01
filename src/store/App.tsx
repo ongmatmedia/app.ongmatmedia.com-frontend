@@ -19,12 +19,13 @@ import * as lang from '../locales'
 
 class App {
 	@observable logged: boolean = false
+	@observable currentUser: IdToken
 
 	private firebase: firebase.app.App
 
 	async init() {
 		await Amplify.configure(AmplifyConfig)
-		await Auth0Service.login()
+		this.currentUser = await Auth0Service.login()
 		await this.on_login_success()
 
 		// Load title

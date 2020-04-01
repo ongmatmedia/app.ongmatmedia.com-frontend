@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { Row, Col, Button, Input, Icon, DatePicker } from 'antd'
-import { debounce } from 'lodash'
+import { Col, DatePicker, Icon, Input, Row } from 'antd'
+import React from 'react'
 
 export type PaymentListActionProps = {
 	onChangeDate: (date: Date) => any
@@ -8,7 +7,7 @@ export type PaymentListActionProps = {
 }
 
 export const PaymentListAction = (props: PaymentListActionProps) => {
-	const search = debounce(value => props.onSearch(value), 400)
+	const search = (value:string) => props.onSearch(value.trim().toLocaleLowerCase())
 
 	return (
 		<Row

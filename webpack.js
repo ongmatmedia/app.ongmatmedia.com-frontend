@@ -31,12 +31,7 @@ module.exports = {
             {
                 test: /\.tsx?$/,
                 loader: 'babel-loader',
-            },
-            {
-                enforce: 'pre',
-                test: /\.js$/,
-                loader: 'source-map-loader',
-            },
+            }, 
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
                 loader: 'url-loader',

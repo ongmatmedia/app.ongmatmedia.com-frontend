@@ -22,7 +22,7 @@ export const groupTimeIntoDayMap = <T extends { time: number }>(
 			dayMap.set(day, [data])
 		}
 	}
-	const keysDay = [...dayMap.keys()].sort(function(a, b) {
+	const keysDay = [...dayMap.keys()].sort(function (a, b) {
 		return new Date(b).getTime() - new Date(a).getTime()
 	})
 	return keysDay.map(day => ({
@@ -102,6 +102,7 @@ export const exportBankIcon = (name: string) => {
 }
 
 export function nFormatter(num: number, digits: number) {
+	const prefix = num < 0 ? '-' : ''
 	const si = [
 		{ value: 1, symbol: '' },
 		{ value: 1e3, symbol: 'K' },
@@ -114,15 +115,15 @@ export function nFormatter(num: number, digits: number) {
 	const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
 	let i
 	for (i = si.length - 1; i > 0; i--) {
-		if (num >= si[i].value) {
+		if (Math.abs(num) >= si[i].value) {
 			break
 		}
 	}
-	return (num / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
+	return prefix + (Math.abs(num) / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
 }
 
-export const useSortableData = (items: Array<Object>, config = null) => {
-	const [sortConfig, setSortConfig] = React.useState(config)
+export const useSortableData = <T extends {}>(items: Array<T>, config: { key: string, direction: 'ascending' | 'descending' | null }) => {
+	const [sortConfig, setSortConfig] = React.useState<{ key: string, direction: 'ascending' | 'descending' | null }>(config)
 
 	const sortedItems = React.useMemo(() => {
 		let sortableItems = [...items]
@@ -154,3 +155,11 @@ export const useSortableData = (items: Array<Object>, config = null) => {
 
 	return { items: sortedItems, requestSort, sortConfig }
 }
+
+export const randomString = () =>
+	Math.random()
+		.toString(36)
+		.substring(2, 15) +
+	Math.random()
+		.toString(36)
+		.substring(2, 15)

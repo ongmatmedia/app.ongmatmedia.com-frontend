@@ -11,26 +11,26 @@ interface AgencyActionProps {
 }
 
 export const AgencyAction = (props: AgencyActionProps) => {
-	const [add_user_modal_visible, set_add_user_modal_visible] = useState<
-		boolean
-	>(false)
+	// const [add_user_modal_visible, set_add_user_modal_visible] = useState<
+	// 	boolean
+	// >(false)
 
 	return (
 		<>
-			<CreateAgencyModal
+			{/* <CreateAgencyModal
 				onClose={() => set_add_user_modal_visible(false)}
 				visible={add_user_modal_visible}
-			/>
+			/> */}
 			<Row type="flex" justify="space-between">
 				<Col>
-					<Button
+					{/* <Button
 						type="primary"
 						icon="plus"
 						onClick={() => set_add_user_modal_visible(!add_user_modal_visible)}
 						style={{ marginBottom: 20, marginRight: 10 }}
 					>
 						Add agency
-					</Button>
+					</Button> */}
 					<Button
 						style={{ marginBottom: 10 }}
 						type="primary"

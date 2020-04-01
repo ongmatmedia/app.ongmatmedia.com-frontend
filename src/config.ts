@@ -1,3 +1,5 @@
+import { Auth0ClientOptions } from "@auth0/auth0-spa-js"
+
 export const GraphQLEndpoint =
 	'https://7qwdnah2rbbopjl5cgj7w5jgqe.appsync-api.us-east-1.amazonaws.com/graphql'
 
@@ -33,8 +35,8 @@ export const FirebaseConfig = {
 export const FirebaseConfigVAPIDKEY =
 	'BHTar4YMvOMDzZOqKW8j-ThYbvqvPfCnBfOUzN8QI1fIvHM5rQETDFWXEffWFxZXyly4lTBNtgwf5TqZEp0gDUE'
 
-export const AUTH0_CONFIG = {
+export const AUTH0_CONFIG: Auth0ClientOptions = {
 	domain: 'ongmatmedia.auth0.com',
 	client_id: 'spiiEFrf1tPlIPksv1vB3EPKLr9uNg50',
-	redirect_uri: window.location.origin,
+	cacheLocation: 'localstorage'
 }

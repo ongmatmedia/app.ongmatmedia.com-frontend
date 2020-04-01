@@ -4,6 +4,7 @@ import { PaymentHistory } from '../../types'
 import { groupTimeIntoDayMap } from '../../helpers/utils'
 import Text from 'antd/lib/typography/Text'
 import { NoteReading } from './NoteReading'
+import Moment from 'react-moment'
 
 export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 	const timeSeriesData = groupTimeIntoDayMap(props.data)
@@ -14,7 +15,10 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 			renderItem={item => (
 				<>
 					<div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15 }}>
-						<Icon type="calendar" /> {item.time}
+						<Icon type="calendar" style={{marginRight: 5}} /> 
+						<Moment format="DD/MM/YYYY">
+							{item.time}
+						</Moment>
 					</div>
 					<List
 						grid={{ gutter: 16, xs: 1, sm: 2, md: 4, xxl: 8 }}

@@ -1,105 +1,145 @@
-import { Modal, Row, Col, Divider } from 'antd'
-import React, { useEffect, useState } from 'react'
-import { Doughnut, Line } from 'react-chartjs-2'
-import {
-	isMobileDevice,
-	getRandomInt,
-	range,
-	randomDate,
-} from '../../../helpers/utils'
+import { Alert, Col, Icon, Modal, Row, Spin, Descriptions } from 'antd'
+import { graphql } from 'babel-plugin-relay/macro'
+import React from 'react'
+import { Line } from 'react-chartjs-2'
+import Text from 'antd/lib/typography/Text'
+import { SmartGrahQLQueryRenderer } from '../../../graphql/GraphQLWrapper'
+import { BuffViewersLivestream } from '../../../types'
 
-const dataPlan = {
-	labels: ['Playing', 'Remaining'],
-	datasets: [
-		{
-			data: [100, 900],
-			backgroundColor: ['#36A2EB', '#FFCE56'],
-			hoverBackgroundColor: ['#36A2EB', '#FFCE56'],
-		},
-	],
-}
-
-const dataViewers = {
-	labels: [...range(1, 100)].map(el =>
-		randomDate(new Date(2012, 0, 1), new Date()).toLocaleTimeString('vi', {
-			hour12: true,
-		}),
-	),
-	datasets: [
-		{
-			label: 'Real-time viewers',
-			fill: false,
-			lineTension: 0.1,
-			backgroundColor: 'rgba(75,192,192,0.4)',
-			borderColor: 'rgba(75,192,192,1)',
-			borderCapStyle: 'butt',
-			borderDash: [],
-			borderDashOffset: 0.0,
-			borderJoinStyle: 'miter',
-			pointBorderColor: 'rgba(75,192,192,1)',
-			pointBackgroundColor: '#fff',
-			pointBorderWidth: 1,
-			pointHoverRadius: 5,
-			pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-			pointHoverBorderColor: 'rgba(220,220,220,1)',
-			pointHoverBorderWidth: 2,
-			pointRadius: 1,
-			pointHitRadius: 10,
-			data: [...range(1, 100)].map(el => getRandomInt(1, 1000)),
-		},
-	],
-}
-
+const query = graphql`
+	query BuffViewersLivestreamDetailModalQuery($id: String!) {
+		buff_viewers_livestream_task(id: $id) {
+			id
+			first_reported_viewers
+			last_reported_viewers
+			logs {
+				amount
+				time
+			}
+		}
+	} 
+`
 const options = {
-	scales: { xAxes: [{ display: false }], yAxes: [{ display: true }] },
+	responsive: true,
+	tooltips: {
+		mode: 'label',
+		callbacks: {
+			label: function (tooltipItem, data) {
+				let label = data.datasets[tooltipItem.datasetIndex].label || ''
+				if (label) {
+					label += ': '
+				}
+				label += Number(tooltipItem.yLabel).toLocaleString()
+				return label
+			},
+		},
+	},
+	legend: {
+		display: true,
+		position: 'bottom',
+		labels: {
+			fontColor: "#000080",
+		}
+	},
+	scales: {
+		xAxes: [{
+			display: true,
+			ticks: {
+				callback: (value: string, index: number, values: string[]) => {
+					const date = new Date(value)
+					return date.getMinutes() % 15 == 0 && new Date(values[index + 1]).getMinutes() !== 15 ? date.toLocaleTimeString('vi-VN') : ''
+				},
+			},
+			scaleLabel: {
+				display: true,
+				labelString: 'Time'
+			}
+		}],
+		yAxes: [{
+			display: true,
+			scaleLabel: {
+				display: true,
+				labelString: 'Viewers'
+			}
+		}]
+	},
 }
+
+
 
 export const BuffViewersDetailModal = (props: {
-	visible: boolean
 	onClose: Function
+	video_id: string
 }) => {
-	const [data, setData] = useState(dataPlan)
+	return <Modal
+		width="80%"
+		destroyOnClose
+		closable={true}
+		title="Buff viewers for livestream"
+		style={{ textAlign: 'center', top: 10 }}
+		onCancel={() => props.onClose()}
+		footer={null}
+		visible={true}
+	>
+		<SmartGrahQLQueryRenderer<{ buff_viewers_livestream_task: BuffViewersLivestream }>
+			query={query}
+			variables={{ id: props.video_id }}
+			render={({ data, loading, error }) =>
+				<Row>
+					<Col xs={24}>
+						{
+							error && (
+								<Alert showIcon message={error} type="error" />
+							)
+						}
+						{
+							loading && !error && (
+								<Spin
+									indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
+								/>
+							)
+						}
+						{
+							!loading && data && (
+								<>
+									<Descriptions title={null}>
+										<Descriptions.Item label="ID">{data.buff_viewers_livestream_task.id}</Descriptions.Item>
+										<Descriptions.Item label="First report viewers">{data.buff_viewers_livestream_task.first_reported_viewers || '_'}</Descriptions.Item>
+										<Descriptions.Item label="Last report viewers">{data.buff_viewers_livestream_task.last_reported_viewers || '_'}</Descriptions.Item>
+									</Descriptions>
+									<Line data={{
+										labels: data.buff_viewers_livestream_task.logs.map(el => new Date(el.time).toLocaleString()),
+										datasets: [
+											{
+												label: 'Real-time viewers',
+												fill: false,
+												lineTension: 0.1,
+												backgroundColor: 'rgba(75,192,192,0.4)',
+												borderColor: 'rgba(75,192,192,1)',
+												borderCapStyle: 'butt',
+												borderDash: [],
+												borderDashOffset: 0.0,
+												borderJoinStyle: 'miter',
+												pointBorderColor: 'rgba(75,192,192,1)',
+												pointBackgroundColor: '#fff',
+												pointBorderWidth: 1,
+												pointHoverRadius: 5,
+												pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+												pointHoverBorderColor: 'rgba(220,220,220,1)',
+												pointHoverBorderWidth: 2,
+												pointRadius: 1,
+												pointHitRadius: 10,
+												data: data.buff_viewers_livestream_task.logs.map(el => el.amount),
+											},
+										],
+									}} options={options} />
+								</>
+							)
+						}
+					</Col>
+				</Row>
+			}
+		/>
+	</Modal>
 
-	useEffect(() => {
-		const interval = setInterval(() => {
-			setData({
-				...data,
-				datasets: [
-					{
-						data: [
-							...data.datasets[0].data.map((el, index) =>
-								index == 0 ? el + 10 : el - 10,
-							),
-						],
-						backgroundColor: ['#36A2EB', '#FFCE56'],
-						hoverBackgroundColor: ['#36A2EB', '#FFCE56'],
-					},
-				],
-			})
-		}, 2000)
-		return () => clearInterval(interval)
-	}, [props.visible])
-
-	return (
-		<Modal
-			width="80%"
-			visible={props.visible}
-			destroyOnClose
-			closable={true}
-			title="Buff viewers for livestream"
-			style={{ textAlign: 'center', top: 0 }}
-			onCancel={() => props.onClose()}
-			footer={null}
-		>
-			<Row>
-				<Col xs={24}>
-					<Line data={dataViewers} options={options} />
-				</Col>
-				<Col xs={24} style={{ marginTop: 15 }}>
-					<Doughnut data={data} />
-					{'Plan'}
-				</Col>
-			</Row>
-		</Modal>
-	)
 }

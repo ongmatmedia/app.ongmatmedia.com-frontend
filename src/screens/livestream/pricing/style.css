@@ -25,6 +25,7 @@
   background-color: #111;
   color: white;
   font-size: 25px;
+  font-weight: bold;
 }
 
 .price li {
@@ -52,4 +53,11 @@
   .columns {
     width: 100%;
   }
+}
+
+.columns.disabled
+{
+  pointer-events: none;
+  opacity: 0.3;
+  background: #CCC;
 }

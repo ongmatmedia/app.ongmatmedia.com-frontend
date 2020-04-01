@@ -15,6 +15,11 @@ export const LivestreamPage = () => {
 					link: '/create-livestream',
 					serviceName: 'Create a livestream ',
 				},
+				{
+					icon: 'dollar',
+					link: '/pricing',
+					serviceName: 'Pricing',
+				},
 			]}
 		/>
 	)

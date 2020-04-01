@@ -1,12 +1,11 @@
 import { Avatar, Button, Card, Col, Icon, Modal, Row } from 'antd'
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RouteComponentProps } from 'react-router'
 import { withRouter } from 'react-router-dom'
-import { AppState } from '../../store/App'
-import { UserInfo } from './UserInfo'
-import { Auth } from 'aws-amplify'
 import { Auth0Service } from '../../helpers/Auth0'
+import { withAppState } from '../../store/App'
+import { UserInfo } from './UserInfo'
 
 type DrawerAppProps = {
 	name: string
@@ -28,9 +27,15 @@ const DrawerLinks: DrawerLinksType[] = [
 	{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
 	{ name: 'payments_icon_title', icon: 'credit-card', to: '/payments' },
 	{ name: 'agency_icon_title', icon: 'user', to: '/agency' },
-	{ name: 'setting_icon_title', icon: 'setting', to: '/setting' },
+	// { name: 'setting_icon_title', icon: 'setting', to: '/setting' },
 	{ name: 'admin_info_icon_title', icon: 'contacts', to: '/contact' },
 ]
+
+const CurrentUserAvatarAppDrawer = withAppState(props => (
+	<span>
+		<Avatar src={props.appState.currentUser?.picture || ''} size={60} />
+	</span>
+))
 
 const DrawerApp = (props: DrawerAppProps) => (
 	<div
@@ -44,7 +49,7 @@ const DrawerApp = (props: DrawerAppProps) => (
 			alignItems: 'center',
 			cursor: 'pointer',
 		}}
-		className="drawerItem"
+		className={`drawerItem_${props.name}`}
 	>
 		<Icon type={props.icon} style={{ fontSize: 30 }} />
 		<span style={{ fontSize: 12, paddingTop: 15 }}>{props.name}</span>
@@ -57,6 +62,7 @@ export const AppDrawer = ((withRouter as any)(
 		const changeLanguage = lng => {
 			i18n.changeLanguage(lng)
 		}
+		const [reactTourIsvisible, setReactTourIsVisible] = useState<boolean>(true)
 
 		return (
 			<div
@@ -74,10 +80,7 @@ export const AppDrawer = ((withRouter as any)(
 						<Card style={{ width: '100%' }} size="small" loading={loading}>
 							<Row type="flex" justify="start" align="middle">
 								<Col>
-									<Avatar
-										src="https://hammockweb.com/slider/img/user.png"
-										size={60}
-									/>
+									<CurrentUserAvatarAppDrawer />
 								</Col>
 								<Col style={{ paddingLeft: 20 }}>
 									<Row>

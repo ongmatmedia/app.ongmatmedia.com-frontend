@@ -15,21 +15,35 @@ export class Auth0Service {
 	}
 
 	static async login() {
-		if (this.client) {
-			const user = await this.client.getUser()
-			if (user) return
-		}
 		this.client = await createAuth0Client(AUTH0_CONFIG)
-		if (window.location.href.includes('code=')) {
-			await this.client.handleRedirectCallback()
-			window.history.pushState({}, document.title, '/')
-		} else {
-			throw await this.client.loginWithRedirect()
+		try {
+			const user = await this.client.getIdTokenClaims()
+			return user
+		} catch{
+			if (window.location.href.includes('code=')) {
+				await this.client.handleRedirectCallback()
+				window.history.pushState(
+					{},
+					document.title,
+					window.location.origin + window.location.hash,
+				)
+				const user = await this.client.getUser()
+				return user
+			} else {
+				throw await this.client.loginWithRedirect({
+					redirect_uri: window.location.href,
+				})
+			}
+
 		}
+
 	}
 
 	static async logout() {
-		if (this.client) throw 'Auth0 service does not exist'
-		else this.client.logout()
+		if (!this.client) throw 'Auth0 service does not exist'
+		else {
+			this.client.logout()
+			await this.client.loginWithRedirect()
+		}
 	}
 }
