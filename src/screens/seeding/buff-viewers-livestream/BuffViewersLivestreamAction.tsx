@@ -5,7 +5,7 @@ import { Fab } from 'react-tiny-fab'
 import { BuffViewersLivestreamCreateModal } from './BuffViewersLivestreamCreateModal'
 import 'react-tiny-fab/dist/styles.css'
 
-const { Option } = Select;
+const { Option } = Select
 
 export type BuffViewersLivestreamActionProps = {
 	onChangeSearch: (v: string) => any
@@ -38,18 +38,35 @@ export const BuffViewersLivestreamAction = (
 					onClick={() => set_create_modal_visible(true)}
 				></Fab>
 			)}
-			<Col xs={12} sm={{ span: 6, offset: 8 }} style={{ textAlign: 'right', marginTop: 15 }}>
-				<Select defaultValue="Filter by status" onChange={props.onChangeStatusFilter}>
-					<Option value="" key={5}>No filter</Option>
-					<Option value="queue" key={1}>Queue</Option>
-					<Option value="playing" key={2}>Playing</Option>
-					<Option value="fail" key={3}>Fail</Option>
+			<Col
+				xs={12}
+				sm={{ span: 6, offset: 8 }}
+				style={{ textAlign: 'right', marginTop: 15 }}
+			>
+				<Select
+					defaultValue="Filter by status"
+					onChange={props.onChangeStatusFilter}
+				>
+					<Option value="" key={5}>
+						No filter
+					</Option>
+					<Option value="queue" key={1}>
+						Queue
+					</Option>
+					<Option value="playing" key={2}>
+						Playing
+					</Option>
+					<Option value="fail" key={3}>
+						Fail
+					</Option>
 				</Select>
 			</Col>
 			<Col xs={12} sm={{ span: 4 }} style={{ marginTop: 15 }}>
-				<DatePicker onChange={d =>
-					props.onChangeDate(new Date(d ? d.valueOf() : Date.now()))
-				} />
+				<DatePicker
+					onChange={d =>
+						props.onChangeDate(new Date(d ? d.valueOf() : Date.now()))
+					}
+				/>
 			</Col>
 			<Col xs={24} sm={6} style={{ paddingBottom: 5, marginTop: 15 }}>
 				<Input

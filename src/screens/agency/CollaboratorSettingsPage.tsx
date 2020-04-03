@@ -90,7 +90,7 @@ export const CollaboratorSettingsPage = Form.create<
 							{
 								required: true,
 								pattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/g,
-								message: `'Logo's url is invalid`,
+								message: "'Logo's url is invalid",
 							},
 						],
 					})(<Input placeholder="Logo URL" />)}
@@ -101,7 +101,7 @@ export const CollaboratorSettingsPage = Form.create<
 							{
 								required: true,
 								pattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/g,
-								message: `'Icon's url is invalid`,
+								message: "'Icon's url is invalid",
 							},
 						],
 					})(<Input placeholder="Icon URL" />)}

@@ -3,8 +3,7 @@ import React, { FunctionComponent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RouteComponentProps } from 'react-router'
 import { withRouter } from 'react-router-dom'
-import { Auth0Service } from '../../helpers/Auth0'
-import { withAppState } from '../../store/App'
+import { useAuth0 } from '../../context/Auth0'
 import { UserInfo } from './UserInfo'
 
 type DrawerAppProps = {
@@ -31,11 +30,15 @@ const DrawerLinks: DrawerLinksType[] = [
 	{ name: 'admin_info_icon_title', icon: 'contacts', to: '/contact' },
 ]
 
-const CurrentUserAvatarAppDrawer = withAppState(props => (
-	<span>
-		<Avatar src={props.appState.currentUser?.picture || ''} size={60} />
-	</span>
-))
+const CurrentUserAvatarAppDrawer = () => {
+	const { user } = useAuth0()
+
+	return (
+		<span>
+			<Avatar src={user?.picture || ''} size={60} />
+		</span>
+	)
+}
 
 const DrawerApp = (props: DrawerAppProps) => (
 	<div
@@ -62,7 +65,7 @@ export const AppDrawer = ((withRouter as any)(
 		const changeLanguage = lng => {
 			i18n.changeLanguage(lng)
 		}
-		const [reactTourIsvisible, setReactTourIsVisible] = useState<boolean>(true)
+		const { logout } = useAuth0()
 
 		return (
 			<div
@@ -126,7 +129,10 @@ export const AppDrawer = ((withRouter as any)(
 					onClick={() =>
 						Modal.confirm({
 							title: 'Logout now?',
-							onOk: () => Auth0Service.logout(),
+							onOk: () =>
+								logout({
+									returnTo: window.location.origin,
+								}),
 						})
 					}
 				/>

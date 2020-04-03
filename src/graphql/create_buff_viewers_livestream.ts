@@ -36,7 +36,7 @@ export const create_buff_viewers_livestream = async (
 			variables: { input },
 			updater: async store => {
 				const list = store.get(
-					`client:root:buff_viewers_livestream_tasks`,
+					'client:root:buff_viewers_livestream_tasks',
 				) as RecordProxy
 				const result = store.getRootField(
 					'create_buff_viewers_livestream_task',

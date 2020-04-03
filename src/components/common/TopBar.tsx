@@ -1,28 +1,30 @@
 import { Avatar, Badge, Icon, Popover } from 'antd'
 import React, { useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { withAppState } from '../../store/App'
 import { AppDrawer } from './AppDrawer'
 import { isMobileDevice } from '../../helpers/utils'
+import { useAuth0 } from '../../context/Auth0'
 
-const CurrentUserAvatarTopBar = withAppState(props => (
-	<span style={{ marginRight: 10, marginBottom: 10 }}>
-		<Avatar
-			src={props.appState.currentUser?.picture || ''}
-			style={{
-				border: '2px solid white',
-				marginBottom: isMobileDevice() ? 7 : 17,
-				marginLeft: 7,
-				marginRight: 7,
-			}}
-			size={isMobileDevice() ? 40 : 33}
-		/>
-	</span>
-))
+const CurrentUserAvatarTopBar = () => {
+	const { user } = useAuth0()
+	return (
+		<span style={{ marginRight: 10, marginBottom: 10 }}>
+			<Avatar
+				src={user?.picture || ''}
+				style={{
+					border: '2px solid white',
+					marginBottom: isMobileDevice() ? 7 : 17,
+					marginLeft: 7,
+					marginRight: 7,
+				}}
+				size={isMobileDevice() ? 40 : 33}
+			/>
+		</span>
+	)
+}
 
 export const TopBar = withRouter(props => {
 	const [drawer_visible, set_drawer_visible] = useState<boolean>(false)
-	const [reactTourIsvisible, setReactTourIsVisible] = useState<boolean>(true)
 
 	return (
 		<div

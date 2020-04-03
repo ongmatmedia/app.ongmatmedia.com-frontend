@@ -11,7 +11,7 @@ const mutation = graphql`
 `
 
 const share_updater = (store, id: string) => {
-	const list = store.get(`client:root:livestream_tasks`) as RecordProxy
+	const list = store.get('client:root:livestream_tasks') as RecordProxy
 	ConnectionHandler.deleteNode(list, id)
 }
 

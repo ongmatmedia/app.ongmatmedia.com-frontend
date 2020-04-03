@@ -15,13 +15,11 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 			renderItem={item => (
 				<>
 					<div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15 }}>
-						<Icon type="calendar" style={{marginRight: 5}} /> 
-						<Moment format="DD/MM/YYYY">
-							{item.time}
-						</Moment>
+						<Icon type="calendar" style={{ marginRight: 5 }} />
+						<Moment format="DD/MM/YYYY">{item.time}</Moment>
 					</div>
 					<List
-						grid={{ gutter: 16, xs: 1, sm: 2, md: 4, xxl: 8 }}
+						grid={{ gutter: 16, xs: 1, sm: 2, md: 3, xxl: 4 }}
 						dataSource={item.data}
 						renderItem={payment => (
 							<List.Item

@@ -1,8 +1,9 @@
 import React from 'react'
-import { HashRouter, Switch } from 'react-router-dom'
+import { Route, Router, Switch } from 'react-router-dom'
 import { Error404Page } from '../components/common/Error404'
+import PrivateRoute from '../components/PrivateRoute'
+import history from '../helpers/history'
 import { MainLayout } from '../layouts/main'
-import { ProtectedRoute, withAppState } from '../store/App'
 import { AgencyPage } from './agency'
 import { AdminInformationPage } from './agency/AdminInformationPage'
 import { BankInformationPage } from './agency/BankInformationPage'
@@ -11,114 +12,110 @@ import { SetDefaultPricePage } from './agency/SetDefaultPricePage'
 import { AdminContact } from './contact/AdminContact'
 import { DepositPage } from './deposit'
 import { HomePage } from './HomePage'
-import { LivestreamPage } from './livestream'
-import { CreateUpdateLivestreamPage } from './livestream/CreateUpdateLivestreamPage'
-import { LivestreamsListPage } from './livestream/LivestreamsListPage'
-import { PricingPage } from './livestream/pricing'
-import { LoadingPage } from './loading/LoadingPage'
 import { NotificationPage } from './notification'
+import { Payments } from './payments/Payments'
 // import { Payments } from './payments'
 import { SeedingPage } from './seeding'
 import { BuffViewers } from './seeding/buff-viewers'
 import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
-import { Payments } from './payments/Payments'
 
-const LoginWrapper = ProtectedRoute(<LoadingPage />)
-
-export const AppWithRouter = withAppState(() => {
+export const AppWithRouter = () => {
 	return (
-		<HashRouter>
+		<Router history={history}>
 			<Switch>
-				<LoginWrapper exact path="/">
-					<MainLayout Content={() => <HomePage />} />
-				</LoginWrapper>
+				<PrivateRoute exact component={HomePage} layout={MainLayout} path="/" />
 
-				<LoginWrapper exact path="/seeding">
-					<MainLayout Content={SeedingPage} />
-				</LoginWrapper>
+				<PrivateRoute
+					exact
+					component={SeedingPage}
+					layout={MainLayout}
+					path="/seeding"
+				/>
+				<PrivateRoute
+					exact
+					component={BuffViewersLivestream}
+					layout={MainLayout}
+					path="/seeding/buff-viewers-livestream"
+				/>
+				<PrivateRoute
+					exact
+					component={BuffViewers}
+					layout={MainLayout}
+					path="/seeding/buff-viewers"
+				/>
 
+				<PrivateRoute
+					exact
+					component={Payments}
+					layout={MainLayout}
+					path="/payments"
+				/>
 
-				<LoginWrapper exact path="/seeding/buff-viewers-livestream">
-					<MainLayout Content={BuffViewersLivestream} />
-				</LoginWrapper>
+				<PrivateRoute
+					exact
+					component={AgencyPage}
+					layout={MainLayout}
+					path="/agency"
+				/>
+				<PrivateRoute
+					exact
+					component={CollaboratorsListPage}
+					layout={MainLayout}
+					path="/agency/collaborators"
+				/>
+				<PrivateRoute
+					exact
+					component={BankInformationPage}
+					layout={MainLayout}
+					path="/agency/bank-information"
+				/>
+				<PrivateRoute
+					exact
+					component={SetDefaultPricePage}
+					layout={MainLayout}
+					path="/agency/default-price"
+				/>
+				<PrivateRoute
+					exact
+					component={AdminInformationPage}
+					layout={MainLayout}
+					path="/agency/admin-information"
+				/>
+				{/* <PrivateRoute exact component={CollaboratorSettingsPage} layout={MainLayout} path="/agency/setting" /> */}
 
-				<LoginWrapper exact path="/seeding/buff-viewers">
-					<MainLayout Content={BuffViewers} />
-				</LoginWrapper>
+				<PrivateRoute
+					exact
+					component={DepositPage}
+					layout={MainLayout}
+					path="/deposit"
+				/>
 
-				<LoginWrapper exact path="/payments">
-					<MainLayout Content={Payments} />
-				</LoginWrapper>
+				<PrivateRoute
+					exact
+					component={NotificationPage}
+					layout={MainLayout}
+					path="/notification"
+				/>
 
+				<PrivateRoute
+					exact
+					component={AdminContact}
+					layout={MainLayout}
+					path="/contact"
+				/>
 
-				<LoginWrapper exact path="/agency">
-					<MainLayout Content={AgencyPage} />
-				</LoginWrapper>
+				{/* <PrivateRoute exact component={LivestreamPage} layout={MainLayout} path="/livestream" />
+				<PrivateRoute exact component={LivestreamsListPage} layout={MainLayout} path="/livestream/all-livestream" />
+				<PrivateRoute exact component={CreateUpdateLivestreamPage} layout={MainLayout} path="/livestream/create-livestream" />
+				<PrivateRoute exact component={CreateUpdateLivestreamPage} layout={MainLayout} path="/livestream/update-livestream" />
+				<PrivateRoute exact component={CreateUpdateLivestreamPage} layout={MainLayout} path="/livestream/pricing" /> */}
 
-				<LoginWrapper exact path="/agency/collaborators">
-					<MainLayout Content={CollaboratorsListPage} />
-				</LoginWrapper>
+				{/* <PrivateRoute exact component={AccountScreen} layout={MainLayout} path="/farm" /> */}
 
-				<LoginWrapper exact path="/agency/bank-information">
-					<MainLayout Content={BankInformationPage} />
-				</LoginWrapper>
-
-				<LoginWrapper exact path="/agency/default-price">
-					<MainLayout Content={SetDefaultPricePage} />
-				</LoginWrapper>
-
-				<LoginWrapper exact path="/agency/admin-information">
-					<MainLayout Content={AdminInformationPage} />
-				</LoginWrapper>
-
-				{/* <LoginWrapper exact path="/agency/setting">
-					<MainLayout Content={CollaboratorSettingsPage} />
-				</LoginWrapper> */}
-
-				<LoginWrapper exact path="/deposit">
-					<MainLayout Content={DepositPage} />
-				</LoginWrapper>
-
-				<LoginWrapper exact path="/notification">
-					<MainLayout Content={NotificationPage} />
-				</LoginWrapper>
-
-				<LoginWrapper exact path="/contact">
-					<MainLayout Content={AdminContact} />
-				</LoginWrapper>
-
-				<LoginWrapper exact path="/livestream">
-					<MainLayout Content={LivestreamPage} />
-				</LoginWrapper>
-
-				<LoginWrapper exact path="/livestream/all-livestreams">
-					<MainLayout Content={LivestreamsListPage} />
-				</LoginWrapper>
-
-				<LoginWrapper exact path="/livestream/create-livestream">
-					<MainLayout Content={CreateUpdateLivestreamPage} />
-				</LoginWrapper>
-
-				<LoginWrapper exact path="/livestream/update-livestream">
-					<MainLayout Content={CreateUpdateLivestreamPage} />
-				</LoginWrapper>
-
-				{/* <LoginWrapper exact path="/farm">
-					<MainLayout Content={AccountScreen} />
-				</LoginWrapper> */}
-
-				{/* <LoginWrapper exact path="/farm/facebook">
-					<MainLayout Content={FacebookAccountsContainer} />
-				</LoginWrapper> */}
-
-				<LoginWrapper exact path="/livestream/pricing">
-					<MainLayout Content={PricingPage} />
-				</LoginWrapper>
-
-				<LoginWrapper>
+				<Route>
 					<Error404Page />
-				</LoginWrapper>
+				</Route>
 			</Switch>
-		</HashRouter>
+		</Router>
 	)
-})
+}

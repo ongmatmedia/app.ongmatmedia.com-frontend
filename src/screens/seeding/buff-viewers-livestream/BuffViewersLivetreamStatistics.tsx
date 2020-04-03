@@ -44,9 +44,7 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}> Percentage</Text>}
 							value={30}
-							suffix={
-								<Icon type="percentage" />
-							}
+							suffix={<Icon type="percentage" />}
 							valueStyle={{ color: 'green' }}
 						/>
 					</Card>
@@ -56,16 +54,18 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 						<Statistic
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}> Playing</Text>}
-							value={buffStatusData.filter(status => status == 'playing').length}
+							value={
+								buffStatusData.filter(status => status == 'playing').length
+							}
 							prefix={
 								<Icon
 									type="video-camera"
-									style={
-										{
-											color: 'red',
-										}
-									}
-									className="heartBeat" />}
+									style={{
+										color: 'red',
+									}}
+									className="heartBeat"
+								/>
+							}
 							valueStyle={{ color: 'green' }}
 						/>
 					</Card>
@@ -76,9 +76,7 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}> Fail</Text>}
 							value={buffStatusData.filter(status => status == 'done').length}
-							prefix={
-								<Icon type="warning" />
-							}
+							prefix={<Icon type="warning" />}
 							valueStyle={{ color: 'red' }}
 						/>
 					</Card>

@@ -13,7 +13,7 @@ export const BuffViewersAction = (props: BuffViewersProps) => {
 	const [search, set_search] = useState<string>('')
 	const [loading_uid, set_loading_uid] = useState<boolean>(false)
 
-	const load_uid = async function() {
+	const load_uid = async function () {
 		try {
 			// set_loading_uid(true);
 			// const { uid } = await FacebookAccount.getUIDFromURL(search);

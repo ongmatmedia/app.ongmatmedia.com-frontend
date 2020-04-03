@@ -2,9 +2,7 @@ import React from 'react'
 
 export const sleep = async (sec: number) => {
 	return new Promise(s => {
-		setTimeout(() => {
-			window.location.reload()
-		}, sec * 1000)
+		setTimeout(s, sec * 1000)
 	})
 }
 
@@ -14,7 +12,7 @@ export const groupTimeIntoDayMap = <T extends { time: number }>(
 	time: string
 	data: T[]
 }> => {
-	let dayMap = new Map<string, T[]>()
+	const dayMap = new Map<string, T[]>()
 	for (const data of timeDataList) {
 		const day = new Date(data.time).toLocaleDateString()
 		if (dayMap.has(day)) dayMap.set(day, [...dayMap.get(day), data])
@@ -42,15 +40,15 @@ export function* range(start: number, end: number) {
 }
 
 export const toggleFullScreen = () => {
-	var doc = window.document
-	var docEl = doc.documentElement
+	const doc = window.document
+	const docEl = doc.documentElement
 
-	var requestFullScreen =
+	const requestFullScreen =
 		docEl.requestFullscreen ||
 		docEl.mozRequestFullScreen ||
 		docEl.webkitRequestFullScreen ||
 		docEl.msRequestFullscreen
-	var cancelFullScreen =
+	const cancelFullScreen =
 		doc.exitFullscreen ||
 		doc.mozCancelFullScreen ||
 		doc.webkitExitFullscreen ||
@@ -94,10 +92,7 @@ export const bankIcons = {
 }
 
 export const exportBankIcon = (name: string) => {
-	const bankName = name
-		.trim()
-		.split(' ')[0]
-		.toLocaleLowerCase()
+	const bankName = name.trim().split(' ')[0].toLocaleLowerCase()
 	return bankIcons[bankName] || bankIcons['default']
 }
 
@@ -119,14 +114,24 @@ export function nFormatter(num: number, digits: number) {
 			break
 		}
 	}
-	return prefix + (Math.abs(num) / si[i].value).toFixed(digits).replace(rx, '$1') + si[i].symbol
+	return (
+		prefix +
+		(Math.abs(num) / si[i].value).toFixed(digits).replace(rx, '$1') +
+		si[i].symbol
+	)
 }
 
-export const useSortableData = <T extends {}>(items: Array<T>, config: { key: string, direction: 'ascending' | 'descending' | null }) => {
-	const [sortConfig, setSortConfig] = React.useState<{ key: string, direction: 'ascending' | 'descending' | null }>(config)
+export const useSortableData = <T extends {}>(
+	items: Array<T>,
+	config: { key: string; direction: 'ascending' | 'descending' | null },
+) => {
+	const [sortConfig, setSortConfig] = React.useState<{
+		key: string
+		direction: 'ascending' | 'descending' | null
+	}>(config)
 
 	const sortedItems = React.useMemo(() => {
-		let sortableItems = [...items]
+		const sortableItems = [...items]
 		if (sortConfig !== null) {
 			sortableItems.sort((a, b) => {
 				if (a[sortConfig.key] < b[sortConfig.key]) {
@@ -157,9 +162,21 @@ export const useSortableData = <T extends {}>(items: Array<T>, config: { key: st
 }
 
 export const randomString = () =>
-	Math.random()
-		.toString(36)
-		.substring(2, 15) +
-	Math.random()
-		.toString(36)
-		.substring(2, 15)
+	Math.random().toString(36).substring(2, 15) +
+	Math.random().toString(36).substring(2, 15)
+
+export function clearStorageWithRegex(regex: string): void {
+	for (const i in localStorage) {
+		if (localStorage.hasOwnProperty(i)) {
+			if (i.match(regex) || (!regex && typeof i === 'string')) {
+				localStorage.removeItem(i)
+				sessionStorage.clear()
+				document.cookie.split(';').forEach(function (c) {
+					document.cookie = c
+						.replace(/^ +/, '')
+						.replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/')
+				})
+			}
+		}
+	}
+}

@@ -27,7 +27,7 @@ export const delete_buff_viewers_livestream = async (id: string) => {
 			variables: { id },
 			updater: async store => {
 				const list = store.get(
-					`client:root:buff_viewers_livestream_tasks`,
+					'client:root:buff_viewers_livestream_tasks',
 				) as RecordProxy
 				ConnectionHandler.deleteNode(list, id)
 				s()

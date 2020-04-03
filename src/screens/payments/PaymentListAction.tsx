@@ -7,7 +7,8 @@ export type PaymentListActionProps = {
 }
 
 export const PaymentListAction = (props: PaymentListActionProps) => {
-	const search = (value:string) => props.onSearch(value.trim().toLocaleLowerCase())
+	const search = (value: string) =>
+		props.onSearch(value.trim().toLocaleLowerCase())
 
 	return (
 		<Row

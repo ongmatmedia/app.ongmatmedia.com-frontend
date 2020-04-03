@@ -20,7 +20,14 @@ export const PaymentList = (props: PaymentListProps) => (
 		{props.has_more && (
 			<Row type="flex" justify="space-around" align="middle">
 				<Col xs={24}>
-					<Tooltip title={props.search ? "Kết quả tìm kiếm đang bị giới hạn bởi nội dung tìm kiếm, vui lòng xóa bộ lọc để hiển thị toàn bộ kết quả." : ''} trigger="click">
+					<Tooltip
+						title={
+							props.search
+								? 'Kết quả tìm kiếm đang bị giới hạn bởi nội dung tìm kiếm, vui lòng xóa bộ lọc để hiển thị toàn bộ kết quả.'
+								: ''
+						}
+						trigger="click"
+					>
 						<Button
 							loading={props.loading_more}
 							type="dashed"
@@ -30,7 +37,8 @@ export const PaymentList = (props: PaymentListProps) => (
 						>
 							{props.loading ? 'Loading' : 'Show more'}
 						</Button>
-					</Tooltip>,
+					</Tooltip>
+					,
 				</Col>
 			</Row>
 		)}

@@ -90,7 +90,7 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 											rules: [
 												{
 													required: true,
-													message: `Please type campaign's name`,
+													message: "Please type campaign's name",
 												},
 											],
 											initialValue: livestream ? livestream.name : '',
@@ -102,7 +102,7 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 											rules: [
 												{
 													required: true,
-													message: `Please input livestream's title !`,
+													message: "Please input livestream's title !",
 												},
 											],
 											initialValue: livestream ? livestream.title : null,

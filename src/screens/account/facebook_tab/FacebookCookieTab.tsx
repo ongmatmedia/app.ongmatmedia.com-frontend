@@ -29,7 +29,7 @@ export const FacebookCookieTab = Form.create<FacebookCookieTabProps>()(
 						form.resetFields()
 						props.onCloseModal()
 						notification.success({
-							message: `Operation: Add account`,
+							message: 'Operation: Add account',
 							description: 'Successfully',
 						})
 					} catch (message) {

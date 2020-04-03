@@ -39,19 +39,19 @@ export const SmartGrahQLQueryRenderer = <T extends {}>(props: {
 		error?: string
 	}>
 }) => (
-		<QueryRenderer
-			environment={RelayEnvironment}
-			query={props.query as any}
-			variables={props.variables}
-			render={rs => (
-				<props.render
-					loading={rs.props == null}
-					data={((rs.props as any) as T) || null}
-					error={rs.error && JSON.stringify(rs.error)}
-				/>
-			)}
-		/>
-	)
+	<QueryRenderer
+		environment={RelayEnvironment}
+		query={props.query as any}
+		variables={props.variables}
+		render={rs => (
+			<props.render
+				loading={rs.props == null}
+				data={((rs.props as any) as T) || null}
+				error={rs.error && JSON.stringify(rs.error)}
+			/>
+		)}
+	/>
+)
 
 export const LazyGrahQLQueryRenderer = <T extends {}>(props: {
 	query: GraphQLTaggedNode
@@ -107,8 +107,8 @@ type PaginationComponentProps<T, P> = P &
 	GraphQLWrapperProps<T> & {
 		has_more: () => boolean
 		reload: (variables: any) => any
-		loading: boolean,
-		loading_more: boolean,
+		loading: boolean
+		loading_more: boolean
 		load_more: (amount: number, options?: RefetchOptions) => Promise<void>
 		relay: RelayPaginationProp
 	}
@@ -121,16 +121,10 @@ export const PaginationWrapper = <T extends {}, P = {}>(
 ) => {
 	const G = C as any
 	const F = (createPaginationContainer(
-		({
-			data,
-			error,
-			relay,
-			...rest
-		}: PaginationComponentProps<T, P>) => {
+		({ data, error, relay, ...rest }: PaginationComponentProps<T, P>) => {
 			const [loading, set_loading] = useState<boolean>(rest.loading)
 			const [loading_more, set_loading_more] = useState<boolean>(false)
 			useEffect(() => set_loading(rest.loading), [rest.loading])
-
 
 			return (
 				<G
@@ -138,7 +132,9 @@ export const PaginationWrapper = <T extends {}, P = {}>(
 					data={data}
 					load_more={async (n, options) => {
 						set_loading_more(true)
-						const data = await new Promise((s, r) => relay.loadMore(n, e => e ? r(e) : s(), options))
+						const data = await new Promise((s, r) =>
+							relay.loadMore(n, e => (e ? r(e) : s()), options),
+						)
 						set_loading_more(false)
 						return data
 					}}
@@ -147,7 +143,13 @@ export const PaginationWrapper = <T extends {}, P = {}>(
 					has_more={relay.hasMore}
 					reload={async (variables: any) => {
 						set_loading(true)
-						const data = await new Promise((s, r) => relay.refetchConnection(variables.first || 20, e => e ? r(e) : s(), variables))
+						const data = await new Promise((s, r) =>
+							relay.refetchConnection(
+								variables.first || 20,
+								e => (e ? r(e) : s()),
+								variables,
+							),
+						)
 						set_loading(false)
 						return data
 					}}
@@ -162,7 +164,7 @@ export const PaginationWrapper = <T extends {}, P = {}>(
 				...fragmentVariables,
 				first: count,
 				after: cursor,
-			})
+			}),
 		},
 	) as any) as FunctionComponent<GraphQLWrapperProps<T>>
 	return GraphQLWrapper<T, P>(query, variables, props => <F {...props} />)

@@ -16,7 +16,7 @@ export const delete_facebook_account = async (id: string) =>
 			variables: { id },
 			mutation,
 			optimisticUpdater: store => {
-				const list = store.get(`client:root:facebook_accounts`) as RecordProxy
+				const list = store.get('client:root:facebook_accounts') as RecordProxy
 				const edges = list.getLinkedRecords('edges') as RecordProxy[]
 				for (const edge of edges) {
 					const node = edge.getLinkedRecord('node') as RecordProxy
@@ -24,7 +24,7 @@ export const delete_facebook_account = async (id: string) =>
 				}
 			},
 			updater: store => {
-				const list = store.get(`client:root:facebook_accounts`) as RecordProxy
+				const list = store.get('client:root:facebook_accounts') as RecordProxy
 				ConnectionHandler.deleteNode(list, id)
 				success()
 			},

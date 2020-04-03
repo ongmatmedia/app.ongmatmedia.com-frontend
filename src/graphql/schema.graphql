@@ -377,6 +377,7 @@ input PaymentMethodInput {
 
 type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   me: User!
+  myadmin: User!
   pricing: ServicePricing!
   payment_methods: [PaymentMethod!]!
   users(after: String, limit: Int): UserConnection!

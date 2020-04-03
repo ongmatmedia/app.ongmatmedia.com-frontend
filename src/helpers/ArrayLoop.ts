@@ -3,7 +3,7 @@ export async function BatchAsync<ResultType>(
 	f: (index?: number) => Promise<ResultType | void>,
 	err: (index: number) => Promise<ResultType | void> = async () => {},
 ): Promise<ResultType[]> {
-	let queue: Array<Promise<ResultType | void>> = []
+	const queue: Array<Promise<ResultType | void>> = []
 	for (let i = 1; i <= n; i++) queue.push(f(i).catch(e => err(i)))
 	return (await Promise.all(queue)).filter(f => f != undefined) as ResultType[]
 }
@@ -13,7 +13,7 @@ export async function BatchSync<ResultType>(
 	f: (index?: number) => Promise<ResultType | void>,
 	err: (index: number) => Promise<ResultType | void> = async () => {},
 ): Promise<ResultType[]> {
-	let queue: Array<ResultType | void> = []
+	const queue: Array<ResultType | void> = []
 	for (let i = 1; i <= n; i++) queue.push(await f(i).catch(e => err(i)))
 	return (await Promise.all(queue)).filter(f => f != undefined) as ResultType[]
 }
@@ -27,7 +27,7 @@ export async function AsyncForEach<ItemType, ResultType>(
 		e: Error,
 	) => Promise<ResultType | void> = async () => {},
 ): Promise<ResultType[]> {
-	let queue: Array<Promise<ResultType | void>> = []
+	const queue: Array<Promise<ResultType | void>> = []
 	items.map((item, index) =>
 		queue.push(f(item, index).catch(e => err(item, index, e))),
 	)
@@ -42,7 +42,7 @@ export async function SyncForEach<ItemType, ResultType>(
 		index: number,
 	) => Promise<ResultType | void> = async () => {},
 ): Promise<ResultType[]> {
-	let queue: Array<ResultType | void> = []
+	const queue: Array<ResultType | void> = []
 	for (const [index, item] of Object.entries<ItemType>(items)) {
 		queue.push(
 			await f(item, Number(index)).catch(e => err(item, Number(index))),
@@ -106,7 +106,7 @@ export async function PingInfinity(
 }
 
 export function GetUniquee<T, K extends keyof T>(items: T[], key: K): T[] {
-	let list = new Set()
+	const list = new Set()
 	return items.filter(item => {
 		if (list.has(item[key])) return false
 		list.add(item[key])

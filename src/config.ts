@@ -1,4 +1,4 @@
-import { Auth0ClientOptions } from "@auth0/auth0-spa-js"
+import { Auth0ClientOptions } from '@auth0/auth0-spa-js'
 
 export const GraphQLEndpoint =
 	'https://7qwdnah2rbbopjl5cgj7w5jgqe.appsync-api.us-east-1.amazonaws.com/graphql'
@@ -7,12 +7,6 @@ export const AmplifyConfig = {
 	aws_appsync_graphqlEndpoint: GraphQLEndpoint,
 	aws_appsync_region: 'us-east-1',
 	aws_appsync_authenticationType: 'OPENID_CONNECT',
-	Auth: {
-		region: 'us-east-1',
-		userPoolWebClientId: '5jsn7g62sgsc69vcitn1ld8co4',
-		userPoolId: 'us-east-1_SNJlNZ7oX',
-		identityPoolId: 'us-east-1:7fde0c27-0753-4966-832a-7c0c34953f18',
-	},
 	Analytics: {
 		disabled: true,
 	},
@@ -38,5 +32,5 @@ export const FirebaseConfigVAPIDKEY =
 export const AUTH0_CONFIG: Auth0ClientOptions = {
 	domain: 'ongmatmedia.auth0.com',
 	client_id: 'spiiEFrf1tPlIPksv1vB3EPKLr9uNg50',
-	cacheLocation: 'localstorage'
+	cacheLocation: 'localstorage',
 }
