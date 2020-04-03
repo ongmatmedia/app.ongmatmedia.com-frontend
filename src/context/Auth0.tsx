@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import createAuth0Client, {
 	Auth0Client,
 	Auth0ClientOptions,
@@ -17,7 +18,6 @@ import {
 	GraphQLEndpoint,
 } from '../config'
 import * as lang from '../locales'
-import { sleep } from '../helpers/utils'
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
 	window.history.replaceState({}, document.title, window.location.pathname)
@@ -36,7 +36,6 @@ const defaultAuth0Context = {
 	logout: (options: LogoutOptions) => {},
 	firebaseInstance: null,
 	auth0Client: null,
-	configureAmplify: async (Auth0Client: Auth0Client) => {},
 	userToken: null,
 }
 
@@ -66,7 +65,7 @@ export const Auth0Provider = (props: Auth0ProviderProps) => {
 			return console.error('Push messaging is not supported')
 		await new Promise((s, r) =>
 			Notification.requestPermission(state => (state == 'granted' ? s() : r())),
-		).catch(e => console.log('Please enable notification'))
+		).catch(() => console.log('Please enable notification'))
 		const sw = await navigator.serviceWorker.register('/sw.js')
 		firebase.messaging().useServiceWorker(sw)
 	}
@@ -157,7 +156,6 @@ export const Auth0Provider = (props: Auth0ProviderProps) => {
 				await registerServiceWorker()
 				initFirebase()
 			}
-
 			setLoading(false)
 		}
 		initAuth0()

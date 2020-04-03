@@ -3,9 +3,12 @@ import Text from 'antd/lib/typography/Text'
 import { graphql } from 'babel-plugin-relay/macro'
 import React, { useEffect } from 'react'
 import { Pie } from 'react-chartjs-2'
-import { PaginationWrapper } from '../graphql/GraphQLWrapper'
+import {
+	PaginationWrapper,
+	GraphQLQueryFetcher,
+} from '../graphql/GraphQLWrapper'
 import { groupTimeIntoDayMap, nFormatter } from '../helpers/utils'
-import { PaymentHistoryConnection } from '../types'
+import { PaymentHistoryConnection, User } from '../types'
 
 const query = graphql`
 	query HomePageQuery($after: String, $first: Int, $before_time: Long) {
@@ -167,6 +170,32 @@ export const HomePage = PaginationWrapper<{
 					</Row>
 				</Card>
 			)
+
+		useEffect(() => {
+			const createUserIfNotExist = async () => {
+				try {
+					console.log('call query')
+					const user = await GraphQLQueryFetcher<{ me: User }>(
+						graphql`
+							query HomePageCreateUserIfNotExistQuery {
+								me {
+									id
+									username
+									balance
+									price_percent
+									creator_id
+								}
+							}
+						`,
+						{},
+					)
+					return user
+				} catch (error) {
+					console.error(error)
+				}
+			}
+			createUserIfNotExist()
+		}, [])
 
 		useEffect(() => {
 			const fn = async () => {
@@ -373,7 +402,7 @@ export const HomePage = PaginationWrapper<{
 										title={<Text strong>{'Balance'.toLocaleUpperCase()}</Text>}
 										value={Number(
 											paymentHistories[paymentHistories.length - 1]
-												?.balance_after,
+												?.balance_after || 0,
 										).toLocaleString()}
 										prefix={<Icon type="dollar" />}
 										valueStyle={{ color: '#856c8b' }}
