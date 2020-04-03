@@ -33,4 +33,5 @@ export const AUTH0_CONFIG: Auth0ClientOptions = {
 	domain: 'ongmatmedia.auth0.com',
 	client_id: 'spiiEFrf1tPlIPksv1vB3EPKLr9uNg50',
 	cacheLocation: 'localstorage',
+	redirect_uri: window.location.origin,
 }

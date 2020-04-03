@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
-import { Route, withRouter, RouteComponentProps } from 'react-router-dom'
+import { Route, RouteComponentProps, withRouter } from 'react-router-dom'
 import { useAuth0 } from '../context/Auth0'
 import { MainLayoutProps } from '../layouts/main'
-import { Card, Row, Col, Spin, Icon } from 'antd'
-import { LoadingPage } from '../screens/loading/LoadingPage'
 
 type PrivateRouteProps = RouteComponentProps & {
 	component: React.FunctionComponent | React.ComponentClass
