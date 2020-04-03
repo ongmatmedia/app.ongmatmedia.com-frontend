@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { Alert, Card, Col, Icon, List, Row, Spin, Statistic } from 'antd'
 import Text from 'antd/lib/typography/Text'
 import { graphql } from 'babel-plugin-relay/macro'
@@ -9,6 +10,7 @@ import {
 } from '../graphql/GraphQLWrapper'
 import { groupTimeIntoDayMap, nFormatter } from '../helpers/utils'
 import { PaymentHistoryConnection, User } from '../types'
+import history from '../helpers/history'
 
 const query = graphql`
 	query HomePageQuery($after: String, $first: Int, $before_time: Long) {
@@ -113,8 +115,18 @@ const options = {
 const seedingAnnoucements = [
 	{
 		type: 'info',
-		message:
-			'Hệ thống đang trong quá trình thử nghiệm. Nếu bạn gặp bất kì vấn đề gì vui lòng liên hệ admin.',
+		message: (
+			<span>
+				Hệ thống đang trong quá trình thử nghiệm. Nếu bạn gặp bất kì vấn đề gì
+				vui lòng liên hệ admin.{' '}
+				<span
+					style={{ textDecoration: 'underline' }}
+					onClick={() => history.push('/contact')}
+				>
+					Click để biết thông tin chi tiết.
+				</span>
+			</span>
+		),
 	},
 ]
 
@@ -263,14 +275,43 @@ export const HomePage = PaginationWrapper<{
 		}[] = sortedAscendingDayData
 
 		return (
-			<Card>
+			<Card style={{ height: '100vh - 65px' }}>
 				<Row gutter={16}>
 					<Col xs={24}>
 						<List
 							size="small"
 							header={null}
 							footer={null}
-							dataSource={seedingAnnoucements}
+							dataSource={
+								paymentHistories.length > 0
+									? seedingAnnoucements
+									: [
+											...seedingAnnoucements,
+											{
+												message: (
+													<>
+														{paymentHistories.length == 0
+															? 'Bạn hiện chưa có giao dịch nào. '
+															: ''}{' '}
+														Trải nghiệm ngay dịch vụ hot nhất site:{' '}
+														<span
+															style={{
+																textDecoration: 'underline',
+																fontWeight: 'bold',
+																cursor: 'pointer',
+															}}
+															onClick={() =>
+																history.push('/seeding/buff-viewers-livestream')
+															}
+														>
+															TĂNG MẮT NGAY
+														</span>
+													</>
+												),
+												type: 'info',
+											},
+									  ]
+							}
 							renderItem={item => (
 								<Alert
 									style={{ marginBottom: 20 }}
@@ -282,7 +323,11 @@ export const HomePage = PaginationWrapper<{
 						/>
 					</Col>
 				</Row>
-				<Row type="flex" align="middle" style={{ textAlign: 'center' }}>
+				<Row
+					type="flex"
+					align="middle"
+					style={{ textAlign: 'center', opacity: 0.5, cursor: 'not-allowed' }}
+				>
 					{/* <Col lg={12} xs={24}> */}
 					{/* <DatePicker
 							placeholder="End date"
@@ -460,9 +505,31 @@ export const HomePage = PaginationWrapper<{
 							</Col>
 						</Row>
 					</Col>
-					<Col sm={12} xs={24}>
+					<Col sm={12} xs={24} style={{ opacity: 0.5, cursor: 'not-allowed' }}>
 						<Pie
 							options={{
+								responsive: true,
+								tooltips: {
+									mode: 'label',
+									callbacks: {
+										label: function (tooltipItem, data) {
+											console.log('from tooltip')
+											console.log({ tooltipItem }, { data })
+											let label = data.labels[tooltipItem.index] || ''
+											console.log({ label })
+											if (label) {
+												label += ': '
+											}
+											console.log()
+											label += Number(
+												data.datasets[tooltipItem.datasetIndex].data[
+													tooltipItem.index
+												],
+											).toLocaleString()
+											return label
+										},
+									},
+								},
 								legend: {
 									display: true,
 									position: 'bottom',
@@ -472,20 +539,21 @@ export const HomePage = PaginationWrapper<{
 								},
 							}}
 							data={{
-								labels: ['Mắt', 'Đại lý'],
+								labels: ['Demo #1', 'Demo #2'],
 								datasets: [
 									{
-										data: [
-											paymentHistories.reduce(
-												(sum, payment) =>
-													sum + payment.buff_viewers_livestream_money,
-												0,
-											),
-											paymentHistories.reduce(
-												(sum, payment) => sum + payment.send_money,
-												0,
-											),
-										],
+										// data: [
+										// 	paymentHistories.reduce(
+										// 		(sum, payment) =>
+										// 			sum + payment.buff_viewers_livestream_money,
+										// 		0,
+										// 	),
+										// 	paymentHistories.reduce(
+										// 		(sum, payment) => sum + payment.send_money,
+										// 		0,
+										// 	),
+										// ],
+										data: [10000000, 54782134],
 										backgroundColor: ['#36A2EB', '#ffb385'],
 										hoverBackgroundColor: ['#36A2EB', '#ffb385'],
 									},
@@ -493,7 +561,11 @@ export const HomePage = PaginationWrapper<{
 							}}
 						/>
 						<div style={{ marginTop: 17 }}>
-							<Text strong>{'Biểu đồ phân chia tiền đại lý'}</Text>
+							<Text strong>
+								{paymentHistories.length == 0
+									? 'Demo biểu đồ đại lý'
+									: 'Biểu đồ phân chia tiền đại lý'}
+							</Text>
 						</div>
 					</Col>
 				</Row>

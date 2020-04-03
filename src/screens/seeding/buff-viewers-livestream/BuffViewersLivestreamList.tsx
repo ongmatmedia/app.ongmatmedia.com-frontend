@@ -14,7 +14,7 @@ import Text from 'antd/lib/typography/Text'
 import { graphql } from 'babel-plugin-relay/macro'
 import React, { useEffect, useState } from 'react'
 import Moment from 'react-moment'
-import { commitLocalUpdate } from 'relay-runtime'
+import { commitLocalUpdate, Disposable } from 'relay-runtime'
 import {
 	GraphQLQueryFetcher,
 	PaginationWrapper,
@@ -25,6 +25,7 @@ import { BuffViewersLivestreamConnection } from '../../../types'
 import { BuffViewersLivestreamAction } from './BuffViewersLivestreamAction'
 import { BuffViewersDetailModal } from './BuffViewersLivestreamDetailModal'
 import { BuffViewersLivetreamStatistics } from './BuffViewersLivetreamStatistics'
+import { on_update_buff_viewers_livestream_playing } from '../../../graphql/subscriptions/on_update_buff_viewers_livestream_playing'
 
 const query = graphql`
 	query BuffViewersLivestreamListQuery(
@@ -116,6 +117,15 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 	({ data, loading, reload, has_more, load_more, loading_more }) => {
 		if (loading && !data)
 			return <Skeleton active loading paragraph={{ rows: 5 }} />
+
+		useEffect(() => {
+			const fn = async () => {
+				const result = await on_update_buff_viewers_livestream_playing()
+				return result
+			}
+			fn()
+			return () => fn().then(dipose => dipose.dispose())
+		}, [])
 
 		useEffect(() => {
 			update_playing_videos()
@@ -301,7 +311,7 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 						)}
 					/>
 				</Spin>
-				{!!has_more && (
+				{has_more() && (
 					<Row type="flex" justify="center" align="middle">
 						<Col xs={24} style={{ textAlign: 'center' }}>
 							<Tooltip
