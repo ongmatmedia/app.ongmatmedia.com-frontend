@@ -1,24 +1,29 @@
-import { Alert, Col, Icon, Modal, Row, Spin, Descriptions } from 'antd'
+import { Alert, Col, Descriptions, Icon, Modal, Row, Spin, Statistic, Divider } from 'antd'
 import { graphql } from 'babel-plugin-relay/macro'
 import React from 'react'
 import { Line } from 'react-chartjs-2'
-import Text from 'antd/lib/typography/Text'
 import { SmartGrahQLQueryRenderer } from '../../../graphql/GraphQLWrapper'
 import { BuffViewersLivestream } from '../../../types'
+import { useAuth0 } from '../../../context/Auth0'
 
 const query = graphql`
 	query BuffViewersLivestreamDetailModalQuery($id: String!) {
 		buff_viewers_livestream_task(id: $id) {
 			id
-			first_reported_viewers
-			last_reported_viewers
 			logs {
 				amount
 				time
 			}
+			orders {
+				from
+				time
+				amount
+				limit_mins
+			}
 		}
 	}
 `
+
 const options = {
 	responsive: true,
 	tooltips: {
@@ -76,6 +81,7 @@ export const BuffViewersDetailModal = (props: {
 	onClose: Function
 	video_id: string
 }) => {
+	const { user } = useAuth0()
 	return (
 		<Modal
 			width="80%"
@@ -103,17 +109,32 @@ export const BuffViewersDetailModal = (props: {
 							)}
 							{!loading && data && (
 								<>
-									<Descriptions title={null}>
-										<Descriptions.Item label="ID">
-											{data.buff_viewers_livestream_task.id}
+									<Row gutter={16} style={{marginBottom: 15}}>
+										<Col xs={24} sm={8}>
+											<Statistic title="ID" value={data.buff_viewers_livestream_task.id} formatter={value => value} />
+										</Col>
+										<Col xs={24} sm={8}>
+											<Statistic title="Original viewers" value={data.buff_viewers_livestream_task
+												.logs[0].amount}  />
+										</Col>
+										<Col xs={24} sm={8}>
+											<Statistic title="Last reported viewers" value={data.buff_viewers_livestream_task
+												.logs[data.buff_viewers_livestream_task
+													.logs.length - 1].amount} />
+										</Col>
+									</Row>
+									<Divider />
+									<Descriptions bordered layout="vertical" title={"Chi tiết order"} size="small" style={{ marginBottom: 15 }}>
+										<Descriptions.Item label="Time">
+											{new Date(data.buff_viewers_livestream_task.orders?.filter(el => el.from == user.sub)[0].time).toLocaleString('vi-VN', {
+												hour12: true
+											})}
 										</Descriptions.Item>
-										<Descriptions.Item label="First report viewers">
-											{data.buff_viewers_livestream_task
-												.first_reported_viewers || '_'}
+										<Descriptions.Item label="Amount">
+											{data.buff_viewers_livestream_task.orders?.filter(el => el.from == user.sub)[0].amount}
 										</Descriptions.Item>
-										<Descriptions.Item label="Last report viewers">
-											{data.buff_viewers_livestream_task
-												.last_reported_viewers || '_'}
+										<Descriptions.Item label="Limit mins">
+											{data.buff_viewers_livestream_task.orders?.filter(el => el.from == user.sub)[0].limit_mins}
 										</Descriptions.Item>
 									</Descriptions>
 									<Line

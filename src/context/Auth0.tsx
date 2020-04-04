@@ -24,7 +24,7 @@ const DEFAULT_REDIRECT_CALLBACK = () =>
 
 const defaultAuth0Context = {
 	isAuthenticated: false,
-	user: { picture: '' },
+	user: { picture: '', sub: '' },
 	loading: true,
 	popupOpen: false,
 	loginWithPopup: () => {},
@@ -85,7 +85,6 @@ export const Auth0Provider = (props: Auth0ProviderProps) => {
 	}
 
 	const configureAmplify = async (token: string) => {
-		console.log({ token })
 		if (token) {
 			try {
 				Amplify.configure({

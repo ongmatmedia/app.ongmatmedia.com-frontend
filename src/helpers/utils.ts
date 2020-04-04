@@ -180,3 +180,33 @@ export function clearStorageWithRegex(regex: string): void {
 		}
 	}
 }
+
+export const prettyDiffDate = (date: number) => {
+	const delta = Math.round((+new Date - date) / 1000);
+
+	const minute = 60,
+		hour = minute * 60,
+		day = hour * 24,
+		week = day * 7;
+
+	let fuzzy:string;
+
+	if (delta < 30) {
+		fuzzy = 'vài giây trước';
+	} else if (delta < minute) {
+		fuzzy = delta + ' seconds ago.';
+	} else if (delta < 2 * minute) {
+		fuzzy = 'một phút trước'
+	} else if (delta < hour) {
+		fuzzy = Math.floor(delta / minute) + ' phút trước';
+	} else if (Math.floor(delta / hour) == 1) {
+		fuzzy = 'một giờ trước'
+	} else if (delta < day) {
+		fuzzy = Math.floor(delta / hour) + ' giờ trước';
+	} else if (delta < day * 2) {
+		fuzzy = 'hôm qua';
+	} else if (delta < day * 3) {
+		fuzzy = Math.floor(delta / day) + ' ngày trước';
+	}
+	return fuzzy
+}

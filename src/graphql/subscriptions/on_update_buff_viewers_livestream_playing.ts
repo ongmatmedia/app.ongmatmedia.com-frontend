@@ -16,7 +16,7 @@ const subscription = graphql`
 	}
 `
 
-export const on_update_buff_viewers_livestream_playing = async () =>
+export const on_update_buff_viewers_livestream_playing = () =>
 	requestSubscription(RelayEnvironment, {
 		subscription,
 		variables: {},

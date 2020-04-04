@@ -33,7 +33,7 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}>Available</Text>}
 							value={data.buff_viewers_system_status.available_viewers}
-							prefix={<Icon type="eye" />}
+							prefix={<Icon type="eye" className="pulse" />}
 							valueStyle={{ color: 'rgb(64, 169, 255)' }}
 						/>
 					</Card>
@@ -61,9 +61,9 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 								<Icon
 									type="video-camera"
 									style={{
-										color: 'red',
+										color: '#ff5722',
 									}}
-									className="heartBeat"
+									className="flash"
 								/>
 							}
 							valueStyle={{ color: 'green' }}
@@ -76,8 +76,8 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}> Fail</Text>}
 							value={buffStatusData.filter(status => status == 'done').length}
-							prefix={<Icon type="warning" />}
-							valueStyle={{ color: 'red' }}
+							prefix={<Icon type="warning" theme="filled" />}
+							valueStyle={{ color: '#dd2c00' }}
 						/>
 					</Card>
 				</Col>

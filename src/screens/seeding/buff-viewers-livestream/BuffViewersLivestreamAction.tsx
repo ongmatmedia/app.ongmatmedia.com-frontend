@@ -50,11 +50,17 @@ export const BuffViewersLivestreamAction = (
 					<Option value="" key={5}>
 						No filter
 					</Option>
+					<Option value="created" key={1}>
+						Created
+					</Option>
 					<Option value="queue" key={1}>
 						Queue
 					</Option>
 					<Option value="playing" key={2}>
 						Playing
+					</Option>
+					<Option value="done" key={1}>
+						Done
 					</Option>
 					<Option value="fail" key={3}>
 						Fail
