@@ -217,7 +217,7 @@ export const HomePage = PaginationWrapper<{
 				const has_more_and_last_is_valid =
 					has_more() &&
 					last.node.time >
-						new Date(`00:00:00 ${new Date().toLocaleDateString()}`).getTime()
+					new Date(`00:00:00 ${new Date().toLocaleDateString()}`).getTime()
 				if (has_more_and_last_is_valid) await load_more(50)
 			}
 			fn()
@@ -286,31 +286,31 @@ export const HomePage = PaginationWrapper<{
 								paymentHistories.length > 0
 									? seedingAnnoucements
 									: [
-											...seedingAnnoucements,
-											{
-												message: (
-													<>
-														{paymentHistories.length == 0
-															? 'Bạn hiện chưa có giao dịch nào. '
-															: ''}{' '}
+										...seedingAnnoucements,
+										{
+											message: (
+												<>
+													{paymentHistories.length == 0
+														? 'Bạn hiện chưa có giao dịch nào. '
+														: ''}{' '}
 														Trải nghiệm ngay dịch vụ hot nhất site:{' '}
-														<span
-															style={{
-																textDecoration: 'underline',
-																fontWeight: 'bold',
-																cursor: 'pointer',
-															}}
-															onClick={() =>
-																history.push('/seeding/buff-viewers-livestream')
-															}
-														>
-															TĂNG MẮT NGAY
+													<span
+														style={{
+															textDecoration: 'underline',
+															fontWeight: 'bold',
+															cursor: 'pointer',
+														}}
+														onClick={() =>
+															history.push('/seeding/buff-viewers-livestream')
+														}
+													>
+														TĂNG MẮT NGAY
 														</span>
-													</>
-												),
-												type: 'info',
-											},
-									  ]
+												</>
+											),
+											type: 'info',
+										},
+									]
 							}
 							renderItem={item => (
 								<Alert
@@ -326,7 +326,7 @@ export const HomePage = PaginationWrapper<{
 				<Row
 					type="flex"
 					align="middle"
-					style={{ textAlign: 'center', opacity: 0.5, cursor: 'not-allowed' }}
+					style={paymentHistories.length > 0 ? { textAlign: 'center' } : { textAlign: 'center', opacity: 0.5, cursor: 'not-allowed' }}
 				>
 					{/* <Col lg={12} xs={24}> */}
 					{/* <DatePicker
@@ -505,7 +505,7 @@ export const HomePage = PaginationWrapper<{
 							</Col>
 						</Row>
 					</Col>
-					<Col sm={12} xs={24} style={{ opacity: 0.5, cursor: 'not-allowed' }}>
+					<Col sm={12} xs={24} style={paymentHistories.length > 0 ? {} : { opacity: 0.5, cursor: 'not-allowed' }}>
 						<Pie
 							options={{
 								responsive: true,
@@ -523,7 +523,7 @@ export const HomePage = PaginationWrapper<{
 											console.log()
 											label += Number(
 												data.datasets[tooltipItem.datasetIndex].data[
-													tooltipItem.index
+												tooltipItem.index
 												],
 											).toLocaleString()
 											return label
@@ -539,21 +539,20 @@ export const HomePage = PaginationWrapper<{
 								},
 							}}
 							data={{
-								labels: ['Demo #1', 'Demo #2'],
+								labels: paymentHistories.length > 0 ? ['Tiền mắt', 'Tiền đại lý'] : ['Demo #1', 'Demo #2'],
 								datasets: [
 									{
-										// data: [
-										// 	paymentHistories.reduce(
-										// 		(sum, payment) =>
-										// 			sum + payment.buff_viewers_livestream_money,
-										// 		0,
-										// 	),
-										// 	paymentHistories.reduce(
-										// 		(sum, payment) => sum + payment.send_money,
-										// 		0,
-										// 	),
-										// ],
-										data: [10000000, 54782134],
+										data: paymentHistories.length > 0 ? [
+											paymentHistories.reduce(
+												(sum, payment) =>
+													sum + payment.buff_viewers_livestream_money,
+												0,
+											),
+											paymentHistories.reduce(
+												(sum, payment) => sum + payment.send_money,
+												0,
+											),
+										] : [10000000, 54782134],
 										backgroundColor: ['#36A2EB', '#ffb385'],
 										hoverBackgroundColor: ['#36A2EB', '#ffb385'],
 									},

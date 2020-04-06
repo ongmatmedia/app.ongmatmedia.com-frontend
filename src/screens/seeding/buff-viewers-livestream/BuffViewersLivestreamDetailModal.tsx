@@ -1,10 +1,10 @@
-import { Alert, Col, Descriptions, Icon, Modal, Row, Spin, Statistic, Divider } from 'antd'
+import { Alert, Col, Icon, Modal, Row, Spin, Statistic, Table } from 'antd'
 import { graphql } from 'babel-plugin-relay/macro'
 import React from 'react'
 import { Line } from 'react-chartjs-2'
+import { useAuth0 } from '../../../context/Auth0'
 import { SmartGrahQLQueryRenderer } from '../../../graphql/GraphQLWrapper'
 import { BuffViewersLivestream } from '../../../types'
-import { useAuth0 } from '../../../context/Auth0'
 
 const query = graphql`
 	query BuffViewersLivestreamDetailModalQuery($id: String!) {
@@ -54,7 +54,7 @@ const options = {
 					callback: (value: string, index: number, values: string[]) => {
 						const date = new Date(value)
 						return date.getMinutes() % 15 == 0 &&
-							new Date(values[index + 1]).getMinutes() !== 15
+							new Date(values[index + 1]).getMinutes() % 15 !== 0
 							? date.toLocaleTimeString('vi-VN')
 							: ''
 					},
@@ -77,6 +77,7 @@ const options = {
 	},
 }
 
+
 export const BuffViewersDetailModal = (props: {
 	onClose: Function
 	video_id: string
@@ -87,7 +88,7 @@ export const BuffViewersDetailModal = (props: {
 			width="80%"
 			destroyOnClose
 			closable={true}
-			title="Buff viewers for livestream"
+			title={`Chi tiết thông số buff`}
 			style={{ textAlign: 'center', top: 10 }}
 			onCancel={() => props.onClose()}
 			footer={null}
@@ -109,13 +110,13 @@ export const BuffViewersDetailModal = (props: {
 							)}
 							{!loading && data && (
 								<>
-									<Row gutter={16} style={{marginBottom: 15}}>
+									<Row gutter={16} style={{ marginBottom: 15 }}>
 										<Col xs={24} sm={8}>
 											<Statistic title="ID" value={data.buff_viewers_livestream_task.id} formatter={value => value} />
 										</Col>
 										<Col xs={24} sm={8}>
 											<Statistic title="Original viewers" value={data.buff_viewers_livestream_task
-												.logs[0].amount}  />
+												.logs[0].amount} />
 										</Col>
 										<Col xs={24} sm={8}>
 											<Statistic title="Last reported viewers" value={data.buff_viewers_livestream_task
@@ -123,20 +124,42 @@ export const BuffViewersDetailModal = (props: {
 													.logs.length - 1].amount} />
 										</Col>
 									</Row>
-									<Divider />
-									<Descriptions bordered layout="vertical" title={"Chi tiết order"} size="small" style={{ marginBottom: 15 }}>
-										<Descriptions.Item label="Time">
-											{new Date(data.buff_viewers_livestream_task.orders?.filter(el => el.from == user.sub)[0].time).toLocaleString('vi-VN', {
+									<Table
+										title={() => 'Detail orders'}
+										style={{marginBottom: 20}}
+										bordered
+										pagination={false}
+										dataSource={data.buff_viewers_livestream_task.orders?.filter(el => el.from == user.sub).map(el => ({
+											...el,
+											time: new Date(el.time).toLocaleString('vi-VN', {
 												hour12: true
-											})}
-										</Descriptions.Item>
-										<Descriptions.Item label="Amount">
-											{data.buff_viewers_livestream_task.orders?.filter(el => el.from == user.sub)[0].amount}
-										</Descriptions.Item>
-										<Descriptions.Item label="Limit mins">
-											{data.buff_viewers_livestream_task.orders?.filter(el => el.from == user.sub)[0].limit_mins}
-										</Descriptions.Item>
-									</Descriptions>
+											}),
+											status: el.time + el.limit_mins * 60 * 1000 >= Date.now() ? <Icon type="video-camera" style={{color: '#ff5722'}} />: <Icon type="check-circle" style={{color: 'green'}} />
+										})).sort((a, b) => a.time < b.time ? 1 : -1 )}
+										columns={
+											[
+												{
+													title: 'Time',
+													dataIndex: 'time',
+													key: 'time',
+												},
+												{
+													title: 'Amount',
+													dataIndex: 'amount',
+													key: 'amount',
+												},
+												{
+													title: 'Limit mins',
+													dataIndex: 'limit_mins',
+													key: 'limit_mins',
+												},
+												{
+													title: 'Status',
+													dataIndex: 'status',
+													key: 'status',
+												},
+											]
+										} />
 									<Line
 										data={{
 											labels: data.buff_viewers_livestream_task.logs.map(el =>

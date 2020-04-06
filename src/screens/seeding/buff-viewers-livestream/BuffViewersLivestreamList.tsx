@@ -13,6 +13,7 @@ import { BuffViewersLivestreamConnection } from '../../../types'
 import { BuffViewersLivestreamAction } from './BuffViewersLivestreamAction'
 import { BuffViewersDetailModal } from './BuffViewersLivestreamDetailModal'
 import { BuffViewersLivetreamStatistics } from './BuffViewersLivetreamStatistics'
+import { add } from '../../../graphql/create_buff_viewers_livestream'
 import './style.css'
 
 const query = graphql`
@@ -25,6 +26,65 @@ const query = graphql`
 			@arguments(after: $after, first: $first, before_time: $before_time)
 	}
 `
+
+const statusMapping = {
+	playing: {
+		type: 'video-camera',
+		style: {
+			color: '#ff5722',
+			fontSize: 20
+		},
+		className: 'flash'
+	},
+	done: {
+		type: 'check-circle',
+		theme: 'filled',
+		style: {
+			color: 'green',
+			fontSize: 20
+		}
+	},
+	queue: {
+		type: 'clock-circle',
+		style: {
+			color: 'grey',
+			fontSize: 20
+		}
+	},
+	created: {
+		type: 'clock-circle',
+		style: {
+			color: 'grey',
+			fontSize: 20
+		}
+	},
+	fail: {
+		type: 'warning',
+		theme: '',
+		style: {
+			color: '#ffa41b',
+			fontSize: 20
+		}
+	},
+	overload: {
+		type: 'thunderbolt',
+		theme: 'filled',
+		style: {
+			color: '#ffa41b',
+			fontSize: 20
+		}
+	},
+	default: {
+		type: 'question-circle',
+		theme: '',
+		style: {
+			color: 'black',
+			fontSize: 20
+		}
+	}
+}
+
+const BuffViewerLivestreamStatusIcon = (props: { status: string }) => <Icon type={statusMapping[`${props.status}`].type} style={statusMapping[`${props.status}`].style} theme={statusMapping[`${props.status}`].theme || ''} className={statusMapping[`${props.status}`].className || ''} />
 
 const update_playing_videos = async () => {
 	const { buff_viewers_livestream_playing } = await GraphQLQueryFetcher<{
@@ -99,6 +159,8 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 						orders {
 							from
 							amount
+							time
+							limit_mins
 						}
 					}
 				}
@@ -107,6 +169,7 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 	`,
 	{},
 	({ data, loading, reload, has_more, load_more, loading_more }) => {
+		console.log({data})
 		if (loading && !data)
 			return <Skeleton active loading paragraph={{ rows: 5 }} />
 
@@ -133,17 +196,18 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 			e => e.node.status,
 		)
 
-		const [
-			buffViewersDetailModalVisible,
-			setBuffViewersDetailModalVisible,
-		] = useState<boolean>(false)
-
 		const buffViewersLivestreamTasks = data?.buff_viewers_livestream_tasks.edges.map(
 			e => ({
 				...e.node,
 				time: e.node.created_time,
 			}),
 		)
+
+		const playingBuffViewersLivestream = buffViewersLivestreamTasks.filter(el => el.status == 'playing')
+
+		const totalAvailableAmount = playingBuffViewersLivestream.map(buff => buff.orders.filter(order => order.from == user.sub && order.time + order.limit_mins * 60 * 1000 >= Date.now())).reduce((sumTotalAvailableAmounts, curr) => sumTotalAvailableAmounts + curr.reduce((sumEachAvailableAmount, currEach) => sumEachAvailableAmount + currEach.amount, 0), 0)
+
+		const totalIncreaseViewers = playingBuffViewersLivestream.map(buff => buff.last_reported_viewers).reduce((sumLastReportedViewers, curr) => sumLastReportedViewers + curr, 0) - playingBuffViewersLivestream.map(buff => buff.first_reported_viewers).reduce((sumFirstReportedViewers, curr) => sumFirstReportedViewers + curr, 0)
 
 		const conditionStatusFilter = (condition: boolean) =>
 			!!statusFilter ? condition : true
@@ -173,16 +237,17 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 					<BuffViewersDetailModal
 						onClose={() => {
 							setSelectedBuffId(null)
-							setBuffViewersDetailModalVisible(false)
 						}}
 						video_id={selectedBuffId}
 					/>
 				)}
-				<BuffViewersLivetreamStatistics buffStatusData={buffStatusData} />
-				<BuffViewersLivestreamAction
-					onChangeSearch={id => setVideoIdSearch(id)}
-					onChangeDate={d => reload({ first: 12, before_time: d.getTime() })}
-					onChangeStatusFilter={status => setStatusFilter(status)}
+				<BuffViewersLivetreamStatistics
+					buffStatusData={buffStatusData}
+					percentage={
+						playingBuffViewersLivestream.reduce((sumLastReportedViewers, curr) => sumLastReportedViewers + curr.last_reported_viewers, 0) / totalAvailableAmount * 100
+					}
+					totalIncreaseViewers={totalIncreaseViewers}
+					totalAvailableAmount={totalAvailableAmount}
 				/>
 				<Spin spinning={loading}>
 					<List
@@ -205,57 +270,25 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 												borderRadius: 15,
 												boxShadow:
 													'0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.05)',
-												cursor: `${
-													buffViewersLivestream.status == 'playing'
-														? 'pointer'
-														: ''
-													}`,
+												cursor: 'pointer',
 											}}
 											onClick={() => {
 												setSelectedBuffId(buffViewersLivestream.id)
-												setBuffViewersDetailModalVisible(true)
 											}}
 										>
 											<Skeleton loading={loading} active>
 												<Card
 													extra={
-														<Text strong>
-															{`${buffViewersLivestream.last_reported_viewers} / ${buffViewersLivestream.orders.reduce((sum, curr) => curr.from == user.sub ? sum + curr.amount : sum, 0) || '_'}`}
-														</Text>
+														buffViewersLivestream.status == 'playing' ? (
+															<Text strong>
+																{`${buffViewersLivestream.last_reported_viewers || '_'} / ${buffViewersLivestream.orders.reduce((sum, curr) => curr.from == user.sub && curr.time + curr.limit_mins * 60 * 1000 >= Date.now() ? sum + curr.amount : sum, 0) + buffViewersLivestream.first_reported_viewers || '_'}`}
+															</Text>
+														) : (
+																'-/-'
+															)
 													}
 													type="inner"
-													title={
-														buffViewersLivestream.status == 'playing'
-															? <Icon
-																type="video-camera"
-																style={{
-																	color: '#ff5722',
-																	fontSize: 20
-																}}
-																className="flash"
-															/> : buffViewersLivestream.status == 'done' ?
-																<Icon
-																	type="check-circle"
-																	theme="filled"
-																	style={{
-																		color: 'green',
-																		fontSize: 20
-																	}}
-																/> : buffViewersLivestream.status == 'queue' || buffViewersLivestream.status == 'created' ?
-																	<Icon
-																		type="clock-circle"
-																		style={{
-																			color: 'grey',
-																			fontSize: 20
-																		}}
-																	/> : buffViewersLivestream.status == 'fail' ?
-																		<Icon
-																			type="warning"
-																			style={{
-																				color: '#dd2c00',
-																				fontSize: 20
-																			}}
-																		/> : ''}
+													title={<BuffViewerLivestreamStatusIcon status={buffViewersLivestream.status} />}
 													headStyle={{ textAlign: 'left' }}
 												>
 													<Row>
@@ -274,23 +307,11 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 														<Col xs={24}>
 															<Row>
 																<Col span={12}>
-																	<Text strong>Limit mins</Text>
-																</Col>
-																<Col span={12} style={{ textAlign: 'right' }}>
-																	{buffViewersLivestream.limit_mins} minutes
-																</Col>
-															</Row>
-														</Col>
-													</Row>
-													<Row>
-														<Col xs={24}>
-															<Row>
-																<Col span={12}>
-																	<Text strong>Bought at</Text>
+																	<Text strong>Last bought</Text>
 																</Col>
 																<Col span={12} style={{ textAlign: 'right' }}>
 																	<Moment fromNow>
-																		{buffViewersLivestream.created_time}
+																		{buffViewersLivestream.orders.reduce((lastest, curr) => curr.time >= lastest ? curr.time : lastest, buffViewersLivestream.orders[0].time)}
 																	</Moment>
 																</Col>
 															</Row>
@@ -306,7 +327,11 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 																	{
 																		buffViewersLivestream.status == 'playing' ? (
 																			<Moment fromNow>
-																				{buffViewersLivestream.end_time}
+																				{buffViewersLivestream.orders
+																					.filter(order => order.from == user.sub)
+																					.reduce<number>(
+																						(max, curr) => curr.time + curr.limit_mins * 60 * 1000 >= max ? curr.time + curr.limit_mins * 60 * 1000 : max,
+																						buffViewersLivestream.orders.filter(order => order.from == user.sub)[0]?.time + buffViewersLivestream.orders.filter(order => order.from == user.sub)[0]?.limit_mins * 60 * 1000)}
 																			</Moment>
 																		) : '_'
 																	}
@@ -322,6 +347,18 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 																</Col>
 																<Col span={12} style={{ textAlign: 'right' }}>
 																	{buffViewersLivestream.first_reported_viewers || '_'}
+																</Col>
+															</Row>
+														</Col>
+													</Row>
+													<Row>
+														<Col xs={24}>
+															<Row>
+																<Col span={12}>
+																	<Text strong>Total bought</Text>
+																</Col>
+																<Col span={12} style={{ textAlign: 'right' }}>
+																	{buffViewersLivestream.orders.reduce((sum, curr) => curr.from == user.sub ? sum + curr.amount : sum, 0) || '_'}
 																</Col>
 															</Row>
 														</Col>

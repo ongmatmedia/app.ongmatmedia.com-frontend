@@ -121,7 +121,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 										onSubmitVideo={info => {
 											set_video(info)
 											setValues({
-												id: info.id,
+												id: info.video_id,
 												uid: info.owner.id,
 												name: info.title || info.description,
 											})

@@ -95,17 +95,15 @@ export const Payments = PaginationWrapper<{
 						onLoadMore={() => props.load_more(100)}
 						payment_histories={[
 							...paymentHistories.filter(payment =>
-								payment.note.trim().toLocaleLowerCase().includes(search),
+								payment.note?.trim().toLocaleLowerCase().includes(search),
 							),
 							...paymentHistories.filter(payment =>
-								payment.receiver_username
-									.trim()
+								payment.receiver_username?.trim()
 									.toLocaleLowerCase()
 									.includes(search),
 							),
 							...paymentHistories.filter(payment =>
-								payment.sender_username
-									.trim()
+								payment.sender_username?.trim()
 									.toLocaleLowerCase()
 									.includes(search),
 							),

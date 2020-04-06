@@ -56,7 +56,7 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 												</Col>
 												<Col span={12} style={{ textAlign: 'right' }}>
 													<Tag style={{ marginRight: 0, marginBottom: 2 }}>
-														{payment.sender_username}
+														{payment.sender_username || 'system'}
 													</Tag>
 												</Col>
 												<Col span={12}>
@@ -64,7 +64,7 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 												</Col>
 												<Col span={12} style={{ textAlign: 'right' }}>
 													<Tag style={{ marginRight: 0 }}>
-														{payment.receiver_username}
+														{payment.receiver_username || 'system'}
 													</Tag>
 												</Col>
 											</Row>

@@ -20,15 +20,18 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 		buff_viewers_system_status: BuffViewersLivestreamStatus
 	},
 	{
-		buffStatusData: string[]
+		buffStatusData: string[],
+		percentage: number,
+		totalIncreaseViewers: number,
+		totalAvailableAmount: number
 	}
->(query, {}, ({ data, loading, buffStatusData }) => {
+>(query, {}, ({ data, loading, buffStatusData, percentage, totalAvailableAmount, totalIncreaseViewers }) => {
 	if (loading) return <Skeleton active />
 	else if (!loading && data)
 		return (
 			<Row gutter={16} style={{ marginBottom: 10 }}>
-				<Col md={6} sm={12} xs={24} style={{ marginTop: 10 }}>
-					<Card style={{ border: '4px solid rgb(64, 169, 255)' }}>
+				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
 						<Statistic
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}>Available</Text>}
@@ -38,19 +41,19 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 						/>
 					</Card>
 				</Col>
-				<Col md={6} sm={12} xs={24} style={{ marginTop: 10 }}>
-					<Card style={{ border: '4px solid rgb(64, 169, 255)' }}>
+				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
 						<Statistic
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}> Percentage</Text>}
-							value={30}
-							suffix={<Icon type="percentage" />}
+							value={percentage || '_'}
+							suffix={!!percentage && <Icon type="percentage" />}
 							valueStyle={{ color: 'green' }}
 						/>
 					</Card>
 				</Col>
-				<Col md={6} sm={12} xs={24} style={{ marginTop: 10 }}>
-					<Card style={{ border: '4px solid rgb(64, 169, 255)' }}>
+				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
 						<Statistic
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}> Playing</Text>}
@@ -63,19 +66,41 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 									style={{
 										color: '#ff5722',
 									}}
-									className="flash"
+									className={buffStatusData.filter(status => status == 'playing').length > 0 ? 'flash' : ''}
 								/>
 							}
 							valueStyle={{ color: 'green' }}
 						/>
 					</Card>
 				</Col>
-				<Col md={6} sm={12} xs={24} style={{ marginTop: 10 }}>
-					<Card style={{ border: '4px solid rgb(64, 169, 255)' }}>
+				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
 						<Statistic
 							style={{ textAlign: 'center' }}
-							title={<Text style={{ fontSize: 20 }}> Fail</Text>}
-							value={buffStatusData.filter(status => status == 'done').length}
+							title={<Text style={{ fontSize: 20 }}> Increase viewers</Text>}
+							value={totalIncreaseViewers || '_'}
+							prefix={<Icon type="rise" theme="filled" />}
+							valueStyle={{ color: 'orange' }}
+						/>
+					</Card>
+				</Col>
+				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
+						<Statistic
+							style={{ textAlign: 'center' }}
+							title={<Text style={{ fontSize: 20 }}>Available ordered</Text>}
+							value={totalAvailableAmount || '_'}
+							prefix={<Icon type="stock" theme="filled" />}
+							valueStyle={{ color: 'brown' }}
+						/>
+					</Card>
+				</Col>
+				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
+						<Statistic
+							style={{ textAlign: 'center' }}
+							title={<Text style={{ fontSize: 20 }}> Failure</Text>}
+							value={buffStatusData.filter(status => status == 'overload' || status == 'fail').length}
 							prefix={<Icon type="warning" theme="filled" />}
 							valueStyle={{ color: '#dd2c00' }}
 						/>

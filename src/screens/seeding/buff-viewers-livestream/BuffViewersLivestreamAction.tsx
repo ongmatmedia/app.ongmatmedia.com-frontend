@@ -53,9 +53,6 @@ export const BuffViewersLivestreamAction = (
 					<Option value="created" key={1}>
 						Created
 					</Option>
-					<Option value="queue" key={1}>
-						Queue
-					</Option>
 					<Option value="playing" key={2}>
 						Playing
 					</Option>

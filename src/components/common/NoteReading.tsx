@@ -17,13 +17,15 @@ export const NoteReading = (props: { note: string; collapse: boolean }) => {
 				cursor: props.note.length > 35 ? 'pointer' : '',
 				fontSize: 13,
 				textAlign: 'left',
+				minHeight: 80,
+				overflowY: 'auto'
 			}}
 			onClick={() => setCollapsed(!collapsed)}
 		>
-			{props.collapse && props.note.length > 30 ? (
+			{props.collapse && props.note.length > 100 ? (
 				collapsed ? (
 					<>
-						<Text>{props.note.substring(0, 30)}</Text>
+						<Text>{props.note.substring(0, 100)}</Text>
 						<span onClick={() => setCollapsed(false)}> [...]</span>
 					</>
 				) : (

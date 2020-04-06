@@ -470,6 +470,7 @@ type VideoInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
   title: String!
   description: String!
   id: String!
+  video_id: String!
   livestreaming: Boolean!
   created_time: String!
   duration: Int!

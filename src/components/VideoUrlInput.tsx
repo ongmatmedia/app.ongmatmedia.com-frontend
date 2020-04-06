@@ -12,6 +12,7 @@ const VideoUrlInputQuery = graphql`
 	query VideoUrlInputQuery($url: String!) {
 		video_info(url: $url) {
 			id
+			video_id
 			title
 			description
 			duration
