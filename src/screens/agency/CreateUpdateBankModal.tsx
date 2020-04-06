@@ -25,7 +25,7 @@ export const CreateUpdateBankModal = Form.create<CreateUpdateBankModalProps>()(
 					try {
 						if (props.mode == 'create') {
 							await update_profile({
-								payment_methods: [...props.paymentMethods, values],
+								payment_methods: [...(props.paymentMethods || []), values],
 							})
 							notification.success({
 								message: 'Add bank successfully',

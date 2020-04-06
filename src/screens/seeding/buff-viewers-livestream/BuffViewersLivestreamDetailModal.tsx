@@ -5,6 +5,7 @@ import { Line } from 'react-chartjs-2'
 import { useAuth0 } from '../../../context/Auth0'
 import { SmartGrahQLQueryRenderer } from '../../../graphql/GraphQLWrapper'
 import { BuffViewersLivestream } from '../../../types'
+import { isMobileDevice } from '../../../helpers/utils'
 
 const query = graphql`
 	query BuffViewersLivestreamDetailModalQuery($id: String!) {
@@ -85,7 +86,7 @@ export const BuffViewersDetailModal = (props: {
 	const { user } = useAuth0()
 	return (
 		<Modal
-			width="80%"
+			width={isMobileDevice() ? "100%" : "80%"}
 			destroyOnClose
 			closable={true}
 			title={`Chi tiết thông số buff`}
