@@ -79,7 +79,7 @@ export class Form {
 		require && this.require_fields.set(name, require)
 		validator && this.validators.set(name, validator)
 
-		const setValue = (key: string, value: T, validate: boolean = true) => {
+		const setValue = (key: string, value: T, validate = true) => {
 			this.data[key] = value
 			if (!validate) return
 
@@ -105,7 +105,7 @@ export class Form {
 			error: this.errors.get(name),
 			loading: this.isLoading.get(name) == true,
 			setValues: (data, exclude_check_keys: string[] = []) => {
-				for (let key in data)
+				for (const key in data)
 					setValue(key, data[key], !exclude_check_keys.includes(key))
 			},
 			setValue: (value: T) => setValue(name, value),

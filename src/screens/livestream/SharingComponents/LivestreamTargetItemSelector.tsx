@@ -88,11 +88,7 @@ export const LivestreamTargetItemSelector = (
 		const fb = new FacebookGraphAPI(account.touch_access_token)
 		try {
 			const pagesInfo = await fetchGroupsOrPageInfo(fb, 'page')
-			console.log(pagesInfo)
-
 			const groupsInfo = await fetchGroupsOrPageInfo(fb, 'group')
-			console.log(groupsInfo[100])
-
 			setGroupsAndPageInfo([...pagesInfo, ...groupsInfo])
 		} catch (error) {
 			console.error(error)

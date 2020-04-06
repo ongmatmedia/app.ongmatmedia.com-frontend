@@ -12,6 +12,7 @@ const VideoUrlInputQuery = graphql`
 	query VideoUrlInputQuery($url: String!) {
 		video_info(url: $url) {
 			id
+			video_id
 			title
 			description
 			duration
@@ -47,6 +48,7 @@ export const VideoUrlInput = (props: VideoUrlInputProps) => {
 				...data.video_info,
 				url: videoUrlValue,
 			})
+			setError('')
 		} catch (error) {
 			console.log(error)
 			setError(error)

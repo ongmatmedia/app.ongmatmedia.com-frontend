@@ -33,7 +33,7 @@ export const ViewAccountModal = (props: ViewAccountModalProps) => {
 			await delete_facebook_account(id)
 			props.onClose()
 			notification.success({
-				message: `Operation: Delete account'}`,
+				message: "Operation: Delete account'}",
 				description: 'Successfully',
 			})
 		} catch (message) {

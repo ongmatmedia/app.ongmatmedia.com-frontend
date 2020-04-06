@@ -25,24 +25,23 @@ export const CreateUpdateBankModal = Form.create<CreateUpdateBankModalProps>()(
 					try {
 						if (props.mode == 'create') {
 							await update_profile({
-								payment_methods: [
-									...props.paymentMethods,
-									values
-								]
+								payment_methods: [...props.paymentMethods, values],
 							})
 							notification.success({
-								message: 'Add bank successfully'
+								message: 'Add bank successfully',
 							})
 							props.onClose()
 						} else {
 							await update_profile({
 								payment_methods: [
-									...props.paymentMethods.filter(paymentMethod => paymentMethod.account !== values.account),
-									values
-								]
+									...props.paymentMethods.filter(
+										paymentMethod => paymentMethod.account !== values.account,
+									),
+									values,
+								],
 							})
 							notification.success({
-								message: 'Update bank successfully'
+								message: 'Update bank successfully',
 							})
 							props.onClose()
 						}
@@ -81,13 +80,17 @@ export const CreateUpdateBankModal = Form.create<CreateUpdateBankModalProps>()(
 						<Form.Item label="Account number">
 							{props.form.getFieldDecorator('account', {
 								rules: [{ required: true }],
-								initialValue: props.seletedBank ? props.seletedBank.account : '',
+								initialValue: props.seletedBank
+									? props.seletedBank.account
+									: '',
 							})(<Input placeholder="Account number" />)}
 						</Form.Item>
 						<Form.Item label="Transaction description">
 							{props.form.getFieldDecorator('description', {
 								rules: [{ required: true }],
-								initialValue: props.seletedBank ? props.seletedBank.description : '',
+								initialValue: props.seletedBank
+									? props.seletedBank.description
+									: '',
 							})(<Input placeholder="Transaction description" />)}
 						</Form.Item>
 					</Form>

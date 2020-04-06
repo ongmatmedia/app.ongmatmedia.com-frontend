@@ -1,14 +1,13 @@
-import React from 'react'
 import { Layout } from 'antd'
+import React from 'react'
 import { Header } from './header'
-import { IReactComponent } from 'mobx-react'
 
 export type MainLayoutProps = {
-	Content: IReactComponent
-	Menu?: IReactComponent
+	Content: React.ComponentClass | React.FunctionComponent
+	Menu?: React.ComponentClass | React.FunctionComponent
 }
 
-export const MainLayout = ({ Content, Menu }: MainLayoutProps) => {
+export const MainLayout = ({ Content }: MainLayoutProps): JSX.Element => {
 	return (
 		<Layout style={{ height: '100vh' }}>
 			<Header />

@@ -1,37 +1,43 @@
-import React from 'react'
-import { BuffViewersLivestreamList } from './BuffViewersLivestreamList'
-import { Card } from 'antd'
-import { BuffViewersLivestreamAction } from './BuffViewersLivestreamAction'
-import { useTranslation } from 'react-i18next'
-import { BuffViewersLivestreamSystemStatus } from './BuffViewersLivestreamSystemStatus'
+import { Card, Icon } from 'antd'
+import React, { useState } from 'react'
 import { BreadCrumb } from '../../../components/common/BreadCrumb'
+import { BuffViewersLivestreamList } from './BuffViewersLivestreamList'
+import { BuffViewersLivestreamCreateModal } from './BuffViewersLivestreamCreateModal'
+import { Fab } from 'react-tiny-fab'
+import { BuffViewersDetailModal } from './BuffViewersLivestreamDetailModal'
 
 export const BuffViewersLivestream = () => {
-	const { t, i18n } = useTranslation('buff_viewers_livestream')
+
+	const [create_modal_visible, set_create_modal_visible] = useState<boolean>(
+		false,
+	)
+
+	const [selectedBuffId, setSelectedBuffId] = useState<string>(null)
+
 	return (
-		<Card
-			title={
-				<BreadCrumb
-					routes={[
-						{
-							path: '/',
-							breadcrumbName: 'Home',
-						},
-						{
-							path: '/seeding',
-							breadcrumbName: 'Seeding',
-						},
-						{
-							path: '/seeding/buff-viewers-livestream',
-							breadcrumbName: 'Buff viewers livestream',
-						},
-					]}
+		<Card title={<BreadCrumb />}>
+			<BuffViewersLivestreamList onSelectBuff={id => setSelectedBuffId(id)} />
+			{create_modal_visible && (
+				<BuffViewersLivestreamCreateModal
+					onClose={() => set_create_modal_visible(false)}
 				/>
-			}
-		>
-			<BuffViewersLivestreamAction onChangeSearch={() => {}} />
-			<BuffViewersLivestreamSystemStatus />
-			<BuffViewersLivestreamList />
+			)}
+			{!create_modal_visible && (
+				<Fab
+					mainButtonStyles={{ backgroundColor: 'rgb(64, 169, 255)' }}
+					icon={<Icon type="plus" />}
+					event="click"
+					onClick={() => set_create_modal_visible(true)}
+				></Fab>
+			)}
+			{selectedBuffId && (
+				<BuffViewersDetailModal
+					onClose={() => {
+						setSelectedBuffId(null)
+					}}
+					video_id={selectedBuffId}
+				/>
+			)}
 		</Card>
 	)
 }

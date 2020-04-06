@@ -4,106 +4,7 @@ import { PaymentHistory } from '../../types'
 import { groupTimeIntoDayMap } from '../../helpers/utils'
 import Text from 'antd/lib/typography/Text'
 import { NoteReading } from './NoteReading'
-
-const data: PaymentHistory[] = [
-	{
-		id: '111111111',
-		time: 123456789,
-		total: 1000000,
-		sender_username: 'tien',
-		sender_id: '123123123123',
-		receiver_username: 'ba',
-		service: 'service',
-		receiver_id: '1123456789',
-		balance_after: 10000000,
-		note: 'note',
-	},
-	{
-		id: '111111111',
-		time: 123456789,
-		total: 1000000,
-		sender_username: 'tien',
-		sender_id: '123123123123',
-		receiver_username: 'ba',
-		service: 'service',
-		receiver_id: '1123456789',
-		balance_after: 10000000,
-		note: 'note',
-	},
-	{
-		id: '111111111',
-		time: 987654321,
-		total: 1000000,
-		sender_username: 'tien',
-		sender_id: '123123123123',
-		receiver_username: 'ba',
-		service: 'service',
-		receiver_id: '1123456789',
-		balance_after: 10000000,
-		note: 'note',
-	},
-	{
-		id: '111111111',
-		time: 123456789,
-		total: 1000000,
-		sender_username: 'tien',
-		sender_id: '123123123123',
-		receiver_username: 'ba',
-		service: 'service',
-		receiver_id: '1123456789',
-		balance_after: 10000000,
-		note:
-			'Buff 50 viewers livestream for 346370772515583 video id 325135155113931 with price 3$/view',
-	},
-	{
-		id: '111111111',
-		time: 987654321,
-		total: 1000000,
-		sender_username: 'tien',
-		sender_id: '123123123123',
-		receiver_username: 'ba',
-		service: 'service',
-		receiver_id: '1123456789',
-		balance_after: 10000000,
-		note: 'note',
-	},
-	{
-		id: '111111111',
-		time: 987654321,
-		total: 1000000,
-		sender_username: 'tien',
-		sender_id: '123123123123',
-		receiver_username: 'ba',
-		service: 'service',
-		receiver_id: '1123456789',
-		balance_after: 10000000,
-		note: 'note',
-	},
-	{
-		id: '111111111',
-		time: 987654321,
-		total: 1000000,
-		sender_username: 'tien',
-		sender_id: '123123123123',
-		receiver_username: 'ba',
-		service: 'service',
-		receiver_id: '1123456789',
-		balance_after: 10000000,
-		note: 'note',
-	},
-	{
-		id: '111111111',
-		time: 987654321,
-		total: 1000000,
-		sender_username: 'tien',
-		sender_id: '123123123123',
-		receiver_username: 'ba',
-		service: 'service',
-		receiver_id: '1123456789',
-		balance_after: 10000000,
-		note: 'note',
-	},
-]
+import Moment from 'react-moment'
 
 export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 	const timeSeriesData = groupTimeIntoDayMap(props.data)
@@ -114,10 +15,11 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 			renderItem={item => (
 				<>
 					<div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15 }}>
-						<Icon type="calendar" /> {item.time}
+						<Icon type="calendar" style={{ marginRight: 5 }} />
+						<Moment format="DD/MM/YYYY">{item.time}</Moment>
 					</div>
 					<List
-						grid={{ gutter: 16, xs: 1, sm: 2, md: 4, xxl: 8 }}
+						grid={{ gutter: 16, xs: 1, sm: 2, md: 3, xxl: 4 }}
 						dataSource={item.data}
 						renderItem={payment => (
 							<List.Item
@@ -154,7 +56,7 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 												</Col>
 												<Col span={12} style={{ textAlign: 'right' }}>
 													<Tag style={{ marginRight: 0, marginBottom: 2 }}>
-														{payment.sender_username}
+														{payment.sender_username || 'system'}
 													</Tag>
 												</Col>
 												<Col span={12}>
@@ -162,7 +64,7 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 												</Col>
 												<Col span={12} style={{ textAlign: 'right' }}>
 													<Tag style={{ marginRight: 0 }}>
-														{payment.receiver_username}
+														{payment.receiver_username || 'system'}
 													</Tag>
 												</Col>
 											</Row>

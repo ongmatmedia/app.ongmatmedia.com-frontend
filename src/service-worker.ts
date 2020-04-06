@@ -1,4 +1,4 @@
-declare var registration: ServiceWorkerRegistration
+declare let registration: ServiceWorkerRegistration
 
 addEventListener('install', () => {
 	console.log('Service worker installed')

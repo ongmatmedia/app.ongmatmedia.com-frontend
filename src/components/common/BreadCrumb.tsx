@@ -3,7 +3,7 @@ import React from 'react'
 import { Breadcrumb } from 'antd'
 
 export const BreadCrumb = (withRouter as any)((props: RouteComponentProps) => {
-	let routesTree = props.location.pathname
+	const routesTree = props.location.pathname
 		.split('/')
 		.slice(1)
 		.map(el => ({

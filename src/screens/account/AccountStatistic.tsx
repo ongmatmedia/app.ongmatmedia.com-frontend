@@ -6,7 +6,7 @@ export type AgencyStaticsProps = {
 }
 export const AccountStatistic = (props: AgencyStaticsProps) => (
 	<Row gutter={16} style={{ marginBottom: 10 }}>
-		<Col md={4} xs={12} style={{ marginTop: 10 }}>
+		<Col xs={24} sm={8} md={6} style={{ marginTop: 10 }}>
 			<Card style={{ border: '4px solid rgb(64, 169, 255)' }}>
 				<Statistic
 					title="Total account"
@@ -16,7 +16,7 @@ export const AccountStatistic = (props: AgencyStaticsProps) => (
 				/>
 			</Card>
 		</Col>
-		<Col md={4} xs={12} style={{ marginTop: 10 }}>
+		<Col sm={8} xs={24} md={6} style={{ marginTop: 10 }}>
 			<Card style={{ border: '4px solid green' }}>
 				<Statistic
 					title="Live account"
@@ -26,7 +26,7 @@ export const AccountStatistic = (props: AgencyStaticsProps) => (
 				/>
 			</Card>
 		</Col>
-		<Col md={4} xs={12} style={{ marginTop: 10 }}>
+		<Col sm={8} xs={24} md={6} style={{ marginTop: 10 }}>
 			<Card style={{ border: '4px solid red' }}>
 				<Statistic
 					title="Died account"

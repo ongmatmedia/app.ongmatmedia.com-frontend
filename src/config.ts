@@ -1,17 +1,17 @@
+import { Auth0ClientOptions } from '@auth0/auth0-spa-js'
+
 export const GraphQLEndpoint =
 	'https://7qwdnah2rbbopjl5cgj7w5jgqe.appsync-api.us-east-1.amazonaws.com/graphql'
 
 export const AmplifyConfig = {
 	aws_appsync_graphqlEndpoint: GraphQLEndpoint,
 	aws_appsync_region: 'us-east-1',
-	aws_appsync_authenticationType: 'AMAZON_COGNITO_USER_POOLS',
-	Auth: {
-		region: 'us-east-1',
-		userPoolWebClientId: '5jsn7g62sgsc69vcitn1ld8co4',
-		userPoolId: 'us-east-1_SNJlNZ7oX',
-	},
+	aws_appsync_authenticationType: 'OPENID_CONNECT',
 	Analytics: {
 		disabled: true,
+	},
+	API: {
+		graphql_endpoint: GraphQLEndpoint,
 	},
 }
 
@@ -28,3 +28,10 @@ export const FirebaseConfig = {
 
 export const FirebaseConfigVAPIDKEY =
 	'BHTar4YMvOMDzZOqKW8j-ThYbvqvPfCnBfOUzN8QI1fIvHM5rQETDFWXEffWFxZXyly4lTBNtgwf5TqZEp0gDUE'
+
+export const AUTH0_CONFIG: Auth0ClientOptions = {
+	domain: 'ongmatmedia.auth0.com',
+	client_id: 'spiiEFrf1tPlIPksv1vB3EPKLr9uNg50',
+	cacheLocation: 'localstorage',
+	redirect_uri: window.location.origin,
+}

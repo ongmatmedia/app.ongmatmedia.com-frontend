@@ -1,11 +1,11 @@
 import { Alert, Button, Card, Form, Input, notification, Spin } from 'antd'
 import { FormComponentProps } from 'antd/lib/form'
-import React, { useState } from 'react'
-import { BreadCrumb } from '../../components/common/BreadCrumb'
-import { update_profile } from '../../graphql/update_profile'
 import graphql from 'babel-plugin-relay/macro'
+import React, { useState } from 'react'
 import { QueryRenderer } from 'react-relay'
+import { BreadCrumb } from '../../components/common/BreadCrumb'
 import { RelayEnvironment } from '../../graphql/RelayEnvironment'
+import { update_profile } from '../../graphql/update_profile'
 
 type AdminInformationPageProps = FormComponentProps & {}
 
@@ -14,11 +14,11 @@ const query = graphql`
 		me {
 			id
 			name
-  		phone
-  		username
-  		email
-  		facebook_uid
-  		admin_page_uid
+			phone
+			username
+			email
+			facebook_uid
+			admin_page_uid
 		}
 	}
 `
@@ -35,10 +35,10 @@ export const AdminInformationPage = Form.create<AdminInformationPageProps>()(
 					setLoading(true)
 					try {
 						await update_profile({
-							...values
+							...values,
 						})
 						notification.success({
-							message: 'Update admin information successfully'
+							message: 'Update admin information successfully',
 						})
 					} catch (error) {
 						setError(error)
@@ -76,48 +76,51 @@ export const AdminInformationPage = Form.create<AdminInformationPageProps>()(
 				environment={RelayEnvironment}
 				query={query}
 				variables={{}}
-				render={rs => (
-					<Spin spinning={rs.props == null} >
+				render={(rs: any) => (
+					<Spin spinning={rs.props == null}>
 						<Card title={<BreadCrumb />}>
 							{error && <Alert type="error" message={error} />}
 							<Form {...formItemLayout}>
 								<Form.Item label="Name">
-									{props.form.getFieldDecorator('name', 
-									{
+									{props.form.getFieldDecorator('name', {
 										rules: [{ required: false }],
+										initialValue: rs.props?.me?.name,
 									})(<Input placeholder="Name" />)}
 								</Form.Item>
 								<Form.Item label="Phone">
 									{props.form.getFieldDecorator('phone', {
 										rules: [{ required: false }],
+										initialValue: rs.props?.me?.phone,
 									})(<Input placeholder="Phone" />)}
 								</Form.Item>
 								<Form.Item label="Email">
 									{props.form.getFieldDecorator('email', {
 										rules: [{ required: false }],
+										initialValue: rs.props?.me?.email,
 									})(<Input placeholder="Email" />)}
 								</Form.Item>
 								<Form.Item label="Facebook ID">
 									{props.form.getFieldDecorator('facebook_uid', {
 										rules: [{ required: false }],
+										initialValue: rs.props?.me?.facebook_uid,
 									})(<Input placeholder="Facebook ID" />)}
 								</Form.Item>
 								<Form.Item label="Page ID">
 									{props.form.getFieldDecorator('admin_page_uid', {
 										rules: [{ required: false }],
+										initialValue: rs.props?.me?.admin_page_uid,
 									})(<Input placeholder="Page ID" />)}
 								</Form.Item>
 								<Form.Item {...tailFormItemLayout}>
 									<Button type="primary" onClick={submit} loading={loading}>
 										Save information
-						</Button>
+									</Button>
 								</Form.Item>
 							</Form>
 						</Card>
 					</Spin>
-				)
-				}
+				)}
 			/>
 		)
-	}
+	},
 )

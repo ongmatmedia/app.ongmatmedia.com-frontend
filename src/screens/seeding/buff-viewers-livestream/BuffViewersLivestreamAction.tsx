@@ -1,65 +1,60 @@
+import { Col, DatePicker, Input, Row, Select } from 'antd'
 import React, { useState } from 'react'
-import { Row, Col, Input, Icon, notification } from 'antd'
-import { Button } from 'antd'
-import { BuffViewersLivestreamCreateModal } from './BuffViewersLivestreamCreateModal'
 import { useTranslation } from 'react-i18next'
+import 'react-tiny-fab/dist/styles.css'
+
+const { Option } = Select
 
 export type BuffViewersLivestreamActionProps = {
 	onChangeSearch: (v: string) => any
+	onChangeDate: (date: Date) => any
+	onChangeStatusFilter: (value: string) => void
 }
 
 export const BuffViewersLivestreamAction = (
 	props: BuffViewersLivestreamActionProps,
 ) => {
-	const [create_modal_visible, set_create_modal_visible] = useState<boolean>(
-		false,
-	)
 	const [search, set_search] = useState<string>('')
-	const [loading_uid, set_loading_uid] = useState<boolean>(false)
 
 	const { t, i18n } = useTranslation('buff_viewers_livestream')
 
-	const load_uid = async function() {
-		try {
-			set_loading_uid(true)
-			const { uid } = { uid: '12' }
-			set_search(uid)
-		} catch (e) {
-			set_search('')
-			notification.error({ message: 'Can not get UID' })
-		}
-		set_loading_uid(false)
-	}
-
 	return (
-		<Row
-			type="flex"
-			align="middle"
-			justify="space-between"
-			style={{ marginBottom: 10 }}
-		>
-			{create_modal_visible && (
-				<BuffViewersLivestreamCreateModal
-					onClose={() => set_create_modal_visible(false)}
-				/>
-			)}
-			<Col style={{ paddingBottom: 5 }}>
-				<Button
-					type="primary"
-					icon="plus"
-					onClick={() => set_create_modal_visible(true)}
+		<Row style={{ marginBottom: 10 }} gutter={16}>
+			<Col
+				xs={12}
+				sm={{ span: 6, offset: 8 }}
+				style={{ textAlign: 'right', marginTop: 15 }}
+			>
+				<Select
+					defaultValue="Filter by status"
+					onChange={props.onChangeStatusFilter}
 				>
-					{t('action.add_button')}
-				</Button>
+					<Option value="" key={5}>
+						No filter
+					</Option>
+					<Option value="created" key={1}>
+						Created
+					</Option>
+					<Option value="playing" key={2}>
+						Playing
+					</Option>
+					<Option value="done" key={1}>
+						Done
+					</Option>
+					<Option value="fail" key={3}>
+						Fail
+					</Option>
+				</Select>
 			</Col>
-			<Col xs={24} md={12} xxl={8} style={{ paddingBottom: 5 }}>
-				<Input
-					addonAfter={
-						<Icon
-							type={loading_uid ? 'loading' : 'search'}
-							onClick={load_uid}
-						/>
+			<Col xs={12} sm={{ span: 4 }} style={{ marginTop: 15 }}>
+				<DatePicker
+					onChange={d =>
+						props.onChangeDate(new Date(d ? d.valueOf() : Date.now()))
 					}
+				/>
+			</Col>
+			<Col xs={24} sm={6} style={{ paddingBottom: 5, marginTop: 15 }}>
+				<Input
 					placeholder={t('action.search_placeholder')}
 					allowClear
 					value={search}

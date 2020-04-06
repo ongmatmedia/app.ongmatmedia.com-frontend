@@ -1,5 +1,6 @@
-import { Environment, Network, RecordSource, Store } from 'relay-runtime'
+/* eslint-disable @typescript-eslint/camelcase */
 import { API, graphqlOperation } from 'aws-amplify'
+import { Environment, Network, RecordSource, Store } from 'relay-runtime'
 
 function fetchQuery(operation, variables) {
 	return API.graphql(graphqlOperation(operation.text, variables))

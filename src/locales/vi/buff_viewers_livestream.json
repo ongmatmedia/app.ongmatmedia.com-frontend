@@ -2,6 +2,6 @@
   "title": "Tăng người xem livestream",
   "action": {
     "add_button": "Tạo BUFF",
-    "search_placeholder": "UID, tên, hoặc URL của người dùng"
+    "search_placeholder": "Tìm theo id video"
   }
 }

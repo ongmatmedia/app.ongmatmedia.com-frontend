@@ -1,111 +1,121 @@
 import React from 'react'
-import { HashRouter, Route, Switch } from 'react-router-dom'
+import { Route, Router, Switch } from 'react-router-dom'
 import { Error404Page } from '../components/common/Error404'
-import { AuthLayout } from '../layouts/auth'
+import PrivateRoute from '../components/PrivateRoute'
+import history from '../helpers/history'
 import { MainLayout } from '../layouts/main'
-import { ProtectedRoute, withAppState } from '../store/App'
-import { AccountScreen } from './account'
 import { AgencyPage } from './agency'
 import { AdminInformationPage } from './agency/AdminInformationPage'
 import { BankInformationPage } from './agency/BankInformationPage'
-import { CollaboratorSettingsPage } from './agency/CollaboratorSettingsPage'
 import { CollaboratorsListPage } from './agency/CollaboratorsListPage'
 import { SetDefaultPricePage } from './agency/SetDefaultPricePage'
-import { Login, ResetPassword } from './auth'
-import { SetNewPasswordPage } from './auth/set-new-pass'
+import { AdminContact } from './contact/AdminContact'
 import { DepositPage } from './deposit'
 import { HomePage } from './HomePage'
-import { LivestreamTabs } from './livestream'
-import { Payments } from './payments'
+import { NotificationPage } from './notification'
+import { Payments } from './payments/Payments'
+// import { Payments } from './payments'
 import { SeedingPage } from './seeding'
 import { BuffViewers } from './seeding/buff-viewers'
 import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
-import { VipViewersLivestream } from './seeding/vip-viewers-livestream'
 
-export const AppWithRouter = withAppState(props => {
+export const AppWithRouter = () => {
 	return (
-		<HashRouter>
+		<Router history={history}>
 			<Switch>
-				<Route exact path="/auth/login">
-					<AuthLayout Content={Login} />
-				</Route>
+				<PrivateRoute exact component={HomePage} layout={MainLayout} path="/" />
 
-				<Route exact path="/auth/set-new-password">
-					<AuthLayout Content={SetNewPasswordPage} />
-				</Route>
+				<PrivateRoute
+					exact
+					component={SeedingPage}
+					layout={MainLayout}
+					path="/seeding"
+				/>
+				<PrivateRoute
+					exact
+					component={BuffViewersLivestream}
+					layout={MainLayout}
+					path="/seeding/buff-viewers-livestream"
+				/>
+				<PrivateRoute
+					exact
+					component={BuffViewers}
+					layout={MainLayout}
+					path="/seeding/buff-viewers"
+				/>
 
-				<Route exact path="/auth/reset-password">
-					<AuthLayout Content={ResetPassword} />
-				</Route>
+				<PrivateRoute
+					exact
+					component={Payments}
+					layout={MainLayout}
+					path="/payments"
+				/>
 
-				<ProtectedRoute exact path="/">
-					<MainLayout Content={() => <HomePage />} />
-				</ProtectedRoute>
+				<PrivateRoute
+					exact
+					component={AgencyPage}
+					layout={MainLayout}
+					path="/agency"
+				/>
+				<PrivateRoute
+					exact
+					component={CollaboratorsListPage}
+					layout={MainLayout}
+					path="/agency/collaborators"
+				/>
+				<PrivateRoute
+					exact
+					component={BankInformationPage}
+					layout={MainLayout}
+					path="/agency/bank-information"
+				/>
+				<PrivateRoute
+					exact
+					component={SetDefaultPricePage}
+					layout={MainLayout}
+					path="/agency/default-price"
+				/>
+				<PrivateRoute
+					exact
+					component={AdminInformationPage}
+					layout={MainLayout}
+					path="/agency/admin-information"
+				/>
+				{/* <PrivateRoute exact component={CollaboratorSettingsPage} layout={MainLayout} path="/agency/setting" /> */}
 
-				<ProtectedRoute exact path="/accounts">
-					<MainLayout Content={AccountScreen} />
-				</ProtectedRoute>
+				<PrivateRoute
+					exact
+					component={DepositPage}
+					layout={MainLayout}
+					path="/deposit"
+				/>
 
-				<ProtectedRoute exact path="/seeding">
-					<MainLayout Content={SeedingPage} />
-				</ProtectedRoute>
+				<PrivateRoute
+					exact
+					component={NotificationPage}
+					layout={MainLayout}
+					path="/notification"
+				/>
 
-				<ProtectedRoute exact path="/seeding/vip-viewers-livestream">
-					<MainLayout Content={VipViewersLivestream} />
-				</ProtectedRoute>
+				<PrivateRoute
+					exact
+					component={AdminContact}
+					layout={MainLayout}
+					path="/contact"
+				/>
 
-				<ProtectedRoute exact path="/seeding/buff-viewers-livestream">
-					<MainLayout Content={BuffViewersLivestream} />
-				</ProtectedRoute>
+				{/* <PrivateRoute exact component={LivestreamPage} layout={MainLayout} path="/livestream" />
+				<PrivateRoute exact component={LivestreamsListPage} layout={MainLayout} path="/livestream/all-livestream" />
+				<PrivateRoute exact component={CreateUpdateLivestreamPage} layout={MainLayout} path="/livestream/create-livestream" />
+				<PrivateRoute exact component={CreateUpdateLivestreamPage} layout={MainLayout} path="/livestream/update-livestream" />
+				<PrivateRoute exact component={CreateUpdateLivestreamPage} layout={MainLayout} path="/livestream/pricing" /> */}
 
-				<ProtectedRoute exact path="/seeding/buff-viewers">
-					<MainLayout Content={BuffViewers} />
-				</ProtectedRoute>
-
-				<ProtectedRoute exact path="/payments">
-					<MainLayout Content={Payments} />
-				</ProtectedRoute>
-
-				<ProtectedRoute exact path="/agency">
-					<MainLayout Content={AgencyPage} />
-				</ProtectedRoute>
-
-				<ProtectedRoute exact path="/agency/collaborators">
-					<MainLayout Content={CollaboratorsListPage} />
-				</ProtectedRoute>
-
-				<ProtectedRoute exact path="/agency/bank-information">
-					<MainLayout Content={BankInformationPage} />
-				</ProtectedRoute>
-
-				<ProtectedRoute exact path="/agency/default-price">
-					<MainLayout Content={SetDefaultPricePage} />
-				</ProtectedRoute>
-
-				<ProtectedRoute exact path="/agency/admin-information">
-					<MainLayout Content={AdminInformationPage} />
-				</ProtectedRoute>
-
-				<ProtectedRoute exact path="/agency/setting">
-					<MainLayout Content={CollaboratorSettingsPage} />
-				</ProtectedRoute>
-
-				<ProtectedRoute exact path="/deposit">
-					<MainLayout Content={DepositPage} />
-				</ProtectedRoute>
-
-				<ProtectedRoute exact path="/livestream">
-					<MainLayout Content={LivestreamTabs} />
-				</ProtectedRoute>
-
-				<ProtectedRoute>
-					<Error404Page />
-				</ProtectedRoute>
+				{/* <PrivateRoute exact component={AccountScreen} layout={MainLayout} path="/farm" /> */}
 
 				<Route>
 					<Error404Page />
 				</Route>
 			</Switch>
-		</HashRouter>
+		</Router>
 	)
-})
+}

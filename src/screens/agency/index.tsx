@@ -24,16 +24,16 @@ export const AgencyPage = () => (
 				link: '/admin-information',
 				serviceName: 'Admin',
 			},
-			{
-				icon: 'file-protect',
-				link: '/report',
-				serviceName: 'Report',
-			},
-			{
-				icon: 'setting',
-				link: '/setting',
-				serviceName: 'Settings',
-			},
+			// {
+			// 	icon: 'file-protect',
+			// 	link: '/report',
+			// 	serviceName: 'Report',
+			// },
+			// {
+			// 	icon: 'setting',
+			// 	link: '/setting',
+			// 	serviceName: 'Settings',
+			// },
 		]}
 	/>
 )

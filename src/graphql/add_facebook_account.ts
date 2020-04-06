@@ -26,7 +26,7 @@ export const add_facebook_account = async (account: FacebookAccountInput) =>
 			variables: { input: account },
 			mutation,
 			updater: store => {
-				const list = store.get(`client:root:facebook_accounts`) as RecordProxy
+				const list = store.get('client:root:facebook_accounts') as RecordProxy
 				const facebook_account = store.getRootField(
 					'add_facebook_account',
 				) as RecordProxy

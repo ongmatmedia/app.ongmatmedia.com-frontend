@@ -24,13 +24,12 @@ export const FacebookCookieTab = Form.create<FacebookCookieTabProps>()(
 				setLoading(true)
 				if (!err) {
 					setError(null)
-					console.log('Received values of form: ', values)
 					try {
 						await add_facebook_account(values)
 						form.resetFields()
 						props.onCloseModal()
 						notification.success({
-							message: `Operation: Add account`,
+							message: 'Operation: Add account',
 							description: 'Successfully',
 						})
 					} catch (message) {

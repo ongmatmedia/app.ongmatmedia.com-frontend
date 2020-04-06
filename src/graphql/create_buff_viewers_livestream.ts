@@ -1,5 +1,5 @@
 import { commitMutation } from 'react-relay'
-import { ConnectionHandler, RecordProxy } from 'relay-runtime'
+import { ConnectionHandler, RecordProxy, Store, SelectorStoreUpdater, RecordSourceSelectorProxy, commitLocalUpdate } from 'relay-runtime'
 import { RelayEnvironment } from './RelayEnvironment'
 import graphql from 'babel-plugin-relay/macro'
 import { BuffViewersLivestreamInput } from '../types'
@@ -17,6 +17,12 @@ const mutation = graphql`
 					note
 					created_time
 					name
+					orders{
+						from
+						amount
+						limit_mins
+						time
+					}
 				}
 			}
 			me {
@@ -26,6 +32,7 @@ const mutation = graphql`
 		}
 	}
 `
+ 
 
 export const create_buff_viewers_livestream = async (
 	input: BuffViewersLivestreamInput,
@@ -34,21 +41,22 @@ export const create_buff_viewers_livestream = async (
 		commitMutation(RelayEnvironment, {
 			mutation,
 			variables: { input },
-			updater: async store => {
-				const list = store.get(
-					`client:root:buff_viewers_livestream_tasks`,
-				) as RecordProxy
-				const result = store.getRootField(
-					'create_buff_viewers_livestream_task',
-				) as RecordProxy
-				const buff = result.getLinkedRecord('buff') as RecordProxy
-				ConnectionHandler.insertEdgeAfter(list, buff)
+			updater: async store => { 
+				const list = store.get('client:root:__BuffViewersLivestreamList_buff_viewers_livestream_tasks_connection')
+				try {
+					const node = store.getRootField('create_buff_viewers_livestream_task').getLinkedRecord('buff')
+					node.setValue(input.id, 'id')
+					ConnectionHandler.insertEdgeAfter(list, node)
+				} catch (e) {
+					console.log(e)
+				}
 				s()
 			},
 			onError: error => {
-				const { errors } = (error as any) as GraphQLError
-				r(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
+				console.log(error)
+				r(JSON.stringify(error))
 			},
 		})
 	})
 }
+

@@ -1,9 +1,9 @@
 import { Avatar, Button, Card, Col, Icon, Modal, Row } from 'antd'
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { RouteComponentProps } from 'react-router'
 import { withRouter } from 'react-router-dom'
-import { AppState } from '../../store/App'
+import { useAuth0 } from '../../context/Auth0'
 import { UserInfo } from './UserInfo'
 
 type DrawerAppProps = {
@@ -21,12 +21,24 @@ type DrawerLinksType = {
 const DrawerLinks: DrawerLinksType[] = [
 	{ name: 'notification_icon_title', icon: 'sound', to: '/notification' },
 	{ name: 'seeding_icon_title', icon: 'alert', to: '/seeding' },
-	{ name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
-	{ name: 'account_icon_title', icon: 'team', to: '/account' },
+	// { name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
+	// { name: 'account_icon_title', icon: 'team', to: '/farm' },
 	{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
+	{ name: 'payments_icon_title', icon: 'credit-card', to: '/payments' },
 	{ name: 'agency_icon_title', icon: 'user', to: '/agency' },
-	{ name: 'setting_icon_title', icon: 'setting', to: '/setting' },
+	// { name: 'setting_icon_title', icon: 'setting', to: '/setting' },
+	{ name: 'admin_info_icon_title', icon: 'contacts', to: '/contact' },
 ]
+
+const CurrentUserAvatarAppDrawer = () => {
+	const { user } = useAuth0()
+
+	return (
+		<span>
+			<Avatar src={user?.picture || ''} size={60} />
+		</span>
+	)
+}
 
 const DrawerApp = (props: DrawerAppProps) => (
 	<div
@@ -40,7 +52,7 @@ const DrawerApp = (props: DrawerAppProps) => (
 			alignItems: 'center',
 			cursor: 'pointer',
 		}}
-		className="drawerItem"
+		className={`drawerItem_${props.name}`}
 	>
 		<Icon type={props.icon} style={{ fontSize: 30 }} />
 		<span style={{ fontSize: 12, paddingTop: 15 }}>{props.name}</span>
@@ -53,6 +65,7 @@ export const AppDrawer = ((withRouter as any)(
 		const changeLanguage = lng => {
 			i18n.changeLanguage(lng)
 		}
+		const { logout } = useAuth0()
 
 		return (
 			<div
@@ -70,10 +83,7 @@ export const AppDrawer = ((withRouter as any)(
 						<Card style={{ width: '100%' }} size="small" loading={loading}>
 							<Row type="flex" justify="start" align="middle">
 								<Col>
-									<Avatar
-										src="https://hammockweb.com/slider/img/user.png"
-										size={60}
-									/>
+									<CurrentUserAvatarAppDrawer />
 								</Col>
 								<Col style={{ paddingLeft: 20 }}>
 									<Row>
@@ -119,10 +129,10 @@ export const AppDrawer = ((withRouter as any)(
 					onClick={() =>
 						Modal.confirm({
 							title: 'Logout now?',
-							onOk: () => {
-								props.history.push('/auth/login')
-								AppState.logout()
-							},
+							onOk: () =>
+								logout({
+									returnTo: window.location.origin,
+								}),
 						})
 					}
 				/>

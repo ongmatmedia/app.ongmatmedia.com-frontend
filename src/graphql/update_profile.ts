@@ -10,12 +10,12 @@ const mutation = graphql`
 		update_profile(input: $input) {
 			node {
 				id
-      	payment_methods {
-        name
-        owner
-        account
-        description
-      }
+				payment_methods {
+					name
+					owner
+					account
+					description
+				}
 			}
 		}
 	}
@@ -23,7 +23,6 @@ const mutation = graphql`
 
 export const update_profile = async (input: UserUpdateInput) =>
 	new Promise(async (success: Function, reject: Function) => {
-
 		commitMutation(RelayEnvironment as any, {
 			variables: { input },
 			mutation,

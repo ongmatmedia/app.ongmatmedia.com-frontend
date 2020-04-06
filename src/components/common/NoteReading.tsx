@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Text from 'antd/lib/typography/Text'
 import { Col } from 'antd'
 
-export const NoteReading = (props: { note: string, collapse:boolean }) => {
+export const NoteReading = (props: { note: string; collapse: boolean }) => {
 	const [collapsed, setCollapsed] = useState<boolean>(true)
 
 	return (
@@ -17,13 +17,15 @@ export const NoteReading = (props: { note: string, collapse:boolean }) => {
 				cursor: props.note.length > 35 ? 'pointer' : '',
 				fontSize: 13,
 				textAlign: 'left',
+				minHeight: 80,
+				overflowY: 'auto'
 			}}
 			onClick={() => setCollapsed(!collapsed)}
 		>
-			{props.collapse && props.note.length > 40 ? (
+			{props.collapse && props.note.length > 100 ? (
 				collapsed ? (
 					<>
-						<Text>{props.note.substring(0, 40)}</Text>
+						<Text>{props.note.substring(0, 100)}</Text>
 						<span onClick={() => setCollapsed(false)}> [...]</span>
 					</>
 				) : (
