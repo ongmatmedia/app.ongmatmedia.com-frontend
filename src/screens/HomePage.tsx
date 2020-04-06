@@ -282,35 +282,32 @@ export const HomePage = PaginationWrapper<{
 							size="small"
 							header={null}
 							footer={null}
-							dataSource={
-								paymentHistories.length > 0
-									? seedingAnnoucements
-									: [
-										...seedingAnnoucements,
-										{
-											message: (
-												<>
-													{paymentHistories.length == 0
-														? 'Bạn hiện chưa có giao dịch nào. '
-														: ''}{' '}
+							dataSource={[
+								...seedingAnnoucements,
+								{
+									message: (
+										<>
+											{paymentHistories.length == 0
+												? 'Bạn hiện chưa có giao dịch nào. '
+												: ''}{' '}
 														Trải nghiệm ngay dịch vụ hot nhất site:{' '}
-													<span
-														style={{
-															textDecoration: 'underline',
-															fontWeight: 'bold',
-															cursor: 'pointer',
-														}}
-														onClick={() =>
-															history.push('/seeding/buff-viewers-livestream')
-														}
-													>
-														TĂNG MẮT NGAY
+											<span
+												style={{
+													textDecoration: 'underline',
+													fontWeight: 'bold',
+													cursor: 'pointer',
+												}}
+												onClick={() =>
+													history.push('/seeding/buff-viewers-livestream')
+												}
+											>
+												TĂNG MẮT NGAY
 														</span>
-												</>
-											),
-											type: 'info',
-										},
-									]
+										</>
+									),
+									type: 'info',
+								},
+							]
 							}
 							renderItem={item => (
 								<Alert
