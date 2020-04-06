@@ -59,17 +59,19 @@ export const BankInformationPage = GraphQLWrapper<{
 				</Row>
 			</Card>
 		)
-	if (!loading && data.me?.payment_methods == null)
+	if (loading)
 		return (
-			<Card title={<BreadCrumb />} style={{ height: 'calc(100vh - 65px)' }}>
-				<Result
-					icon={<Icon type="smile" theme="twoTone" />}
-					title="You do not have any bank."
-				/>
+			<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
+				<Row type="flex" justify="space-around">
+					<Col>
+						<Spin
+							indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}
+						/>
+					</Col>
+				</Row>
 			</Card>
 		)
-	if (!loading && !!data.me?.payment_methods) {
-		console.log({ data: data?.me?.payment_methods })
+	if (!loading && data) {
 		const [
 			createUpdateBankModalVisible,
 			setCreateUpdateBankModalVisible,
@@ -107,7 +109,7 @@ export const BankInformationPage = GraphQLWrapper<{
 						lg: 4,
 						xxl: 6,
 					}}
-					dataSource={data.me.payment_methods}
+					dataSource={data.me?.payment_methods || []}
 					renderItem={item => (
 						<List.Item>
 							<Card
@@ -155,8 +157,8 @@ export const BankInformationPage = GraphQLWrapper<{
 										{item.account !== deletedBank ? (
 											<Icon type="delete" style={{ color: 'red' }} />
 										) : (
-											<Icon type="loading" style={{ color: 'blue' }} />
-										)}
+												<Icon type="loading" style={{ color: 'blue' }} />
+											)}
 									</Popconfirm>
 								}
 								headStyle={{ textAlign: 'left' }}
