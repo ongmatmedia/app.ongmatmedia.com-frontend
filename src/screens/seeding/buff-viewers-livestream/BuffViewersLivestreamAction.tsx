@@ -1,8 +1,6 @@
-import { Col, DatePicker, Icon, Input, Row, Select } from 'antd'
+import { Col, DatePicker, Input, Row, Select } from 'antd'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Fab } from 'react-tiny-fab'
-import { BuffViewersLivestreamCreateModal } from './BuffViewersLivestreamCreateModal'
 import 'react-tiny-fab/dist/styles.css'
 
 const { Option } = Select
@@ -16,28 +14,12 @@ export type BuffViewersLivestreamActionProps = {
 export const BuffViewersLivestreamAction = (
 	props: BuffViewersLivestreamActionProps,
 ) => {
-	const [create_modal_visible, set_create_modal_visible] = useState<boolean>(
-		false,
-	)
 	const [search, set_search] = useState<string>('')
 
 	const { t, i18n } = useTranslation('buff_viewers_livestream')
 
 	return (
 		<Row style={{ marginBottom: 10 }} gutter={16}>
-			{create_modal_visible && (
-				<BuffViewersLivestreamCreateModal
-					onClose={() => set_create_modal_visible(false)}
-				/>
-			)}
-			{!create_modal_visible && (
-				<Fab
-					mainButtonStyles={{ backgroundColor: 'rgb(64, 169, 255)' }}
-					icon={<Icon type="plus" />}
-					event="click"
-					onClick={() => set_create_modal_visible(true)}
-				></Fab>
-			)}
 			<Col
 				xs={12}
 				sm={{ span: 6, offset: 8 }}

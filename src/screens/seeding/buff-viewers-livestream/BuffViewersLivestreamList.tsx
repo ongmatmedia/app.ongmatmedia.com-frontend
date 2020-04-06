@@ -125,9 +125,14 @@ const update_playing_videos = async () => {
 	})
 }
 
-export const BuffViewersLivestreamList = PaginationWrapper<{
-	buff_viewers_livestream_tasks: BuffViewersLivestreamConnection
-}>(
+export const BuffViewersLivestreamList = PaginationWrapper<
+	{
+		buff_viewers_livestream_tasks: BuffViewersLivestreamConnection
+	},
+	{
+		onSelectBuff: (id: string) => void
+	}
+>(
 	query,
 	graphql`
 		fragment BuffViewersLivestreamList_buff_viewers_livestream_tasks on Query
@@ -170,8 +175,7 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 		}
 	`,
 	{},
-	({ data, loading, reload, has_more, load_more, loading_more }) => {
-		console.log({ data })
+	({ data, loading, reload, has_more, load_more, loading_more, onSelectBuff }) => {
 		if (loading && !data)
 			return <Skeleton active loading paragraph={{ rows: 5 }} />
 
@@ -187,8 +191,6 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 		}, [])
 
 		const [videoIdSearch, setVideoIdSearch] = useState<string>()
-
-		const [selectedBuffId, setSelectedBuffId] = useState<string>(null)
 
 		const [statusFilter, setStatusFilter] = useState<string>('')
 
@@ -235,20 +237,10 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 
 		return (
 			<>
-				{selectedBuffId && (
-					<BuffViewersDetailModal
-						onClose={() => {
-							setSelectedBuffId(null)
-						}}
-						video_id={selectedBuffId}
-					/>
-				)}
 				<BuffViewersLivetreamStatistics
 					buffStatusData={buffStatusData}
-					percentage={
-						playingBuffViewersLivestream.reduce((sumLastReportedViewers, curr) => sumLastReportedViewers + curr.last_reported_viewers, 0) / totalAvailableAmount * 100
-					}
-					totalIncreaseViewers={totalIncreaseViewers}
+					percentage={(totalIncreaseViewers > 0 ? totalIncreaseViewers : 0) / totalAvailableAmount * 100}
+					totalIncreaseViewers={totalIncreaseViewers > 0 ? totalIncreaseViewers : 0}
 					totalAvailableAmount={totalAvailableAmount}
 				/>
 				<BuffViewersLivestreamAction
@@ -280,7 +272,7 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 												cursor: 'pointer',
 											}}
 											onClick={() => {
-												setSelectedBuffId(buffViewersLivestream.id)
+												onSelectBuff(buffViewersLivestream.id)
 											}}
 										>
 											<Skeleton loading={loading} active>
