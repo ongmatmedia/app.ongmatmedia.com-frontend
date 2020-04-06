@@ -17,6 +17,12 @@ const mutation = graphql`
 					note
 					created_time
 					name
+					orders{
+						from
+						amount
+						limit_mins
+						time
+					}
 				}
 			}
 			me {
@@ -26,23 +32,7 @@ const mutation = graphql`
 		}
 	}
 `
-
-export const add = () => commitLocalUpdate(RelayEnvironment, store => {
-	const list = store.get('client:root:__BuffViewersLivestreamList_buff_viewers_livestream_tasks_connection')
-	const edge = store.create('ahihi', 'BuffViewersLivestreamEdge')
-	const node = store.create('client:root:__BuffViewersLivestreamList_buff_viewers_livestream_tasks_connection:edges:14', 'BuffViewersLivestream')
-	node.setValue('1332057510316685', 'id')
-	node.setValue('50', 'amount')
-	node.setValue('add_from_web', 'note')
-	node.setValue(1586100380216, 'created_time')
-	node.setValue('Live', 'name')
-	node.setLinkedRecords([], 'logs')
-	node.setLinkedRecords([], 'orders')
-
-	edge.setLinkedRecord(node, 'node')
-	ConnectionHandler.insertEdgeAfter(list, edge)
-})
-
+ 
 
 export const create_buff_viewers_livestream = async (
 	input: BuffViewersLivestreamInput,
@@ -51,12 +41,11 @@ export const create_buff_viewers_livestream = async (
 		commitMutation(RelayEnvironment, {
 			mutation,
 			variables: { input },
-			updater: async store => {
-				if (store.get(input.id)) return s()
+			updater: async store => { 
 				const list = store.get('client:root:__BuffViewersLivestreamList_buff_viewers_livestream_tasks_connection')
 				try {
 					const node = store.getRootField('create_buff_viewers_livestream_task').getLinkedRecord('buff')
-					console.log({ node })
+					node.setValue(input.id, 'id')
 					ConnectionHandler.insertEdgeAfter(list, node)
 				} catch (e) {
 					console.log(e)
@@ -64,8 +53,8 @@ export const create_buff_viewers_livestream = async (
 				s()
 			},
 			onError: error => {
-				const { errors } = (error as any) as GraphQLError
-				r(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
+				console.log(error)
+				r(JSON.stringify(error))
 			},
 		})
 	})

@@ -8,12 +8,11 @@ import { useAuth0 } from '../../../context/Auth0'
 import { GraphQLQueryFetcher, PaginationWrapper } from '../../../graphql/GraphQLWrapper'
 import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
 import { on_update_buff_viewers_livestream_playing } from '../../../graphql/subscriptions/on_update_buff_viewers_livestream_playing'
-import { groupTimeIntoDayMap, prettyDiffDate } from '../../../helpers/utils'
+import { groupTimeIntoDayMap } from '../../../helpers/utils'
 import { BuffViewersLivestreamConnection } from '../../../types'
 import { BuffViewersLivestreamAction } from './BuffViewersLivestreamAction'
 import { BuffViewersDetailModal } from './BuffViewersLivestreamDetailModal'
 import { BuffViewersLivetreamStatistics } from './BuffViewersLivetreamStatistics'
-import { add } from '../../../graphql/create_buff_viewers_livestream'
 import './style.css'
 
 const query = graphql`
@@ -84,7 +83,10 @@ const statusMapping = {
 	}
 }
 
-const BuffViewerLivestreamStatusIcon = (props: { status: string }) => <Icon type={statusMapping[`${props.status}`].type} style={statusMapping[`${props.status}`].style} theme={statusMapping[`${props.status}`].theme || ''} className={statusMapping[`${props.status}`].className || ''} />
+const BuffViewerLivestreamStatusIcon = (props: { status: string }) => {
+	const { type, style, className, theme } = statusMapping[props.status == "" ? 'created' : props.status] || statusMapping.default
+	return <Icon type={type} style={style} theme={theme} className={className} />
+}
 
 const update_playing_videos = async () => {
 	const { buff_viewers_livestream_playing } = await GraphQLQueryFetcher<{
@@ -169,7 +171,7 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 	`,
 	{},
 	({ data, loading, reload, has_more, load_more, loading_more }) => {
-		console.log({data})
+		console.log({ data })
 		if (loading && !data)
 			return <Skeleton active loading paragraph={{ rows: 5 }} />
 
@@ -249,6 +251,11 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 					totalIncreaseViewers={totalIncreaseViewers}
 					totalAvailableAmount={totalAvailableAmount}
 				/>
+				<BuffViewersLivestreamAction
+					onChangeSearch={id => setVideoIdSearch(id)}
+					onChangeDate={d => reload({ first: 12, before_time: d.getTime() })}
+					onChangeStatusFilter={status => setStatusFilter(status)}
+				/>
 				<Spin spinning={loading}>
 					<List
 						size="large"
@@ -279,13 +286,11 @@ export const BuffViewersLivestreamList = PaginationWrapper<{
 											<Skeleton loading={loading} active>
 												<Card
 													extra={
-														buffViewersLivestream.status == 'playing' ? (
+														buffViewersLivestream.status == 'playing' && (
 															<Text strong>
 																{`${buffViewersLivestream.last_reported_viewers || '_'} / ${buffViewersLivestream.orders.reduce((sum, curr) => curr.from == user.sub && curr.time + curr.limit_mins * 60 * 1000 >= Date.now() ? sum + curr.amount : sum, 0) + buffViewersLivestream.first_reported_viewers || '_'}`}
 															</Text>
-														) : (
-																'-/-'
-															)
+														)
 													}
 													type="inner"
 													title={<BuffViewerLivestreamStatusIcon status={buffViewersLivestream.status} />}

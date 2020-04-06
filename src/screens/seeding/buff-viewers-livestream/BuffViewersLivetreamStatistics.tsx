@@ -77,7 +77,7 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
 						<Statistic
 							style={{ textAlign: 'center' }}
-							title={<Text style={{ fontSize: 20 }}> Increase viewers</Text>}
+							title={<Text style={{ fontSize: 20 }}> Increased</Text>}
 							value={totalIncreaseViewers || '_'}
 							prefix={<Icon type="rise" theme="filled" />}
 							valueStyle={{ color: 'orange' }}
@@ -88,7 +88,7 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
 						<Statistic
 							style={{ textAlign: 'center' }}
-							title={<Text style={{ fontSize: 20 }}>Available ordered</Text>}
+							title={<Text style={{ fontSize: 20 }}>Ordered</Text>}
 							value={totalAvailableAmount || '_'}
 							prefix={<Icon type="stock" theme="filled" />}
 							valueStyle={{ color: 'brown' }}

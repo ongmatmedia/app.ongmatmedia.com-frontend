@@ -114,19 +114,25 @@ export const BuffViewersDetailModal = (props: {
 										<Col xs={24} sm={8}>
 											<Statistic title="ID" value={data.buff_viewers_livestream_task.id} formatter={value => value} />
 										</Col>
-										<Col xs={24} sm={8}>
-											<Statistic title="Original viewers" value={data.buff_viewers_livestream_task
-												.logs[0].amount} />
-										</Col>
-										<Col xs={24} sm={8}>
-											<Statistic title="Last reported viewers" value={data.buff_viewers_livestream_task
-												.logs[data.buff_viewers_livestream_task
-													.logs.length - 1].amount} />
-										</Col>
+										{
+											data.buff_viewers_livestream_task.logs && (
+												<>
+													<Col xs={24} sm={8}>
+														<Statistic title="Original viewers" value={data.buff_viewers_livestream_task
+															.logs[0].amount} />
+													</Col>
+													<Col xs={24} sm={8}>
+														<Statistic title="Last reported viewers" value={data.buff_viewers_livestream_task
+															.logs[data.buff_viewers_livestream_task
+																.logs.length - 1].amount} />
+													</Col>
+												</>
+											)
+										}
 									</Row>
 									<Table
 										title={() => 'Detail orders'}
-										style={{marginBottom: 20}}
+										style={{ marginBottom: 20 }}
 										bordered
 										pagination={false}
 										dataSource={data.buff_viewers_livestream_task.orders?.filter(el => el.from == user.sub).map(el => ({
@@ -134,8 +140,8 @@ export const BuffViewersDetailModal = (props: {
 											time: new Date(el.time).toLocaleString('vi-VN', {
 												hour12: true
 											}),
-											status: el.time + el.limit_mins * 60 * 1000 >= Date.now() ? <Icon type="video-camera" style={{color: '#ff5722'}} />: <Icon type="check-circle" style={{color: 'green'}} />
-										})).sort((a, b) => a.time < b.time ? 1 : -1 )}
+											status: el.time + el.limit_mins * 60 * 1000 >= Date.now() ? <Icon type="video-camera" style={{ color: '#ff5722' }} /> : <Icon type="check-circle" style={{ color: 'green' }} />
+										})).sort((a, b) => a.time < b.time ? 1 : -1)}
 										columns={
 											[
 												{
@@ -162,7 +168,7 @@ export const BuffViewersDetailModal = (props: {
 										} />
 									<Line
 										data={{
-											labels: data.buff_viewers_livestream_task.logs.map(el =>
+											labels: (data.buff_viewers_livestream_task.logs || []).map(el =>
 												new Date(el.time).toLocaleString(),
 											),
 											datasets: [
@@ -185,7 +191,7 @@ export const BuffViewersDetailModal = (props: {
 													pointHoverBorderWidth: 2,
 													pointRadius: 1,
 													pointHitRadius: 10,
-													data: data.buff_viewers_livestream_task.logs.map(
+													data: (data.buff_viewers_livestream_task.logs || []).map(
 														el => el.amount,
 													),
 												},
