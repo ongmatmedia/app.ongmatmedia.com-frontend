@@ -1,8 +1,8 @@
-import React, { ReactNode, FunctionComponent } from 'react'
 import graphql from 'babel-plugin-relay/macro'
+import React, { FunctionComponent, ReactNode } from 'react'
 import { QueryRenderer } from 'react-relay'
-import { User } from '../../types'
 import { RelayEnvironment } from '../../graphql/RelayEnvironment'
+import { User } from '../../types'
 
 type UserInfoProps = {
 	render: (loading: boolean, user: User | null) => ReactNode

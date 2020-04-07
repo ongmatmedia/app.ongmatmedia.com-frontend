@@ -1,9 +1,12 @@
-import { Alert, Avatar, Icon, Input, Row } from 'antd'
+import Alert from 'antd/lib/alert'
+import Icon from 'antd/lib/icon'
+import Input from 'antd/lib/input'
+import Row from 'antd/lib/row'
 import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
+import { FacebookAvatar } from '../components/FacebookAvatar'
 import { GraphQLQueryFetcher } from '../graphql/GraphQLWrapper'
 import { FacebookAccount } from '../types'
-import { FacebookAvatar } from '../components/FacebookAvatar'
 
 const query = graphql`
 	query FacebookAccountInputQuery($url: String!) {

@@ -1,24 +1,16 @@
-import {
-	Avatar,
-	Card,
-	Col,
-	List,
-	Row,
-	notification,
-	Icon,
-	Button,
-	Popconfirm,
-	Checkbox,
-	Modal,
-	Affix,
-} from 'antd'
+import Avatar from 'antd/lib/avatar'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import List from 'antd/lib/list'
+import Row from 'antd/lib/row'
 import React, { useState } from 'react'
-import { AccountActions } from '../AccountActions'
-import { AsyncForEach } from '../../../helpers/ArrayLoop'
-import { delete_facebook_account } from '../../../graphql/delete_facebook_account'
-import { AccountStatistic } from '../AccountStatistic'
-import { Fab, Action } from 'react-tiny-fab'
+import { Action, Fab } from 'react-tiny-fab'
 import 'react-tiny-fab/dist/styles.css'
+import { delete_facebook_account } from '../../../graphql/delete_facebook_account'
+import { AsyncForEach } from '../../../helpers/ArrayLoop'
+import { AccountStatistic } from '../AccountStatistic'
+import { notification } from 'antd'
 
 interface FacebookAccountsPresentationProps {
 	loading: boolean

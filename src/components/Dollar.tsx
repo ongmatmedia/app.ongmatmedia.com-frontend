@@ -1,5 +1,5 @@
+import Icon from 'antd/lib/icon'
 import React from 'react'
-import { Icon } from 'antd'
 
 export const Dollar = () => (
 	<Icon

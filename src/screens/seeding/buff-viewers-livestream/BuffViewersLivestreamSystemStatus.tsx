@@ -1,8 +1,11 @@
 import React from 'react'
-import { Statistic, Card, Row, Col, Icon, Spin } from 'antd'
 import { graphql } from 'babel-plugin-relay/macro'
 import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper'
 import { BuffViewersLivestreamStatus } from '../../../types'
+import Row from 'antd/lib/row'
+import Col from 'antd/lib/col'
+import Statistic from 'antd/lib/statistic'
+import Icon from 'antd/lib/icon'
 
 const query = graphql`
 	query BuffViewersLivestreamSystemStatusQuery {

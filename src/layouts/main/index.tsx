@@ -1,4 +1,4 @@
-import { Layout } from 'antd'
+import Layout from 'antd/lib/layout'
 import React from 'react'
 import { Header } from './header'
 

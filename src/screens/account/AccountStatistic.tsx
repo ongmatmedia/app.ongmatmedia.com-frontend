@@ -1,6 +1,9 @@
-import { Card, Col, Icon, Row, Statistic } from 'antd'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import Row from 'antd/lib/row'
+import Statistic from 'antd/lib/statistic'
 import React from 'react'
-
 export type AgencyStaticsProps = {
 	accounts: Array<{ id: string; name: string }>
 }

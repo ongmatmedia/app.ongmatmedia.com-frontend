@@ -14,10 +14,9 @@ import { DepositPage } from './deposit'
 import { HomePage } from './HomePage'
 import { NotificationPage } from './notification'
 import { Payments } from './payments/Payments'
-// import { Payments } from './payments'
-import { SeedingPage } from './seeding'
-import { BuffViewers } from './seeding/buff-viewers'
 import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
+// import { Payments } from './payments'
+import { SeedingPage } from './seeding/SeedingPage'
 
 export const AppWithRouter = () => {
 	return (
@@ -37,13 +36,6 @@ export const AppWithRouter = () => {
 					layout={MainLayout}
 					path="/seeding/buff-viewers-livestream"
 				/>
-				<PrivateRoute
-					exact
-					component={BuffViewers}
-					layout={MainLayout}
-					path="/seeding/buff-viewers"
-				/>
-
 				<PrivateRoute
 					exact
 					component={Payments}

@@ -1,5 +1,8 @@
+import Avatar from 'antd/lib/avatar'
+import Button from 'antd/lib/button'
+import Col from 'antd/lib/col'
+import Row from 'antd/lib/row'
 import React from 'react'
-import { Avatar, Button, Row, Col } from 'antd'
 
 export const ChromeExtensionTab = () => (
 	<>

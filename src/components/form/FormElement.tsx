@@ -1,5 +1,9 @@
+import Alert from 'antd/lib/alert'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import Row from 'antd/lib/row'
+import Tag from 'antd/lib/tag'
 import React, { PropsWithChildren } from 'react'
-import { Form, Row, Col, Icon, Tag, Alert } from 'antd'
 
 export type FormItemProps = PropsWithChildren<{
 	icon: string

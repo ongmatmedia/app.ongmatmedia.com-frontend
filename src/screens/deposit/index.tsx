@@ -1,15 +1,13 @@
-import {
-	Avatar,
-	Button,
-	Card,
-	Col,
-	Icon,
-	List,
-	message,
-	Modal,
-	Row,
-	Spin,
-} from 'antd'
+import Avatar from 'antd/lib/avatar'
+import Button from 'antd/lib/button'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import List from 'antd/lib/list'
+import message from 'antd/lib/message'
+import Modal from 'antd/lib/modal'
+import Row from 'antd/lib/row'
+import Spin from 'antd/lib/spin'
 import Text from 'antd/lib/typography/Text'
 import graphql from 'babel-plugin-relay/macro'
 import React from 'react'

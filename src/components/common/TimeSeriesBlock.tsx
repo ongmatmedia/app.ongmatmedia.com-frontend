@@ -1,10 +1,16 @@
-import { List, Card, Divider, Icon, Row, Col, Tag } from 'antd'
-import React from 'react'
-import { PaymentHistory } from '../../types'
-import { groupTimeIntoDayMap } from '../../helpers/utils'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Divider from 'antd/lib/divider'
+import Icon from 'antd/lib/icon'
+import List from 'antd/lib/list'
+import Row from 'antd/lib/row'
+import Tag from 'antd/lib/tag'
 import Text from 'antd/lib/typography/Text'
-import { NoteReading } from './NoteReading'
+import React from 'react'
 import Moment from 'react-moment'
+import { groupTimeIntoDayMap } from '../../helpers/utils'
+import { PaymentHistory } from '../../types'
+import { NoteReading } from './NoteReading'
 
 export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 	const timeSeriesData = groupTimeIntoDayMap(props.data)

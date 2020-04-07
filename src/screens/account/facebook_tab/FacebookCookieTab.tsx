@@ -1,7 +1,11 @@
-import React, { useState } from 'react'
+import { notification } from 'antd'
+import Alert from 'antd/lib/alert'
+import Button from 'antd/lib/button'
+import Col from 'antd/lib/col'
 import Form, { FormComponentProps } from 'antd/lib/form'
-import { sleep } from '../../../helpers/utils'
-import { Spin, Input, Row, Col, Alert, Button, notification } from 'antd'
+import Input from 'antd/lib/input'
+import Row from 'antd/lib/row'
+import React, { useState } from 'react'
 import { add_facebook_account } from '../../../graphql/add_facebook_account'
 
 export type FacebookCookieTabProps = FormComponentProps & {

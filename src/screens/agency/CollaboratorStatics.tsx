@@ -1,5 +1,10 @@
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import Input from 'antd/lib/input'
+import Row from 'antd/lib/row'
+import Statistic from 'antd/lib/statistic'
 import React from 'react'
-import { Statistic, Card, Row, Col, Icon, Input } from 'antd'
 import { User } from '../../types'
 
 export type CollaboratorStaticsProps = {

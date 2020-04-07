@@ -1,16 +1,14 @@
-import {
-	Modal,
-	Button,
-	Row,
-	Col,
-	Avatar,
-	Statistic,
-	Icon,
-	Divider,
-	Alert,
-	Popconfirm,
-	notification,
-} from 'antd'
+import { notification } from 'antd'
+import Alert from 'antd/lib/alert'
+import Avatar from 'antd/lib/avatar'
+import Button from 'antd/lib/button'
+import Col from 'antd/lib/col'
+import Divider from 'antd/lib/divider'
+import Icon from 'antd/lib/icon'
+import Modal from 'antd/lib/modal'
+import Popconfirm from 'antd/lib/popconfirm'
+import Row from 'antd/lib/row'
+import Statistic from 'antd/lib/statistic'
 import React, { useState } from 'react'
 import { delete_facebook_account } from '../../graphql/delete_facebook_account'
 

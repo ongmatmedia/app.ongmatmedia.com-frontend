@@ -1,22 +1,20 @@
-import {
-	Alert,
-	Form,
-	Spin,
-	Card,
-	Button,
-	notification,
-	Icon,
-	Row,
-	Col,
-} from 'antd'
-import React, { useState } from 'react'
-import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect'
-import { withForm } from '../../libs/Form'
-import { BreadCrumb } from '../../components/common/BreadCrumb'
-import { update_price_for_user } from '../../graphql/update_price_for_user'
+import Alert from 'antd/lib/alert'
+import Button from 'antd/lib/button'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Form from 'antd/lib/form'
+import Icon from 'antd/lib/icon'
+import notification from 'antd/lib/notification'
+import Row from 'antd/lib/row'
+import Spin from 'antd/lib/spin'
 import graphql from 'babel-plugin-relay/macro'
+import React, { useState } from 'react'
 import { QueryRenderer } from 'react-relay'
+import { BreadCrumb } from '../../components/common/BreadCrumb'
+import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect'
 import { RelayEnvironment } from '../../graphql/RelayEnvironment'
+import { update_price_for_user } from '../../graphql/update_price_for_user'
+import { withForm } from '../../libs/Form'
 
 interface SetDefaultPricePageProps {}
 

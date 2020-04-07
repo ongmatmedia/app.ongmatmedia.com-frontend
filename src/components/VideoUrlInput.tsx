@@ -1,8 +1,12 @@
-import { Alert, Col, Icon, Input, Row } from 'antd'
+import Alert from 'antd/lib/alert'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import Input from 'antd/lib/input'
+import Row from 'antd/lib/row'
 import { graphql } from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
-import { VideoInfo } from '../types'
 import { GraphQLQueryFetcher } from '../graphql/GraphQLWrapper'
+import { VideoInfo } from '../types'
 
 interface VideoUrlInputProps {
 	onSubmitVideo: (videoInfo: VideoInfo & { url: string }) => void

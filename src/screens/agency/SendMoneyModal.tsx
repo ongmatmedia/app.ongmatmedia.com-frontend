@@ -1,9 +1,14 @@
+import Col from 'antd/lib/col'
+import Form, { FormComponentProps } from 'antd/lib/form'
+import Input from 'antd/lib/input'
+import Modal from 'antd/lib/modal'
+import Row from 'antd/lib/row'
+import Tag from 'antd/lib/tag'
 import React, { useState } from 'react'
-import { Modal, Form, Spin, Col, Row, Tag, Input } from 'antd'
-import { FormComponentProps } from 'antd/lib/form'
 import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect'
-import { User } from '../../types'
 import { send_money } from '../../graphql/send_money'
+import { User } from '../../types'
+
 export type SendMoneyModalProps = FormComponentProps & {
 	visible: boolean
 	user: User

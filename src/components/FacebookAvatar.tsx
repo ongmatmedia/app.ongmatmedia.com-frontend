@@ -1,6 +1,5 @@
+import Avatar, { AvatarProps } from 'antd/lib/avatar'
 import React from 'react'
-import { Avatar } from 'antd'
-import { AvatarProps } from 'antd/lib/avatar'
 
 export type FacebookAvatarProps = AvatarProps & { uid: string }
 

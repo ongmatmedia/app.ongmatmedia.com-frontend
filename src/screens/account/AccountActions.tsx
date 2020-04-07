@@ -1,4 +1,8 @@
-import { Button, Checkbox, Col, Row, Popconfirm } from 'antd'
+import Button from 'antd/lib/button'
+import Checkbox from 'antd/lib/checkbox'
+import Col from 'antd/lib/col'
+import Popconfirm from 'antd/lib/popconfirm'
+import Row from 'antd/lib/row'
 import React from 'react'
 
 export const AccountActions = (props: {
