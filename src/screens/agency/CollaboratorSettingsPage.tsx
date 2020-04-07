@@ -1,5 +1,10 @@
-import { Alert, Button, Card, Form, Input, Row, Col } from 'antd'
-import { FormComponentProps } from 'antd/lib/form'
+import Alert from 'antd/lib/alert'
+import Button from 'antd/lib/button'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Form, { FormComponentProps } from 'antd/lib/form'
+import Input from 'antd/lib/input'
+import Row from 'antd/lib/row'
 import React, { useState } from 'react'
 import { BreadCrumb } from '../../components/common/BreadCrumb'
 

@@ -1,14 +1,17 @@
-import { Alert, Avatar, Button, Col, Icon, Row, Select, Spin } from 'antd'
+import Alert from 'antd/lib/alert'
+import Avatar from 'antd/lib/avatar'
+import Button from 'antd/lib/button'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import Row from 'antd/lib/row'
+import Select from 'antd/lib/select'
+import Spin from 'antd/lib/spin'
 import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { QueryRenderer } from 'react-relay'
 import { FacebookGraphAPI } from '../../../api/FacebookGraphAPI'
 import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
-import {
-	FacebookAccount,
-	FacebookAccountConnection,
-	LivestreamFacebookTargetInput,
-} from '../../../types'
+import { FacebookAccount, FacebookAccountConnection, LivestreamFacebookTargetInput } from '../../../types'
 
 const getAccountsQuery = graphql`
 	query LivestreamTargetItemSelectorTabQuery {

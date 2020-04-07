@@ -1,9 +1,12 @@
-import React, { Fragment } from 'react'
-import { useState } from 'react'
-import { Row, Col, Button, Modal, Alert, Spin } from 'antd'
+import Alert from 'antd/lib/alert'
+import Button from 'antd/lib/button'
+import Col from 'antd/lib/col'
+import Modal from 'antd/lib/modal'
+import Row from 'antd/lib/row'
+import React, { Fragment, useState } from 'react'
 import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect'
-import { NewDepositInfo } from '../../types'
 import { create_deposit } from '../../graphql/create_deposit'
+import { NewDepositInfo } from '../../types'
 
 export type AutoDepositModalProps = {}
 

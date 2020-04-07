@@ -1,16 +1,4 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import {
-	Alert,
-	Button,
-	Card,
-	Col,
-	Icon,
-	Modal,
-	notification,
-	Row,
-	Spin,
-	Tag,
-} from 'antd'
 import { graphql } from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -22,7 +10,17 @@ import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper'
 import { withForm } from '../../../libs/Form'
 import { User, VideoInfo } from '../../../types'
 import { BuffViewersLivestreamSystemStatus } from './BuffViewersLivestreamSystemStatus'
-import { isMobileDevice } from '../../../helpers/utils'
+import Modal from 'antd/lib/modal'
+import Spin from 'antd/lib/spin'
+import Alert from 'antd/lib/alert'
+import Row from 'antd/lib/row'
+import Col from 'antd/lib/col'
+import Card from 'antd/lib/card'
+import Tag from 'antd/lib/tag'
+import Icon from 'antd/lib/icon'
+import { notification } from 'antd'
+import Button from 'antd/lib/button'
+import { isMobileOnly } from 'react-device-detect'
 
 const query = graphql`
 	query BuffViewersLivestreamCreateModalQuery {
@@ -91,7 +89,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 				closable={true}
 				okButtonProps={{ loading }}
 				title={t('title')}
-				style={{ top: isMobileDevice() ? 0 : 50 }}
+				style={{ top: isMobileOnly ? 0 : 50 }}
 			>
 				<Spin spinning={props.loading}>
 					{props.form.field({
@@ -99,11 +97,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 						require: t('form.facebook_video_input.validatingErrorMessage'),
 						render: ({
 							error,
-							loading,
 							setValues,
-							value,
-							set_touched,
-							touched,
 						}) => (
 								<FormElement
 									label={t('form.facebook_video_input.title')}
@@ -164,11 +158,8 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 						require: t('form.viewer_amount_select.validatingErrorMessage'),
 						render: ({
 							error,
-							loading,
 							setValue,
 							value,
-							set_touched,
-							touched,
 						}) => (
 								<FormElement
 									label={t('form.viewer_amount_select.title')}
@@ -215,12 +206,8 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 						name: 'limit_mins',
 						require: t('form.limit_mins_viewers.validatingErrorMessage'),
 						render: ({
-							error,
-							loading,
 							setValue,
 							value,
-							set_touched,
-							touched,
 						}) => (
 								<FormElement
 									label={t('form.limit_mins_viewers.title')}

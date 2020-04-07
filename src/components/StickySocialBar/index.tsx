@@ -1,6 +1,6 @@
+import Icon from 'antd/lib/icon'
 import React from 'react'
 import './style.css'
-import { Icon } from 'antd'
 
 export const StickySocialBar = () => (
 	<div className="icon-bar">

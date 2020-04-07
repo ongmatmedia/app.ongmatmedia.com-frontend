@@ -29,10 +29,6 @@ export const groupTimeIntoDayMap = <T extends { time: number }>(
 	}))
 }
 
-export const isMobileDevice = () => {
-	return navigator.userAgent.indexOf('IEMobile') !== -1
-}
-
 export function* range(start: number, end: number) {
 	yield start
 	if (start === end) return

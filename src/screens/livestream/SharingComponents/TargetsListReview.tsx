@@ -1,6 +1,8 @@
+import Avatar from 'antd/lib/avatar'
+import Button from 'antd/lib/button'
+import List from 'antd/lib/list'
 import React from 'react'
 import { LivestreamFacebookTargetInput } from '../../../types'
-import { List, Button, Avatar } from 'antd'
 
 const FacebookIcon = {
 	profile:

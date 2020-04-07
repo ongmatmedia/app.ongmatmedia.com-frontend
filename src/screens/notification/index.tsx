@@ -1,5 +1,7 @@
+import Card from 'antd/lib/card'
+import Icon from 'antd/lib/icon'
+import Result from 'antd/lib/result'
 import React from 'react'
-import { Row, Result, Icon, Button, Card } from 'antd'
 import { BreadCrumb } from '../../components/common/BreadCrumb'
 
 export const NotificationPage = () => {
@@ -8,7 +10,6 @@ export const NotificationPage = () => {
 			<Result
 				icon={<Icon type="smile" theme="twoTone" />}
 				title="Bạn không có thông báo mới nào!"
-				// extra={<Button type="primary">Next</Button>}
 			/>
 		</Card>
 	)

@@ -5,14 +5,6 @@ import { ListAppBlock } from '../../components/common/ListAppBlock'
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
 import { User } from '../../types'
 
-type SeedingService = {
-	name: string
-	icon: string
-	description: React.ReactNode | string
-	cover: string
-	link: string
-}
-
 const query = graphql`
 	query SeedingPageQuery {
 		me {

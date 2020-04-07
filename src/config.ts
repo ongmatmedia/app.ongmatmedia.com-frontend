@@ -30,7 +30,7 @@ export const FirebaseConfigVAPIDKEY =
 	'BHTar4YMvOMDzZOqKW8j-ThYbvqvPfCnBfOUzN8QI1fIvHM5rQETDFWXEffWFxZXyly4lTBNtgwf5TqZEp0gDUE'
 
 export const AUTH0_CONFIG: Auth0ClientOptions = {
-	domain: 'ongmatmedia.auth0.com',
+	domain: 'idc-auth.info',
 	client_id: 'spiiEFrf1tPlIPksv1vB3EPKLr9uNg50',
 	cacheLocation: 'localstorage',
 	redirect_uri: window.location.origin,

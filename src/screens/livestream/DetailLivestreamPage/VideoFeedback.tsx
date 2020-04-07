@@ -1,19 +1,16 @@
-import React from 'react'
-import {
-	Badge,
-	Icon,
-	Row,
-	Col,
-	Avatar,
-	Comment,
-	Form,
-	Button,
-	Typography,
-	Divider,
-} from 'antd'
+import Avatar from 'antd/lib/avatar'
+import Badge from 'antd/lib/badge'
+import Button from 'antd/lib/button'
+import Col from 'antd/lib/col'
+import Comment from 'antd/lib/comment'
+import Form from 'antd/lib/form'
+import Icon from 'antd/lib/icon'
 import TextArea from 'antd/lib/input/TextArea'
+import Row from 'antd/lib/row'
+import Typography from 'antd/lib/typography'
+import React from 'react'
 
-const { Text, Paragraph } = Typography
+const { Text } = Typography
 
 const Editor = () => (
 	<div>

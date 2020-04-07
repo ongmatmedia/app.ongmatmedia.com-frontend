@@ -1,26 +1,23 @@
-import {
-	Button,
-	Card,
-	Col,
-	List,
-	Row,
-	Icon,
-	Popconfirm,
-	Spin,
-	notification,
-	Avatar,
-	Result,
-} from 'antd'
+import Avatar from 'antd/lib/avatar'
+import Button from 'antd/lib/button'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import List from 'antd/lib/list'
+import notification from 'antd/lib/notification'
+import Popconfirm from 'antd/lib/popconfirm'
+import Row from 'antd/lib/row'
+import Spin from 'antd/lib/spin'
 import Text from 'antd/lib/typography/Text'
+import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { BreadCrumb } from '../../components/common/BreadCrumb'
 import { NoteReading } from '../../components/common/NoteReading'
-import { CreateUpdateBankModal } from './CreateUpdateBankModal'
-import graphql from 'babel-plugin-relay/macro'
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
-import { User, PaymentMethod } from '../../types'
 import { update_profile } from '../../graphql/update_profile'
 import { exportBankIcon } from '../../helpers/utils'
+import { PaymentMethod, User } from '../../types'
+import { CreateUpdateBankModal } from './CreateUpdateBankModal'
 
 export interface Bank {
 	name: string

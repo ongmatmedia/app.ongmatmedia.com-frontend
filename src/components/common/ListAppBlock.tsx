@@ -1,7 +1,11 @@
+import Avatar from 'antd/lib/avatar'
+import Card from 'antd/lib/card'
+import Icon from 'antd/lib/icon'
+import List from 'antd/lib/list'
+import Row from 'antd/lib/row'
 import React from 'react'
-import { Card, List, Row, Avatar, Icon } from 'antd'
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
 import { BreadCrumb } from './BreadCrumb'
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
 
 export const ListAppBlock = (withRouter as any)(
 	(

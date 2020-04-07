@@ -1,9 +1,12 @@
-import { Avatar, Badge, Icon, Popover } from 'antd'
+import Avatar from 'antd/lib/avatar'
+import Badge from 'antd/lib/badge'
+import Icon from 'antd/lib/icon'
+import Popover from 'antd/lib/popover'
 import React, { useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { AppDrawer } from './AppDrawer'
-import { isMobileDevice } from '../../helpers/utils'
 import { useAuth0 } from '../../context/Auth0'
+import { isMobileOnly } from 'react-device-detect'
+import { AppDrawer } from './AppDrawer'
 
 const CurrentUserAvatarTopBar = () => {
 	const { user } = useAuth0()
@@ -13,11 +16,11 @@ const CurrentUserAvatarTopBar = () => {
 				src={user?.picture || ''}
 				style={{
 					border: '2px solid white',
-					marginBottom: isMobileDevice() ? 7 : 17,
+					marginBottom: isMobileOnly ? 7 : 17,
 					marginLeft: 7,
 					marginRight: 7,
 				}}
-				size={isMobileDevice() ? 40 : 33}
+				size={isMobileOnly ? 40 : 33}
 			/>
 		</span>
 	)
@@ -62,7 +65,7 @@ export const TopBar = withRouter(props => {
 					<Icon
 						type="bell"
 						style={{
-							fontSize: isMobileDevice() ? 37 : 30,
+							fontSize: isMobileOnly ? 37 : 30,
 							color: 'white',
 							marginRight: 10,
 							marginTop: 10,
@@ -82,7 +85,7 @@ export const TopBar = withRouter(props => {
 					<Icon
 						type="appstore"
 						style={{
-							fontSize: isMobileDevice() ? 40 : 30,
+							fontSize: isMobileOnly ? 40 : 30,
 							color: 'white',
 							marginRight: 10,
 							marginTop: 10,

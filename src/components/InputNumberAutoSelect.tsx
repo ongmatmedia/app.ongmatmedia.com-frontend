@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AutoSelectInput } from './AutoSelectInput'
-import { InputProps } from 'antd/lib/input'
 
 type InputNumberAutoSelectProps = {
 	onChangeValue: (newValue: number) => any

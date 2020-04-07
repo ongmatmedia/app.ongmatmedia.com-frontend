@@ -1,12 +1,16 @@
+import Alert from 'antd/lib/alert'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import Row from 'antd/lib/row'
+import Spin from 'antd/lib/spin'
+import { graphql } from 'babel-plugin-relay/macro'
+import React, { useState } from 'react'
+import { BreadCrumb } from '../../components/common/BreadCrumb'
 import { PaginationWrapper } from '../../graphql/GraphQLWrapper'
 import { PaymentHistoryConnection } from '../../types'
-import { Row, Card, Spin, Button, Col, Alert, Icon } from 'antd'
-import React, { useState, Props } from 'react'
-import { graphql } from 'babel-plugin-relay/macro'
-import { BreadCrumb } from '../../components/common/BreadCrumb'
-import { PaymentListAction } from './PaymentListAction'
 import { PaymentList } from './PaymentList'
-import { error } from 'console'
+import { PaymentListAction } from './PaymentListAction'
 
 const query = graphql`
 	query PaymentsQuery($after: String, $first: Int, $before_time: Long) {
@@ -48,7 +52,9 @@ export const Payments = PaginationWrapper<{
 			}
 		}
 	`,
-	{},
+	{
+		first: 10
+	},
 	props => {
 		if (props.error || props.loading)
 			return (
@@ -71,7 +77,7 @@ export const Payments = PaginationWrapper<{
 					</Row>
 				</Card>
 			)
-		const [search, set_search] = useState<string>('')
+		const [search, set_search] = useState<string>(null)
 		const paymentHistories = props.data?.payment_histories.edges.map(
 			e => e.node,
 		)
@@ -93,21 +99,17 @@ export const Payments = PaginationWrapper<{
 						search={search}
 						has_more={props.has_more()}
 						onLoadMore={() => props.load_more(100)}
-						payment_histories={[
+						payment_histories={search ? [
 							...paymentHistories.filter(payment =>
-								payment.note?.trim().toLocaleLowerCase().includes(search),
-							),
-							...paymentHistories.filter(payment =>
-								payment.receiver_username?.trim()
+								payment.note?.trim().toLocaleLowerCase().includes(search)
+								|| payment.receiver_username?.trim()
+									.toLocaleLowerCase()
+									.includes(search)
+								|| payment.sender_username?.trim()
 									.toLocaleLowerCase()
 									.includes(search),
 							),
-							...paymentHistories.filter(payment =>
-								payment.sender_username?.trim()
-									.toLocaleLowerCase()
-									.includes(search),
-							),
-						]}
+						] : [...paymentHistories]}
 						loading={props.loading}
 						loading_more={props.loading_more}
 					/>

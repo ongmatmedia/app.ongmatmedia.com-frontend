@@ -1,11 +1,18 @@
-import { Alert, Col, Icon, Modal, Row, Spin, Statistic, Table } from 'antd'
+import Alert from 'antd/lib/alert'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import Modal from 'antd/lib/modal'
+import Row from 'antd/lib/row'
+import Spin from 'antd/lib/spin'
+import Statistic from 'antd/lib/statistic'
+import Table from 'antd/lib/table'
 import { graphql } from 'babel-plugin-relay/macro'
 import React from 'react'
 import { Line } from 'react-chartjs-2'
+import { isMobileOnly, isTablet } from 'react-device-detect'
 import { useAuth0 } from '../../../context/Auth0'
 import { SmartGrahQLQueryRenderer } from '../../../graphql/GraphQLWrapper'
 import { BuffViewersLivestream } from '../../../types'
-import { isMobileDevice } from '../../../helpers/utils'
 
 const query = graphql`
 	query BuffViewersLivestreamDetailModalQuery($id: String!) {
@@ -86,7 +93,7 @@ export const BuffViewersDetailModal = (props: {
 	const { user } = useAuth0()
 	return (
 		<Modal
-			width={isMobileDevice() ? "100%" : "80%"}
+			width={isMobileOnly ? "100%" : isTablet ? "80%" : "60%"}
 			destroyOnClose
 			closable={true}
 			title={`Chi tiết thông số buff`}
@@ -138,9 +145,7 @@ export const BuffViewersDetailModal = (props: {
 										pagination={false}
 										dataSource={data.buff_viewers_livestream_task.orders?.filter(el => el.from == user.sub).map(el => ({
 											...el,
-											time: new Date(el.time).toLocaleString('vi-VN', {
-												hour12: true
-											}),
+											time: new Date(el.time).toLocaleString('vi-VN'),
 											status: el.time + el.limit_mins * 60 * 1000 >= Date.now() ? <Icon type="video-camera" style={{ color: '#ff5722' }} /> : <Icon type="check-circle" style={{ color: 'green' }} />
 										})).sort((a, b) => a.time < b.time ? 1 : -1)}
 										columns={

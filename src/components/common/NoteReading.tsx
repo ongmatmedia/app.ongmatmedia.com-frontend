@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import Col from 'antd/lib/col'
 import Text from 'antd/lib/typography/Text'
-import { Col } from 'antd'
+import React, { useState } from 'react'
 
 export const NoteReading = (props: { note: string; collapse: boolean }) => {
 	const [collapsed, setCollapsed] = useState<boolean>(true)

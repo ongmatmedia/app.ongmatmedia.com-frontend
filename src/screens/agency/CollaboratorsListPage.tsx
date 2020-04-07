@@ -1,25 +1,20 @@
-import {
-	Card,
-	Col,
-	Icon,
-	List,
-	Row,
-	Spin,
-	Tag,
-	Tooltip,
-	Avatar,
-	Input,
-} from 'antd'
-import React, { Fragment, useState } from 'react'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import List from 'antd/lib/list'
+import Row from 'antd/lib/row'
+import Spin from 'antd/lib/spin'
+import Tag from 'antd/lib/tag'
+import Tooltip from 'antd/lib/tooltip'
+import graphql from 'babel-plugin-relay/macro'
+import React, { useState } from 'react'
+import { BreadCrumb } from '../../components/common/BreadCrumb'
+import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
+import { User, UserConnection } from '../../types'
 import { AgencyAction } from './AgencyAction'
-import { ResetPass } from './ResetPass'
+import { CollaboratorStatics } from './CollaboratorStatics'
 import { SendMoneyModal } from './SendMoneyModal'
 import { UpdatePriceAgenciesModal } from './UpdatePriceAgenciesModal'
-import graphql from 'babel-plugin-relay/macro'
-import { UserConnection, User } from '../../types'
-import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
-import { CollaboratorStatics } from './CollaboratorStatics'
-import { BreadCrumb } from '../../components/common/BreadCrumb'
 
 const query = graphql`
 	query CollaboratorsListPageQuery {
@@ -113,13 +108,6 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 					selectedAgencies={selectedAgencies}
 				/>
 			)}
-			{set_new_pass_for_user && (
-				<ResetPass
-					visible={true}
-					onClose={() => set_set_new_pass_for_user(null)}
-					user={set_new_pass_for_user}
-				/>
-			)}
 			<div style={{ paddingBottom: 10 }}>
 				<AgencyAction
 					selectedAgencies={selectedAgencies}
@@ -139,7 +127,6 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 				users={data.users.edges.map(n => n.node)}
 				onChangeSearchUsername={username => setSearchUsername(username.trim().toLocaleLowerCase())}
 			/>
-			{searchUsername}
 			<List
 				grid={{
 					gutter: 16,

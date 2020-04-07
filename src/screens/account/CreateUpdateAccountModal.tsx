@@ -1,21 +1,17 @@
-import { Form, Modal, Tabs, Collapse } from 'antd'
-import { FormComponentProps } from 'antd/lib/form'
+import Collapse from 'antd/lib/collapse'
+import Form, { FormComponentProps } from 'antd/lib/form'
+import Modal from 'antd/lib/modal'
+import Tabs from 'antd/lib/tabs'
 import React from 'react'
 import { ChromeExtensionTab } from './facebook_tab/ChromeExtensionTab'
-import { FacebookLoginTab } from './facebook_tab/FacebookLoginTab'
 import { FacebookCookieTab } from './facebook_tab/FacebookCookieTab'
+import { FacebookLoginTab } from './facebook_tab/FacebookLoginTab'
 import { FacebookQR } from './facebook_tab/FacebookQR'
+import { isMobileOnly } from 'react-device-detect'
+
 
 const { TabPane } = Tabs
 const { Panel } = Collapse
-
-const isMobileDevice = () => {
-	return (
-		navigator.userAgent.indexOf('IEMobile') !== -1 ||
-		'ontouchstart' in window ||
-		(navigator.msMaxTouchPoints && window.innerWidth < 760)
-	)
-}
 
 export type CreateUpdateAccountModalProps = FormComponentProps & {
 	visible: boolean
@@ -28,7 +24,7 @@ export const CreateUpdateAccountModal = Form.create<
 	CreateUpdateAccountModalProps
 >()((props: CreateUpdateAccountModalProps) => (
 	<Modal visible={props.visible} onCancel={() => props.onClose()} footer={null}>
-		{!isMobileDevice() ? (
+		{!isMobileOnly ? (
 			<Tabs defaultActiveKey="1">
 				<TabPane tab="Extension" key="1">
 					<ChromeExtensionTab />

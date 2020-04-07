@@ -1,6 +1,6 @@
-import { Link, withRouter, RouteComponentProps } from 'react-router-dom'
+import Breadcrumb from 'antd/lib/breadcrumb'
 import React from 'react'
-import { Breadcrumb } from 'antd'
+import { RouteComponentProps, withRouter } from 'react-router-dom'
 
 export const BreadCrumb = (withRouter as any)((props: RouteComponentProps) => {
 	const routesTree = props.location.pathname

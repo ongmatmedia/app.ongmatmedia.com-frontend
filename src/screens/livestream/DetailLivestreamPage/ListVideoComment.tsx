@@ -1,15 +1,8 @@
+import Comment from 'antd/lib/comment'
+import Icon from 'antd/lib/icon'
+import List from 'antd/lib/list'
+import Tooltip from 'antd/lib/tooltip'
 import React from 'react'
-import {
-	Tooltip,
-	Icon,
-	Comment,
-	Avatar,
-	List,
-	Form,
-	Button,
-	Divider,
-} from 'antd'
-import TextArea from 'antd/lib/input/TextArea'
 
 const actions = [
 	<span key="comment-basic-like">

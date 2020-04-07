@@ -1,5 +1,7 @@
+import Avatar from 'antd/lib/avatar'
+import Col from 'antd/lib/col'
+import Row from 'antd/lib/row'
 import React from 'react'
-import { Avatar, Row, Col } from 'antd'
 
 export const FacebookQR = () => (
 	<Row>

@@ -1,7 +1,7 @@
+import Card from 'antd/lib/card'
 import React from 'react'
-import './style.css'
-import { Card } from 'antd'
 import { BreadCrumb } from '../../../components/common/BreadCrumb'
+import './style.css'
 
 export const PricingPage = () => {
 	return (

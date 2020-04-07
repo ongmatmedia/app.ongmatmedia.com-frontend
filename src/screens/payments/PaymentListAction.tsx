@@ -1,4 +1,8 @@
-import { Col, DatePicker, Icon, Input, Row } from 'antd'
+import Col from 'antd/lib/col'
+import DatePicker from 'antd/lib/date-picker'
+import Icon from 'antd/lib/icon'
+import Input from 'antd/lib/input'
+import Row from 'antd/lib/row'
 import React from 'react'
 
 export type PaymentListActionProps = {
@@ -27,7 +31,7 @@ export const PaymentListAction = (props: PaymentListActionProps) => {
 
 			<Col md={6} xs={12}>
 				<Input
-					placeholder="Search UID, name, note"
+					placeholder="Search by username or note"
 					addonBefore={<Icon type="search" />}
 					onChange={e => search(e.target.value)}
 					allowClear

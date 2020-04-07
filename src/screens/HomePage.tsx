@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Alert, Card, Col, Icon, List, Row, Spin, Statistic } from 'antd'
 import Text from 'antd/lib/typography/Text'
 import { graphql } from 'babel-plugin-relay/macro'
 import React, { useEffect } from 'react'
@@ -11,6 +10,14 @@ import {
 import { groupTimeIntoDayMap, nFormatter } from '../helpers/utils'
 import { PaymentHistoryConnection, User } from '../types'
 import history from '../helpers/history'
+import Card from 'antd/lib/card'
+import Row from 'antd/lib/row'
+import Col from 'antd/lib/col'
+import Alert from 'antd/lib/alert'
+import Spin from 'antd/lib/spin'
+import Icon from 'antd/lib/icon'
+import List from 'antd/lib/list'
+import Statistic from 'antd/lib/statistic'
 
 const query = graphql`
 	query HomePageQuery($after: String, $first: Int, $before_time: Long) {
