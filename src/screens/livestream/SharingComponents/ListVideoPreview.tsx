@@ -1,6 +1,9 @@
+import Avatar from 'antd/lib/avatar'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import Row from 'antd/lib/row'
 import React from 'react'
 import { LivestreamVideo } from '../../../types'
-import { Row, Col, Avatar, Icon } from 'antd'
 
 interface ListVideoPreviewProps {
 	onChange: (videos: LivestreamVideo[]) => void

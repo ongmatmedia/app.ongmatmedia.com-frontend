@@ -1,4 +1,9 @@
-import { Card, Col, Icon, Row, Skeleton, Statistic } from 'antd'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import Row from 'antd/lib/row'
+import Skeleton from 'antd/lib/skeleton'
+import Statistic from 'antd/lib/statistic'
 import Text from 'antd/lib/typography/Text'
 import { graphql } from 'babel-plugin-relay/macro'
 import React from 'react'
@@ -30,8 +35,8 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 	else if (!loading && data)
 		return (
 			<Row gutter={16} style={{ marginBottom: 10 }}>
-				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
-					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
+				<Col lg={4} md={8} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '2px solid rgb(64, 169, 255)'}}>
 						<Statistic
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}>Available</Text>}
@@ -41,8 +46,8 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 						/>
 					</Card>
 				</Col>
-				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
-					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
+				<Col lg={4} md={8} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '2px solid rgb(64, 169, 255)'}}>
 						<Statistic
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}> Percentage</Text>}
@@ -52,8 +57,8 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 						/>
 					</Card>
 				</Col>
-				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
-					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
+				<Col lg={4} md={8} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '2px solid rgb(64, 169, 255)'}}>
 						<Statistic
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}> Playing</Text>}
@@ -73,8 +78,8 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 						/>
 					</Card>
 				</Col>
-				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
-					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
+				<Col lg={4} md={8} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '2px solid rgb(64, 169, 255)'}}>
 						<Statistic
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}> Increased</Text>}
@@ -84,8 +89,8 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 						/>
 					</Card>
 				</Col>
-				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
-					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
+				<Col lg={4} md={8} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '2px solid rgb(64, 169, 255)'}}>
 						<Statistic
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}>Ordered</Text>}
@@ -95,8 +100,8 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 						/>
 					</Card>
 				</Col>
-				<Col md={4} sm={12} xs={24} style={{ marginTop: 10 }}>
-					<Card style={{ border: '4px solid rgb(64, 169, 255)', minHeight: 155 }}>
+				<Col lg={4} md={8} sm={12} xs={24} style={{ marginTop: 10 }}>
+					<Card style={{ border: '2px solid rgb(64, 169, 255)'}}>
 						<Statistic
 							style={{ textAlign: 'center' }}
 							title={<Text style={{ fontSize: 20 }}> Failure</Text>}

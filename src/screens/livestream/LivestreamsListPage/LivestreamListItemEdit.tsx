@@ -1,8 +1,8 @@
-import React from 'react'
 import graphql from 'babel-plugin-relay/macro'
+import React from 'react'
 import { QueryRenderer } from 'react-relay'
 import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
-import { CreateEditLivestreamModal } from '../CreateEditLivestreamModal'
+import { CreateUpdateLivestreamPage } from '../CreateUpdateLivestreamPage'
 
 const LivestreamListItemEditQuery = graphql`
 	query LivestreamListItemEditQuery($id: ID!) {
@@ -45,7 +45,7 @@ export const LivestreamListItemEdit = (props: {
 		environment={RelayEnvironment}
 		query={LivestreamListItemEditQuery}
 		render={rs => (
-			<CreateEditLivestreamModal
+			<CreateUpdateLivestreamPage
 				mode="update"
 				task={rs.props ? (rs.props as any).livestream_task : null}
 				onClose={props.onClose}

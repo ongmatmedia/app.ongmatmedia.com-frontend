@@ -1,4 +1,5 @@
-import { Button, Result } from 'antd'
+import Button from 'antd/lib/button'
+import Result from 'antd/lib/result'
 import i18n from 'i18next'
 import React from 'react'
 

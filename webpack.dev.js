@@ -2,6 +2,7 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
+var webpack = require('webpack')
 
 module.exports = {
 	mode: 'development',
@@ -27,7 +28,7 @@ module.exports = {
 			{
 				test: /\.mjs$/,
 				include: /node_modules/,
-				type: 'javascript/auto',
+				type: 'javascript/auto'
 			},
 			{
 				test: /\.tsx?$/,
@@ -67,7 +68,7 @@ module.exports = {
 		extensions: ['.ts', '.tsx', '.js', '.jsx'],
 	},
 	output: {
-		filename: '[name].js',
+		filename: 'bundle.js',
 		path: `${process.env.PWD}/build`,
 		publicPath: '/',
 	},

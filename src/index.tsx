@@ -1,14 +1,11 @@
-import 'antd/dist/antd.css'
+import 'antd/dist/antd.min.css'
 import { createBrowserHistory } from 'history'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { hot } from 'react-hot-loader/root'
 import { AUTH0_CONFIG } from './config'
 import { Auth0Provider } from './context/Auth0'
 import { AppWithRouter } from './screens'
 import './style.css'
-
-const AppWithHotReload = hot(() => <AppWithRouter />)
 
 ReactDOM.render(
 	<Auth0Provider
@@ -22,7 +19,7 @@ ReactDOM.render(
 			)
 		}}
 	>
-		<AppWithHotReload />
+		<AppWithRouter />
 	</Auth0Provider>,
 	document.getElementById('root'),
 )

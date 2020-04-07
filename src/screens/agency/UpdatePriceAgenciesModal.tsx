@@ -1,10 +1,13 @@
-import { Alert, Modal, Spin, Input, Icon } from 'antd'
-import Form, { FormComponentProps } from 'antd/lib/form'
+import Alert from 'antd/lib/alert'
+import Form from 'antd/lib/form'
+import Modal from 'antd/lib/modal'
+import Spin from 'antd/lib/spin'
 import React, { useState } from 'react'
 import { InputNumberAutoSelect } from '../../components/InputNumberAutoSelect'
-import { User } from '../../types'
-import { withForm } from '../../libs/Form'
 import { update_price_for_user } from '../../graphql/update_price_for_user'
+import { withForm } from '../../libs/Form'
+import { User } from '../../types'
+
 export type UpdatePriceAgenciesModalProps = {
 	visible: boolean
 	onClose: Function

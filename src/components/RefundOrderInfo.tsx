@@ -1,5 +1,8 @@
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Row from 'antd/lib/row'
+import Tag from 'antd/lib/tag'
 import React from 'react'
-import { Row, Col, Card, Tag } from 'antd'
 
 export type RefundOrderInfoProps = {
 	title: string

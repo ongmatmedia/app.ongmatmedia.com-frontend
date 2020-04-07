@@ -1,4 +1,5 @@
-import { Checkbox, Col, Row } from 'antd'
+import Col from 'antd/lib/col'
+import Row from 'antd/lib/row'
 import React from 'react'
 import { AddSchedule } from './AddSchedule'
 

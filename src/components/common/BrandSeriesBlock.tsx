@@ -1,4 +1,7 @@
-import { Avatar, Divider, Icon, List } from 'antd'
+import Avatar from 'antd/lib/avatar'
+import Divider from 'antd/lib/divider'
+import Icon from 'antd/lib/icon'
+import List from 'antd/lib/list'
 import Text from 'antd/lib/typography/Text'
 import React from 'react'
 

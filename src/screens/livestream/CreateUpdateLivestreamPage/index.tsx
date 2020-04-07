@@ -1,18 +1,15 @@
-import {
-	Alert,
-	Button,
-	Card,
-	Col,
-	Divider,
-	Form,
-	Icon,
-	Input,
-	InputNumber,
-	notification,
-	Row,
-	Spin,
-} from 'antd'
-import { FormComponentProps } from 'antd/lib/form'
+import Alert from 'antd/lib/alert'
+import Button from 'antd/lib/button'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Divider from 'antd/lib/divider'
+import Form, { FormComponentProps } from 'antd/lib/form'
+import Icon from 'antd/lib/icon'
+import Input from 'antd/lib/input'
+import InputNumber from 'antd/lib/input-number'
+import notification from 'antd/lib/notification'
+import Row from 'antd/lib/row'
+import Spin from 'antd/lib/spin'
 import React, { useState } from 'react'
 import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom'
 import { BreadCrumb } from '../../../components/common/BreadCrumb'

@@ -1,6 +1,5 @@
+import Input, { InputProps } from 'antd/lib/input'
 import React, { createRef } from 'react'
-import { Input } from 'antd'
-import { InputProps } from 'antd/lib/input'
 
 export const AutoSelectInput = (props: InputProps) => {
 	const ref = createRef<{ select: Function }>()

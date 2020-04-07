@@ -1,6 +1,9 @@
-import React, { useState } from 'react'
-import { Button, Checkbox, Tooltip, Row, Col } from 'antd'
-import { CreateAgencyModal } from './CreateAgencyModal'
+import Button from 'antd/lib/button'
+import Checkbox from 'antd/lib/checkbox'
+import Col from 'antd/lib/col'
+import Row from 'antd/lib/row'
+import Tooltip from 'antd/lib/tooltip'
+import React from 'react'
 import { User } from '../../types'
 
 interface AgencyActionProps {

@@ -1,5 +1,9 @@
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import Row from 'antd/lib/row'
+import Spin from 'antd/lib/spin'
 import React from 'react'
-import { Card, Row, Col, Spin, Icon } from 'antd'
 import { BreadCrumb } from './BreadCrumb'
 
 export const LoadingIndicatorWithBreadcrumb = () => (

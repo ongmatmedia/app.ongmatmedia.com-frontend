@@ -1,13 +1,15 @@
-import { List, Spin, Card } from 'antd'
+import Card from 'antd/lib/card'
+import List from 'antd/lib/list'
+import Spin from 'antd/lib/spin'
 import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { QueryRenderer } from 'react-relay'
+import { BreadCrumb } from '../../../components/common/BreadCrumb'
 import { delete_livestream } from '../../../graphql/delete_livestream'
 import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
+import { stop_livestream } from '../../../graphql/stop_livestream'
 import { Livestream } from '../../../types'
 import { LivestreamListItem } from './LivestreamListItem'
-import { stop_livestream } from '../../../graphql/stop_livestream'
-import { BreadCrumb } from '../../../components/common/BreadCrumb'
 
 const LivestreamsListPageQuery = graphql`
 	query LivestreamsListPageQuery {

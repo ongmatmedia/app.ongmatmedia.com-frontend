@@ -1,5 +1,7 @@
-import { DatePicker, Tag, Button } from 'antd'
-import React, { useState } from 'react'
+import Button from 'antd/lib/button'
+import DatePicker from 'antd/lib/date-picker'
+import Tag from 'antd/lib/tag'
+import React from 'react'
 
 export interface IAddSchedule {
 	tagsSchedule: number[]

@@ -1,13 +1,12 @@
+import Card from 'antd/lib/card'
 import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { QueryRenderer } from 'react-relay'
+import { BreadCrumb } from '../../../components/common/BreadCrumb'
 import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
 import { CreateUpdateAccountModal } from '../CreateUpdateAccountModal'
 import { ViewAccountModal } from '../ViewAccountModal'
 import { FacebookAccountsPresentation } from './FacebookAccountsPresentation'
-import { Card } from 'antd'
-import { BreadCrumb } from '../../../components/common/BreadCrumb'
-
 const query = graphql`
 	query FacebookAccountsContainerQuery {
 		facebook_accounts {

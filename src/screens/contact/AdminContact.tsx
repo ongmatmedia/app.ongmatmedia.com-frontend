@@ -1,10 +1,17 @@
-import { Alert, Card, Col, Icon, Row, Spin, Avatar, Table } from 'antd'
+import Alert from 'antd/lib/alert'
+import Avatar from 'antd/lib/avatar'
+import Card from 'antd/lib/card'
+import Col from 'antd/lib/col'
+import Icon from 'antd/lib/icon'
+import Row from 'antd/lib/row'
+import Spin from 'antd/lib/spin'
+import Table from 'antd/lib/table'
 import Text from 'antd/lib/typography/Text'
 import graphql from 'babel-plugin-relay/macro'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BreadCrumb } from '../../components/common/BreadCrumb'
-import { GraphQLWrapper, GraphQLQueryFetcher } from '../../graphql/GraphQLWrapper'
-import { User, ServicePricing } from '../../types'
+import { GraphQLQueryFetcher, GraphQLWrapper } from '../../graphql/GraphQLWrapper'
+import { ServicePricing, User } from '../../types'
 
 const query = graphql`
 	query AdminContactQuery {

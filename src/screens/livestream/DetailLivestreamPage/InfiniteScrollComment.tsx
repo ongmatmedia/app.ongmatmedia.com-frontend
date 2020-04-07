@@ -1,8 +1,8 @@
-import { Avatar, Comment, Tooltip, Form, Button, Spin } from 'antd'
+import Spin from 'antd/lib/spin'
+import Tooltip from 'antd/lib/tooltip'
 import React, { useState } from 'react'
 import InfiniteScroll from 'react-infinite-scroller'
 import { ListVideoComment } from './ListVideoComment'
-import TextArea from 'antd/lib/input/TextArea'
 
 const data = [
 	{

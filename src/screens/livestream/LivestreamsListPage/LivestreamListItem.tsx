@@ -1,9 +1,14 @@
-import React from 'react'
-import { Avatar, Icon, Card, Popconfirm, Button, Popover } from 'antd'
+import Avatar from 'antd/lib/avatar'
+import Button from 'antd/lib/button'
+import Card from 'antd/lib/card'
 import Meta from 'antd/lib/card/Meta'
+import Icon from 'antd/lib/icon'
+import Popconfirm from 'antd/lib/popconfirm'
+import Popover from 'antd/lib/popover'
+import React from 'react'
 import Moment from 'react-moment'
-import { Livestream } from '../../../types'
 import { Link } from 'react-router-dom'
+import { Livestream } from '../../../types'
 
 export type LivestreamListItem = {
 	live: Livestream

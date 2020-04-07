@@ -1,5 +1,5 @@
+import Layout from 'antd/lib/layout'
 import React from 'react'
-import { Layout } from 'antd'
 import { TopBar } from '../../components/common/TopBar'
 
 export const Header = () => (

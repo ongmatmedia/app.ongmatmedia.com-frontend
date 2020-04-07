@@ -1,7 +1,10 @@
-import { Avatar, Col, Empty, Icon, List, Row } from 'antd'
+import Col from 'antd/lib/col'
+import Empty from 'antd/lib/empty'
+import Icon from 'antd/lib/icon'
+import List from 'antd/lib/list'
+import Row from 'antd/lib/row'
 import React from 'react'
 import './index.css'
-import { LivestreamFacebookTargetType } from './LivestreamFacebookTargetType'
 
 export type TargetListProps = {
 	list: Array<{ uid: string; name: string }>

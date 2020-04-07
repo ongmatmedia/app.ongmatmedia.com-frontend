@@ -1,6 +1,11 @@
+import Alert from 'antd/lib/alert'
+import Form, { FormComponentProps } from 'antd/lib/form'
+import Icon from 'antd/lib/icon'
+import Input from 'antd/lib/input'
+import InputNumber from 'antd/lib/input-number'
+import Modal from 'antd/lib/modal'
+import Spin from 'antd/lib/spin'
 import React, { useState } from 'react'
-import { Form, Modal, Input, Icon, InputNumber, Spin, Alert } from 'antd'
-import { FormComponentProps } from 'antd/lib/form'
 import { create_user } from '../../graphql/create_user'
 
 export type CreateAgencyModalProps = FormComponentProps & {

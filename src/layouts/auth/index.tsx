@@ -1,6 +1,6 @@
+import Col from 'antd/lib/col'
+import Row from 'antd/lib/row'
 import React from 'react'
-import { Row, Col } from 'antd'
-import { IReactComponent } from 'mobx-react'
 import './auth-layout.css'
 
 const Icon = () => (
@@ -19,7 +19,7 @@ const Icon = () => (
 	</Row>
 )
 
-export const AuthLayout = (props: { Content: IReactComponent }) => (
+export const AuthLayout = (props: { Content}) => (
 	<div
 		style={{
 			display: 'flex',
