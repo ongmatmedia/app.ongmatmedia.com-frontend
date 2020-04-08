@@ -193,7 +193,6 @@ export const HomePage = PaginationWrapper<{
 		useEffect(() => {
 			const createUserIfNotExist = async () => {
 				try {
-					console.log('call query')
 					const user = await GraphQLQueryFetcher<{ me: User }>(
 						graphql`
 							query HomePageCreateUserIfNotExistQuery {
