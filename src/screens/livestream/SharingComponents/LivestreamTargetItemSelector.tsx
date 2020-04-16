@@ -11,7 +11,11 @@ import React, { useState } from 'react'
 import { QueryRenderer } from 'react-relay'
 import { FacebookGraphAPI } from '../../../api/FacebookGraphAPI'
 import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
-import { FacebookAccount, FacebookAccountConnection, LivestreamFacebookTargetInput } from '../../../types'
+import {
+	FacebookAccount,
+	FacebookAccountConnection,
+	LivestreamFacebookTargetInput,
+} from '../../../types'
 
 const getAccountsQuery = graphql`
 	query LivestreamTargetItemSelectorTabQuery {

@@ -125,7 +125,9 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 			</div>
 			<CollaboratorStatics
 				users={data.users.edges.map(n => n.node)}
-				onChangeSearchUsername={username => setSearchUsername(username.trim().toLocaleLowerCase())}
+				onChangeSearchUsername={username =>
+					setSearchUsername(username.trim().toLocaleLowerCase())
+				}
 			/>
 			<List
 				grid={{

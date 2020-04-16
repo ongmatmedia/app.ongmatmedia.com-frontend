@@ -206,11 +206,6 @@ input LivestreamPricingInput {
   p1080: Int!
 }
 
-input LivestreamQueryFilters {
-  active: Boolean!
-  created_time: Long!
-}
-
 type LivestreamSubscription @aws_api_key @aws_cognito_user_pools @aws_oidc {
   id: ID!
   user_id: String!
@@ -218,11 +213,13 @@ type LivestreamSubscription @aws_api_key @aws_cognito_user_pools @aws_oidc {
   concurrent_limit: Int!
   end_time: Long!
   playing: Int!
+  name: String!
 }
 
 input LivestreamSubscriptionInput {
   quality: Int!
   concurrent_limit: Int!
+  name: String!
 }
 
 type LivestreamSubscriptionUpdateResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -389,7 +386,7 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   facebook_accounts(after: String, limit: Int): FacebookAccountConnection
   facebook_account(id: ID!): FacebookAccount!
   livestream_subscription(user_id: ID): LivestreamSubscription
-  livestream_tasks(after: String, limit: Int, filters: LivestreamQueryFilters): LivestreamConnection!
+  livestream_tasks(before_time: Long, after: String, first: Int): LivestreamConnection!
   livestream_task(id: ID!): Livestream!
   payment_histories(first: Int, after: String, before_time: Long): PaymentHistoryConnection!
   video_info(url: String!): VideoInfo!

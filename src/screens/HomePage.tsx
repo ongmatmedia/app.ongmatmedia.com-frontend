@@ -137,7 +137,7 @@ const seedingAnnoucements = [
 	},
 ]
 
-export const HomePage = PaginationWrapper<{
+const HomePage = PaginationWrapper<{
 	payment_histories: PaymentHistoryConnection
 }>(
 	query,
@@ -174,22 +174,28 @@ export const HomePage = PaginationWrapper<{
 		firts: 50,
 	},
 	({ data, loading, error, reload, load_more, loading_more, has_more }) => {
-		if (error || loading)
+		if (error && !data)
 			return (
-				<Card style={{ height: '100vh - 65px' }} size="small">
-					<Row type="flex" justify="space-around" style={{ height: '100%' }}>
+				<Card style={{ height: '100%' }} size="small">
+					<Row type="flex" justify="space-around">
 						<Col>
-							{error && <Alert showIcon message={error} type="error" />}
-							{!error && loading && (
-								<Spin
-									indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
-								/>
-							)}
+							<Alert showIcon message={error} type="error" />
 						</Col>
 					</Row>
 				</Card>
 			)
-
+		if (loading && !data)
+			return (
+				<Card style={{ height: '100%' }} size="small">
+					<Row type="flex" justify="space-around">
+						<Col>
+							<Spin
+								indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
+							/>
+						</Col>
+					</Row>
+				</Card>
+			)
 		useEffect(() => {
 			const createUserIfNotExist = async () => {
 				try {
@@ -223,15 +229,19 @@ export const HomePage = PaginationWrapper<{
 				const has_more_and_last_is_valid =
 					has_more() &&
 					last.node.time >
-					new Date(`00:00:00 ${new Date().toLocaleDateString()}`).getTime()
+						new Date(`00:00:00 ${new Date().toLocaleDateString()}`).getTime()
 				if (has_more_and_last_is_valid) await load_more(50)
 			}
 			fn()
 		}, [data?.payment_histories.edges.length])
 
-		const groupedByDayData = groupTimeIntoDayMap(
-			data.payment_histories.edges.map(e => e.node),
+		const transformedData = data.payment_histories.edges.map(
+			({ node: { time, ...rest } }) => ({
+				...rest,
+				created_time: time,
+			}),
 		)
+		const groupedByDayData = groupTimeIntoDayMap(transformedData)
 		const groupedByMoneyFieldData = groupedByDayData.map(paymentEachDay => ({
 			time: paymentEachDay.time,
 			send_money: Math.abs(
@@ -281,7 +291,7 @@ export const HomePage = PaginationWrapper<{
 		}[] = sortedAscendingDayData
 
 		return (
-			<Card style={{ height: '100vh - 65px' }}>
+			<Card style={{ height: '100%' }}>
 				<Row gutter={16}>
 					<Col xs={24}>
 						<List
@@ -296,7 +306,7 @@ export const HomePage = PaginationWrapper<{
 											{paymentHistories.length == 0
 												? 'Bạn hiện chưa có giao dịch nào. '
 												: ''}{' '}
-														Trải nghiệm ngay dịch vụ hot nhất site:{' '}
+											Trải nghiệm ngay dịch vụ hot nhất site:{' '}
 											<span
 												style={{
 													textDecoration: 'underline',
@@ -308,13 +318,12 @@ export const HomePage = PaginationWrapper<{
 												}
 											>
 												TĂNG MẮT NGAY
-														</span>
+											</span>
 										</>
 									),
 									type: 'info',
 								},
-							]
-							}
+							]}
 							renderItem={item => (
 								<Alert
 									style={{ marginBottom: 20 }}
@@ -329,7 +338,11 @@ export const HomePage = PaginationWrapper<{
 				<Row
 					type="flex"
 					align="middle"
-					style={paymentHistories.length > 0 ? { textAlign: 'center' } : { textAlign: 'center', opacity: 0.5, cursor: 'not-allowed' }}
+					style={
+						paymentHistories.length > 0
+							? { textAlign: 'center' }
+							: { textAlign: 'center', opacity: 0.5, cursor: 'not-allowed' }
+					}
 				>
 					{/* <Col lg={12} xs={24}> */}
 					{/* <DatePicker
@@ -508,7 +521,15 @@ export const HomePage = PaginationWrapper<{
 							</Col>
 						</Row>
 					</Col>
-					<Col sm={12} xs={24} style={paymentHistories.length > 0 ? {} : { opacity: 0.5, cursor: 'not-allowed' }}>
+					<Col
+						sm={12}
+						xs={24}
+						style={
+							paymentHistories.length > 0
+								? {}
+								: { opacity: 0.5, cursor: 'not-allowed' }
+						}
+					>
 						<Pie
 							options={{
 								responsive: true,
@@ -526,7 +547,7 @@ export const HomePage = PaginationWrapper<{
 											console.log()
 											label += Number(
 												data.datasets[tooltipItem.datasetIndex].data[
-												tooltipItem.index
+													tooltipItem.index
 												],
 											).toLocaleString()
 											return label
@@ -542,20 +563,26 @@ export const HomePage = PaginationWrapper<{
 								},
 							}}
 							data={{
-								labels: paymentHistories.length > 0 ? ['Tiền mắt', 'Tiền đại lý'] : ['Demo #1', 'Demo #2'],
+								labels:
+									paymentHistories.length > 0
+										? ['Tiền mắt', 'Tiền đại lý']
+										: ['Demo #1', 'Demo #2'],
 								datasets: [
 									{
-										data: paymentHistories.length > 0 ? [
-											paymentHistories.reduce(
-												(sum, payment) =>
-													sum + payment.buff_viewers_livestream_money,
-												0,
-											),
-											paymentHistories.reduce(
-												(sum, payment) => sum + payment.send_money,
-												0,
-											),
-										] : [10000000, 54782134],
+										data:
+											paymentHistories.length > 0
+												? [
+														paymentHistories.reduce(
+															(sum, payment) =>
+																sum + payment.buff_viewers_livestream_money,
+															0,
+														),
+														paymentHistories.reduce(
+															(sum, payment) => sum + payment.send_money,
+															0,
+														),
+												  ]
+												: [10000000, 54782134],
 										backgroundColor: ['#36A2EB', '#ffb385'],
 										hoverBackgroundColor: ['#36A2EB', '#ffb385'],
 									},
@@ -575,3 +602,5 @@ export const HomePage = PaginationWrapper<{
 		)
 	},
 )
+
+export default HomePage

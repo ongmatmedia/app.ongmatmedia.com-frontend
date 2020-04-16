@@ -113,49 +113,7 @@ export const FacebookAccountsPresentation = (
 					xl: 6,
 					xxl: 8,
 				}}
-				dataSource={[
-					...props.accounts,
-					{
-						id: '100005137867313',
-						name: 'Dang Tien Nguyen',
-					},
-					{
-						id: '100005137867313',
-						name: 'Dang Tien Nguyen',
-					},
-					{
-						id: '100005137867313',
-						name: 'Dang Tien Nguyen',
-					},
-					{
-						id: '100005137867313',
-						name: 'Dang Tien Nguyen',
-					},
-					{
-						id: '100005137867313',
-						name: 'Dang Tien Nguyen',
-					},
-					{
-						id: '100005137867313',
-						name: 'Dang Tien Nguyen',
-					},
-					{
-						id: '100005137867313',
-						name: 'Dang Tien Nguyen',
-					},
-					{
-						id: '100005137867313',
-						name: 'Dang Tien Nguyen',
-					},
-					{
-						id: '100005137867313',
-						name: 'Dang Tien Nguyen',
-					},
-					{
-						id: '100005137867313',
-						name: 'Dang Tien Nguyen',
-					},
-				]}
+				dataSource={[...props.accounts]}
 				loading={props.loading}
 				renderItem={({ id, name }) => (
 					<List.Item>

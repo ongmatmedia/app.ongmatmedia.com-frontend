@@ -6,6 +6,8 @@ import Row from 'antd/lib/row'
 import React from 'react'
 import { InfiniteScrollComment } from './InfiniteScrollComment'
 import { VideoFeedback } from './VideoFeedback'
+import { BreadCrumb } from '../../../components/common/BreadCrumb'
+import { withRouter, RouteComponentProps, Redirect } from 'react-router-dom'
 
 const VideoInfo = (props: {
 	item: { status: string; thumbnail: string; title: string }
@@ -26,117 +28,125 @@ const VideoInfo = (props: {
 	</Row>
 )
 
-export const DetailLivestreamTab = () => (
-	<Row style={{ height: '100%' }}>
-		<Col
-			md={8}
-			xs="24"
-			style={{
-				overflow: 'auto',
-				height: 'calc(100vh - 170px)',
-				overflowX: 'hidden',
-			}}
-		>
-			<List
-				bordered
-				itemLayout="horizontal"
-				dataSource={[
-					{
-						status: 'live',
-						thumbnail: 'https://via.placeholder.com/720x480',
-						title: 'Title video',
-					},
-					{
-						status: 'paused',
-						thumbnail: 'https://via.placeholder.com/150',
-						title: 'Title video',
-					},
-					{
-						status: 'paused',
-						thumbnail: 'https://via.placeholder.com/150',
-						title: 'Title video',
-					},
-					{
-						status: 'live',
-						thumbnail: 'https://via.placeholder.com/150',
-						title:
-							'Title video Title video Title video Title video Title video',
-					},
-					{
-						status: 'paused',
-						thumbnail: 'https://via.placeholder.com/150',
-						title: 'Title video',
-					},
-					{
-						status: 'live',
-						thumbnail: 'https://via.placeholder.com/150',
-						title:
-							'Title video Title video Title video Title video Title video',
-					},
-					{
-						status: 'paused',
-						thumbnail: 'https://via.placeholder.com/150',
-						title: 'Title video',
-					},
-					{
-						status: 'live',
-						thumbnail: 'https://via.placeholder.com/150',
-						title:
-							'Title video Title video Title video Title video Title video',
-					},
-					{
-						status: 'paused',
-						thumbnail: 'https://via.placeholder.com/150',
-						title: 'Title video',
-					},
-					{
-						status: 'live',
-						thumbnail: 'https://via.placeholder.com/150',
-						title:
-							'Title video Title video Title video Title video Title video',
-					},
-					{
-						status: 'paused',
-						thumbnail: 'https://via.placeholder.com/150',
-						title: 'Title video',
-					},
-					{
-						status: 'live',
-						thumbnail: 'https://via.placeholder.com/150',
-						title:
-							'Title video Title video Title video Title video Title video',
-					},
-				]}
-				renderItem={item => (
-					<List.Item>
-						<VideoInfo item={item} />
-					</List.Item>
-				)}
-			/>
-		</Col>
-		<Col
-			md={8}
-			xs="24"
-			style={{
-				height: 'calc(100vh - 170px)',
-				overflow: 'auto',
-				overflowX: 'hidden',
-			}}
-		>
-			<Card>
-				<InfiniteScrollComment />
+export const DetailLivestreamPage = withRouter(
+	({ location: { state } }: RouteComponentProps) => {
+		if (!state) return <Redirect to="/livestream" />
+
+		return (
+			<Card title={<BreadCrumb />}>
+				<Row style={{ height: '100%' }}>
+					<Col
+						md={8}
+						xs="24"
+						style={{
+							overflow: 'auto',
+							height: 'calc(100vh - 170px)',
+							overflowX: 'hidden',
+						}}
+					>
+						<List
+							bordered
+							itemLayout="horizontal"
+							dataSource={[
+								{
+									status: 'live',
+									thumbnail: 'https://via.placeholder.com/720x480',
+									title: 'Title video',
+								},
+								{
+									status: 'paused',
+									thumbnail: 'https://via.placeholder.com/150',
+									title: 'Title video',
+								},
+								{
+									status: 'paused',
+									thumbnail: 'https://via.placeholder.com/150',
+									title: 'Title video',
+								},
+								{
+									status: 'live',
+									thumbnail: 'https://via.placeholder.com/150',
+									title:
+										'Title video Title video Title video Title video Title video',
+								},
+								{
+									status: 'paused',
+									thumbnail: 'https://via.placeholder.com/150',
+									title: 'Title video',
+								},
+								{
+									status: 'live',
+									thumbnail: 'https://via.placeholder.com/150',
+									title:
+										'Title video Title video Title video Title video Title video',
+								},
+								{
+									status: 'paused',
+									thumbnail: 'https://via.placeholder.com/150',
+									title: 'Title video',
+								},
+								{
+									status: 'live',
+									thumbnail: 'https://via.placeholder.com/150',
+									title:
+										'Title video Title video Title video Title video Title video',
+								},
+								{
+									status: 'paused',
+									thumbnail: 'https://via.placeholder.com/150',
+									title: 'Title video',
+								},
+								{
+									status: 'live',
+									thumbnail: 'https://via.placeholder.com/150',
+									title:
+										'Title video Title video Title video Title video Title video',
+								},
+								{
+									status: 'paused',
+									thumbnail: 'https://via.placeholder.com/150',
+									title: 'Title video',
+								},
+								{
+									status: 'live',
+									thumbnail: 'https://via.placeholder.com/150',
+									title:
+										'Title video Title video Title video Title video Title video',
+								},
+							]}
+							renderItem={item => (
+								<List.Item>
+									<VideoInfo item={item} />
+								</List.Item>
+							)}
+						/>
+					</Col>
+					<Col
+						md={8}
+						xs="24"
+						style={{
+							height: 'calc(100vh - 170px)',
+							overflow: 'auto',
+							overflowX: 'hidden',
+						}}
+					>
+						<Card>
+							<InfiniteScrollComment />
+						</Card>
+					</Col>
+					<Col
+						md={8}
+						xs="24"
+						style={{
+							height: 'calc(100vh - 170px)',
+						}}
+					>
+						<Card>
+							<VideoFeedback />
+						</Card>
+					</Col>
+				</Row>
 			</Card>
-		</Col>
-		<Col
-			md={8}
-			xs="24"
-			style={{
-				height: 'calc(100vh - 170px)',
-			}}
-		>
-			<Card>
-				<VideoFeedback />
-			</Card>
-		</Col>
-	</Row>
+		)
+	},
 )

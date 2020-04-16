@@ -1,9 +1,10 @@
 import React from 'react'
-import { Route, Router, Switch } from 'react-router-dom'
-import { Error404Page } from '../components/common/Error404'
+import { Redirect, Router, Switch } from 'react-router-dom'
 import PrivateRoute from '../components/PrivateRoute'
 import history from '../helpers/history'
 import { MainLayout } from '../layouts/main'
+import { AccountScreen } from './account'
+import { FacebookAccountsContainer } from './account/FacebookAccountsPage/FacebookAccountsContainer'
 import { AgencyPage } from './agency'
 import { AdminInformationPage } from './agency/AdminInformationPage'
 import { BankInformationPage } from './agency/BankInformationPage'
@@ -11,12 +12,14 @@ import { CollaboratorsListPage } from './agency/CollaboratorsListPage'
 import { SetDefaultPricePage } from './agency/SetDefaultPricePage'
 import { AdminContact } from './contact/AdminContact'
 import { DepositPage } from './deposit'
-import { HomePage } from './HomePage'
+import HomePage from './HomePage'
+import { LivestreamsListPage } from './livestream'
+import { CreateUpdateLivestreamPage } from './livestream/CreateUpdateLivestreamPage/CreateUpdateLivestreamPage'
+import { DetailLivestreamPage } from './livestream/DetailLivestreamPage'
+import { PricingPage } from './livestream/LivestreamPricingPage/LivestreamPricingPage'
 import { NotificationPage } from './notification'
 import { Payments } from './payments/Payments'
-import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
-// import { Payments } from './payments'
-import { SeedingPage } from './seeding/SeedingPage'
+import { BuffViewersLivestream } from './seeding'
 
 export const AppWithRouter = () => {
 	return (
@@ -24,12 +27,6 @@ export const AppWithRouter = () => {
 			<Switch>
 				<PrivateRoute exact component={HomePage} layout={MainLayout} path="/" />
 
-				<PrivateRoute
-					exact
-					component={SeedingPage}
-					layout={MainLayout}
-					path="/seeding"
-				/>
 				<PrivateRoute
 					exact
 					component={BuffViewersLivestream}
@@ -96,17 +93,51 @@ export const AppWithRouter = () => {
 					path="/contact"
 				/>
 
-				{/* <PrivateRoute exact component={LivestreamPage} layout={MainLayout} path="/livestream" />
-				<PrivateRoute exact component={LivestreamsListPage} layout={MainLayout} path="/livestream/all-livestream" />
-				<PrivateRoute exact component={CreateUpdateLivestreamPage} layout={MainLayout} path="/livestream/create-livestream" />
-				<PrivateRoute exact component={CreateUpdateLivestreamPage} layout={MainLayout} path="/livestream/update-livestream" />
-				<PrivateRoute exact component={CreateUpdateLivestreamPage} layout={MainLayout} path="/livestream/pricing" /> */}
+				{/* <PrivateRoute
+					exact
+					component={LivestreamsListPage}
+					layout={MainLayout}
+					path="/livestream"
+				/>
+				<PrivateRoute
+					exact
+					component={CreateUpdateLivestreamPage}
+					layout={MainLayout}
+					path="/livestream/create-livestream"
+				/>
+				<PrivateRoute
+					exact
+					component={CreateUpdateLivestreamPage}
+					layout={MainLayout}
+					path="/livestream/update-livestream"
+				/>
+				<PrivateRoute
+					exact
+					component={DetailLivestreamPage}
+					layout={MainLayout}
+					path="/livestream/detail-livestream"
+				/>
+				<PrivateRoute
+					exact
+					component={PricingPage}
+					layout={MainLayout}
+					path="/livestream/pricing"
+				/> */}
 
-				{/* <PrivateRoute exact component={AccountScreen} layout={MainLayout} path="/farm" /> */}
+				{/* <PrivateRoute
+					exact
+					component={AccountScreen}
+					layout={MainLayout}
+					path="/farm"
+				/>
+				<PrivateRoute
+					exact
+					component={FacebookAccountsContainer}
+					layout={MainLayout}
+					path="/farm/facebook"
+				/> */}
 
-				<Route>
-					<Error404Page />
-				</Route>
+				<Redirect to="/" />
 			</Switch>
 		</Router>
 	)

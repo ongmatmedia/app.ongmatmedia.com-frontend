@@ -23,17 +23,19 @@ export const AddSchedule = (props: IAddSchedule) => {
 
 	return (
 		<div>
-			{scheduleData.map((tag, index) => (
-				<Tag
-					style={{ display: 'inline' }}
-					key={tag}
-					closable
-					onClose={() => handleCloseInputScheduleTime(tag)}
-					color={tag === 0 ? '#108ee9' : ''}
-				>
-					{tag === 0 ? 'Live now ' : new Date(tag).toLocaleString()}
-				</Tag>
-			))}
+			{scheduleData
+				.filter(tag => tag > Date.now() || tag == 0)
+				.map((tag, index) => (
+					<Tag
+						style={{ display: 'inline' }}
+						key={tag}
+						closable
+						onClose={() => handleCloseInputScheduleTime(tag)}
+						color={tag === 0 ? '#108ee9' : ''}
+					>
+						{tag === 0 ? 'Live now ' : new Date(tag).toLocaleString()}
+					</Tag>
+				))}
 			<DatePicker
 				style={{ marginTop: 15, marginBottom: 15, display: 'block' }}
 				allowClear

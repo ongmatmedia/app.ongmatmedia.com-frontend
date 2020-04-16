@@ -28,11 +28,6 @@ export const create_livestream = async (task: LivestreamInput) =>
 			variables: { task },
 			mutation,
 			updater: store => {
-				const list = store.get('client:root:livestream_tasks') as RecordProxy
-				const livestream_task = store.getRootField(
-					'create_livestream',
-				) as RecordProxy
-				ConnectionHandler.insertEdgeAfter(list, livestream_task)
 				success()
 			},
 			onError: error => {

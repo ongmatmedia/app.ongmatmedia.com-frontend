@@ -1,26 +1,4 @@
-import React from 'react'
-import { ListAppBlock } from '../../components/common/ListAppBlock'
+import React, { Suspense } from 'react'
+import LivestreamsListPage from './LivestreamsListPage/LivestreamsListPage'
 
-export const LivestreamPage = () => {
-	return (
-		<ListAppBlock
-			children={[
-				{
-					icon: 'ordered-list',
-					link: '/all-livestreams',
-					serviceName: 'All livestreams',
-				},
-				{
-					icon: 'plus',
-					link: '/create-livestream',
-					serviceName: 'Create a livestream ',
-				},
-				{
-					icon: 'dollar',
-					link: '/pricing',
-					serviceName: 'Pricing',
-				},
-			]}
-		/>
-	)
-}
+export { LivestreamsListPage }

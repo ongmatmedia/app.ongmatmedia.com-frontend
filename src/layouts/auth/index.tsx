@@ -19,7 +19,7 @@ const Icon = () => (
 	</Row>
 )
 
-export const AuthLayout = (props: { Content}) => (
+export const AuthLayout = (props: { Content }) => (
 	<div
 		style={{
 			display: 'flex',

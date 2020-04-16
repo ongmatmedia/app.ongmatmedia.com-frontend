@@ -154,8 +154,8 @@ export const BankInformationPage = GraphQLWrapper<{
 										{item.account !== deletedBank ? (
 											<Icon type="delete" style={{ color: 'red' }} />
 										) : (
-												<Icon type="loading" style={{ color: 'blue' }} />
-											)}
+											<Icon type="loading" style={{ color: 'blue' }} />
+										)}
 									</Popconfirm>
 								}
 								headStyle={{ textAlign: 'left' }}

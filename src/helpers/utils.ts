@@ -6,7 +6,7 @@ export const sleep = async (sec: number) => {
 	})
 }
 
-export const groupTimeIntoDayMap = <T extends { time: number }>(
+export const groupTimeIntoDayMap = <T extends { created_time: number }>(
 	timeDataList: T[],
 ): Array<{
 	time: string
@@ -14,7 +14,7 @@ export const groupTimeIntoDayMap = <T extends { time: number }>(
 }> => {
 	const dayMap = new Map<string, T[]>()
 	for (const data of timeDataList) {
-		const day = new Date(data.time).toLocaleDateString()
+		const day = new Date(data.created_time).toLocaleDateString()
 		if (dayMap.has(day)) dayMap.set(day, [...dayMap.get(day), data])
 		else {
 			dayMap.set(day, [data])
@@ -178,31 +178,31 @@ export function clearStorageWithRegex(regex: string): void {
 }
 
 export const prettyDiffDate = (date: number) => {
-	const delta = Math.round((+new Date - date) / 1000);
+	const delta = Math.round((+new Date() - date) / 1000)
 
 	const minute = 60,
 		hour = minute * 60,
 		day = hour * 24,
-		week = day * 7;
+		week = day * 7
 
-	let fuzzy:string;
+	let fuzzy: string
 
 	if (delta < 30) {
-		fuzzy = 'vài giây trước';
+		fuzzy = 'vài giây trước'
 	} else if (delta < minute) {
-		fuzzy = delta + ' seconds ago.';
+		fuzzy = delta + ' seconds ago.'
 	} else if (delta < 2 * minute) {
 		fuzzy = 'một phút trước'
 	} else if (delta < hour) {
-		fuzzy = Math.floor(delta / minute) + ' phút trước';
+		fuzzy = Math.floor(delta / minute) + ' phút trước'
 	} else if (Math.floor(delta / hour) == 1) {
 		fuzzy = 'một giờ trước'
 	} else if (delta < day) {
-		fuzzy = Math.floor(delta / hour) + ' giờ trước';
+		fuzzy = Math.floor(delta / hour) + ' giờ trước'
 	} else if (delta < day * 2) {
-		fuzzy = 'hôm qua';
+		fuzzy = 'hôm qua'
 	} else if (delta < day * 3) {
-		fuzzy = Math.floor(delta / day) + ' ngày trước';
+		fuzzy = Math.floor(delta / day) + ' ngày trước'
 	}
 	return fuzzy
 }
