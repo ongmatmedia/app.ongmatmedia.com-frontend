@@ -60,8 +60,8 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 						<Card style={{ border: '2px solid rgb(64, 169, 255)' }}>
 							<Statistic
 								style={{ textAlign: 'center' }}
-								title={<Text style={{ fontSize: 20 }}> Percentage</Text>}
-								value={percentage || '_'}
+								title={<Text style={{ fontSize: 20 }}> Perfomance</Text>}
+								value={Math.ceil(percentage) || '_'}
 								suffix={!!percentage && <Icon type="percentage" />}
 								valueStyle={{ color: 'green' }}
 							/>

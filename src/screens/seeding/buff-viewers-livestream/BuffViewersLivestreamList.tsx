@@ -316,7 +316,7 @@ export const BuffViewersLivestreamList = PaginationWrapper<
 									style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15 }}
 								>
 									<Icon type="calendar" style={{ marginRight: 5 }} />
-									<Moment format="DD/MM/YYYY">{item.time}</Moment>
+									{item.time}
 								</div>
 								<List
 									grid={{ gutter: 16, xs: 1, sm: 2, lg: 3, xxl: 4 }}
