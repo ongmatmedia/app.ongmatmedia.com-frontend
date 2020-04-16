@@ -12,15 +12,22 @@ const mutation = graphql`
 			buff {
 				node {
 					id
-					amount
-					note
-					created_time
+					user_id
+					uid
+					status
 					name
+					note
+					amount
+					created_time
+					end_time
+					limit_mins
+					last_reported_viewers
+					first_reported_viewers
 					orders {
 						from
 						amount
-						limit_mins
 						time
+						limit_mins
 					}
 				}
 			}
