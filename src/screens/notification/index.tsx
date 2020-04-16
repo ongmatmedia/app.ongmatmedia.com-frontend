@@ -6,7 +6,7 @@ import { BreadCrumb } from '../../components/common/BreadCrumb'
 
 export const NotificationPage = () => {
 	return (
-		<Card title={<BreadCrumb />} style={{ height: 'calc(100vh - 65px)' }}>
+		<Card title={<BreadCrumb />} style={{ height: '100%' }}>
 			<Result
 				icon={<Icon type="smile" theme="twoTone" />}
 				title="Bạn không có thông báo mới nào!"

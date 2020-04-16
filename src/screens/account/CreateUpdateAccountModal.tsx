@@ -9,7 +9,6 @@ import { FacebookLoginTab } from './facebook_tab/FacebookLoginTab'
 import { FacebookQR } from './facebook_tab/FacebookQR'
 import { isMobileOnly } from 'react-device-detect'
 
-
 const { TabPane } = Tabs
 const { Panel } = Collapse
 

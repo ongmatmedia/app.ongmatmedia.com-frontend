@@ -44,8 +44,8 @@ export const create_user = (
 			mutation,
 			updater: store => {
 				const list = store.get('client:root:users') as RecordProxy
-				const livestream_task = store.getRootField('create_user') as RecordProxy
-				ConnectionHandler.insertEdgeAfter(list, livestream_task)
+				const user = store.getRootField('create_user') as RecordProxy
+				ConnectionHandler.insertEdgeAfter(list, user)
 				success()
 			},
 			onError: error => {

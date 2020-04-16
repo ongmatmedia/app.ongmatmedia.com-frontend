@@ -7,7 +7,6 @@ import { Fab } from 'react-tiny-fab'
 import { BuffViewersDetailModal } from './BuffViewersLivestreamDetailModal'
 
 export const BuffViewersLivestream = () => {
-
 	const [create_modal_visible, set_create_modal_visible] = useState<boolean>(
 		false,
 	)

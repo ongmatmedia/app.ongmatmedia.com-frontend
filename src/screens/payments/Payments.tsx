@@ -53,16 +53,12 @@ export const Payments = PaginationWrapper<{
 		}
 	`,
 	{
-		first: 10
+		first: 10,
 	},
 	props => {
 		if (props.error || props.loading)
 			return (
-				<Card
-					style={{ height: '100vh - 65px' }}
-					title={<BreadCrumb />}
-					size="small"
-				>
+				<Card style={{ height: '100%' }} title={<BreadCrumb />} size="small">
 					<Row type="flex" justify="space-around" style={{ height: '100%' }}>
 						<Col>
 							{props.error && (
@@ -83,11 +79,7 @@ export const Payments = PaginationWrapper<{
 		)
 
 		return (
-			<Card
-				title={<BreadCrumb />}
-				style={{ height: '100vh - 65px' }}
-				size="small"
-			>
+			<Card title={<BreadCrumb />} size="small">
 				<PaymentListAction
 					onChangeDate={d =>
 						props.reload({ first: 12, before_time: d.getTime() })
@@ -99,17 +91,27 @@ export const Payments = PaginationWrapper<{
 						search={search}
 						has_more={props.has_more()}
 						onLoadMore={() => props.load_more(100)}
-						payment_histories={search ? [
-							...paymentHistories.filter(payment =>
-								payment.note?.trim().toLocaleLowerCase().includes(search)
-								|| payment.receiver_username?.trim()
-									.toLocaleLowerCase()
-									.includes(search)
-								|| payment.sender_username?.trim()
-									.toLocaleLowerCase()
-									.includes(search),
-							),
-						] : [...paymentHistories]}
+						payment_histories={
+							search
+								? [
+										...paymentHistories.filter(
+											payment =>
+												payment.note
+													?.trim()
+													.toLocaleLowerCase()
+													.includes(search) ||
+												payment.receiver_username
+													?.trim()
+													.toLocaleLowerCase()
+													.includes(search) ||
+												payment.sender_username
+													?.trim()
+													.toLocaleLowerCase()
+													.includes(search),
+										),
+								  ]
+								: [...paymentHistories]
+						}
 						loading={props.loading}
 						loading_more={props.loading_more}
 					/>

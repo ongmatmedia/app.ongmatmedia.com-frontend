@@ -17,9 +17,6 @@ export type PaymentListProps = {
 }
 
 export const PaymentList = (props: PaymentListProps) => {
-
-	console.log({ data: props?.payment_histories })
-
 	return (
 		<>
 			<Spin spinning={props.loading}>

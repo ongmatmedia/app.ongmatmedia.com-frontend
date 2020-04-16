@@ -13,7 +13,11 @@ import { PaymentHistory } from '../../types'
 import { NoteReading } from './NoteReading'
 
 export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
-	const timeSeriesData = groupTimeIntoDayMap(props.data)
+	const transformeData = props.data.map(({ time, ...rest }) => ({
+		...rest,
+		created_time: time,
+	}))
+	const timeSeriesData = groupTimeIntoDayMap(transformeData)
 	return (
 		<List
 			size="large"
@@ -51,7 +55,9 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 													<Text strong>Time</Text>
 												</Col>
 												<Col span={12} style={{ textAlign: 'right' }}>
-													{`${new Date(payment.time).toLocaleTimeString()}`}
+													{`${new Date(
+														payment.created_time,
+													).toLocaleTimeString()}`}
 												</Col>
 											</Row>
 										</Col>
@@ -91,7 +97,9 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 							</List.Item>
 						)}
 					/>
-					<Divider />
+					{timeSeriesData.indexOf(item) !== timeSeriesData.length - 1 && (
+						<Divider />
+					)}
 				</>
 			)}
 		/>

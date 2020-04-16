@@ -2,7 +2,7 @@ import graphql from 'babel-plugin-relay/macro'
 import React from 'react'
 import { QueryRenderer } from 'react-relay'
 import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
-import { CreateUpdateLivestreamPage } from '../CreateUpdateLivestreamPage'
+import { CreateUpdateLivestreamPage } from '../CreateUpdateLivestreamPage/CreateUpdateLivestreamPage'
 
 const LivestreamListItemEditQuery = graphql`
 	query LivestreamListItemEditQuery($id: ID!) {

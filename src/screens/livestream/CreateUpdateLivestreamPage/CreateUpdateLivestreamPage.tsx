@@ -10,15 +10,36 @@ import InputNumber from 'antd/lib/input-number'
 import notification from 'antd/lib/notification'
 import Row from 'antd/lib/row'
 import Spin from 'antd/lib/spin'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom'
 import { BreadCrumb } from '../../../components/common/BreadCrumb'
 import { create_livestream } from '../../../graphql/create_livestream'
 import { update_livestream } from '../../../graphql/update_livestream'
-import { Livestream, LivestreamTarget } from '../../../types'
+import {
+	Livestream,
+	LivestreamTarget,
+	LivestreamSubscription,
+} from '../../../types'
 import { BroadcastTime } from '../SharingComponents/BroadcastTime'
 import { ListTarget } from '../SharingComponents/ListTarget'
 import { VideoComposer } from '../SharingComponents/VideoComposer'
+import { useAuth0 } from '../../../context/Auth0'
+import { GraphQLQueryFetcher } from '../../../graphql/GraphQLWrapper'
+import graphql from 'babel-plugin-relay/macro'
+
+const query = graphql`
+	query CreateUpdateLivestreamPageQuery {
+		livestream_subscription {
+			id
+			user_id
+			quality
+			concurrent_limit
+			end_time
+			playing
+			name
+		}
+	}
+`
 
 export type CreateUpdateLivestreamPageProps = FormComponentProps &
 	RouteComponentProps
@@ -27,9 +48,22 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 	Form.create<CreateUpdateLivestreamPageProps>()(
 		(props: CreateUpdateLivestreamPageProps) => {
 			const { form } = props
+			const { user } = useAuth0()
 			const state = props.location?.state as { live: Livestream }
 			const mode = state?.live ? 'update' : 'create'
 			const livestream = state?.live
+
+			useEffect(() => {
+				const fn = async () => {
+					const {
+						livestream_subscription: { quality },
+					} = await GraphQLQueryFetcher<{
+						livestream_subscription: LivestreamSubscription
+					}>(query, { user_id: user.sub })
+					if (quality == 0) props.history.push('/livestream/pricing')
+				}
+				if (user?.sub) fn()
+			}, [user])
 
 			if (props.location.pathname.includes('update-livestream') && !livestream)
 				return <Redirect to="/livestream/create-livestream" />
@@ -62,9 +96,8 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 							notification.open({
 								message: 'Congratulation!',
 								description: 'You saved livestream successfully',
-								duration: 2000,
 							})
-							props.history.push('/livestream/all-livestreams')
+							props.history.push('/livestream')
 						} catch (message) {
 							setLoading(false)
 							setError(message)
@@ -81,6 +114,13 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 					>
 						<Form layout="vertical" onSubmit={handleSubmit}>
 							<Row gutter={32}>
+								<Col xs={24} style={{ marginBottom: 15 }}>
+									<Alert
+										type="info"
+										showIcon
+										message="You can change loop times for current playing livestream, but all remain informations will updated on next lives."
+									/>
+								</Col>
 								<Col xs={24} md={12}>
 									<Form.Item label="Campaign's name">
 										{form.getFieldDecorator('name', {
@@ -183,7 +223,7 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 											initialValue: livestream
 												? livestream.targets
 												: ({ rtmps: [], facebooks: [] } as LivestreamTarget),
-										})(<ListTarget />)}
+										})(<ListTarget mode={mode} />)}
 									</Form.Item>
 								</Col>
 							</Row>

@@ -14,6 +14,7 @@ import { TargetsListReview } from './TargetsListReview'
 export const ListTarget = (((props: {
 	value: LivestreamTarget
 	onChange: Function
+	mode: string
 }) => {
 	const [isSelectingMode, setIsSelectingMode] = useState<boolean>(false)
 
@@ -42,6 +43,14 @@ export const ListTarget = (((props: {
 
 	return (
 		<span>
+			{props.mode == 'update' && (
+				<Alert
+					message="Targets will be updated on next lives"
+					type="info"
+					showIcon
+					style={{ marginBottom: 10 }}
+				/>
+			)}
 			{props.value.facebooks.length == 0 && props.value.rtmps.length == 0 && (
 				<Alert
 					message="Add some targets !"

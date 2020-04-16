@@ -95,135 +95,125 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 					{props.form.field({
 						name: 'id',
 						require: t('form.facebook_video_input.validatingErrorMessage'),
-						render: ({
-							error,
-							setValues,
-						}) => (
-								<FormElement
-									label={t('form.facebook_video_input.title')}
-									icon="user"
-									error={error}
-								>
-									<Alert
-										style={{ marginBottom: 5 }}
-										message="Nhập video URL rồi bấm nút kính lúp bên cạnh để xác nhận video"
-										type="info"
-										showIcon
-									/>
+						render: ({ error, setValues }) => (
+							<FormElement
+								label={t('form.facebook_video_input.title')}
+								icon="user"
+								error={error}
+							>
+								<Alert
+									style={{ marginBottom: 5 }}
+									message="Nhập video URL rồi bấm nút kính lúp bên cạnh để xác nhận video"
+									type="info"
+									showIcon
+								/>
 
-									<VideoUrlInput
-										onSubmitVideo={info => {
-											set_video(info)
-											setValues({
-												id: info.video_id,
-												uid: info.owner.id,
-												name: info.title || info.description,
-											})
-										}}
-									/>
-									{video && (
-										<Row style={{ marginTop: 10 }}>
-											<Col span={12}>
-												<img style={{ width: '100%' }} src={video?.thumbnail} />
-											</Col>
-											<Col span={12}>
-												<Card
-													title={
-														<>
-															<Tag color="rgb(25, 188, 198)">
-																{video.owner.name}{' '}
-															</Tag>
-															<Icon
-																style={{ fontSize: 25 }}
-																type="video-camera"
-																onClick={() =>
-																	window.open(`https://fb.com/${video.id}`)
-																}
-															/>
-														</>
-													}
-													size="small"
-												>
-													{`${video.title} ${video.description}`.slice(0, 100)}
-												</Card>
-											</Col>
-										</Row>
-									)}
-								</FormElement>
-							),
+								<VideoUrlInput
+									onSubmitVideo={info => {
+										set_video(info)
+										setValues({
+											id: info.video_id,
+											uid: info.owner.id,
+											name: info.title || info.description,
+										})
+									}}
+								/>
+								{video && (
+									<Row style={{ marginTop: 10 }}>
+										<Col span={12}>
+											<img style={{ width: '100%' }} src={video?.thumbnail} />
+										</Col>
+										<Col span={12}>
+											<Card
+												title={
+													<>
+														<Tag color="rgb(25, 188, 198)">
+															{video.owner.name}{' '}
+														</Tag>
+														<Icon
+															style={{ fontSize: 25 }}
+															type="video-camera"
+															onClick={() =>
+																window.open(`https://fb.com/${video.id}`)
+															}
+														/>
+													</>
+												}
+												size="small"
+											>
+												{`${video.title} ${video.description}`.slice(0, 100)}
+											</Card>
+										</Col>
+									</Row>
+								)}
+							</FormElement>
+						),
 					})}
 
 					{props.form.field<number>({
 						name: 'amount',
 						require: t('form.viewer_amount_select.validatingErrorMessage'),
-						render: ({
-							error,
-							setValue,
-							value,
-						}) => (
-								<FormElement
-									label={t('form.viewer_amount_select.title')}
-									icon="eye"
-									error={error}
-								>
-									<BuffViewersLivestreamSystemStatus />
-									<Row>
-										{' '}
-										<Col>
-											{[50, 100, 150, 200, 250, 300, 500, 600, 700, 800, 900].map(
-												amount => (
-													<Button
-														style={{ margin: 5, width: 100 }}
-														type={amount == value ? 'primary' : 'dashed'}
-														onClick={() => setValue(amount)}
-													>
-														{amount}
-													</Button>
-												),
-											)}
-										</Col>{' '}
-									</Row>
-									<Row>
-										<Col>
-											{[1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000].map(
-												amount => (
-													<Button
-														style={{ margin: 5, width: 100 }}
-														type={amount == value ? 'primary' : 'dashed'}
-														onClick={() => setValue(amount)}
-													>
-														{amount}
-													</Button>
-												),
-											)}
-										</Col>{' '}
-									</Row>
-								</FormElement>
-							),
+						render: ({ error, setValue, value }) => (
+							<FormElement
+								label={t('form.viewer_amount_select.title')}
+								icon="eye"
+								error={error}
+							>
+								<BuffViewersLivestreamSystemStatus />
+								<Row>
+									{' '}
+									<Col>
+										{[50, 100, 150, 200, 250, 300, 500, 600, 700, 800, 900].map(
+											amount => (
+												<Button
+													style={{ margin: 5, width: 100 }}
+													type={amount == value ? 'primary' : 'dashed'}
+													onClick={() => setValue(amount)}
+												>
+													{amount}
+												</Button>
+											),
+										)}
+									</Col>{' '}
+								</Row>
+								<Row>
+									<Col>
+										{[1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000].map(
+											amount => (
+												<Button
+													style={{ margin: 5, width: 100 }}
+													type={amount == value ? 'primary' : 'dashed'}
+													onClick={() => setValue(amount)}
+												>
+													{amount}
+												</Button>
+											),
+										)}
+									</Col>{' '}
+								</Row>
+							</FormElement>
+						),
 					})}
 
 					{props.form.field<number>({
 						name: 'limit_mins',
 						require: t('form.limit_mins_viewers.validatingErrorMessage'),
-						render: ({
-							setValue,
-							value,
-						}) => (
-								<FormElement
-									label={t('form.limit_mins_viewers.title')}
-									icon="eye"
-								>
-									{limits_mins.map(amount => (
-										<Button
-											style={{ margin: 5, width: 100 }}
-											type={amount == value ? 'primary' : 'dashed'}
-											onClick={() => setValue(amount)}
-										>
-											{amount}
-										</Button>
-									))}
-								</FormElement>
-							),
+						render: ({ setValue, value }) => (
+							<FormElement
+								label={t('form.limit_mins_viewers.title')}
+								icon="eye"
+							>
+								{limits_mins.map(amount => (
+									<Button
+										style={{ margin: 5, width: 100 }}
+										type={amount == value ? 'primary' : 'dashed'}
+										onClick={() => setValue(amount)}
+									>
+										{amount}
+									</Button>
+								))}
+							</FormElement>
+						),
 					})}
 					{/* 
 					{props.form.field<string>({

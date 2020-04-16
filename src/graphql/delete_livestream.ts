@@ -20,14 +20,15 @@ export const delete_livestream = async (id: string) =>
 		commitMutation(RelayEnvironment as any, {
 			variables: { id },
 			mutation,
-			optimisticUpdater: store => share_updater(store, id),
 			updater: store => {
 				share_updater(store, id)
 				success()
 			},
 			onError: error => {
 				const { errors } = (error as any) as GraphQLError
-				reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
+				!!errors
+					? reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
+					: reject('Error')
 			},
 		})
 	})

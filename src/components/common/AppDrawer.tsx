@@ -26,9 +26,13 @@ type DrawerLinksType = {
 
 const DrawerLinks: DrawerLinksType[] = [
 	{ name: 'notification_icon_title', icon: 'sound', to: '/notification' },
-	{ name: 'seeding_icon_title', icon: 'alert', to: '/seeding' },
-	// { name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
-	// { name: 'account_icon_title', icon: 'team', to: '/farm' },
+	{
+		name: 'seeding_icon_title',
+		icon: 'alert',
+		to: '/seeding/buff-viewers-livestream',
+	},
+	// {name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream'},
+	// {name: 'account_icon_title', icon: 'team', to: '/farm'},
 	{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
 	{ name: 'payments_icon_title', icon: 'credit-card', to: '/payments' },
 	{ name: 'agency_icon_title', icon: 'user', to: '/agency' },
@@ -36,12 +40,13 @@ const DrawerLinks: DrawerLinksType[] = [
 	{ name: 'admin_info_icon_title', icon: 'contacts', to: '/contact' },
 ]
 
-const CurrentUserAvatarAppDrawer = () => {
+const CurrentUserAvatarAppDrawer = (props: { loading: boolean }) => {
 	const { user } = useAuth0()
 
 	return (
 		<span>
-			<Avatar src={user?.picture || ''} size={60} />
+			{!props.loading && <Avatar src={user?.picture || ''} size={60} />}
+			{props.loading && <Avatar shape="circle" size={60} icon="user" />}
 		</span>
 	)
 }
@@ -55,6 +60,7 @@ const DrawerApp = (props: DrawerAppProps) => (
 			display: 'flex',
 			flexDirection: 'column',
 			marginTop: 15,
+
 			alignItems: 'center',
 			cursor: 'pointer',
 		}}
@@ -68,7 +74,7 @@ const DrawerApp = (props: DrawerAppProps) => (
 export const AppDrawer = ((withRouter as any)(
 	(props: RouteComponentProps & { onClick: Function }) => {
 		const { t, i18n } = useTranslation('app_drawer')
-		const changeLanguage = lng => {
+		const changeLanguage = (lng: string) => {
 			i18n.changeLanguage(lng)
 		}
 		const { logout } = useAuth0()
@@ -77,44 +83,53 @@ export const AppDrawer = ((withRouter as any)(
 			<div
 				onClick={() => props.onClick()}
 				style={{
-					width: 260,
+					width: 270,
 					display: 'flex',
 					flexDirection: 'row',
 					flexWrap: 'wrap',
-					padding: 10,
 				}}
 			>
 				<UserInfo
 					render={(loading, user) => (
-						<Card style={{ width: '100%' }} size="small" loading={loading}>
+						<Card style={{ width: '100%' }} size="small">
 							<Row type="flex" justify="start" align="middle">
 								<Col>
-									<CurrentUserAvatarAppDrawer />
+									<CurrentUserAvatarAppDrawer loading={loading} />
 								</Col>
 								<Col style={{ paddingLeft: 20 }}>
 									<Row>
-										<Col style={{ wordBreak: 'break-all', fontWeight: 'bold' }}>
-											{user && user.username}
-										</Col>
+										{loading && <span>username</span>}
+										{!loading && (
+											<span>
+												{user?.username.length > 25
+													? user?.username.substring(0, 22) + '...'
+													: user?.username}
+											</span>
+										)}
 									</Row>
 									<Row>
-										<Col
-											style={{ color: 'rgb(0, 131, 227)', fontWeight: 'bold' }}
-										>
-											{user &&
-												user.balance.toLocaleString(undefined, {
+										{loading && <span>0.00</span>}
+										{!loading && (
+											<Col
+												style={{
+													color: 'rgb(0, 131, 227)',
+													fontWeight: 'bold',
+												}}
+											>
+												{user?.balance.toLocaleString(undefined, {
 													maximumFractionDigits: 0,
 												})}
-											<Icon
-												type="dollar"
-												style={{
-													fontSize: 16,
-													verticalAlign: '-0.2em',
-													paddingLeft: 3,
-													color: 'white',
-												}}
-											/>
-										</Col>
+												<Icon
+													type="dollar"
+													style={{
+														fontSize: 16,
+														verticalAlign: '-0.2em',
+														paddingLeft: 3,
+														color: 'white',
+													}}
+												/>
+											</Col>
+										)}
 									</Row>
 								</Col>
 							</Row>

@@ -19,7 +19,7 @@ export const ListAppBlock = (withRouter as any)(
 		} & RouteComponentProps,
 	) => {
 		return (
-			<Card style={{ height: 'calc(100vh - 65px)' }} title={<BreadCrumb />}>
+			<Card style={{ height: '100%' }} title={<BreadCrumb />}>
 				<List
 					grid={{
 						gutter: 24,

@@ -54,8 +54,11 @@ export const VideoUrlInput = (props: VideoUrlInputProps) => {
 			})
 			setError('')
 		} catch (error) {
-			console.log(error)
-			setError(error)
+			setError(
+				JSON.parse(error)
+					.errors.map(e => `[${e.errorType}] ${e.message}`)
+					.join('\n'),
+			)
 		}
 		setIsLoading(false)
 		setvideoUrlValue('')

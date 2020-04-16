@@ -18,7 +18,7 @@ export const NoteReading = (props: { note: string; collapse: boolean }) => {
 				fontSize: 13,
 				textAlign: 'left',
 				minHeight: 80,
-				overflowY: 'auto'
+				overflowY: 'auto',
 			}}
 			onClick={() => setCollapsed(!collapsed)}
 		>

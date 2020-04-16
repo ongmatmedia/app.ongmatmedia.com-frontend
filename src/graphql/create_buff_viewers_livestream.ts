@@ -1,9 +1,8 @@
-import { commitMutation } from 'react-relay'
-import { ConnectionHandler, RecordProxy, Store, SelectorStoreUpdater, RecordSourceSelectorProxy, commitLocalUpdate } from 'relay-runtime'
-import { RelayEnvironment } from './RelayEnvironment'
 import graphql from 'babel-plugin-relay/macro'
+import { commitMutation } from 'react-relay'
+import { ConnectionHandler } from 'relay-runtime'
 import { BuffViewersLivestreamInput } from '../types'
-import { GraphQLError } from './GraphqlError'
+import { RelayEnvironment } from './RelayEnvironment'
 
 const mutation = graphql`
 	mutation createBuffViewersLivestreamMutation(
@@ -17,7 +16,7 @@ const mutation = graphql`
 					note
 					created_time
 					name
-					orders{
+					orders {
 						from
 						amount
 						limit_mins
@@ -32,7 +31,6 @@ const mutation = graphql`
 		}
 	}
 `
- 
 
 export const create_buff_viewers_livestream = async (
 	input: BuffViewersLivestreamInput,
@@ -41,10 +39,14 @@ export const create_buff_viewers_livestream = async (
 		commitMutation(RelayEnvironment, {
 			mutation,
 			variables: { input },
-			updater: async store => { 
-				const list = store.get('client:root:__BuffViewersLivestreamList_buff_viewers_livestream_tasks_connection')
+			updater: async store => {
+				const list = store.get(
+					'client:root:__BuffViewersLivestreamList_buff_viewers_livestream_tasks_connection',
+				)
 				try {
-					const node = store.getRootField('create_buff_viewers_livestream_task').getLinkedRecord('buff')
+					const node = store
+						.getRootField('create_buff_viewers_livestream_task')
+						.getLinkedRecord('buff')
 					node.setValue(input.id, 'id')
 					ConnectionHandler.insertEdgeAfter(list, node)
 				} catch (e) {
@@ -59,4 +61,3 @@ export const create_buff_viewers_livestream = async (
 		})
 	})
 }
-
