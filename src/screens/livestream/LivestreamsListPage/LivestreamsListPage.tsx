@@ -1,4 +1,4 @@
-import { notification } from 'antd'
+import {notification} from 'antd'
 import Alert from 'antd/lib/alert'
 import Button from 'antd/lib/button'
 import Card from 'antd/lib/card'
@@ -11,29 +11,21 @@ import Spin from 'antd/lib/spin'
 import Tooltip from 'antd/lib/tooltip'
 import Text from 'antd/lib/typography/Text'
 import graphql from 'babel-plugin-relay/macro'
-import React, { useEffect, useState } from 'react'
-import Moment from 'react-moment'
-import { Link } from 'react-router-dom'
-import { Fab } from 'react-tiny-fab'
-import { isNullOrUndefined } from 'util'
-import { BreadCrumb } from '../../../components/common/BreadCrumb'
-import { useAuth0 } from '../../../context/Auth0'
-import { delete_livestream } from '../../../graphql/delete_livestream'
-import {
-	GraphQLQueryFetcher,
-	PaginationWrapper,
-} from '../../../graphql/GraphQLWrapper'
-import { stop_livestream } from '../../../graphql/stop_livestream'
+import React, {useEffect, useState} from 'react'
+import {Link} from 'react-router-dom'
+import {Fab} from 'react-tiny-fab'
+import {isNullOrUndefined} from 'util'
+import {BreadCrumb} from '../../../components/common/BreadCrumb'
+import {useAuth0} from '../../../context/Auth0'
+import {delete_livestream} from '../../../graphql/delete_livestream'
+import {GraphQLQueryFetcher, PaginationWrapper} from '../../../graphql/GraphQLWrapper'
+import {stop_livestream} from '../../../graphql/stop_livestream'
 import history from '../../../helpers/history'
-import { groupTimeIntoDayMap } from '../../../helpers/utils'
-import {
-	Livestream,
-	LivestreamConnection,
-	LivestreamSubscription,
-} from '../../../types'
-import { LivestreamActions } from './LivestreamActions'
-import { LivestreamListItem } from './LivestreamListItem'
-import { LivestreamStatistics } from './LivestreamStatistics'
+import {groupTimeIntoDayMap} from '../../../helpers/utils'
+import {Livestream, LivestreamConnection, LivestreamSubscription} from '../../../types'
+import {LivestreamActions} from './LivestreamActions'
+import {LivestreamListItem} from './LivestreamListItem'
+import {LivestreamStatistics} from './LivestreamStatistics'
 
 const query = graphql`
 	query LivestreamsListPageQuery(
@@ -182,7 +174,7 @@ const LivestreamsListView = (props: {
 					<>
 						<div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15 }}>
 							<Icon type="calendar" style={{ marginRight: 5 }} />
-							<Moment format="DD/MM/YYYY">{livestreamsEachDay.time}</Moment>
+							{livestreamsEachDay.time}
 						</div>
 						<List
 							grid={{

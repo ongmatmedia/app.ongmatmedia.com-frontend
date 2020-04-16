@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Router, Switch } from 'react-router-dom'
+import { Redirect, Router, Switch, Route } from 'react-router-dom'
 import PrivateRoute from '../components/PrivateRoute'
 import history from '../helpers/history'
 import { MainLayout } from '../layouts/main'
@@ -25,7 +25,7 @@ export const AppWithRouter = () => {
 	return (
 		<Router history={history}>
 			<Switch>
-				<PrivateRoute exact component={HomePage} layout={MainLayout} path="/" />
+				<PrivateRoute exact component={HomePage} layout={MainLayout} path="/"/>
 
 				<PrivateRoute
 					exact
