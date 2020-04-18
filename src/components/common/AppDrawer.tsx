@@ -31,13 +31,14 @@ const DrawerLinks: DrawerLinksType[] = [
 		icon: 'alert',
 		to: '/seeding/buff-viewers-livestream',
 	},
-	// {name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream'},
+	{name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream'},
 	// {name: 'account_icon_title', icon: 'team', to: '/farm'},
 	{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
 	{ name: 'payments_icon_title', icon: 'credit-card', to: '/payments' },
 	{ name: 'agency_icon_title', icon: 'user', to: '/agency' },
 	// { name: 'setting_icon_title', icon: 'setting', to: '/setting' },
 	{ name: 'admin_info_icon_title', icon: 'contacts', to: '/contact' },
+	{ name: 'tool_icon_title', icon: 'tool', to: '/tools' },
 ]
 
 const CurrentUserAvatarAppDrawer = (props: { loading: boolean }) => {

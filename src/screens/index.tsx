@@ -20,6 +20,8 @@ import { PricingPage } from './livestream/LivestreamPricingPage/LivestreamPricin
 import { NotificationPage } from './notification'
 import { Payments } from './payments/Payments'
 import { BuffViewersLivestream } from './seeding'
+import {Tools} from './tools/Tools'
+import {FriendFiltering} from './tools/friend-filtering/FriendFiltering'
 
 export const AppWithRouter = () => {
 	return (
@@ -93,7 +95,7 @@ export const AppWithRouter = () => {
 					path="/contact"
 				/>
 
-				{/* <PrivateRoute
+				<PrivateRoute
 					exact
 					component={LivestreamsListPage}
 					layout={MainLayout}
@@ -122,7 +124,7 @@ export const AppWithRouter = () => {
 					component={PricingPage}
 					layout={MainLayout}
 					path="/livestream/pricing"
-				/> */}
+				/>
 
 				{/* <PrivateRoute
 					exact
@@ -136,6 +138,20 @@ export const AppWithRouter = () => {
 					layout={MainLayout}
 					path="/farm/facebook"
 				/> */}
+
+				<PrivateRoute
+					exact
+					component={Tools}
+					layout={MainLayout}
+					path="/tools"
+				/>
+
+				<PrivateRoute
+					exact
+					component={FriendFiltering}
+					layout={MainLayout}
+					path="/tools/filter-friends"
+				/>
 
 				<Redirect to="/" />
 			</Switch>

@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@auth0/auth0-spa-js": "1.7.0-beta.5",
+    "@types/chrome": "^0.0.104",
     "antd": "3.26.13",
     "aws-amplify": "1.1.29",
     "chart.js": "^2.9.3",
