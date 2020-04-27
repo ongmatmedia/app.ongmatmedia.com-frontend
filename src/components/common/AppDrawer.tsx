@@ -29,10 +29,10 @@ const DrawerLinks: DrawerLinksType[] = [
 	{
 		name: 'seeding_icon_title',
 		icon: 'alert',
-		to: '/seeding/buff-viewers-livestream',
+		to: '/seeding',
 	},
-	{name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream'},
-	// {name: 'account_icon_title', icon: 'team', to: '/farm'},
+	{ name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
+	{ name: 'account_icon_title', icon: 'team', to: '/farm' },
 	{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
 	{ name: 'payments_icon_title', icon: 'credit-card', to: '/payments' },
 	{ name: 'agency_icon_title', icon: 'user', to: '/agency' },

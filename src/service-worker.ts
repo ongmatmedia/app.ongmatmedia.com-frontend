@@ -6,5 +6,4 @@ addEventListener('install', () => {
 
 addEventListener('push', async event => {
 	const data = (event as any).data.json()
-	console.log({ data })
 })

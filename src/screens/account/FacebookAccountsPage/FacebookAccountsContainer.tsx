@@ -7,6 +7,7 @@ import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
 import { CreateUpdateAccountModal } from '../CreateUpdateAccountModal'
 import { ViewAccountModal } from '../ViewAccountModal'
 import { FacebookAccountsPresentation } from './FacebookAccountsPresentation'
+
 const query = graphql`
 	query FacebookAccountsContainerQuery {
 		facebook_accounts {

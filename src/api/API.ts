@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from 'axios'
-import { API_ENDPOINT } from '../configs/api'
 import { Auth } from 'aws-amplify'
+import { GraphQLEndpoint } from '../config'
 
 const rq = axios.create({
-	baseURL: API_ENDPOINT,
+	baseURL: GraphQLEndpoint,
 })
 
 export class API {

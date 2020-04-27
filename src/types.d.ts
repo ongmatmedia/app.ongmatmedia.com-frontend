@@ -139,8 +139,12 @@ export type FacebookAccountInfo = {
 
 export type FacebookAccountInput = {
 	cookie?: Maybe<Scalars['String']>
+	name?: Maybe<Scalars['String']>
+	id?: Maybe<Scalars['String']>
 	username?: Maybe<Scalars['String']>
 	password?: Maybe<Scalars['String']>
+	touch_access_token?: Maybe<Scalars['String']>
+	livestream_access_token?: Maybe<Scalars['String']>
 }
 
 export type FacebookAccountUpdateInput = {
@@ -634,4 +638,36 @@ export type VideoOwner = {
 	name: Scalars['String']
 	id: Scalars['String']
 	avatar: Scalars['String']
+}
+
+export type VipViewersLivestream = {
+	user_id: Scalars['String']
+	id: Scalars['ID']
+	active: Scalars['Boolean']
+	amount: Scalars['Int']
+	bought_mins: Scalars['Int']
+	used_mins: Scalars['Int']
+	note: Scalars['String']
+	name: Scalars['String']
+	histories: Array<VipViewersLivestreamHistory>
+	created_time: Scalars['Long']
+	updated_time: Scalars['Long']
+	auto_disable_after: Scalars['Float']
+	parallel: Scalars['Float']
+}
+
+export type VipViewersLivestreamHistory = {
+	id: Scalars['String']
+	created_time: Scalars['Float']
+	viewers_count: Array<Scalars['Int']>
+	thumbnail: Scalars['String']
+}
+
+export type VipViewersLivestreamConnection = {
+	edges: Array<VipViewersLivestreamEdge>
+	pageInfo: PageInfo
+}
+
+export type VipViewersLivestreamEdge = {
+	node: VipViewersLivestream
 }

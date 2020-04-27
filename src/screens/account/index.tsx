@@ -9,12 +9,12 @@ export const AccountScreen = () => (
 				link: '/facebook',
 				serviceName: 'Facebook',
 			},
-			{
-				cover:
-					'https://aromaincense.id/wp-content/uploads/2018/10/shopee-icon-png-5.png',
-				link: '/shopee',
-				serviceName: 'Shopee',
-			},
+			// {
+			// 	cover:
+			// 		'https://aromaincense.id/wp-content/uploads/2018/10/shopee-icon-png-5.png',
+			// 	link: '/shopee',
+			// 	serviceName: 'Shopee',
+			// },
 		]}
 	/>
 )

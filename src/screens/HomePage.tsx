@@ -537,14 +537,10 @@ const HomePage = PaginationWrapper<{
 									mode: 'label',
 									callbacks: {
 										label: function (tooltipItem, data) {
-											console.log('from tooltip')
-											console.log({ tooltipItem }, { data })
 											let label = data.labels[tooltipItem.index] || ''
-											console.log({ label })
 											if (label) {
 												label += ': '
 											}
-											console.log()
 											label += Number(
 												data.datasets[tooltipItem.datasetIndex].data[
 													tooltipItem.index

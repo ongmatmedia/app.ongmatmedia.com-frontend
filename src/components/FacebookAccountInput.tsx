@@ -39,7 +39,6 @@ export const FacebookAccountInput = (props: FacebookAccountInputProps) => {
 			set_url(facebook_account_info.name)
 			set_editable(false)
 		} catch (error) {
-			console.log(error)
 			set_error('Not found')
 		}
 		set_loading(false)

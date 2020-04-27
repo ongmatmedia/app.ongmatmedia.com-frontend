@@ -1,14 +1,14 @@
-import React, {useEffect} from 'react'
-import {Route, RouteComponentProps, withRouter} from 'react-router-dom'
-import {useAuth0} from '../context/Auth0'
-import {MainLayoutProps} from '../layouts/main'
-import {LoadingPage} from '../screens/loading/LoadingPage'
+import React, { useEffect } from 'react'
+import { Route, RouteComponentProps, withRouter } from 'react-router-dom'
+import { useAuth0 } from '../context/Auth0'
+import { MainLayoutProps } from '../layouts/main'
+import { LoadingPage } from '../screens/loading/LoadingPage'
 
 type PrivateRouteProps = RouteComponentProps & {
 	component: React.FunctionComponent | React.ComponentClass
 	layout: (props: MainLayoutProps) => JSX.Element
 	path: string | string[]
-	exact: boolean,
+	exact: boolean
 }
 
 const PrivateRoute = ({
@@ -16,20 +16,16 @@ const PrivateRoute = ({
 	path,
 	exact = true,
 	layout: Layout,
-}: PrivateRouteProps): JSX.Element =>
-{
-	const {loading, isAuthenticated, loginWithRedirect, userToken} = useAuth0()
+}: PrivateRouteProps): JSX.Element => {
+	const { loading, isAuthenticated, loginWithRedirect, userToken } = useAuth0()
 
-	useEffect(() =>
-	{
-		if (loading || isAuthenticated)
-		{
+	useEffect(() => {
+		if (loading || isAuthenticated) {
 			return
 		}
-		const fn = async (): Promise<void> =>
-		{
+		const fn = async (): Promise<void> => {
 			await loginWithRedirect({
-				appState: {targetUrl: path},
+				appState: { targetUrl: path },
 			})
 		}
 		fn()
@@ -38,7 +34,9 @@ const PrivateRoute = ({
 	const render = (): JSX.Element | null =>
 		isAuthenticated === true && userToken ? (
 			<Layout Content={Component} />
-		) : <LoadingPage />
+		) : (
+			<LoadingPage />
+		)
 	return <Route path={path} render={render} exact={exact} />
 }
 

@@ -1,5 +1,5 @@
 import { API } from './API'
-import { LivestreamFacebookTargetType } from '../routes/livestream/list/CreateEditLivestreamModal/LivestreamFacebookTargetType'
+import { LivestreamFacebookTargetType } from '../screens/seeding/vip-viewers-livestream/FacebookObjectInput'
 
 export type FacebookAccountInfo = {
 	user_id: string

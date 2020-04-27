@@ -135,8 +135,12 @@ type FacebookAccountInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
 
 input FacebookAccountInput {
   cookie: String
+  name: String
+  id: String
   username: String
   password: String
+  touch_access_token: String
+  livestream_access_token: String
 }
 
 input FacebookAccountUpdateInput {
@@ -291,7 +295,87 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   create_deposit(amount: Int!): NewDepositInfo!
   create_notification(input: NotificationInput!): Notification!
   set_notification_read(id: ID!): Notification!
+  create_vip_viewers_livestream_task(input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskCUDResponse!
+  update_vip_viewers_livestream_task(input: VIPViewersLivestreamUpdateInput!): VipViewersLivestreamTaskCUDResponse!
+  delete_vip_viewers_livestream_task(id: String!): VipViewersLivestreamTaskCUDResponse!
 }
+
+type VIPViewersLivestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  user_id: String!
+  id: ID!
+  active: Boolean!
+  amount: Int!
+  bought_mins: Int!
+  used_mins: Int!
+  note: String!
+  name: String!
+  histories: [VIPViewersLivestreamHistory!]!
+  created_time: Long!
+  updated_time: Long!
+  auto_disable_after: Float!
+  parallel: Float!
+}
+
+type VIPViewersLivestreamConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  edges: [VIPViewersLivestreamEdge!]!
+  pageInfo: PageInfo!
+}
+
+type VIPViewersLivestreamEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  node: VIPViewersLivestream!
+}
+
+type VIPViewersLivestreamHistory @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  id: String!
+  created_time: Float!
+  viewers_count: [Int!]!
+  thumbnail: String!
+}
+
+type VipViewersLivestreamTaskCUDResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  vip: VIPViewersLivestreamEdge!
+  me: User!
+  payment_history: PaymentHistoryEdge
+}
+
+input VIPViewersLivestreamQueryFilters {
+  amount: TableIntFilterInput!
+  created_time: TableIntFilterInput!
+  end_time: TableIntFilterInput!
+}
+
+input TableIntFilterInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: Int
+}
+
+input VIPViewersLivestreamInput {
+  id: String!
+  active: Boolean!
+  note: String!
+  amount: Int!
+  name: String!
+  auto_disable_after: Int!
+  parallel: Int!
+  bought_mins: Int!
+}
+
+input VIPViewersLivestreamUpdateInput {
+  id: String!
+  active: Boolean
+  note: String
+  amount: Int
+  name: String
+  auto_disable_after: Int
+  parallel: Int
+  bought_mins: Int
+}
+
 
 type NewDepositInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
   id: String!
@@ -391,6 +475,8 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   payment_histories(first: Int, after: String, before_time: Long): PaymentHistoryConnection!
   video_info(url: String!): VideoInfo!
   notifications(after: String, limit: Int): [NotificationConnection!]!
+  vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
+  vip_viewers_livestream_task(id: String!): VIPViewersLivestream!
 }
 
 type SendmoneyResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {

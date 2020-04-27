@@ -4,6 +4,7 @@ import Col from 'antd/lib/col'
 import Icon from 'antd/lib/icon'
 import List from 'antd/lib/list'
 import Row from 'antd/lib/row'
+import Button from 'antd/lib/button'
 import React, { useState } from 'react'
 import { Action, Fab } from 'react-tiny-fab'
 import 'react-tiny-fab/dist/styles.css'
@@ -52,58 +53,63 @@ export const FacebookAccountsPresentation = (
 			{props.fabIsVisble && (
 				<Fab
 					mainButtonStyles={{ backgroundColor: '#1890ff' }}
-					icon={<Icon type="tool" />}
+					icon={<Icon type="plus" />}
 					event="click"
-				>
-					<div className="add-account">
-						<Action
-							text="Add account"
-							children={<Icon type="plus" />}
-							onClick={() => {
-								props.onChangeModeModal('create')
-								props.onOpenCreateUpdateModal()
-							}}
-							style={{ backgroundColor: '#1890ff' }}
-						/>
-					</div>
-					{props.selectedAccounts.length !== 0 && (
-						<div className="delete-account">
-							<Action
-								text="Delete account"
-								children={
-									<Icon type={removingAccount ? 'loading' : 'delete'} />
-								}
-								style={{ backgroundColor: '#1890ff' }}
-								onClick={() => removeSelectedAccount()}
-							/>
-						</div>
-					)}
-					<div className="select-account">
-						<Action
-							text={
-								isSelectingAllAccounts
-									? 'Deselect all accounts'
-									: 'Select all accounts'
-							}
-							onClick={() =>
-								isSelectingAllAccounts
-									? props.onSelectAccount([])
-									: props.onSelectAccount([
-											...props.accounts.map(account => account.id),
-									  ])
-							}
-							children={
-								<>
-									<Icon type="check-square" />
-								</>
-							}
-							style={{ backgroundColor: '#1890ff' }}
-						/>
-					</div>
-				</Fab>
+					onClick={() => {
+						props.onChangeModeModal('create')
+						props.onOpenCreateUpdateModal()
+					}}
+				/>
 			)}
 			<AccountStatistic accounts={props.accounts} />
+			<Row type="flex" justify="end" gutter={16}>
+				<Col
+					xs={24}
+					sm={12}
+					md={6}
+					lg={5}
+					xl={4}
+					style={{ textAlign: 'right', marginTop: 10 }}
+				>
+					<Button
+						type="danger"
+						disabled={props.selectedAccounts.length == 0}
+						style={{ width: '100%' }}
+						onClick={() => removeSelectedAccount()}
+					>
+						<Icon type={removingAccount ? 'loading' : 'delete'} />
+						{removingAccount
+							? 'Loading'
+							: `Delete ${props.selectedAccounts.length} accounts`}
+					</Button>
+				</Col>
+				<Col
+					xs={24}
+					sm={12}
+					md={6}
+					lg={5}
+					xl={4}
+					style={{ textAlign: 'right', marginTop: 10 }}
+				>
+					<Button
+						type="primary"
+						style={{ width: '100%' }}
+						onClick={() =>
+							isSelectingAllAccounts
+								? props.onSelectAccount([])
+								: props.onSelectAccount([
+										...props.accounts.map(account => account.id),
+								  ])
+						}
+					>
+						{isSelectingAllAccounts
+							? 'Deselect all accounts'
+							: 'Select all accounts'}
+					</Button>
+				</Col>
+			</Row>
 			<List
+				style={{ marginTop: 10 }}
 				grid={{
 					gutter: 10,
 					xs: 1,

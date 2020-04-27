@@ -26,7 +26,7 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 				<>
 					<div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15 }}>
 						<Icon type="calendar" style={{ marginRight: 5 }} />
-							{item.time}
+						{item.time}
 					</div>
 					<List
 						grid={{ gutter: 16, xs: 1, sm: 2, md: 3, xxl: 4 }}

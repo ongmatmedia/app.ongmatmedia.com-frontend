@@ -66,7 +66,7 @@ export const Auth0Provider = (props: Auth0ProviderProps) => {
 		await new Promise((s, r) =>
 			Notification.requestPermission(state => (state == 'granted' ? s() : r())),
 		).catch(() => console.log('Please enable notification'))
-		const sw = await navigator.serviceWorker.register('/sw.js')
+		const sw = await navigator.serviceWorker.register('/service-worker.js')
 		firebase.messaging().useServiceWorker(sw)
 	}
 

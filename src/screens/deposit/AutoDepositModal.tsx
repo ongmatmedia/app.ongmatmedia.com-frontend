@@ -44,7 +44,6 @@ export const AutoDepositModal = (props: AutoDepositModalProps) => {
 				<Col span={16}>
 					<InputNumberAutoSelect
 						onChangeValue={a => {
-							console.log({ a })
 							set_amount(a)
 						}}
 						defaultValue={0}
