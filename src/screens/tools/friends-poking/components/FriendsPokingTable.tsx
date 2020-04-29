@@ -101,7 +101,7 @@ export const FriendsPokingTable = withFilterFriendsStore(props => {
 			render: (f: Friend) => (
 				<Button
 					onClick={() => props.store.poke_friend(f)}
-					style={{backgroundColor: 'green', color: 'white'}}
+					style={{ backgroundColor: 'green', color: 'white' }}
 					icon="close"
 				>
 					{' '}
@@ -176,7 +176,10 @@ export const FriendsPokingTable = withFilterFriendsStore(props => {
 						props.store.selected_friends = selectedRows
 						props.store.selectedRowKeys = selectedRowKeys
 					},
-					selectedRowKeys: props.store.selected_friends.length > 0 ? props.store.selectedRowKeys : []
+					selectedRowKeys:
+						props.store.selected_friends.length > 0
+							? props.store.selectedRowKeys
+							: [],
 				}}
 				rowKey="uid"
 				scroll={{ x: 'max-content', scrollToFirstRowOnChange: true }}

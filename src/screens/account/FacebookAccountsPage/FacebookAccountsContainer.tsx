@@ -43,7 +43,7 @@ export const FacebookAccountsContainer = () => {
 			query={query}
 			variables={{}}
 			render={rs => (
-				<Card title={<BreadCrumb />} style={{ height: 'calc(100vh - 70px)' }}>
+				<Card title={<BreadCrumb />} style={{ minHeight: '100%' }}>
 					<ViewAccountModal
 						visible={modalViewAccountIsVisible}
 						onClose={() => setModalViewAccountIsVisible(false)}

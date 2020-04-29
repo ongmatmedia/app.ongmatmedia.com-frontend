@@ -156,7 +156,13 @@ export const FriendsPokingActions = Form.create()(
 								style={{ textAlign: 'center', marginTop: 7 }}
 							>
 								<Button
-									style={{backgroundColor: props.store?.selected_friends?.length > 0 ? 'green' : '', color: props.store?.selected_friends?.length > 0 ? 'white' : '', width: '100%'}}
+									style={{
+										backgroundColor:
+											props.store?.selected_friends?.length > 0 ? 'green' : '',
+										color:
+											props.store?.selected_friends?.length > 0 ? 'white' : '',
+										width: '100%',
+									}}
 									disabled={props.store?.selected_friends?.length == 0}
 									type="danger"
 									icon="close"
@@ -164,7 +170,11 @@ export const FriendsPokingActions = Form.create()(
 										await poke_friends()
 									}}
 								>
-									Poke {props.store?.selected_friends?.length > 0 ? props.store?.selected_friends?.length : '' } friends
+									Poke{' '}
+									{props.store?.selected_friends?.length > 0
+										? props.store?.selected_friends?.length
+										: ''}{' '}
+									friends
 								</Button>
 							</Col>
 						</Row>

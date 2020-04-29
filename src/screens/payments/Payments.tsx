@@ -58,8 +58,8 @@ export const Payments = PaginationWrapper<{
 	props => {
 		if (props.error || props.loading)
 			return (
-				<Card style={{ height: '100%' }} title={<BreadCrumb />} size="small">
-					<Row type="flex" justify="space-around" style={{ height: '100%' }}>
+				<Card style={{ minHeight: '100%' }} title={<BreadCrumb />} size="small">
+					<Row type="flex" justify="space-around" style={{ minHeight: '100%' }}>
 						<Col>
 							{props.error && (
 								<Alert showIcon message={props.error} type="error" />

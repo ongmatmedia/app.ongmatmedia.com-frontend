@@ -5,22 +5,21 @@ import { RelayEnvironment } from './RelayEnvironment'
 
 const mutation = graphql`
 	mutation updateVipViewersLivestreamMutation(
+		$days: Int!
 		$input: VIPViewersLivestreamUpdateInput!
 	) {
-		update_vip_viewers_livestream_task(input: $input) {
+		update_vip_viewers_livestream_task(days: $days, input: $input) {
 			vip {
 				node {
 					id
 					active
-					amount
-					bought_mins
-					used_mins
-					note
 					name
-					created_time
-					updated_time
-					auto_disable_after
+					amount
+					end_time
+					max_duration
+					max_live_per_day
 					parallel
+					created_time
 				}
 			}
 			me {
@@ -32,14 +31,15 @@ const mutation = graphql`
 `
 
 export const update_vip_viewers_livestream = async (
+	days: number,
 	input: VIPViewersLivestreamUpdateInput,
 ) => {
-	await new Promise((s, r) => {
+	await new Promise((resolve, reject) => {
 		commitMutation(RelayEnvironment, {
 			mutation,
-			variables: { input },
-			updater: async store => s(),
-			onError: r,
+			variables: { days, input },
+			updater: async store => resolve(),
+			onError: reject,
 		})
 	})
 }

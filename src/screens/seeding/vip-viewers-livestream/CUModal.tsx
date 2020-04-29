@@ -1,29 +1,17 @@
-import {
-	Alert,
-	Avatar,
-	Col,
-	Form as AntdForm,
-	Icon,
-	Input,
-	message,
-	Modal,
-	notification,
-	Row,
-	Select,
-	Spin,
-	Switch,
-	Tag,
-} from 'antd'
-import { graphql } from 'babel-plugin-relay/macro'
-import React, { Fragment, useState } from 'react'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import { useTranslation } from 'react-i18next'
-import { create_vip_viewers_livestream } from '../../../graphql/create_vip_viewers_livestream'
-import { update_vip_viewers_livestream } from '../../../graphql/update_vip_viewers_livestream'
-import { VipViewersLivestream, User } from '../../../types'
-import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper'
-import { withForm } from '../../../libs/Form'
-import { FacebookObjectInput } from './FacebookObjectInput'
+import {Alert, Avatar, Button, Col, Form as AntdForm, Icon, message, Modal, notification, Row, Spin, Switch, Tag, Card} from 'antd'
+import {graphql} from 'babel-plugin-relay/macro'
+import React, {useState} from 'react'
+import {CopyToClipboard} from 'react-copy-to-clipboard'
+import {isMobile, isMobileOnly, isTablet} from 'react-device-detect'
+import {useTranslation} from 'react-i18next'
+import {FormElement} from '../../../components/form/FormElement'
+import {OrderInfo} from '../../../components/OrderInfo'
+import {create_vip_viewers_livestream} from '../../../graphql/create_vip_viewers_livestream'
+import {GraphQLWrapper} from '../../../graphql/GraphQLWrapper'
+import {range} from '../../../helpers/utils'
+import {withForm} from '../../../libs/Form'
+import {User, VipViewersLivestream} from '../../../types'
+import {FacebookObjectInput} from './FacebookObjectInput'
 
 const query = graphql`
 	query CUModalQuery {
@@ -43,80 +31,70 @@ const IconFont = Icon.createFromIconfontCN({
 
 export type CUModalProps = {
 	mode: 'create' | 'update'
-	vip?: VipViewersLivestream
+	vip?: VipViewersLivestream | null
 	onClose: Function
 }
 
-export type CUModalGraphqlData = { me: User; vip: VipViewersLivestream }
+export type CUModalGraphqlData = {me: User; vip: VipViewersLivestream}
 
 export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 	query,
 	{},
-	withForm(props => {
+	withForm(props =>
+	{
 		const [editing_uid, set_editing_uid] = useState<boolean>(
 			props.mode == 'create',
 		)
 		const [error, set_error] = useState<string | null>(null)
 		const [loading, set_loading] = useState<boolean>(false)
 
-		const { t } = useTranslation('cu_modal')
+		const {t} = useTranslation('cu_modal')
 
-		const { form } = props
+		const {form} = props
 
 		const submit = () =>
-			form.submit(async data => {
-				set_error(null)
-				try {
-					set_loading(true)
-					if (props.mode == 'create') {
-						await create_vip_viewers_livestream({ ...data, active: true })
-						notification.success({ message: 'Create success' })
-					} else {
-						await update_vip_viewers_livestream(data)
-						notification.success({ message: 'Update success' })
-					}
+			form.submit(
+				async (data: {
+					facebook_target: {id: string; name: string},
+					amount: number,
+					max_duration: number,
+					max_live_per_day: number,
+					parallel: number,
+					days: number,
+				}) =>
+				{
 					set_error(null)
-					set_loading(false)
-					set_editing_uid(true)
-					props.onClose()
-				} catch (e) {
-					set_error(e.message)
-					set_loading(false)
-				}
-			})
-
-		const SelectFormItem = (props: {
-			icon: string
-			name: string
-			require: string
-			title: string
-			values: any[]
-			render: Function
-			placeholder: string
-		}) =>
-			form.field<number>({
-				name: props.name,
-				require: props.require,
-				render: ({ error, setValue }) => (
-					<AntdForm.Item>
-						<Row type="flex" justify="space-between" align="middle">
-							<Col>
-								<h3>
-									<Icon type={props.icon} /> {props.title}
-								</h3>
-							</Col>
-						</Row>
-						{error && <Alert type="error" message={error} />}
-						<Select onChange={setValue} placeholder={props.placeholder}>
-							{props.values.map(value => (
-								<Select.Option value={value}>
-									{props.render(value)}
-								</Select.Option>
-							))}
-						</Select>
-					</AntdForm.Item>
-				),
-			}) as JSX.Element
+					try
+					{
+						set_loading(true)
+						if (props.mode == 'create')
+						{
+							await create_vip_viewers_livestream(data.days, {
+								amount: data.amount,
+								id: data.facebook_target.id,
+								name: data.facebook_target.name,
+								max_duration: data.max_duration,
+								parallel: data.parallel,
+								max_live_per_day: data.max_live_per_day
+							})
+							notification.success({message: 'Create success'})
+						} else
+						{
+							// console.log({data})
+							// await update_vip_viewers_livestream(data)
+							// notification.success({message: 'Update success'})
+						}
+						set_error(null)
+						set_loading(false)
+						set_editing_uid(true)
+						props.onClose()
+					} catch (e)
+					{
+						set_error(e)
+						set_loading(false)
+					}
+				},
+			)
 
 		return (
 			<Modal
@@ -124,57 +102,61 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 				onOk={() => submit()}
 				onCancel={() => props.onClose()}
 				destroyOnClose
-				closable={false}
-				okButtonProps={{ loading }}
+				closable={true}
+				style={{top: isMobile ? 0 : 20, width: isMobile ? '100%' : '80%'}}
+				okButtonProps={{loading}}
 				title={
 					props.mode == 'create' ? t('title.creating') : t('title.editing')
 				}
+				width={isMobileOnly ? '100%' : isTablet ? '80%' : '50%'}
 			>
-				<Spin spinning={props.loading}>
+				<Spin
+					spinning={props.loading}
+					indicator={<Icon type="loading" style={{fontSize: 24}} />}
+				>
 					<AntdForm>
-						{error && <Alert type="error" message={error} />}
 						{props.mode == 'update' &&
-							props.form.field<boolean>({
-								name: 'active',
-								render: ({ setValue }) => (
-									<AntdForm.Item>
-										<Row type="flex" justify="space-between" align="middle">
-											<Col>
-												{' '}
-												<h3>
-													<Icon type="clock-circle" /> Active status
-												</h3>{' '}
-											</Col>
-											<Col>
-												{props.vip && props.vip.active ? (
-													<Tag color={'rgb(21, 100, 42)'}>
-														Running <Icon type="sync" spin />
-													</Tag>
-												) : (
-													<Tag color={'#c01922'}> Stopped </Tag>
-												)}
-											</Col>
-										</Row>
-										<Switch
-											defaultChecked={props.vip && props.vip.active}
-											onChange={checked => setValue(checked)}
-										/>
-									</AntdForm.Item>
-								),
-							})}
-						{props.form.field({
-							name: 'id',
+							props.form.field<boolean>(
+								{
+									name: 'active',
+									render: ({setValue}) => (
+										<AntdForm.Item>
+											<Row type="flex" justify="space-between" align="middle">
+												<Col>
+													{' '}
+													<span>
+														<Icon type="clock-circle" /> Active status
+													</span>
+													<Switch
+														defaultChecked={props.vip && props.vip.active}
+														onChange={checked => setValue(checked)}
+														style={{display: 'inline-block', marginLeft: 10}}
+													/>
+													{' '}
+												</Col>
+												<Col>
+													{props.vip && props.vip.active ? (
+														<Tag color='rgb(21, 100, 42)'>
+															Running {' '} <Icon type="sync" spin />
+														</Tag>
+													) : (
+															<Tag color='#c01922'> Stopped </Tag>
+														)}
+												</Col>
+											</Row>
+										</AntdForm.Item>
+									),
+								}
+							)
+						}
+						{props.form.field<{id: string; name: string} | null>({
+							name: 'facebook_target',
 							require: t('form.facebook_object_input.validatingErrorMessage'),
 							initalValue:
-								props.mode == 'create' ? undefined : props.vip && props.vip.id,
-							render: ({
-								error,
-								loading,
-								setValues,
-								value,
-								set_touched,
-								touched,
-							}) => (
+								props.mode == 'create'
+									? null
+									: {id: props.vip?.id, name: props.vip?.name},
+							render: ({error, setValue, value}) => (
 								<AntdForm.Item>
 									<Row type="flex" justify="space-between" align="middle">
 										<Col>
@@ -196,29 +178,11 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 										</Col>
 									</Row>
 									{error && <Alert type="error" message={error} />}
-									{value && value != '' && (
-										<Row
-											type="flex"
-											justify="space-between"
-											align="middle"
-											className="livestream-target-item"
-											style={{ padding: 5, borderRadius: 5 }}
-										>
-											<Col span={4}>
-												<Avatar
-													src={`http://graph.facebook.com/${props.form.data.id}/picture?type=large`}
-													size={60}
-												/>
-											</Col>
-											<Col span={14}>
-												<div style={{ padding: 10, flexWrap: 'wrap' }}>
-													{props.mode == 'create'
-														? props.form.data.name
-														: props.vip && props.vip.name}
-												</div>
-											</Col>
-											<Col span={props.mode == 'create' ? 6 : 4}>
-												{props.mode == 'create' && (
+									{!!value?.id && !!value?.name && (
+										<Card
+											style={{width: 300, marginTop: 16}}
+											actions={
+												props.mode == 'create' ? [
 													<Icon
 														type="edit"
 														style={{
@@ -228,66 +192,119 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 															cursor: 'pointer',
 														}}
 														onClick={() => set_editing_uid(true)}
-													/>
-												)}
-												<CopyToClipboard
-													text={props.vip ? props.vip.id : props.form.data.id}
-													onCopy={() => message.info('UID copied')}
-												>
+													/>,
+													<CopyToClipboard
+														text={props.vip ? props.vip.id : props.form.data.id}
+														onCopy={() => message.info('UID copied')}
+													>
+														<Icon
+															type="copy"
+															style={{
+																color: 'black',
+																marginRight: 10,
+																fontSize: 20,
+																cursor: 'pointer',
+															}}
+														/>
+													</CopyToClipboard>,
 													<Icon
-														type="copy"
+														type="message"
 														style={{
 															color: 'black',
 															marginRight: 10,
 															fontSize: 20,
 															cursor: 'pointer',
 														}}
-													/>
-												</CopyToClipboard>
-												<Icon
-													type="message"
-													style={{
-														color: 'black',
-														marginRight: 10,
-														fontSize: 20,
-														cursor: 'pointer',
-													}}
-													onClick={() =>
-														window.open(
-															`https://m.me/${
+														onClick={() =>
+															window.open(
+																`https://m.me/${
 																props.vip ? props.vip.id : props.form.data.id
-															}`,
-														)
-													}
-												/>
-												<IconFont
-													type="icon-facebook"
-													style={{
-														color: 'black',
-														fontSize: 20,
-														cursor: 'pointer',
-													}}
-													onClick={() =>
-														window.open(
-															`https://fb.com/${
+																}`,
+															)
+														}
+													/>,
+													<IconFont
+														type="icon-facebook"
+														style={{
+															color: 'black',
+															fontSize: 20,
+															cursor: 'pointer',
+														}}
+														onClick={() =>
+															window.open(
+																`https://fb.com/${
 																props.vip ? props.vip.id : props.form.data.id
-															}`,
-														)
-													}
-												/>
-											</Col>
-										</Row>
+																}`,
+															)
+														}
+													/>,
+												] : [
+														<CopyToClipboard
+															text={props.vip ? props.vip.id : props.form.data.id}
+															onCopy={() => message.info('UID copied')}
+														>
+															<Icon
+																type="copy"
+																style={{
+																	color: 'black',
+																	marginRight: 10,
+																	fontSize: 20,
+																	cursor: 'pointer',
+																}}
+															/>
+														</CopyToClipboard>,
+														<Icon
+															type="message"
+															style={{
+																color: 'black',
+																marginRight: 10,
+																fontSize: 20,
+																cursor: 'pointer',
+															}}
+															onClick={() =>
+																window.open(
+																	`https://m.me/${
+																	props.vip ? props.vip.id : props.form.data.id
+																	}`,
+																)
+															}
+														/>,
+														<IconFont
+															type="icon-facebook"
+															style={{
+																color: 'black',
+																fontSize: 20,
+																cursor: 'pointer',
+															}}
+															onClick={() =>
+																window.open(
+																	`https://fb.com/${
+																	props.vip ? props.vip.id : props.form.data.id
+																	}`,
+																)
+															}
+														/>,
+													]
+											}
+										>
+											<Card.Meta
+												avatar={
+													<Avatar src={`http://graph.facebook.com/${value?.id}/picture?type=large`} />
+												}
+												title={value?.name}
+											/>
+										</Card>
 									)}
-
 									{editing_uid && (
 										<FacebookObjectInput
 											placeholder={t('form.facebook_object_input.placeholder')}
-											onSelect={({ name, image, type, id }) => {
+											onSelect={({url}) =>
+											{
 												// if (type == LivestreamFacebookTargetType.group) return
-												setValues({ id, name })
+												setValue({id: '100005137867313', name: 'Dang Tien Nguyen'})
 												set_editing_uid(false)
 											}}
-											onError={() => Modal.error({ title: 'Invaild UID' })}
+											onError={() => Modal.error({title: 'Invaild UID'})}
 										/>
 									)}
 								</AntdForm.Item>
@@ -295,209 +312,175 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 						})}
 						{props.form.field<number>({
 							name: 'amount',
-							require:
-								props.mode == 'create'
-									? t('form.viewer_amount_select.validatingErrorMessage')
-									: undefined,
-							render: ({
-								error,
-								loading,
-								setValue,
-								value,
-								set_touched,
-								touched,
-							}) => (
-								<AntdForm.Item>
-									<Row type="flex" justify="space-between" align="middle">
-										{props.mode == 'create' ? (
-											<Col>
-												<h3>
-													<Icon type="eye" />{' '}
-													{t('form.viewer_amount_select.title.creating')}{' '}
-													<Tag
-														style={{
-															background: '#fff',
-															borderStyle: 'dashed',
-														}}
-													>
-														{' '}
-														{t('form.viewer_amount_select.rule')}{' '}
-													</Tag>
-												</h3>
-											</Col>
-										) : (
-											<Fragment>
-												<Col>
-													<h3>
-														<Icon type="eye" />{' '}
-														{t('form.viewer_amount_select.title.editing')}
-													</h3>
-												</Col>
-												<Col>
-													{' '}
-													<Tag color="#108ee9">
-														Current {props.vip && props.vip.amount} viewers
-													</Tag>
-												</Col>
-											</Fragment>
-										)}
-									</Row>
+							require: 'Please choose viewers amount',
+							initalValue: props.vip?.amount,
+							render: ({setValue, value, error}) => (
+								<FormElement label="Viewers amount" icon="eye" require>
 									{error && <Alert type="error" message={error} />}
-									<Select
-										onChange={setValue}
-										placeholder={t('form.viewer_amount_select.placeholder')}
-									>
-										{[
-											50,
-											100,
-											150,
-											200,
-											250,
-											300,
-											400,
-											450,
-											500,
-											600,
-											700,
-											800,
-											900,
-											1000,
-											1500,
-											2000,
-											2500,
-											3000,
-											3500,
-											4000,
-											4500,
-											5000,
-										].map(amount => (
-											<Select.Option value={amount}>
-												{amount}{' '}
-												{props.vip &&
-													props.vip.amount == amount &&
-													' ** (not change)'}
-											</Select.Option>
-										))}
-									</Select>
-								</AntdForm.Item>
+									{[50, 100, 150, 200, 250, 300, 400, 500].map(amount => (
+										<Button
+											style={{margin: 5, width: 100}}
+											type={amount == value ? 'primary' : 'dashed'}
+											onClick={() => setValue(amount)}
+										>
+											{amount}
+										</Button>
+									))}
+								</FormElement>
 							),
 						})}
 
-						<SelectFormItem
-							icon="eye"
-							name="bought_mins"
-							placeholder="bought_mins"
-							render={v => v}
-							values={[1, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20, 30]}
-							require="Require"
-							title="bought_mins"
-						/>
-
-						<SelectFormItem
-							icon="eye"
-							name="auto_disable_after"
-							placeholder="auto_disable_after"
-							render={v => v}
-							values={[1, 2, 3, 4, 5, 6, 7, 8, 10, 15, 20, 30]}
-							require="Require"
-							title="auto_disable_after"
-						/>
+						{props.form.field<number>({
+							name: 'days',
+							require: 'Please choose period',
+							initalValue: Math.ceil((props.vip?.end_time - Date.now()) / 86400 / 1000),
+							render: ({setValue, value, error}) => (
+								<FormElement label="Period" icon="calendar" require>
+									{error && <Alert type="error" message={error} />}
+									{[1, 3, 7, 14, 30, 45, 60, 90, 120].map(amount => (
+										<Button
+											style={{margin: 5, width: 100}}
+											type={amount == value ? 'primary' : 'dashed'}
+											onClick={() => setValue(amount)}
+										>
+											{`${amount} ${amount > 1 ? 'days' : 'day'}`}
+										</Button>
+									))}
+								</FormElement>
+							),
+						})}
 
 						{props.form.field<number>({
 							name: 'parallel',
-							require: 'Require',
-							render: ({
-								error,
-								loading,
-								setValue,
-								value,
-								set_touched,
-								touched,
-							}) => (
-								<AntdForm.Item>
-									<Row type="flex" justify="space-between" align="middle">
-										{props.mode == 'create' ? (
-											<Col>
-												<h3>
-													<Icon type="calendar" /> parallel
-													<Tag
-														style={{
-															background: '#fff',
-															borderStyle: 'dashed',
-														}}
-													>
-														{t('form.bought_mins.rule')}
-													</Tag>
-												</h3>
-											</Col>
-										) : (
-											<Fragment>
-												<Col>
-													<h3>
-														<Icon type="eye" />{' '}
-														{t('form.bought_mins.title.editing')}
-													</h3>
-												</Col>
-												<Col></Col>
-											</Fragment>
-										)}
-									</Row>
+							require: 'Please choose number of parallel lives',
+							initalValue: props.vip?.parallel ?? 1,
+							render: ({error, setValue, value}) => (
+								<FormElement label="Parallel lives" icon="retweet" require>
 									{error && <Alert type="error" message={error} />}
-									<Select placeholder="auto_disable_after" onChange={setValue}>
-										{new Array(100).fill(0).map((_, n) => (
-											<Select.Option value={n + 1}>{n + 1}</Select.Option>
-										))}
-									</Select>
-								</AntdForm.Item>
+									{[...range(1, 10)].map(amount => (
+										<Button
+											style={{margin: 5, width: 100}}
+											type={amount == value ? 'primary' : 'dashed'}
+											onClick={() => setValue(amount)}
+										>
+											{amount}
+										</Button>
+									))}
+								</FormElement>
 							),
 						})}
-
-						{props.form.field<string>({
-							name: 'note',
-							require: t('form.note_input.validatingErrorMessage'),
-							initalValue:
-								props.mode == 'update'
-									? props.vip && props.vip.note
-									: undefined,
-							render: ({
-								error,
-								loading,
-								setValue,
-								value,
-								set_touched,
-								touched,
-							}) => {
-								return (
-									<AntdForm.Item>
-										<Row type="flex" justify="space-between" align="bottom">
-											<Col>
-												<h3>
-													<Icon type="form" /> {t('form.note_input.title')}{' '}
-													<Tag
-														style={{
-															background: '#fff',
-															borderStyle: 'dashed',
-														}}
-													>
-														{' '}
-														{t('form.note_input.rule')}{' '}
-													</Tag>
-												</h3>
-											</Col>
-											<Col></Col>
-										</Row>
-										{error && <Alert type="error" message={error} />}
-										<Input
-											placeholder={t('form.note_input.placeholder')}
-											value={value}
-											onChange={e => setValue(e.target.value)}
-											allowClear
-										/>
-									</AntdForm.Item>
-								)
-							},
+						{props.form.field<number>({
+							name: 'max_live_per_day',
+							require: 'Please choose number of max lives per day',
+							initalValue: props.vip?.max_live_per_day ?? 1,
+							render: ({error, setValue, value}) => (
+								<FormElement
+									label="Max lives per day"
+									icon="video-camera"
+									require
+								>
+									{error && <Alert type="error" message={error} />}
+									{[...range(1, 3)].map(amount => (
+										<Button
+											style={{margin: 5, width: 100}}
+											type={amount == value ? 'primary' : 'dashed'}
+											onClick={() => setValue(amount)}
+										>
+											{amount}
+										</Button>
+									))}
+								</FormElement>
+							),
+						})}
+						{props.form.field<number>({
+							name: 'max_duration',
+							require: 'Please choose max length each video',
+							initalValue: props.vip?.max_duration,
+							render: ({error, setValue, value}) => (
+								<FormElement
+									label="Max length per video"
+									icon="clock-circle"
+									require
+								>
+									{error && <Alert type="error" message={error} />}
+									{[30, 60, 90, 120, 150, 180].map(amount => (
+										<Button
+											style={{margin: 5, width: 100}}
+											type={amount == value ? 'primary' : 'dashed'}
+											onClick={() => setValue(amount)}
+										>
+											{`${amount} minutes`}
+										</Button>
+									))}
+								</FormElement>
+							),
 						})}
 					</AntdForm>
+					{props.data &&
+						[
+							'amount',
+							'days',
+							'parallel',
+							'max_live_per_day',
+							'max_duration',
+						].every(key => form.data.hasOwnProperty(key)) && (
+							<>
+								<OrderInfo
+									balance={props.data.me.balance}
+									order={
+										form.data.parallel == 1
+											? [
+												{amount: form.data.amount, unit: 'viewers'},
+												{
+													amount: form.data.days,
+													unit: `day${form.data.days == 1 ? '' : 's'}`,
+												},
+												{
+													amount: form.data.max_live_per_day,
+													unit: `live${
+														form.data.max_live_per_day == 1 ? '' : 's'
+														} per day`,
+												},
+												{
+													amount: form.data.max_duration,
+													unit: 'minutes per video',
+												},
+												{
+													amount:
+														props.data.me.pricing?.vip_viewers_livestream,
+													unit: 'credit/viewer',
+												},
+											]
+											: [
+												{amount: form.data.amount, unit: 'viewers'},
+												{amount: form.data.days, unit: 'days'},
+												{
+													amount: form.data.max_live_per_day,
+													unit: `live${
+														form.data.max_live_per_day == 1 ? '' : 's'
+														} per day`,
+												},
+												{
+													amount: form.data.parallel,
+													unit: 'livestreams in parallel',
+												},
+												{
+													amount: form.data.max_duration,
+													unit: 'minutes per video',
+												},
+												{
+													amount:
+														props.data.me.pricing?.vip_viewers_livestream,
+													unit: 'credit/viewer',
+												},
+											]
+									}
+								/>
+							</>
+						)}
+					{error && (
+						<Alert type="error" message={error} style={{marginTop: 15}} />
+					)}
 				</Spin>
 			</Modal>
 		)

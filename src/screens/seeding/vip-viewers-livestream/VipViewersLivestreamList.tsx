@@ -1,17 +1,12 @@
-import { Avatar, Badge, Card, Col, Icon, List, Row, Spin, Tooltip } from 'antd'
-import { graphql } from 'babel-plugin-relay/macro'
-import React, { Fragment, useState } from 'react'
-import { CUModal } from './CUModal'
-import { ViewModal } from './ViewModal'
-import {
-	VipViewersLivestreamReport,
-	VipViewersLivestreamReportStatusFilter,
-} from './VipViewersLivestreamReport'
-import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper'
-import {
-	VipViewersLivestream,
-	VipViewersLivestreamConnection,
-} from '../../../types'
+import {Alert, Avatar, Badge, Card, Col, Icon, List, Row, Skeleton, Tooltip} from 'antd'
+import {graphql} from 'babel-plugin-relay/macro'
+import React, {Fragment, useState} from 'react'
+import {Fab} from 'react-tiny-fab'
+import {GraphQLWrapper} from '../../../graphql/GraphQLWrapper'
+import {VipViewersLivestream, VipViewersLivestreamConnection} from '../../../types'
+import {CUModal} from './CUModal'
+import {ViewModal} from './ViewModal'
+import {VipViewersLivestreamReport, VipViewersLivestreamReportStatusFilter} from './VipViewersLivestreamReport'
 
 const query = graphql`
 	query VipViewersLivestreamListQuery {
@@ -20,11 +15,13 @@ const query = graphql`
 				node {
 					id
 					active
-					amount
-					note
 					name
+					amount
+					end_time
+					max_duration
+					max_live_per_day
+					parallel
 					created_time
-					updated_time
 				}
 			}
 		}
@@ -32,57 +29,79 @@ const query = graphql`
 `
 
 export const VipViewersLivestreamList = GraphQLWrapper<
-	{ vip_viewers_livestream_tasks: VipViewersLivestreamConnection },
-	{ search: string }
->(query, {}, props => {
-	const [editing_vip, set_editing_vip] = useState<VipViewersLivestream | null>(
+	{vip_viewers_livestream_tasks: VipViewersLivestreamConnection},
+	{search: string}
+>(query, {}, props =>
+{
+	const [editingVipViewerLivestream, setEditingVipViewerLivestream] = useState<VipViewersLivestream | null>(
 		null,
 	)
-	const [viewing_vip, set_viewing_vip] = useState<VipViewersLivestream | null>(
+	const [viewingVipViewerLivestream, setViewingVipViewerLivestream] = useState<VipViewersLivestream | null>(
 		null,
 	)
 	const [status_filter, set_status_filter] = useState<
 		VipViewersLivestreamReportStatusFilter
 	>('all')
 
-	if (props.loading) {
+	const [
+		createUpdateVipViewersLivestreamModalIsVisible,
+		setCreateUpdateVipViewersLivestreamModalIsVisible,
+	] = useState<boolean>(false)
+
+	if (props.error)
+	{
 		return (
-			<Row align="middle" type="flex" justify="center">
-				<Col>
-					<Spin spinning={true} />
-				</Col>
-			</Row>
+			<Alert
+				showIcon
+				type="error"
+				message={JSON.parse(props.error)?.errors[0].message}
+			/>
 		)
 	}
+	if (props.loading && !props.data && !props.error)
+		return <Skeleton active loading paragraph={{rows: 5}} />
+
 	let list: VipViewersLivestream[] = []
-	if (props.data) {
-		list = props.data.vip_viewers_livestream_tasks.edges
-			.map(e => e.node)
-			.filter(
-				e =>
-					e.id.includes(props.search) ||
-					e.name.toLowerCase().includes(props.search),
-			)
-	}
-	const now = Date.now()
+	list = props.data.vip_viewers_livestream_tasks.edges
+		.map(e => e.node)
+		.filter(
+			e =>
+				e.id.includes(props.search) ||
+				e.name.toLowerCase().includes(props.search),
+		)
 
 	return (
 		props.data && (
-			<Fragment>
-				{editing_vip && (
+			<>
+				{createUpdateVipViewersLivestreamModalIsVisible && (
 					<CUModal
-						mode="update"
-						onClose={() => set_editing_vip(null)}
-						vip={editing_vip}
+						mode={editingVipViewerLivestream ? 'update' : 'create'}
+						onClose={() =>
+						{
+							setEditingVipViewerLivestream(null)
+							setCreateUpdateVipViewersLivestreamModalIsVisible(false)
+						}}
+						vip={editingVipViewerLivestream}
 					/>
 				)}
-				{viewing_vip && (
+				{viewingVipViewerLivestream && (
 					<ViewModal
-						onClose={() => set_viewing_vip(null)}
-						person={viewing_vip}
-						onClick={video_id => {
+						onClose={() => setViewingVipViewerLivestream(null)}
+						person={viewingVipViewerLivestream}
+						onClick={video_id =>
+						{
 							console.log(video_id)
 						}}
+					/>
+				)}
+				{!createUpdateVipViewersLivestreamModalIsVisible && !viewingVipViewerLivestream && (
+					<Fab
+						mainButtonStyles={{backgroundColor: 'rgb(64, 169, 255)'}}
+						icon={<Icon type="plus" />}
+						event="click"
+						onClick={() =>
+							setCreateUpdateVipViewersLivestreamModalIsVisible(true)
+						}
 					/>
 				)}
 				<VipViewersLivestreamReport
@@ -98,50 +117,32 @@ export const VipViewersLivestreamList = GraphQLWrapper<
 					grid={{
 						xs: 1,
 						sm: 2,
-						md: 4,
+						md: 3,
 						lg: 4,
-						xl: 4,
-						xxl: 4,
 					}}
 					rowKey="uid"
-					pagination={{
-						pageSizeOptions: [
-							'5',
-							'10',
-							'20',
-							'30',
-							'50',
-							'100',
-							'200',
-							'300',
-							'400',
-							'500',
-							'1000',
-						],
-						showSizeChanger: true,
-					}}
 					dataSource={list}
 					renderItem={item => (
-						<List.Item style={{ margin: 5 }}>
+						<List.Item style={{margin: 5}}>
 							<Card
 								type="inner"
 								hoverable
 								size="small"
 								actions={[
-									<Tooltip placement="bottom" title="Click to view">
-										<Icon
-											type="eye"
-											key="eye"
-											onClick={() => set_viewing_vip(item)}
-										/>
-									</Tooltip>,
-									<Tooltip placement="bottom" title="Click to edit">
-										<Icon
-											type="edit"
-											key="edit"
-											onClick={() => set_editing_vip(item)}
-										/>
-									</Tooltip>,
+									<Icon
+										type="eye"
+										key="eye"
+										onClick={() => setViewingVipViewerLivestream(item)}
+									/>,
+									<Icon
+										type="edit"
+										key="edit"
+										onClick={() =>
+										{
+											setCreateUpdateVipViewersLivestreamModalIsVisible(true)
+											setEditingVipViewerLivestream(item)
+										}}
+									/>
 								]}
 							>
 								<Row type="flex" justify="start" align="middle">
@@ -149,11 +150,6 @@ export const VipViewersLivestreamList = GraphQLWrapper<
 										<Avatar
 											src={`http://graph.facebook.com/${item.id}/picture?type=large`}
 											size={65}
-										/>
-										<Badge
-											status="error"
-											offset={[-10, -13]}
-											style={{ float: 'right', fontSize: 25 }}
 										/>
 									</Col>
 									<Col
@@ -172,7 +168,7 @@ export const VipViewersLivestreamList = GraphQLWrapper<
 						</List.Item>
 					)}
 				/>
-			</Fragment>
+			</>
 		)
 	)
 })

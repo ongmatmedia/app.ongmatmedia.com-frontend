@@ -215,33 +215,6 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 							</FormElement>
 						),
 					})}
-					{/* 
-					{props.form.field<string>({
-						name: 'note',
-						require: t('form.note_input.validatingErrorMessage'),
-						initalValue: 'No note',
-						render: ({
-							error,
-							loading,
-							setValue,
-							value,
-							set_touched,
-							touched,
-						}) => (
-								<FormElement
-									label={t('form.note_input.title')}
-									icon="eye"
-									error={error}
-								>
-									<Input.TextArea
-										placeholder={t('form.note_input.placeholder')}
-										value={value}
-										onChange={e => setValue(e.target.value)}
-									/>
-								</FormElement>
-							),
-					})} */}
-
 					{props.data && props.form.data.limit_mins && props.form.data.amount && (
 						<OrderInfo
 							balance={props.data.me.balance}

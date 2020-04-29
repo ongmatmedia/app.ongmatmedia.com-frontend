@@ -8,7 +8,7 @@ const Icon = () => (
 		type="flex"
 		justify="space-around"
 		align="middle"
-		style={{ height: '100%', flexDirection: 'column' }}
+		style={{ minHeight: '100%', flexDirection: 'column' }}
 	>
 		<Col md={24} style={{ display: 'flex', justifyContent: 'center' }}>
 			<img
@@ -25,7 +25,7 @@ export const AuthLayout = (props: { Content }) => (
 			display: 'flex',
 			background: 'linear-gradient(to right, #4e54c8, #8f94fb)',
 			flexDirection: 'column',
-			minHeight: '100vh',
+			minHeight: '100%',
 			justifyContent: 'center',
 		}}
 	>

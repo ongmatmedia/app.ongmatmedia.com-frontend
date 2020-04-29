@@ -6,6 +6,7 @@ export const BreadCrumb = (withRouter as any)((props: RouteComponentProps) => {
 	const routesTree = props.location.pathname
 		.split('/')
 		.slice(1)
+		.filter(el => el !== '')
 		.map(el => ({
 			path: `/${el}`,
 			breadcrumbName:
@@ -23,7 +24,10 @@ export const BreadCrumb = (withRouter as any)((props: RouteComponentProps) => {
 				return last ? (
 					<span>{route.breadcrumbName}</span>
 				) : (
-					<span onClick={() => props.history.push(`${route.path}`)}>
+					<span
+						onClick={() => props.history.push(`${route.path}`)}
+						style={{ cursor: 'pointer' }}
+					>
 						{route.breadcrumbName}
 					</span>
 				)
