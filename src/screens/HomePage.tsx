@@ -176,7 +176,7 @@ const HomePage = PaginationWrapper<{
 	({ data, loading, error, reload, load_more, loading_more, has_more }) => {
 		if (error && !data)
 			return (
-				<Card style={{ height: '100%' }} size="small">
+				<Card style={{ minHeight: '100%' }} size="small">
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Alert showIcon message={error} type="error" />
@@ -186,7 +186,7 @@ const HomePage = PaginationWrapper<{
 			)
 		if (loading && !data)
 			return (
-				<Card style={{ height: '100%' }} size="small">
+				<Card style={{ minHeight: '100%' }} size="small">
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Spin
@@ -291,7 +291,7 @@ const HomePage = PaginationWrapper<{
 		}[] = sortedAscendingDayData
 
 		return (
-			<Card style={{ height: '100%' }}>
+			<Card style={{ minHeight: '100%' }}>
 				<Row gutter={16}>
 					<Col xs={24}>
 						<List

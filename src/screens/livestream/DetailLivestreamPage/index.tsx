@@ -34,13 +34,13 @@ export const DetailLivestreamPage = withRouter(
 
 		return (
 			<Card title={<BreadCrumb />}>
-				<Row style={{ height: '100%' }}>
+				<Row style={{ minHeight: '100%' }}>
 					<Col
 						md={8}
 						xs="24"
 						style={{
 							overflow: 'auto',
-							height: 'calc(100vh - 170px)',
+							minHeight: '100%',
 							overflowX: 'hidden',
 						}}
 					>

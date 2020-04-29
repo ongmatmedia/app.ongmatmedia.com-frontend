@@ -3,25 +3,25 @@ import { ConnectionHandler, RecordProxy } from 'relay-runtime'
 import graphql from 'babel-plugin-relay/macro'
 import { VIPViewersLivestreamInput } from './__generated__/createVipViewersLivestreamMutation.graphql'
 import { RelayEnvironment } from './RelayEnvironment'
+import {GraphQLError} from './GraphqlError'
 
 const mutation = graphql`
 	mutation createVipViewersLivestreamMutation(
+		$days: Int!
 		$input: VIPViewersLivestreamInput!
 	) {
-		create_vip_viewers_livestream_task(input: $input) {
+		create_vip_viewers_livestream_task(days: $days, input: $input) {
 			vip {
 				node {
 					id
 					active
-					amount
-					bought_mins
-					used_mins
-					note
 					name
-					created_time
-					updated_time
-					auto_disable_after
+					amount
+					end_time
+					max_duration
+					max_live_per_day
 					parallel
+					created_time
 				}
 			}
 			me {
@@ -33,12 +33,13 @@ const mutation = graphql`
 `
 
 export const create_vip_viewers_livestream = async (
+	days: number,
 	input: VIPViewersLivestreamInput,
 ) => {
-	await new Promise((s, r) => {
+	await new Promise((resolve, reject) => {
 		commitMutation(RelayEnvironment, {
 			mutation,
-			variables: { input },
+			variables: { days, input },
 			updater: async store => {
 				const list = store.get(
 					`client:root:vip_viewers_livestream_tasks`,
@@ -48,9 +49,12 @@ export const create_vip_viewers_livestream = async (
 				) as RecordProxy
 				const vip = result.getLinkedRecord('vip') as RecordProxy
 				ConnectionHandler.insertEdgeAfter(list, vip)
-				s()
+				resolve()
 			},
-			onError: e => r(e.message),
+			onError: error => {
+				const { errors } = (error as any) as GraphQLError
+				reject(errors.map((e, index) => `${index}. ${e.message}`).join('\n'))
+			},
 		})
 	})
 }

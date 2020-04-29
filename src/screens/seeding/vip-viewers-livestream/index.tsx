@@ -1,17 +1,17 @@
-import React, { useState } from 'react'
-import { VipViewersLivestreamAction } from './VipViewersLivestreamAction'
 import { Card } from 'antd'
-import { VipViewersLivestreamList } from './VipViewersLivestreamList'
-import { useTranslation } from 'react-i18next'
+import React, { useState } from 'react'
 import { BreadCrumb } from '../../../components/common/BreadCrumb'
+import { VipViewersLivestreamAction } from './VipViewersLivestreamAction'
+import { VipViewersLivestreamList } from './VipViewersLivestreamList'
 
 export const VipViewersLivestreamPage = () => {
 	const [search, set_search] = useState<string>('')
-	const { t } = useTranslation('vip_page')
 
 	return (
-		<Card title={<BreadCrumb />}>
-			<VipViewersLivestreamAction onChangeSearch={set_search} />
+		<Card title={<BreadCrumb />} style={{ minHeight: '100%' }}>
+			<VipViewersLivestreamAction
+				onChangeSearch={searchValue => set_search(searchValue)}
+			/>
 			<VipViewersLivestreamList search={search} />
 		</Card>
 	)

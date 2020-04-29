@@ -287,6 +287,9 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   update_facebook_account(input: FacebookAccountUpdateInput!): FacebookAccount!
   add_facebook_account(input: FacebookAccountInput!): FacebookAccountEdge!
   delete_facebook_account(id: ID!): Boolean!
+  create_vip_viewers_livestream_task(days: Int!, input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskCUDResponse!
+  update_vip_viewers_livestream_task(days: Int!, input: VIPViewersLivestreamUpdateInput!): VipViewersLivestreamTaskCUDResponse!
+  delete_vip_viewers_livestream_task(id: String!): VipViewersLivestreamTaskCUDResponse!
   update_livestream_subscription(days: Int!, data: LivestreamSubscriptionInput!, user_id: ID): LivestreamSubscriptionUpdateResponse!
   create_livestream(task: LivestreamInput!): LivestreamEdge!
   update_livestream(task: LivestreamUpdateInput!): Livestream!
@@ -295,87 +298,7 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   create_deposit(amount: Int!): NewDepositInfo!
   create_notification(input: NotificationInput!): Notification!
   set_notification_read(id: ID!): Notification!
-  create_vip_viewers_livestream_task(input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskCUDResponse!
-  update_vip_viewers_livestream_task(input: VIPViewersLivestreamUpdateInput!): VipViewersLivestreamTaskCUDResponse!
-  delete_vip_viewers_livestream_task(id: String!): VipViewersLivestreamTaskCUDResponse!
 }
-
-type VIPViewersLivestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  user_id: String!
-  id: ID!
-  active: Boolean!
-  amount: Int!
-  bought_mins: Int!
-  used_mins: Int!
-  note: String!
-  name: String!
-  histories: [VIPViewersLivestreamHistory!]!
-  created_time: Long!
-  updated_time: Long!
-  auto_disable_after: Float!
-  parallel: Float!
-}
-
-type VIPViewersLivestreamConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  edges: [VIPViewersLivestreamEdge!]!
-  pageInfo: PageInfo!
-}
-
-type VIPViewersLivestreamEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  node: VIPViewersLivestream!
-}
-
-type VIPViewersLivestreamHistory @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  id: String!
-  created_time: Float!
-  viewers_count: [Int!]!
-  thumbnail: String!
-}
-
-type VipViewersLivestreamTaskCUDResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  vip: VIPViewersLivestreamEdge!
-  me: User!
-  payment_history: PaymentHistoryEdge
-}
-
-input VIPViewersLivestreamQueryFilters {
-  amount: TableIntFilterInput!
-  created_time: TableIntFilterInput!
-  end_time: TableIntFilterInput!
-}
-
-input TableIntFilterInput {
-  ne: Int
-  eq: Int
-  le: Int
-  lt: Int
-  ge: Int
-  gt: Int
-  between: Int
-}
-
-input VIPViewersLivestreamInput {
-  id: String!
-  active: Boolean!
-  note: String!
-  amount: Int!
-  name: String!
-  auto_disable_after: Int!
-  parallel: Int!
-  bought_mins: Int!
-}
-
-input VIPViewersLivestreamUpdateInput {
-  id: String!
-  active: Boolean
-  note: String
-  amount: Int
-  name: String
-  auto_disable_after: Int
-  parallel: Int
-  bought_mins: Int
-}
-
 
 type NewDepositInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
   id: String!
@@ -469,14 +392,14 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   facebook_account_info(url: String!): FacebookAccountInfo!
   facebook_accounts(after: String, limit: Int): FacebookAccountConnection
   facebook_account(id: ID!): FacebookAccount!
+  vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
+  vip_viewers_livestream_task(id: String!): VIPViewersLivestream!
   livestream_subscription(user_id: ID): LivestreamSubscription
   livestream_tasks(before_time: Long, after: String, first: Int): LivestreamConnection!
   livestream_task(id: ID!): Livestream!
   payment_histories(first: Int, after: String, before_time: Long): PaymentHistoryConnection!
   video_info(url: String!): VideoInfo!
   notifications(after: String, limit: Int): [NotificationConnection!]!
-  vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
-  vip_viewers_livestream_task(id: String!): VIPViewersLivestream!
 }
 
 type SendmoneyResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -506,6 +429,31 @@ type Subscription @aws_api_key @aws_cognito_user_pools @aws_oidc {
   @aws_subscribe(mutations: ["update_livestream"])
   on_new_notification(user_id: String!): Notification
   @aws_subscribe(mutations: ["create_notification"])
+}
+
+input TableBooleanFilterInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input TableIntFilterInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: Int
+}
+
+input TableStringFilterInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  between: String
 }
 
 type User @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -565,6 +513,59 @@ type VideoOwner @aws_api_key @aws_cognito_user_pools @aws_oidc {
   name: String!
   id: String!
   avatar: String!
+}
+
+type VIPViewersLivestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  user_id: String!
+  id: ID!
+  active: Boolean!
+  name: String!
+  amount: Int!
+  end_time: Long!
+  max_duration: Int!
+  max_live_per_day: Int!
+  parallel: Int!
+  created_time: Long!
+  buff_history: BuffViewersLivestreamConnection!
+  payment_history: PaymentHistoryConnection!
+}
+
+type VIPViewersLivestreamConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  edges: [VIPViewersLivestreamEdge!]!
+  pageInfo: PageInfo!
+}
+
+type VIPViewersLivestreamEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  node: VIPViewersLivestream!
+}
+
+input VIPViewersLivestreamInput {
+  id: String!
+  amount: Int!
+  name: String!
+  max_duration: Int!
+  max_live_per_day: Int!
+  parallel: Int!
+}
+
+input VIPViewersLivestreamQueryFilters {
+  amount: TableIntFilterInput!
+  created_time: TableIntFilterInput!
+  end_time: TableIntFilterInput!
+}
+
+type VipViewersLivestreamTaskCUDResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  vip: VIPViewersLivestreamEdge!
+  me: User!
+  payment_history: PaymentHistoryEdge
+}
+
+input VIPViewersLivestreamUpdateInput {
+  id: String!
+  amount: Int!
+  name: String!
+  limit_mins: Int!
+  parallel: Int!
 }
 
 type Root{

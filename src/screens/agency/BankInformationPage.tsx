@@ -46,23 +46,11 @@ export const BankInformationPage = GraphQLWrapper<{
 }>(query, {}, ({ loading, data }) => {
 	if (loading)
 		return (
-			<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
+			<Card title={<BreadCrumb />} style={{ minHeight: '100%' }}>
 				<Row type="flex" justify="space-around">
 					<Col>
 						<Spin
 							indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
-						/>
-					</Col>
-				</Row>
-			</Card>
-		)
-	if (loading)
-		return (
-			<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
-				<Row type="flex" justify="space-around">
-					<Col>
-						<Spin
-							indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}
 						/>
 					</Col>
 				</Row>

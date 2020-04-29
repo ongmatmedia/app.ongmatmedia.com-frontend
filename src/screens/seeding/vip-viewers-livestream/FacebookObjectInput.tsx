@@ -9,12 +9,13 @@ export enum LivestreamFacebookTargetType {
 }
 
 export type FacebookObjectInputProps = {
-	onSelect: (obj: {
-		name: string
-		id: string
-		image: string
-		type: LivestreamFacebookTargetType
-	}) => any
+	// onSelect: (obj: {
+	// 	name: string
+	// 	id: string
+	// 	image: string
+	// 	type: LivestreamFacebookTargetType
+	// }) => any
+	onSelect: (data: { url: string }) => void
 	onError?: Function
 	placeholder?: string
 	defaultValue?: string
@@ -27,15 +28,18 @@ export const FacebookObjectInput = (props: FacebookObjectInputProps) => {
 	const submit = async () => {
 		set_loading(true)
 		try {
-			const { name, type, uid: id } = await FacebookAccount.getUIDFromURL(value)
+			// const { name, type, uid: id } = await FacebookAccount.getUIDFromURL(value)
+			// props.onSelect({
+			// 	image:
+			// 		type != 'group'
+			// 			? `http://graph.facebook.com/${id}/picture?type=large`
+			// 			: 'https://leadershiproundtable.org/wp-content/uploads/2015/09/group-1824145_1280.png',
+			// 	name,
+			// 	id,
+			// 	type,
+			// })
 			props.onSelect({
-				image:
-					type != 'group'
-						? `http://graph.facebook.com/${id}/picture?type=large`
-						: 'https://leadershiproundtable.org/wp-content/uploads/2015/09/group-1824145_1280.png',
-				name,
-				id,
-				type,
+				url: value,
 			})
 			set_loading(false)
 			set_value('')

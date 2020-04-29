@@ -53,7 +53,7 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 }>(query, {}, ({ loading, data }) => {
 	if (loading)
 		return (
-			<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
+			<Card title={<BreadCrumb />} style={{ height: '100%' }}>
 				<Row type="flex" justify="space-around">
 					<Col>
 						<Spin

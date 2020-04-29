@@ -50,7 +50,7 @@ export const AdminContact = GraphQLWrapper<{ myadmin: User }>(
 	({ loading, error, data }) => {
 		if (error)
 			return (
-				<Card style={{ height: '100%' }} title={<BreadCrumb />}>
+				<Card style={{ minHeight: '100%' }} title={<BreadCrumb />}>
 					<Row type="flex" justify="space-around">
 						<Col xs={24}>
 							<Alert showIcon message={error} type="error" />
@@ -60,7 +60,7 @@ export const AdminContact = GraphQLWrapper<{ myadmin: User }>(
 			)
 		if (loading && !error)
 			return (
-				<Card style={{ height: '100%' }} title={<BreadCrumb />}>
+				<Card style={{ minHeight: '100%' }} title={<BreadCrumb />}>
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Spin

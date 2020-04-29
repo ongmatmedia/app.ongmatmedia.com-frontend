@@ -304,7 +304,7 @@ const LivestreamsListPage = PaginationWrapper<
 	({ data, loading, error, reload, has_more, load_more, loading_more }) => {
 		if (error && !data)
 			return (
-				<Card style={{ height: '100%' }} title={<BreadCrumb />} size="small">
+				<Card style={{ minHeight: '100%' }} title={<BreadCrumb />} size="small">
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Alert showIcon message={error} type="error" />
@@ -314,7 +314,7 @@ const LivestreamsListPage = PaginationWrapper<
 			)
 		if (loading && !data)
 			return (
-				<Card style={{ height: '100%' }} title={<BreadCrumb />} size="small">
+				<Card style={{ minHeight: '100%' }} title={<BreadCrumb />} size="small">
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Spin

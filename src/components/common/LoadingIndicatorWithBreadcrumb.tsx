@@ -7,7 +7,7 @@ import React from 'react'
 import { BreadCrumb } from './BreadCrumb'
 
 export const LoadingIndicatorWithBreadcrumb = () => (
-	<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
+	<Card title={<BreadCrumb />} style={{ minHeight: '100%' }}>
 		<Row type="flex" justify="space-around">
 			<Col>
 				<Spin

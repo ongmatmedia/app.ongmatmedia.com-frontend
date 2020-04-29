@@ -13,6 +13,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import Moment from 'react-moment'
 import { VipViewersLivestream } from '../../../types'
+import {isMobile, isMobileOnly, isTablet} from 'react-device-detect'
 
 export type ViewModalProps = {
 	onClose: Function
@@ -139,16 +140,18 @@ export const ViewModal = (props: ViewModalProps) => {
 			destroyOnClose
 			closable={false}
 			onCancel={() => props.onClose()}
-			title="View Vip Viewers Livestream"
+			title="Vip Viewers Livestream"
+			width={isMobileOnly ? '100%' : isTablet ? '80%' : '50%'}
+			style={{top: isMobile ? 0 : 20, textAlign: 'center'}}
 		>
 			<Row type="flex" align="middle">
-				<Col span={4}>
+				<Col xs={8}>
 					<Avatar
 						src={`http://graph.facebook.com/${props.person.id}/picture?type=large`}
 						size={65}
 					/>
 				</Col>
-				<Col span={20}>
+				<Col xs={16}>
 					<TextCustom content={props.person.name} />
 					<TextCustom
 						content={
@@ -156,9 +159,6 @@ export const ViewModal = (props: ViewModalProps) => {
 								{props.person.created_time}
 							</Moment>
 						}
-					/>
-					<TextCustom
-						content={<Moment format="DD/MM/YYYY H:mm">{Date.now()}</Moment>}
 					/>
 					<TextCustom content={props.person.amount} />
 				</Col>
