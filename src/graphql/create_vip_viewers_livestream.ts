@@ -22,6 +22,14 @@ const mutation = graphql`
 					max_live_per_day
 					parallel
 					created_time
+					payment_history {
+						time
+						amount
+						max_duration
+						max_live_per_day
+						parallel
+						price
+					}
 				}
 			}
 			me {
@@ -53,7 +61,7 @@ export const create_vip_viewers_livestream = async (
 			},
 			onError: error => {
 				const { errors } = (error as any) as GraphQLError
-				reject(errors.map((e, index) => `${index}. ${e.message}`).join('\n'))
+				reject(errors.map(e => `[ERROR] ${e.message}`).join('\n'))
 			},
 		})
 	})

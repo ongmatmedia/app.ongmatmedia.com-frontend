@@ -287,9 +287,9 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   update_facebook_account(input: FacebookAccountUpdateInput!): FacebookAccount!
   add_facebook_account(input: FacebookAccountInput!): FacebookAccountEdge!
   delete_facebook_account(id: ID!): Boolean!
-  create_vip_viewers_livestream_task(days: Int!, input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskCUDResponse!
-  update_vip_viewers_livestream_task(days: Int!, input: VIPViewersLivestreamUpdateInput!): VipViewersLivestreamTaskCUDResponse!
-  delete_vip_viewers_livestream_task(id: String!): VipViewersLivestreamTaskCUDResponse!
+  create_vip_viewers_livestream_task(days: Int!, input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskResponse!
+  update_vip_viewers_livestream_task(days: Int!, input: VIPViewersLivestreamUpdateInput!, id: String!): VipViewersLivestreamTaskResponse!
+  delete_vip_viewers_livestream_task(id: String!): VipViewersLivestreamTaskResponse!
   update_livestream_subscription(days: Int!, data: LivestreamSubscriptionInput!, user_id: ID): LivestreamSubscriptionUpdateResponse!
   create_livestream(task: LivestreamInput!): LivestreamEdge!
   update_livestream(task: LivestreamUpdateInput!): Livestream!
@@ -527,7 +527,7 @@ type VIPViewersLivestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
   parallel: Int!
   created_time: Long!
   buff_history: BuffViewersLivestreamConnection!
-  payment_history: PaymentHistoryConnection!
+  payment_history: [VIPViewersLivestreamOrder!]!
 }
 
 type VIPViewersLivestreamConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -548,23 +548,31 @@ input VIPViewersLivestreamInput {
   parallel: Int!
 }
 
+type VIPViewersLivestreamOrder @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  time: Long!
+  amount: Int!
+  max_duration: Int!
+  max_live_per_day: Int!
+  parallel: Int!
+  price: Int!
+}
+
 input VIPViewersLivestreamQueryFilters {
   amount: TableIntFilterInput!
   created_time: TableIntFilterInput!
   end_time: TableIntFilterInput!
 }
 
-type VipViewersLivestreamTaskCUDResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
+type VipViewersLivestreamTaskResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
   vip: VIPViewersLivestreamEdge!
   me: User!
   payment_history: PaymentHistoryEdge
 }
 
 input VIPViewersLivestreamUpdateInput {
-  id: String!
   amount: Int!
-  name: String!
-  limit_mins: Int!
+  max_duration: Int!
+  max_live_per_day: Int!
   parallel: Int!
 }
 

@@ -6,9 +6,9 @@ import { StatictisCustom } from '../../../components/StatictisCustom'
 
 export type VipViewersLivestreamReportStatusFilter =
 	| 'all'
-	| 'exprise_5_days'
+	| 'expired_in_5_days'
 	| 'active'
-	| 'exprised'
+	| 'expired'
 
 export type VipViewersLivestreamReportProps = {
 	vips: VipViewersLivestream[]
@@ -46,24 +46,24 @@ export const VipViewersLivestreamReport = (
 				</span>
 			</Col>
 			<Col lg={6} sm={12} xs={24}>
-				<span onClick={() => on_change('exprise_5_days')}>
+				<span onClick={() => on_change('expired_in_5_days')}>
 					<StatictisCustom
 						gradient="linear-gradient(90deg, rgba(250,117,22,1) 37%, rgba(251,193,131,1) 98%)"
 						iconName="clock-circle"
 						description={t('report.expire_in_5_days_description')}
 						title={`${vips.filter(vip => (vip.end_time - Date.now()) / 1000 / 86400 <= 5).length}`}
-						active={filter == 'exprise_5_days'}
+						active={filter == 'expired_in_5_days'}
 					/>
 				</span>
 			</Col>
 			<Col lg={6} sm={12} xs={24}>
-				<span onClick={() => on_change('exprised')}>
+				<span onClick={() => on_change('expired')}>
 					<StatictisCustom
 						gradient="linear-gradient(90deg, rgba(250,79,22,1) 37%, rgba(251,132,131,1) 100%)"
 						iconName="warning"
 						description={t('report.expired_description')}
 						title={`${vips.filter(vip => vip.end_time < Date.now()).length}`}
-						active={filter == 'exprised'}
+						active={filter == 'expired'}
 					/>
 				</span>
 			</Col>

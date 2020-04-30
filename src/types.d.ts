@@ -291,9 +291,9 @@ export type Mutation = {
   update_facebook_account: FacebookAccount;
   add_facebook_account: FacebookAccountEdge;
   delete_facebook_account: Scalars['Boolean'];
-  create_vip_viewers_livestream_task: VipViewersLivestreamTaskCudResponse;
-  update_vip_viewers_livestream_task: VipViewersLivestreamTaskCudResponse;
-  delete_vip_viewers_livestream_task: VipViewersLivestreamTaskCudResponse;
+  create_vip_viewers_livestream_task: VipViewersLivestreamTaskResponse;
+  update_vip_viewers_livestream_task: VipViewersLivestreamTaskResponse;
+  delete_vip_viewers_livestream_task: VipViewersLivestreamTaskResponse;
   update_livestream_subscription: LivestreamSubscriptionUpdateResponse;
   create_livestream: LivestreamEdge;
   update_livestream: Livestream;
@@ -382,6 +382,7 @@ export type MutationCreate_Vip_Viewers_Livestream_TaskArgs = {
 export type MutationUpdate_Vip_Viewers_Livestream_TaskArgs = {
   days: Scalars['Int'];
   input: VipViewersLivestreamUpdateInput;
+  id: Scalars['String'];
 };
 
 
@@ -745,7 +746,7 @@ export type VipViewersLivestream = {
   parallel: Scalars['Int'];
   created_time: Scalars['Long'];
   buff_history: BuffViewersLivestreamConnection;
-  payment_history: PaymentHistoryConnection;
+  payment_history: Array<VipViewersLivestreamOrder>;
 };
 
 export type VipViewersLivestreamConnection = {
@@ -766,22 +767,30 @@ export type VipViewersLivestreamInput = {
   parallel: Scalars['Int'];
 };
 
+export type VipViewersLivestreamOrder = {
+  time: Scalars['Long'];
+  amount: Scalars['Int'];
+  max_duration: Scalars['Int'];
+  max_live_per_day: Scalars['Int'];
+  parallel: Scalars['Int'];
+  price: Scalars['Int'];
+};
+
 export type VipViewersLivestreamQueryFilters = {
   amount: TableIntFilterInput;
   created_time: TableIntFilterInput;
   end_time: TableIntFilterInput;
 };
 
-export type VipViewersLivestreamTaskCudResponse = {
+export type VipViewersLivestreamTaskResponse = {
   vip: VipViewersLivestreamEdge;
   me: User;
   payment_history?: Maybe<PaymentHistoryEdge>;
 };
 
 export type VipViewersLivestreamUpdateInput = {
-  id: Scalars['String'];
   amount: Scalars['Int'];
-  name: Scalars['String'];
-  limit_mins: Scalars['Int'];
+  max_duration: Scalars['Int'];
+  max_live_per_day: Scalars['Int'];
   parallel: Scalars['Int'];
 };
