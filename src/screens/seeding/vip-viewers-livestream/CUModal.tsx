@@ -1,4 +1,4 @@
-import {Alert, Avatar, Button, Col, Form as AntdForm, Icon, message, Modal, notification, Row, Spin, Switch, Tag, Card} from 'antd'
+import {Alert, Avatar, Button, Card, Col, Form as AntdForm, Icon, message, Modal, notification, Row, Spin, Switch, Tag} from 'antd'
 import {graphql} from 'babel-plugin-relay/macro'
 import React, {useState} from 'react'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
@@ -12,6 +12,7 @@ import {range} from '../../../helpers/utils'
 import {withForm} from '../../../libs/Form'
 import {User, VipViewersLivestream} from '../../../types'
 import {FacebookObjectInput} from './FacebookObjectInput'
+import {update_vip_viewers_livestream} from '../../../graphql/update_vip_viewers_livestream'
 
 const query = graphql`
 	query CUModalQuery {
@@ -77,12 +78,20 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 								parallel: data.parallel,
 								max_live_per_day: data.max_live_per_day
 							})
-							notification.success({message: 'Create success'})
+							notification.success({message: 'Operation: Create vip subscription'})
 						} else
 						{
-							// console.log({data})
-							// await update_vip_viewers_livestream(data)
-							// notification.success({message: 'Update success'})
+							await update_vip_viewers_livestream(
+								data.days, 
+								{
+									amount: data.amount,
+									max_duration: data.max_duration,
+									max_live_per_day: data.max_live_per_day,
+									parallel: data.parallel,
+								},
+								data.facebook_target.id,
+							)
+							notification.success({message: 'Operation: Update vip subscription'})
 						}
 						set_error(null)
 						set_loading(false)
@@ -180,7 +189,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 									{error && <Alert type="error" message={error} />}
 									{!!value?.id && !!value?.name && (
 										<Card
-											style={{width: 300, marginTop: 16}}
+											style={{marginTop: 10}}
 											actions={
 												props.mode == 'create' ? [
 													<Icon
@@ -289,9 +298,10 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 										>
 											<Card.Meta
 												avatar={
-													<Avatar src={`http://graph.facebook.com/${value?.id}/picture?type=large`} />
+													<Avatar src={`http://graph.facebook.com/${value?.id}/picture?type=large`} size={40} />
 												}
 												title={value?.name}
+												description={`UID: ${value?.id}`}
 											/>
 										</Card>
 									)}
@@ -479,7 +489,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 							</>
 						)}
 					{error && (
-						<Alert type="error" message={error} style={{marginTop: 15}} />
+						<Alert showIcon type="error" message={error} style={{marginTop: 15}} />
 					)}
 				</Spin>
 			</Modal>

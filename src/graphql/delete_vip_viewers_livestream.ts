@@ -1,7 +1,8 @@
-import { commitMutation } from 'react-relay'
-import { ConnectionHandler, RecordProxy } from 'relay-runtime'
+import {commitMutation} from 'react-relay'
+import {ConnectionHandler, RecordProxy} from 'relay-runtime'
 import graphql from 'babel-plugin-relay/macro'
-import { RelayEnvironment } from './RelayEnvironment'
+import {RelayEnvironment} from './RelayEnvironment'
+import {GraphQLError} from './GraphqlError'
 
 const mutation = graphql`
 	mutation deleteVipViewersLivestreamMutation($id: String!) {
@@ -19,19 +20,26 @@ const mutation = graphql`
 	}
 `
 
-export const delete_vip_viewers_livestream = async (id: string) => {
-	await new Promise((s, r) => {
+export const delete_vip_viewers_livestream = async (id: string) =>
+{
+	await new Promise((resolve, reject) =>
+	{
 		commitMutation(RelayEnvironment, {
 			mutation,
-			variables: { id },
-			updater: async store => {
+			variables: {id},
+			updater: async store =>
+			{
 				const list = store.get(
 					`client:root:vip_viewers_livestream_tasks`,
 				) as RecordProxy
 				ConnectionHandler.deleteNode(list, id)
-				s()
+				resolve()
 			},
-			onError: r,
+			onError: error =>
+			{
+				const {errors} = (error as any) as GraphQLError
+				reject(errors.map(e => `[ERROR] ${e.message}`).join('\n'))
+			},
 		})
 	})
 }

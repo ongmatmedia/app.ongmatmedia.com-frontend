@@ -7,7 +7,7 @@ export const LoadingPage = () => (
 			display: 'flex',
 			flexDirection: 'row',
 			justifyContent: 'center',
-			minHeight: '100%',
+			height: '100vh',
 		}}
 	>
 		<div className="container">
