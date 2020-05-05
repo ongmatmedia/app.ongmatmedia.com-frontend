@@ -42,7 +42,7 @@ export const BuffViewersLivetreamStatistics = GraphQLWrapper<
 		totalIncreaseViewers,
 	}) => {
 		if (loading) return <Skeleton active />
-		else if (!loading && data)
+		if (!loading && data)
 			return (
 				<Row gutter={16} style={{ marginBottom: 10 }}>
 					<Col lg={4} md={8} sm={12} xs={24} style={{ marginTop: 10 }}>

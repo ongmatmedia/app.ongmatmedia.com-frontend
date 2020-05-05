@@ -1,4 +1,4 @@
-import { notification } from 'antd'
+import {notification, Skeleton} from 'antd'
 import Alert from 'antd/lib/alert'
 import Button from 'antd/lib/button'
 import Card from 'antd/lib/card'
@@ -11,28 +11,30 @@ import Spin from 'antd/lib/spin'
 import Tooltip from 'antd/lib/tooltip'
 import Text from 'antd/lib/typography/Text'
 import graphql from 'babel-plugin-relay/macro'
-import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { Fab } from 'react-tiny-fab'
-import { isNullOrUndefined } from 'util'
-import { BreadCrumb } from '../../../components/common/BreadCrumb'
-import { useAuth0 } from '../../../context/Auth0'
-import { delete_livestream } from '../../../graphql/delete_livestream'
-import {
+import React, {useEffect, useState} from 'react'
+import {Link} from 'react-router-dom'
+import {Fab} from 'react-tiny-fab'
+import {isNullOrUndefined} from 'util'
+import {BreadCrumb} from '../../../components/common/BreadCrumb'
+import {useAuth0} from '../../../context/Auth0'
+import {delete_livestream} from '../../../graphql/delete_livestream'
+import
+{
 	GraphQLQueryFetcher,
 	PaginationWrapper,
 } from '../../../graphql/GraphQLWrapper'
-import { stop_livestream } from '../../../graphql/stop_livestream'
+import {stop_livestream} from '../../../graphql/stop_livestream'
 import history from '../../../helpers/history'
-import { groupTimeIntoDayMap } from '../../../helpers/utils'
-import {
+import {groupTimeIntoDayMap} from '../../../helpers/utils'
+import
+{
 	Livestream,
 	LivestreamConnection,
 	LivestreamSubscription,
 } from '../../../types'
-import { LivestreamActions } from './LivestreamActions'
-import { LivestreamListItem } from './LivestreamListItem'
-import { LivestreamStatistics } from './LivestreamStatistics'
+import {LivestreamActions} from './LivestreamActions'
+import {LivestreamListItem} from './LivestreamListItem'
+import {LivestreamStatistics} from './LivestreamStatistics'
 
 const query = graphql`
 	query LivestreamsListPageQuery(
@@ -51,8 +53,10 @@ const LivestreamsListView = (props: {
 	has_more: Function
 	load_more: Function
 	loading_more: boolean
-}) => {
-	const { user } = useAuth0()
+	loading: boolean
+}) =>
+{
+	const {user} = useAuth0()
 
 	const [searchValue, setSearchValue] = useState<string>('')
 
@@ -86,7 +90,8 @@ const LivestreamsListView = (props: {
 			),
 		}))
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		activeSubscription?.quality == 0 &&
 			Modal.info({
 				title:
@@ -94,14 +99,17 @@ const LivestreamsListView = (props: {
 				okText: 'OK',
 				centered: true,
 				maskClosable: true,
-				onOk: () => {
+				onOk: () =>
+				{
 					history.push('/livestream/pricing')
 				},
 			})
 	}, [activeSubscription])
 
-	useEffect(() => {
-		const fn = async () => {
+	useEffect(() =>
+	{
+		const fn = async () =>
+		{
 			const data = await GraphQLQueryFetcher<{
 				livestream_subscription: LivestreamSubscription
 			}>(
@@ -118,7 +126,7 @@ const LivestreamsListView = (props: {
 						}
 					}
 				`,
-				{ user_id: user.sub },
+				{user_id: user.sub},
 			)
 			setActiveSubscription(data.livestream_subscription)
 		}
@@ -126,9 +134,9 @@ const LivestreamsListView = (props: {
 	}, [user])
 
 	return (
-		<Card title={<BreadCrumb />}>
+		<Card title={<BreadCrumb />} style={{minHeight: "100%"}}>
 			<Fab
-				mainButtonStyles={{ backgroundColor: '#1890ff' }}
+				mainButtonStyles={{backgroundColor: '#1890ff'}}
 				icon={<Icon type="plus" />}
 				event="click"
 				onClick={() => history.push('/livestream/create-livestream')}
@@ -161,89 +169,106 @@ const LivestreamsListView = (props: {
 					}
 				/>
 			)}
-			<LivestreamStatistics
-				total={props.list.length}
-				playing={
-					props.list.filter(livestream => livestream.status == 'playing').length
-				}
-			/>
+			{
+				props.loading ? (
+					<Skeleton active />
+				) : (
+						<LivestreamStatistics
+							total={props.list.length}
+							playing={
+								props.list.filter(livestream => livestream.status == 'playing').length
+							}
+						/>
+					)
+			}
 			<LivestreamActions
 				onChangeSearch={id => setSearchValue(id)}
 				onChangeDate={d =>
-					props.reload({ first: 12, before_time: d.getTime() })
+					props.reload({first: 12, before_time: d.getTime()})
 				}
 				onChangeStatusFilter={status => setStatusFilter(status)}
 			/>
-			<List
-				size="large"
-				dataSource={livestreamsGroupedByDay}
-				renderItem={livestreamsEachDay => (
-					<>
-						<div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15 }}>
-							<Icon type="calendar" style={{ marginRight: 5 }} />
-							{livestreamsEachDay.time}
-						</div>
-						<List
-							grid={{
-								gutter: 10,
-								xs: 1,
-								sm: 2,
-								md: 3,
-								lg: 4,
-							}}
-							dataSource={livestreamsEachDay.data}
-							renderItem={(live: Livestream & { time: any }) => (
-								<List.Item>
-									<LivestreamListItem
-										live={live}
-										onDeleteLivestream={async () => {
-											try {
-												await delete_livestream(live.id)
-												notification.success({
-													message: 'Operation: Delete livestream',
-													description: 'Successfully',
-												})
-											} catch (error) {
-												notification.error({
-													message: 'Operation: Delete livestream',
-													description: 'Failed',
-												})
+			{
+				props.loading ? (
+					<Skeleton active />
+				) : (
+						<>
+							<List
+								size="large"
+								dataSource={livestreamsGroupedByDay}
+								renderItem={livestreamsEachDay => (
+									<>
+										<div style={{fontSize: 20, fontWeight: 'bold', marginBottom: 15}}>
+											<Icon type="calendar" style={{marginRight: 5}} />
+											{livestreamsEachDay.time}
+										</div>
+										<List
+											grid={{
+												gutter: 10,
+												xs: 1,
+												sm: 2,
+												md: 3,
+												lg: 4,
+											}}
+											dataSource={livestreamsEachDay.data}
+											renderItem={(live: Livestream & {time: any}) => (
+												<List.Item>
+													<LivestreamListItem
+														live={live}
+														onDeleteLivestream={async () =>
+														{
+															try
+															{
+																await delete_livestream(live.id)
+																notification.success({
+																	message: 'Operation: Delete livestream',
+																	description: 'Successfully',
+																})
+															} catch (error)
+															{
+																notification.error({
+																	message: 'Operation: Delete livestream',
+																	description: 'Failed',
+																})
+															}
+														}}
+														onStopLivestream={async () =>
+															await stop_livestream(live.id)
+														}
+													/>
+												</List.Item>
+											)}
+										/>
+									</>
+								)}
+							/>
+							{props.has_more() && (
+								<Row type="flex" justify="center" align="middle">
+									<Col xs={24} style={{textAlign: 'center'}}>
+										<Tooltip
+											title={
+												searchValue
+													? 'Kết quả tìm kiếm đang bị giới hạn bởi nội dung tìm kiếm, vui lòng xóa bộ lọc để hiển thị toàn bộ kết quả.'
+													: ''
 											}
-										}}
-										onStopLivestream={async () =>
-											await stop_livestream(live.id)
-										}
-									/>
-								</List.Item>
+											trigger="click"
+										>
+											<Button
+												loading={props.loading_more}
+												type="dashed"
+												icon="vertical-align-bottom"
+												style={{margin: 10}}
+												onClick={() => props.load_more()}
+											>
+												{props.loading_more ? 'Loading' : 'Show more'}
+											</Button>
+										</Tooltip>
+									</Col>
+								</Row>
 							)}
-						/>
-					</>
-				)}
-			/>
-			{props.has_more() && (
-				<Row type="flex" justify="center" align="middle">
-					<Col xs={24} style={{ textAlign: 'center' }}>
-						<Tooltip
-							title={
-								searchValue
-									? 'Kết quả tìm kiếm đang bị giới hạn bởi nội dung tìm kiếm, vui lòng xóa bộ lọc để hiển thị toàn bộ kết quả.'
-									: ''
-							}
-							trigger="click"
-						>
-							<Button
-								loading={props.loading_more}
-								type="dashed"
-								icon="vertical-align-bottom"
-								style={{ margin: 10 }}
-								onClick={() => props.load_more()}
-							>
-								{props.loading_more ? 'Loading' : 'Show more'}
-							</Button>
-						</Tooltip>
-					</Col>
-				</Row>
-			)}
+						</>
+					)
+			}
 		</Card>
 	)
 }
@@ -301,10 +326,11 @@ const LivestreamsListPage = PaginationWrapper<
 	{
 		first: 10,
 	},
-	({ data, loading, error, reload, has_more, load_more, loading_more }) => {
+	({data, loading, error, reload, has_more, load_more, loading_more}) =>
+	{
 		if (error && !data)
 			return (
-				<Card style={{ minHeight: '100%' }} title={<BreadCrumb />} size="small">
+				<Card style={{minHeight: '100%'}} title={<BreadCrumb />} size="small">
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Alert showIcon message={error} type="error" />
@@ -312,21 +338,10 @@ const LivestreamsListPage = PaginationWrapper<
 					</Row>
 				</Card>
 			)
-		if (loading && !data)
-			return (
-				<Card style={{ minHeight: '100%' }} title={<BreadCrumb />} size="small">
-					<Row type="flex" justify="space-around">
-						<Col>
-							<Spin
-								indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
-							/>
-						</Col>
-					</Row>
-				</Card>
-			)
+
 		const livestream_tasks = data?.livestream_tasks?.edges?.map(
 			edge => edge.node,
-		)
+		) ?? []
 		return (
 			<LivestreamsListView
 				list={livestream_tasks}
@@ -334,6 +349,7 @@ const LivestreamsListPage = PaginationWrapper<
 				has_more={has_more}
 				load_more={load_more}
 				loading_more={loading_more}
+				loading={loading}
 			/>
 		)
 	},

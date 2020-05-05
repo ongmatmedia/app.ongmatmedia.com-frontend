@@ -13,7 +13,7 @@ export const NoteReading = (props: { note: string; collapse: boolean }) => {
 				padding: 7,
 				borderRadius: 5,
 				wordBreak: 'break-all',
-				marginTop: 10,
+				marginTop: 20,
 				cursor: props.note.length > 35 ? 'pointer' : '',
 				fontSize: 13,
 				textAlign: 'left',

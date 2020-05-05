@@ -10,26 +10,29 @@ export type PaymentListActionProps = {
 	onSearch: (search: string) => any
 }
 
-export const PaymentListAction = (props: PaymentListActionProps) => {
+export const PaymentListAction = (props: PaymentListActionProps) =>
+{
 	const search = (value: string) =>
 		props.onSearch(value.trim().toLocaleLowerCase())
 
 	return (
 		<Row
 			type="flex"
-			justify="space-between"
+			justify="end"
 			align="middle"
-			style={{ paddingTop: 10, paddingBottom: 10 }}
+			style={{paddingBottom: 10}}
+			gutter={16}
 		>
-			<Col md={6} span={12}>
+			<Col xs={24} sm={8} md={6} style={{marginTop: 10}}>
 				<DatePicker
 					onChange={d =>
 						props.onChangeDate(new Date(d ? d.valueOf() : Date.now()))
 					}
+					style={{width: "100%"}}
 				/>
 			</Col>
 
-			<Col md={6} xs={12}>
+			<Col xs={24} sm={8} md={6} style={{marginTop: 10}}>
 				<Input
 					placeholder="Search by username or note"
 					addonBefore={<Icon type="search" />}

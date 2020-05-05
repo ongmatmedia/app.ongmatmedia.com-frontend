@@ -120,7 +120,7 @@ export const FriendsFilteringActions = Form.create()(
 					</Col>
 					<Col xs={24} md={12}>
 						<Row gutter={16}>
-							<Col xs={16}>
+							<Col xs={24} sm={12}>
 								<Form.Item>
 									{props.form.getFieldDecorator('limit', {
 										initialValue: 500,
@@ -153,7 +153,7 @@ export const FriendsFilteringActions = Form.create()(
 									)}
 								</Form.Item>
 							</Col>
-							<Col xs={8}>
+							<Col xs={24} sm={12}>
 								<Form.Item>
 									<Tooltip
 										title="Start scan all your friends and inbox, comment, reaction, ..."

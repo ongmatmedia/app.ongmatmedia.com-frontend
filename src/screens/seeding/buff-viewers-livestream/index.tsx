@@ -14,7 +14,7 @@ export const BuffViewersLivestream = () => {
 	const [selectedBuffId, setSelectedBuffId] = useState<string>(null)
 
 	return (
-		<Card title={<BreadCrumb />}>
+		<Card title={<BreadCrumb />} style={{minHeight: "100%"}}>
 			<BuffViewersLivestreamList onSelectBuff={id => setSelectedBuffId(id)} />
 			{create_modal_visible && (
 				<BuffViewersLivestreamCreateModal

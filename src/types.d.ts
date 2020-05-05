@@ -789,6 +789,7 @@ export type VipViewersLivestreamTaskResponse = {
 };
 
 export type VipViewersLivestreamUpdateInput = {
+  active: Scalars['Boolean'];
   amount: Scalars['Int'];
   max_duration: Scalars['Int'];
   max_live_per_day: Scalars['Int'];

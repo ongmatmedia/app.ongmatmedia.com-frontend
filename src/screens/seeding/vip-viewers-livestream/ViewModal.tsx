@@ -1,4 +1,5 @@
-import {
+import
+{
 	Avatar,
 	Col,
 	Divider,
@@ -9,19 +10,23 @@ import {
 	Spin,
 	Tooltip,
 	Typography,
+	Card,
+	message,
 } from 'antd'
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import Moment from 'react-moment'
-import { VipViewersLivestream } from '../../../types'
+import {VipViewersLivestream} from '../../../types'
 import {isMobile, isMobileOnly, isTablet} from 'react-device-detect'
+import {CopyToClipboard} from 'react-copy-to-clipboard'
 
 export type ViewModalProps = {
 	onClose: Function
 	onClick: (video_id: string) => any
-	person: VipViewersLivestream
+	vip: VipViewersLivestream
 }
 
-interface VideoProps {
+interface VideoProps
+{
 	video_id: String
 	current_viewers: number
 	title: string
@@ -30,11 +35,7 @@ interface VideoProps {
 	thumbnail: string
 }
 
-const { Text } = Typography
-
-const TextCustom = props => (
-	<Text style={{ display: 'block' }}>{props.content}</Text>
-)
+const {Text} = Typography
 
 const videos: VideoProps[] = [
 	{
@@ -75,11 +76,11 @@ const videos: VideoProps[] = [
 	},
 ]
 
-const ListVideos = (props: { dataSource: VideoProps[]; onClick: Function }) => (
+const ListVideos = (props: {dataSource: VideoProps[]; onClick: Function}) => (
 	<List
 		className="list-videos"
 		itemLayout="horizontal"
-		dataSource={props.dataSource.map((video, index) => ({ video, index }))}
+		dataSource={props.dataSource.map((video, index) => ({video, index}))}
 		renderItem={({
 			video: {
 				status,
@@ -90,45 +91,47 @@ const ListVideos = (props: { dataSource: VideoProps[]; onClick: Function }) => (
 				video_id,
 			},
 		}) => (
-			<List.Item
-				actions={[
-					status === 'loading' ? (
-						<Icon type="loading" style={{ fontSize: 25 }} />
-					) : status === 'paused' ? (
-						<Tooltip placement="top" title="Click to play">
-							<Icon
-								type="pause-circle"
-								style={{ fontSize: 25 }}
-								onClick={() => props.onClick(video_id)}
-							/>
-						</Tooltip>
-					) : (
-						<Tooltip placement="top" title="Click to pause">
-							<Icon
-								type="play-circle"
-								style={{ fontSize: 25 }}
-								onClick={() => props.onClick(video_id)}
-							/>
-						</Tooltip>
-					),
-				]}
-			>
-				<List.Item.Meta
-					avatar={<Avatar src={thumbnail} />}
-					title={title}
-					description={description}
-				/>
-				<div>{current_viewers}</div>
-			</List.Item>
-		)}
+				<List.Item
+					actions={[
+						status === 'loading' ? (
+							<Icon type="loading" style={{fontSize: 25}} />
+						) : status === 'paused' ? (
+							<Tooltip placement="top" title="Click to play">
+								<Icon
+									type="pause-circle"
+									style={{fontSize: 25}}
+									onClick={() => props.onClick(video_id)}
+								/>
+							</Tooltip>
+						) : (
+									<Tooltip placement="top" title="Click to pause">
+										<Icon
+											type="play-circle"
+											style={{fontSize: 25}}
+											onClick={() => props.onClick(video_id)}
+										/>
+									</Tooltip>
+								),
+					]}
+				>
+					<List.Item.Meta
+						avatar={<Avatar src={thumbnail} />}
+						title={title}
+						description={description}
+					/>
+					<div>{current_viewers}</div>
+				</List.Item>
+			)}
 	/>
 )
 
-export const ViewModal = (props: ViewModalProps) => {
+export const ViewModal = (props: ViewModalProps) =>
+{
 	const [isLoadingVideos, setLoadingVideos] = useState<boolean>(false)
 	const [videosArray, setVideosArray] = useState<VideoProps[]>()
 
-	useEffect(() => {
+	useEffect(() =>
+	{
 		setLoadingVideos(true)
 		setVideosArray(videos)
 		setLoadingVideos(false)
@@ -142,28 +145,66 @@ export const ViewModal = (props: ViewModalProps) => {
 			onCancel={() => props.onClose()}
 			title="Vip Viewers Livestream"
 			width={isMobileOnly ? '100%' : isTablet ? '80%' : '50%'}
-			style={{top: isMobile ? 0 : 20, textAlign: 'center'}}
+			style={{top: isMobile ? 0 : 20}}
 		>
-			<Row type="flex" align="middle">
-				<Col xs={8}>
-					<Avatar
-						src={`http://graph.facebook.com/${props.person.id}/picture?type=large`}
-						size={65}
-					/>
-				</Col>
-				<Col xs={16}>
-					<TextCustom content={props.person.name} />
-					<TextCustom
-						content={
-							<Moment format="DD/MM/YYYY H:mm">
-								{props.person.created_time}
-							</Moment>
+			<Card
+				style={{marginTop: 10, width: "100%"}}
+				actions={[
+					<CopyToClipboard
+						text={props.vip?.id}
+						onCopy={() => message.info('UID copied')}
+					>
+						<Icon
+							type="copy"
+							style={{
+								color: 'black',
+								marginRight: 10,
+								fontSize: 20,
+								cursor: 'pointer',
+							}}
+						/>
+					</CopyToClipboard>,
+					<Icon
+						type="message"
+						style={{
+							color: 'black',
+							marginRight: 10,
+							fontSize: 20,
+							cursor: 'pointer',
+						}}
+						onClick={() =>
+							window.open(
+								`https://m.me/${
+								props.vip?.id
+								}`,
+							)
 						}
-					/>
-					<TextCustom content={props.person.amount} />
-				</Col>
-			</Row>
-			<Divider />
+					/>,
+					<Icon
+						type="facebook"
+						style={{
+							color: 'black',
+							fontSize: 20,
+							cursor: 'pointer',
+						}}
+						onClick={() =>
+							window.open(
+								`https://fb.com/${
+								props.vip?.id
+								}`,
+							)
+						}
+					/>,
+				]}
+			>
+				<Card.Meta
+					avatar={
+						<Avatar src={`http://graph.facebook.com/${props.vip?.id}/picture?type=large`} size={40} />
+					}
+					title={props.vip?.name}
+					description={`UID: ${props.vip?.id}`}
+				/>
+			</Card>
 			{isLoadingVideos && !videosArray ? (
 				<Row align="middle" type="flex" justify="center">
 					<Col>
@@ -171,12 +212,12 @@ export const ViewModal = (props: ViewModalProps) => {
 					</Col>
 				</Row>
 			) : (
-				<Row>
-					{videosArray && (
-						<ListVideos dataSource={videosArray} onClick={props.onClick} />
-					)}
-				</Row>
-			)}
+					<Row>
+						{videosArray && (
+							<ListVideos dataSource={videosArray} onClick={props.onClick} />
+						)}
+					</Row>
+				)}
 		</Modal>
 	)
 }

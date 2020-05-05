@@ -9,21 +9,22 @@ import Skeleton from 'antd/lib/skeleton'
 import Spin from 'antd/lib/spin'
 import Tooltip from 'antd/lib/tooltip'
 import Text from 'antd/lib/typography/Text'
-import { graphql } from 'babel-plugin-relay/macro'
-import React, { useEffect, useState } from 'react'
+import {graphql} from 'babel-plugin-relay/macro'
+import React, {useEffect, useState} from 'react'
 import Moment from 'react-moment'
-import { commitLocalUpdate } from 'relay-runtime'
-import { useAuth0 } from '../../../context/Auth0'
-import {
+import {commitLocalUpdate} from 'relay-runtime'
+import {useAuth0} from '../../../context/Auth0'
+import
+{
 	GraphQLQueryFetcher,
 	PaginationWrapper,
 } from '../../../graphql/GraphQLWrapper'
-import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
-import { on_update_buff_viewers_livestream_playing } from '../../../graphql/subscriptions/on_update_buff_viewers_livestream_playing'
-import { groupTimeIntoDayMap } from '../../../helpers/utils'
-import { BuffViewersLivestreamConnection } from '../../../types'
-import { BuffViewersLivestreamAction } from './BuffViewersLivestreamAction'
-import { BuffViewersLivetreamStatistics } from './BuffViewersLivetreamStatistics'
+import {RelayEnvironment} from '../../../graphql/RelayEnvironment'
+import {on_update_buff_viewers_livestream_playing} from '../../../graphql/subscriptions/on_update_buff_viewers_livestream_playing'
+import {groupTimeIntoDayMap} from '../../../helpers/utils'
+import {BuffViewersLivestreamConnection} from '../../../types'
+import {BuffViewersLivestreamAction} from './BuffViewersLivestreamAction'
+import {BuffViewersLivetreamStatistics} from './BuffViewersLivetreamStatistics'
 import './style.css'
 
 const query = graphql`
@@ -94,15 +95,17 @@ const statusMapping = {
 	},
 }
 
-const BuffViewerLivestreamStatusIcon = (props: { status: string }) => {
-	const { type, style, className, theme } =
+const BuffViewerLivestreamStatusIcon = (props: {status: string}) =>
+{
+	const {type, style, className, theme} =
 		statusMapping[props.status == '' ? 'created' : props.status] ||
 		statusMapping.default
 	return <Icon type={type} style={style} theme={theme} className={className} />
 }
 
-const update_playing_videos = async () => {
-	const { buff_viewers_livestream_playing } = await GraphQLQueryFetcher<{
+const update_playing_videos = async () =>
+{
+	const {buff_viewers_livestream_playing} = await GraphQLQueryFetcher<{
 		buff_viewers_livestream_playing: BuffViewersLivestreamConnection
 	}>(
 		graphql`
@@ -122,8 +125,10 @@ const update_playing_videos = async () => {
 		{},
 	)
 
-	commitLocalUpdate(RelayEnvironment, store => {
-		for (const { node } of buff_viewers_livestream_playing.edges) {
+	commitLocalUpdate(RelayEnvironment, store =>
+	{
+		for (const {node} of buff_viewers_livestream_playing.edges)
+		{
 			const buff_task = store.get(node.id)
 			const logs = buff_task && buff_task.getLinkedRecords('logs')
 			if (!logs) continue
@@ -196,37 +201,37 @@ export const BuffViewersLivestreamList = PaginationWrapper<
 		load_more,
 		loading_more,
 		onSelectBuff,
-	}) => {
-		if (loading && !data)
-			return <Skeleton active loading paragraph={{ rows: 5 }} />
+	}) =>
+	{
+		const [videoIdSearch, setVideoIdSearch] = useState<string>()
 
-		useEffect(() => {
+		const [statusFilter, setStatusFilter] = useState<string>('')
+
+		useEffect(() =>
+		{
 			const updateBuffSubscription = on_update_buff_viewers_livestream_playing()
 			return () => updateBuffSubscription.dispose()
 		}, [])
 
-		useEffect(() => {
+		useEffect(() =>
+		{
 			update_playing_videos()
 			const tid = setInterval(update_playing_videos, 15000)
 			return () => clearInterval(tid)
 		}, [])
 
-		const [videoIdSearch, setVideoIdSearch] = useState<string>()
+		const {user} = useAuth0()
 
-		const [statusFilter, setStatusFilter] = useState<string>('')
-
-		const { user } = useAuth0()
-
-		const buffStatusData = data.buff_viewers_livestream_tasks.edges.map(
+		const buffStatusData = data?.buff_viewers_livestream_tasks?.edges?.map(
 			e => e.node.status,
-		)
+		) ?? []
 
-		const buffViewersLivestreamTasks = data?.buff_viewers_livestream_tasks.edges.map(
+		const buffViewersLivestreamTasks = data?.buff_viewers_livestream_tasks.edges?.map(
 			e => ({
 				...e.node,
 				time: e.node.created_time,
 			}),
-		)
+		) ?? []
 
 		const playingBuffViewersLivestream = buffViewersLivestreamTasks.filter(
 			el => el.status == 'playing',
@@ -289,195 +294,206 @@ export const BuffViewersLivestreamList = PaginationWrapper<
 
 		return (
 			<>
-				<BuffViewersLivetreamStatistics
-					buffStatusData={buffStatusData}
-					percentage={
-						((totalIncreaseViewers > 0 ? totalIncreaseViewers : 0) /
-							totalAvailableAmount) *
-						100
-					}
-					totalIncreaseViewers={
-						totalIncreaseViewers > 0 ? totalIncreaseViewers : 0
-					}
-					totalAvailableAmount={totalAvailableAmount}
-				/>
-				<BuffViewersLivestreamAction
-					onChangeSearch={id => setVideoIdSearch(id)}
-					onChangeDate={d => reload({ first: 12, before_time: d.getTime() })}
-					onChangeStatusFilter={status => setStatusFilter(status)}
-				/>
-				<Spin spinning={loading}>
-					<List
-						size="large"
-						dataSource={timeSeriesBuffViewersLivestreamData}
-						renderItem={item => (
+				{
+					loading ? (
+						<>
+							<Skeleton active />
+							<Skeleton active />
+							<Skeleton active />
+						</>
+					) : (
 							<>
-								<div
-									style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15 }}
-								>
-									<Icon type="calendar" style={{ marginRight: 5 }} />
-									{item.time}
-								</div>
+								<BuffViewersLivetreamStatistics
+									buffStatusData={buffStatusData}
+									percentage={
+										((totalIncreaseViewers > 0 ? totalIncreaseViewers : 0) /
+											totalAvailableAmount) *
+										100
+									}
+									totalIncreaseViewers={
+										totalIncreaseViewers > 0 ? totalIncreaseViewers : 0
+									}
+									totalAvailableAmount={totalAvailableAmount}
+								/>
+								<BuffViewersLivestreamAction
+									onChangeSearch={id => setVideoIdSearch(id)}
+									onChangeDate={d => reload({first: 12, before_time: d.getTime()})}
+									onChangeStatusFilter={status => setStatusFilter(status)}
+								/>
 								<List
-									grid={{ gutter: 16, xs: 1, sm: 2, lg: 3, xxl: 4 }}
-									dataSource={item.data}
-									renderItem={buffViewersLivestream => (
-										<List.Item
-											style={{
-												borderRadius: 15,
-												boxShadow:
-													'0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.05)',
-												cursor: 'pointer',
-											}}
-											onClick={() => {
-												onSelectBuff(buffViewersLivestream.id)
-											}}
-										>
-											<Skeleton loading={loading} active>
-												<Card
-													extra={
-														buffViewersLivestream.status == 'playing' && (
-															<Text strong>
-																{`${
-																	buffViewersLivestream.last_reported_viewers ||
-																	'_'
-																} / ${
-																	buffViewersLivestream.orders.reduce(
-																		(sum, curr) =>
-																			curr.from == user.sub &&
-																			curr.time + curr.limit_mins * 60 * 1000 >=
-																				Date.now()
-																				? sum + curr.amount
-																				: sum,
-																		0,
-																	) +
-																		buffViewersLivestream.first_reported_viewers ||
-																	'_'
-																}`}
-															</Text>
-														)
-													}
-													type="inner"
-													title={
-														<BuffViewerLivestreamStatusIcon
-															status={buffViewersLivestream.status}
-														/>
-													}
-													headStyle={{ textAlign: 'left' }}
-												>
-													<Row>
-														<Col xs={24}>
-															<Row>
-																<Col span={12}>
-																	<Text strong>ID</Text>
-																</Col>
-																<Col span={12} style={{ textAlign: 'right' }}>
-																	{buffViewersLivestream.id}
-																</Col>
-															</Row>
-														</Col>
-													</Row>
-													<Row>
-														<Col xs={24}>
-															<Row>
-																<Col span={12}>
-																	<Text strong>Last bought</Text>
-																</Col>
-																<Col span={12} style={{ textAlign: 'right' }}>
-																	<Moment fromNow>
-																		{buffViewersLivestream.orders.reduce(
-																			(lastest, curr) =>
-																				curr.time >= lastest
-																					? curr.time
-																					: lastest,
-																			buffViewersLivestream.orders[0].time,
-																		)}
-																	</Moment>
-																</Col>
-															</Row>
-														</Col>
-													</Row>
-													<Row>
-														<Col xs={24}>
-															<Row>
-																<Col span={12}>
-																	<Text strong>Remain</Text>
-																</Col>
-																<Col span={12} style={{ textAlign: 'right' }}>
-																	{buffViewersLivestream.status == 'playing' ? (
-																		<Moment fromNow>
-																			{buffViewersLivestream.orders
-																				.filter(order => order.from == user.sub)
-																				.reduce<number>(
-																					(max, curr) =>
-																						curr.time +
-																							curr.limit_mins * 60 * 1000 >=
-																						max
-																							? curr.time +
-																							  curr.limit_mins * 60 * 1000
-																							: max,
-																					buffViewersLivestream.orders.filter(
-																						order => order.from == user.sub,
-																					)[0]?.time +
-																						buffViewersLivestream.orders.filter(
-																							order => order.from == user.sub,
-																						)[0]?.limit_mins *
-																							60 *
-																							1000,
-																				)}
-																		</Moment>
-																	) : (
-																		'_'
-																	)}
-																</Col>
-															</Row>
-														</Col>
-													</Row>
-													<Row>
-														<Col xs={24}>
-															<Row>
-																<Col span={12}>
-																	<Text strong>First viewers</Text>
-																</Col>
-																<Col span={12} style={{ textAlign: 'right' }}>
-																	{buffViewersLivestream.first_reported_viewers ||
-																		'_'}
-																</Col>
-															</Row>
-														</Col>
-													</Row>
-													<Row>
-														<Col xs={24}>
-															<Row>
-																<Col span={12}>
-																	<Text strong>Total bought</Text>
-																</Col>
-																<Col span={12} style={{ textAlign: 'right' }}>
-																	{buffViewersLivestream.orders.reduce(
-																		(sum, curr) =>
-																			curr.from == user.sub
-																				? sum + curr.amount
-																				: sum,
-																		0,
-																	) || '_'}
-																</Col>
-															</Row>
-														</Col>
-													</Row>
-												</Card>
-											</Skeleton>
-										</List.Item>
+									size="large"
+									dataSource={timeSeriesBuffViewersLivestreamData}
+									renderItem={item => (
+										<>
+											<div
+												style={{fontSize: 20, fontWeight: 'bold', marginBottom: 15}}
+											>
+												<Icon type="calendar" style={{marginRight: 5}} />
+												{item.time}
+											</div>
+											<List
+												grid={{gutter: 16, xs: 1, sm: 2, lg: 3, xxl: 4}}
+												dataSource={item.data}
+												renderItem={buffViewersLivestream => (
+													<List.Item
+														style={{
+															borderRadius: 15,
+															boxShadow:
+																'0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.05)',
+															cursor: 'pointer',
+														}}
+														onClick={() =>
+														{
+															onSelectBuff(buffViewersLivestream.id)
+														}}
+													>
+														<Skeleton loading={loading} active>
+															<Card
+																extra={
+																	buffViewersLivestream.status == 'playing' && (
+																		<Text strong>
+																			{`${
+																				buffViewersLivestream.last_reported_viewers ||
+																				'_'
+																				} / ${
+																				buffViewersLivestream.orders.reduce(
+																					(sum, curr) =>
+																						curr.from == user.sub &&
+																							curr.time + curr.limit_mins * 60 * 1000 >=
+																							Date.now()
+																							? sum + curr.amount
+																							: sum,
+																					0,
+																				) +
+																				buffViewersLivestream.first_reported_viewers ||
+																				'_'
+																				}`}
+																		</Text>
+																	)
+																}
+																type="inner"
+																title={
+																	<BuffViewerLivestreamStatusIcon
+																		status={buffViewersLivestream.status}
+																	/>
+																}
+																headStyle={{textAlign: 'left'}}
+															>
+																<Row>
+																	<Col xs={24}>
+																		<Row>
+																			<Col span={12}>
+																				<Text strong>ID</Text>
+																			</Col>
+																			<Col span={12} style={{textAlign: 'right'}}>
+																				{buffViewersLivestream.id}
+																			</Col>
+																		</Row>
+																	</Col>
+																</Row>
+																<Row>
+																	<Col xs={24}>
+																		<Row>
+																			<Col span={12}>
+																				<Text strong>Last bought</Text>
+																			</Col>
+																			<Col span={12} style={{textAlign: 'right'}}>
+																				<Moment fromNow>
+																					{buffViewersLivestream.orders.reduce(
+																						(lastest, curr) =>
+																							curr.time >= lastest
+																								? curr.time
+																								: lastest,
+																						buffViewersLivestream.orders[0].time,
+																					)}
+																				</Moment>
+																			</Col>
+																		</Row>
+																	</Col>
+																</Row>
+																<Row>
+																	<Col xs={24}>
+																		<Row>
+																			<Col span={12}>
+																				<Text strong>Remain</Text>
+																			</Col>
+																			<Col span={12} style={{textAlign: 'right'}}>
+																				{buffViewersLivestream.status == 'playing' ? (
+																					<Moment fromNow>
+																						{buffViewersLivestream.orders
+																							.filter(order => order.from == user.sub)
+																							.reduce<number>(
+																								(max, curr) =>
+																									curr.time +
+																										curr.limit_mins * 60 * 1000 >=
+																										max
+																										? curr.time +
+																										curr.limit_mins * 60 * 1000
+																										: max,
+																								buffViewersLivestream.orders.filter(
+																									order => order.from == user.sub,
+																								)[0]?.time +
+																								buffViewersLivestream.orders.filter(
+																									order => order.from == user.sub,
+																								)[0]?.limit_mins *
+																								60 *
+																								1000,
+																							)}
+																					</Moment>
+																				) : (
+																						'_'
+																					)}
+																			</Col>
+																		</Row>
+																	</Col>
+																</Row>
+																<Row>
+																	<Col xs={24}>
+																		<Row>
+																			<Col span={12}>
+																				<Text strong>First viewers</Text>
+																			</Col>
+																			<Col span={12} style={{textAlign: 'right'}}>
+																				{buffViewersLivestream.first_reported_viewers ||
+																					'_'}
+																			</Col>
+																		</Row>
+																	</Col>
+																</Row>
+																<Row>
+																	<Col xs={24}>
+																		<Row>
+																			<Col span={12}>
+																				<Text strong>Total bought</Text>
+																			</Col>
+																			<Col span={12} style={{textAlign: 'right'}}>
+																				{buffViewersLivestream.orders.reduce(
+																					(sum, curr) =>
+																						curr.from == user.sub
+																							? sum + curr.amount
+																							: sum,
+																					0,
+																				) || '_'}
+																			</Col>
+																		</Row>
+																	</Col>
+																</Row>
+															</Card>
+														</Skeleton>
+													</List.Item>
+												)}
+											/>
+											{timeSeriesBuffViewersLivestreamData.indexOf(item) !==
+												timeSeriesBuffViewersLivestreamData.length - 1 && <Divider />}
+										</>
 									)}
 								/>
-								{timeSeriesBuffViewersLivestreamData.indexOf(item) !==
-									timeSeriesBuffViewersLivestreamData.length - 1 && <Divider />}
 							</>
-						)}
-					/>
-				</Spin>
+						)
+				}
 				{has_more() && (
 					<Row type="flex" justify="center" align="middle">
-						<Col xs={24} style={{ textAlign: 'center' }}>
+						<Col xs={24} style={{textAlign: 'center'}}>
 							<Tooltip
 								title={
 									videoIdSearch
@@ -490,7 +506,7 @@ export const BuffViewersLivestreamList = PaginationWrapper<
 									loading={loading_more}
 									type="dashed"
 									icon="vertical-align-bottom"
-									style={{ margin: 10 }}
+									style={{margin: 10}}
 									onClick={() => load_more(20)}
 								>
 									{loading_more ? 'Loading' : 'Show more'}

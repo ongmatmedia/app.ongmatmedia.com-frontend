@@ -11,7 +11,7 @@ export const FriendsFiltering = withFilterFriendsStore(props => {
 	}, [])
 
 	return (
-		<Card title={<BreadCrumb />}>
+		<Card title={<BreadCrumb />} style={{minHeight: "100%"}}>
 			<FriendsFilteringActions />
 			<FriendsFilteringTable />
 		</Card>

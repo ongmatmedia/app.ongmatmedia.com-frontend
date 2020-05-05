@@ -176,7 +176,7 @@ const HomePage = PaginationWrapper<{
 	({ data, loading, error, reload, load_more, loading_more, has_more }) => {
 		if (error && !data)
 			return (
-				<Card style={{ minHeight: '100%' }} size="small">
+				<Card style={{ minHeight: '100%' }}>
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Alert showIcon message={error} type="error" />
@@ -186,7 +186,7 @@ const HomePage = PaginationWrapper<{
 			)
 		if (loading && !data)
 			return (
-				<Card style={{ minHeight: '100%' }} size="small">
+				<Card style={{ minHeight: '100%' }}>
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Spin

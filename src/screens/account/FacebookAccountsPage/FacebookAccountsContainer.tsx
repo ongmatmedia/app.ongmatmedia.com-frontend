@@ -15,6 +15,7 @@ const query = graphql`
 				node {
 					id
 					name
+					live
 				}
 			}
 		}

@@ -570,6 +570,7 @@ type VipViewersLivestreamTaskResponse @aws_api_key @aws_cognito_user_pools @aws_
 }
 
 input VIPViewersLivestreamUpdateInput {
+  active: Boolean!
   amount: Int!
   max_duration: Int!
   max_live_per_day: Int!

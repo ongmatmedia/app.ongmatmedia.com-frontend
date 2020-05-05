@@ -62,6 +62,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 					max_live_per_day: number,
 					parallel: number,
 					days: number,
+					active: boolean
 				}) =>
 				{
 					set_error(null)
@@ -88,6 +89,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 									max_duration: data.max_duration,
 									max_live_per_day: data.max_live_per_day,
 									parallel: data.parallel,
+									active: data.active
 								},
 								data.facebook_target.id,
 							)
@@ -137,14 +139,14 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 														<Icon type="clock-circle" /> Active status
 													</span>
 													<Switch
-														defaultChecked={props.vip && props.vip.active}
+														defaultChecked={props.vip?.active}
 														onChange={checked => setValue(checked)}
 														style={{display: 'inline-block', marginLeft: 10}}
 													/>
 													{' '}
 												</Col>
 												<Col>
-													{props.vip && props.vip.active ? (
+													{props.vip?.active ? (
 														<Tag color='rgb(21, 100, 42)'>
 															Running {' '} <Icon type="sync" spin />
 														</Tag>

@@ -1,46 +1,16 @@
-import {Alert, Avatar, Card, Col, Icon, List, Row, Skeleton, Popconfirm} from 'antd'
-import {graphql} from 'babel-plugin-relay/macro'
+import {Avatar, Card, Col, Icon, List, notification, Popconfirm, Row} from 'antd'
 import React, {useState} from 'react'
 import {Fab} from 'react-tiny-fab'
-import {GraphQLWrapper} from '../../../graphql/GraphQLWrapper'
-import {VipViewersLivestream, VipViewersLivestreamConnection} from '../../../types'
+import {delete_vip_viewers_livestream} from '../../../graphql/delete_vip_viewers_livestream'
+import {VipViewersLivestream} from '../../../types'
 import {CUModal} from './CUModal'
 import {ViewModal} from './ViewModal'
-import {VipViewersLivestreamReport, VipViewersLivestreamReportStatusFilter} from './VipViewersLivestreamReport'
-import {delete_vip_viewers_livestream} from '../../../graphql/delete_vip_viewers_livestream'
 
-const query = graphql`
-	query VipViewersLivestreamListQuery {
-		vip_viewers_livestream_tasks {
-			edges {
-				node {
-					id
-					active
-					name
-					amount
-					end_time
-					max_duration
-					max_live_per_day
-					parallel
-					created_time
-					payment_history {
-						time
-						amount
-						max_duration
-						max_live_per_day
-						parallel
-						price
-					}
-				}
-			}
-		}
-	}
-`
+interface VipViewersLivestreamListProps {
+	data: VipViewersLivestream[]
+}
 
-export const VipViewersLivestreamList = GraphQLWrapper<
-	{vip_viewers_livestream_tasks: VipViewersLivestreamConnection},
-	{search: string}
->(query, {}, props =>
+export const VipViewersLivestreamList = (props: VipViewersLivestreamListProps) =>
 {
 	const [editingVipViewerLivestream, setEditingVipViewerLivestream] = useState<VipViewersLivestream | null>(
 		null,
@@ -48,9 +18,6 @@ export const VipViewersLivestreamList = GraphQLWrapper<
 	const [viewingVipViewerLivestream, setViewingVipViewerLivestream] = useState<VipViewersLivestream | null>(
 		null,
 	)
-	const [status_filter, set_status_filter] = useState<
-		VipViewersLivestreamReportStatusFilter
-	>('all')
 
 	const [
 		createUpdateVipViewersLivestreamModalIsVisible,
@@ -58,35 +25,6 @@ export const VipViewersLivestreamList = GraphQLWrapper<
 	] = useState<boolean>(false)
 
 	const [deletingVip, setDeletingVip] = useState<string | null>(null)
-
-	if (props.error)
-	{
-		return (
-			<Alert
-				showIcon
-				type="error"
-				message={JSON.parse(props.error)?.errors[0].message}
-			/>
-		)
-	}
-	if (props.loading && !props.data && !props.error)
-		return <Skeleton active loading paragraph={{rows: 5}} />
-
-	const list = props.data.vip_viewers_livestream_tasks.edges
-		.map(e => e.node)
-		.filter(
-			e =>
-				e.id.includes(props.search) ||
-				e.name.toLowerCase().includes(props.search)
-		)
-		.filter(e => status_filter == "active"
-			? e.active == true
-			: status_filter == "expired_in_5_days"
-				? Math.ceil((e.end_time - Date.now()) / 1000 / 86400) <= 5
-				: status_filter == "expired"
-					? e.end_time < Date.now()
-					: true
-		)
 
 	return (
 		props.data && (
@@ -105,7 +43,7 @@ export const VipViewersLivestreamList = GraphQLWrapper<
 				{viewingVipViewerLivestream && (
 					<ViewModal
 						onClose={() => setViewingVipViewerLivestream(null)}
-						person={viewingVipViewerLivestream}
+						vip={viewingVipViewerLivestream}
 						onClick={video_id =>
 						{
 							console.log(video_id)
@@ -122,15 +60,6 @@ export const VipViewersLivestreamList = GraphQLWrapper<
 						}
 					/>
 				)}
-				<VipViewersLivestreamReport
-					vips={
-						props.data
-							? props.data.vip_viewers_livestream_tasks.edges.map(e => e.node)
-							: []
-					}
-					filter={status_filter}
-					on_change={set_status_filter}
-				/>
 				<List
 					grid={{
 						xs: 1,
@@ -139,13 +68,14 @@ export const VipViewersLivestreamList = GraphQLWrapper<
 						lg: 4,
 					}}
 					rowKey="uid"
-					dataSource={list}
+					dataSource={props.data}
 					renderItem={item => (
 						<List.Item style={{margin: 5}}>
 							<Card
 								type="inner"
 								hoverable
 								size="small"
+								style={{cursor: 'default'}}
 								loading={item.id == deletingVip}
 								actions={[
 									<Icon
@@ -164,11 +94,26 @@ export const VipViewersLivestreamList = GraphQLWrapper<
 									/>,
 									<Popconfirm
 										title="Are you sure delete this subscription?"
-										onConfirm={async () => {
+										onConfirm={async () =>
+										{
 											setDeletingVip(item.id)
-											await delete_vip_viewers_livestream(item.id)
+											try
+											{
+												await delete_vip_viewers_livestream(item.id)
+												notification.success({
+													message: 'Operation: Delete vip subscription',
+													description: `${item.id}`
+												})
+											} catch (error)
+											{
+												notification.error({
+													message: 'Operation: Delete vip subscription',
+													description: `${item.id}`
+												})
+											}
 											setDeletingVip(null)
-										} }
+										}
+										}
 										okText="Yes"
 										cancelText="No"
 									>
@@ -206,4 +151,4 @@ export const VipViewersLivestreamList = GraphQLWrapper<
 			</>
 		)
 	)
-})
+}
