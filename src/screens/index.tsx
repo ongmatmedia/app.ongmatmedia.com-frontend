@@ -113,7 +113,7 @@ export const AppWithRouter = () => {
 					path="/contact"
 				/>
 
-				<PrivateRoute
+				{/* <PrivateRoute
 					exact
 					component={LivestreamsListPage}
 					layout={MainLayout}
@@ -142,7 +142,7 @@ export const AppWithRouter = () => {
 					component={PricingPage}
 					layout={MainLayout}
 					path="/livestream/pricing"
-				/>
+				/> */}
 
 				<PrivateRoute
 					exact

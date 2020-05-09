@@ -12,7 +12,7 @@ export const FriendsPoking = withFilterFriendsStore(props => {
 	}, [])
 
 	return (
-		<Card title={<BreadCrumb />} style={{minHeight: "100%"}}>
+		<Card title={<BreadCrumb />} style={{ minHeight: '100%' }}>
 			<FriendsPokingActions />
 			<Alert
 				showIcon

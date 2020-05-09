@@ -18,6 +18,7 @@ import Spin from 'antd/lib/spin'
 import Icon from 'antd/lib/icon'
 import List from 'antd/lib/list'
 import Statistic from 'antd/lib/statistic'
+import {Skeleton} from 'antd'
 
 const query = graphql`
 	query HomePageQuery($after: String, $first: Int, $before_time: Long) {

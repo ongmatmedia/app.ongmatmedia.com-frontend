@@ -287,8 +287,8 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   update_facebook_account(input: FacebookAccountUpdateInput!): FacebookAccount!
   add_facebook_account(input: FacebookAccountInput!): FacebookAccountEdge!
   delete_facebook_account(id: ID!): Boolean!
-  create_vip_viewers_livestream_task(days: Int!, input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskResponse!
-  update_vip_viewers_livestream_task(days: Int!, input: VIPViewersLivestreamUpdateInput!, id: String!): VipViewersLivestreamTaskResponse!
+  create_vip_viewers_livestream_task(livestream_nums: Int!, input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskResponse!
+  update_vip_viewers_livestream_task(livestream_nums: Int!, input: VIPViewersLivestreamUpdateInput!, id: String!): VipViewersLivestreamTaskResponse!
   delete_vip_viewers_livestream_task(id: String!): VipViewersLivestreamTaskResponse!
   update_livestream_subscription(days: Int!, data: LivestreamSubscriptionInput!, user_id: ID): LivestreamSubscriptionUpdateResponse!
   create_livestream(task: LivestreamInput!): LivestreamEdge!
@@ -521,11 +521,10 @@ type VIPViewersLivestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
   active: Boolean!
   name: String!
   amount: Int!
-  end_time: Long!
+  livestream_nums: Int!
+  livestream_used_nums: Int!
   max_duration: Int!
-  max_live_per_day: Int!
-  parallel: Int!
-  created_time: Long!
+  created_at: Long!
   buff_history: BuffViewersLivestreamConnection!
   payment_history: [VIPViewersLivestreamOrder!]!
 }
@@ -540,20 +539,17 @@ type VIPViewersLivestreamEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
 }
 
 input VIPViewersLivestreamInput {
-  id: String!
-  amount: Int!
+  id: ID!
   name: String!
   max_duration: Int!
-  max_live_per_day: Int!
-  parallel: Int!
+  amount: Int!
 }
 
 type VIPViewersLivestreamOrder @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  time: Long!
+  created_at: Long!
   amount: Int!
   max_duration: Int!
-  max_live_per_day: Int!
-  parallel: Int!
+  bought: Int!
   price: Int!
 }
 
@@ -573,8 +569,6 @@ input VIPViewersLivestreamUpdateInput {
   active: Boolean!
   amount: Int!
   max_duration: Int!
-  max_live_per_day: Int!
-  parallel: Int!
 }
 
 type Root{

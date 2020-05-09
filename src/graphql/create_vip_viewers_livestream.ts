@@ -3,31 +3,32 @@ import { ConnectionHandler, RecordProxy } from 'relay-runtime'
 import graphql from 'babel-plugin-relay/macro'
 import { VIPViewersLivestreamInput } from './__generated__/createVipViewersLivestreamMutation.graphql'
 import { RelayEnvironment } from './RelayEnvironment'
-import {GraphQLError} from './GraphqlError'
+import { GraphQLError } from './GraphqlError'
 
 const mutation = graphql`
 	mutation createVipViewersLivestreamMutation(
-		$days: Int!
+		$livestream_nums: Int!
 		$input: VIPViewersLivestreamInput!
 	) {
-		create_vip_viewers_livestream_task(days: $days, input: $input) {
+		create_vip_viewers_livestream_task(
+			livestream_nums: $livestream_nums
+			input: $input
+		) {
 			vip {
 				node {
 					id
 					active
 					name
 					amount
-					end_time
 					max_duration
-					max_live_per_day
-					parallel
-					created_time
+					livestream_nums
+					livestream_used_nums
+					created_at
 					payment_history {
-						time
+						created_at
 						amount
 						max_duration
-						max_live_per_day
-						parallel
+						bought
 						price
 					}
 				}
@@ -41,13 +42,13 @@ const mutation = graphql`
 `
 
 export const create_vip_viewers_livestream = async (
-	days: number,
+	livestream_nums: number,
 	input: VIPViewersLivestreamInput,
 ) => {
 	await new Promise((resolve, reject) => {
 		commitMutation(RelayEnvironment, {
 			mutation,
-			variables: { days, input },
+			variables: { livestream_nums, input },
 			updater: async store => {
 				const list = store.get(
 					`client:root:vip_viewers_livestream_tasks`,

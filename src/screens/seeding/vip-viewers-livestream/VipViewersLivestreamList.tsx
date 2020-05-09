@@ -1,30 +1,32 @@
-import {Avatar, Card, Col, Icon, List, notification, Popconfirm, Row} from 'antd'
+import {Avatar, Card, Col, Icon, List, Row, Tag} from 'antd'
 import React, {useState} from 'react'
 import {Fab} from 'react-tiny-fab'
-import {delete_vip_viewers_livestream} from '../../../graphql/delete_vip_viewers_livestream'
 import {VipViewersLivestream} from '../../../types'
 import {CUModal} from './CUModal'
 import {ViewModal} from './ViewModal'
 
-interface VipViewersLivestreamListProps {
+interface VipViewersLivestreamListProps
+{
 	data: VipViewersLivestream[]
 }
 
-export const VipViewersLivestreamList = (props: VipViewersLivestreamListProps) =>
+export const VipViewersLivestreamList = (
+	props: VipViewersLivestreamListProps,
+) =>
 {
-	const [editingVipViewerLivestream, setEditingVipViewerLivestream] = useState<VipViewersLivestream | null>(
-		null,
-	)
-	const [viewingVipViewerLivestream, setViewingVipViewerLivestream] = useState<VipViewersLivestream | null>(
-		null,
-	)
+	const [
+		editingVipViewerLivestream,
+		setEditingVipViewerLivestream,
+	] = useState<VipViewersLivestream | null>(null)
+	const [
+		viewingVipViewerLivestream,
+		setViewingVipViewerLivestream,
+	] = useState<VipViewersLivestream | null>(null)
 
 	const [
 		createUpdateVipViewersLivestreamModalIsVisible,
 		setCreateUpdateVipViewersLivestreamModalIsVisible,
 	] = useState<boolean>(false)
-
-	const [deletingVip, setDeletingVip] = useState<string | null>(null)
 
 	return (
 		props.data && (
@@ -44,22 +46,21 @@ export const VipViewersLivestreamList = (props: VipViewersLivestreamListProps) =
 					<ViewModal
 						onClose={() => setViewingVipViewerLivestream(null)}
 						vip={viewingVipViewerLivestream}
-						onClick={video_id =>
-						{
-							console.log(video_id)
-						}}
+						setCreateUpdateVipViewersLivestreamModalIsVisible={setCreateUpdateVipViewersLivestreamModalIsVisible}
+						setEditingVipViewerLivestream={setEditingVipViewerLivestream}
 					/>
 				)}
-				{!createUpdateVipViewersLivestreamModalIsVisible && !viewingVipViewerLivestream && (
-					<Fab
-						mainButtonStyles={{backgroundColor: 'rgb(64, 169, 255)'}}
-						icon={<Icon type="plus" />}
-						event="click"
-						onClick={() =>
-							setCreateUpdateVipViewersLivestreamModalIsVisible(true)
-						}
-					/>
-				)}
+				{!createUpdateVipViewersLivestreamModalIsVisible &&
+					!viewingVipViewerLivestream && (
+						<Fab
+							mainButtonStyles={{backgroundColor: 'rgb(64, 169, 255)'}}
+							icon={<Icon type="plus" />}
+							event="click"
+							onClick={() =>
+								setCreateUpdateVipViewersLivestreamModalIsVisible(true)
+							}
+						/>
+					)}
 				<List
 					grid={{
 						xs: 1,
@@ -75,55 +76,7 @@ export const VipViewersLivestreamList = (props: VipViewersLivestreamListProps) =
 								type="inner"
 								hoverable
 								size="small"
-								style={{cursor: 'default'}}
-								loading={item.id == deletingVip}
-								actions={[
-									<Icon
-										type="eye"
-										key="eye"
-										onClick={() => setViewingVipViewerLivestream(item)}
-									/>,
-									<Icon
-										type="edit"
-										key="edit"
-										onClick={() =>
-										{
-											setCreateUpdateVipViewersLivestreamModalIsVisible(true)
-											setEditingVipViewerLivestream(item)
-										}}
-									/>,
-									<Popconfirm
-										title="Are you sure delete this subscription?"
-										onConfirm={async () =>
-										{
-											setDeletingVip(item.id)
-											try
-											{
-												await delete_vip_viewers_livestream(item.id)
-												notification.success({
-													message: 'Operation: Delete vip subscription',
-													description: `${item.id}`
-												})
-											} catch (error)
-											{
-												notification.error({
-													message: 'Operation: Delete vip subscription',
-													description: `${item.id}`
-												})
-											}
-											setDeletingVip(null)
-										}
-										}
-										okText="Yes"
-										cancelText="No"
-									>
-										<Icon
-											style={{color: 'red'}}
-											type="delete"
-											key="remove"
-										/>
-									</Popconfirm>
-								]}
+								onClick={() => setViewingVipViewerLivestream(item)}
 							>
 								<Row type="flex" justify="start" align="middle">
 									<Col>
@@ -141,6 +94,19 @@ export const VipViewersLivestreamList = (props: VipViewersLivestreamListProps) =
 									>
 										<Row>
 											<Col>{item.name}</Col>
+											<Col>
+												{item.active ? (
+													<Tag color="rgb(21, 100, 42)">
+														Running <Icon type="sync" spin />
+													</Tag>
+												) : (
+														<Tag color="#c01922"> Stopped </Tag>
+													)}
+											</Col>
+											<Col>
+												<Tag color={item.livestream_used_nums == item.livestream_nums ? 'red' : 'green'}>Remain: {item.livestream_nums - item.livestream_used_nums}</Tag>
+											</Col>
+											<Col>{new Date(item.created_at).toLocaleString('vi')}</Col>
 										</Row>
 									</Col>
 								</Row>

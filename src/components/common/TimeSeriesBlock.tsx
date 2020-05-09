@@ -7,19 +7,18 @@ import Row from 'antd/lib/row'
 import Tag from 'antd/lib/tag'
 import Text from 'antd/lib/typography/Text'
 import React from 'react'
-import {groupTimeIntoDayMap} from '../../helpers/utils'
-import {PaymentHistory} from '../../types'
-import {NoteReading} from './NoteReading'
-import {useAuth0} from '../../context/Auth0'
+import { groupTimeIntoDayMap } from '../../helpers/utils'
+import { PaymentHistory } from '../../types'
+import { NoteReading } from './NoteReading'
+import { useAuth0 } from '../../context/Auth0'
 
-export const TimeSeriesBlock = (props: {data: PaymentHistory[]}) =>
-{
-	const transformeData = props.data.map(({time, ...rest}) => ({
+export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
+	const transformeData = props.data.map(({ time, ...rest }) => ({
 		...rest,
 		created_time: time,
 	}))
 	const timeSeriesData = groupTimeIntoDayMap(transformeData)
-	const {user} = useAuth0()
+	const { user } = useAuth0()
 
 	return (
 		<List
@@ -27,12 +26,12 @@ export const TimeSeriesBlock = (props: {data: PaymentHistory[]}) =>
 			dataSource={timeSeriesData}
 			renderItem={item => (
 				<>
-					<div style={{fontSize: 20, fontWeight: 'bold', marginBottom: 15}}>
-						<Icon type="calendar" style={{marginRight: 5}} />
+					<div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15 }}>
+						<Icon type="calendar" style={{ marginRight: 5 }} />
 						{item.time}
 					</div>
 					<List
-						grid={{gutter: 16, xs: 1, sm: 2, lg: 4}}
+						grid={{ gutter: 16, xs: 1, sm: 2, lg: 4 }}
 						dataSource={item.data}
 						renderItem={payment => (
 							<List.Item
@@ -50,7 +49,7 @@ export const TimeSeriesBlock = (props: {data: PaymentHistory[]}) =>
 										</Text>
 									}
 									type="inner"
-									style={{minHeight: 320}}
+									style={{ minHeight: 320 }}
 								>
 									<Row>
 										<Col xs={24}>
@@ -58,28 +57,31 @@ export const TimeSeriesBlock = (props: {data: PaymentHistory[]}) =>
 												<Col span={12}>
 													<Text strong>Time</Text>
 												</Col>
-												<Col span={12} style={{textAlign: 'right'}}>
+												<Col span={12} style={{ textAlign: 'right' }}>
 													{`${new Date(
 														payment.created_time,
 													).toLocaleTimeString()}`}
 												</Col>
 											</Row>
 										</Col>
-										<Col xs={24} style={{marginBottom: 25}}>
+										<Col xs={24} style={{ marginBottom: 25 }}>
 											<Row>
 												<Col span={12}>
 													<Text strong>From</Text>
 												</Col>
-												<Col span={12} style={{textAlign: 'right'}}>
-													<Tag style={{marginRight: 0, marginBottom: 2}}>
-														{payment.sender_id == user.sub ? 'me' : payment.sender_username.substring(0, 11) + '...' || 'system'}
+												<Col span={12} style={{ textAlign: 'right' }}>
+													<Tag style={{ marginRight: 0, marginBottom: 2 }}>
+														{payment.sender_id == user.sub
+															? 'me'
+															: payment.sender_username.substring(0, 11) +
+																	'...' || 'system'}
 													</Tag>
 												</Col>
 												<Col span={12}>
 													<Text strong>To</Text>
 												</Col>
-												<Col span={12} style={{textAlign: 'right'}}>
-													<Tag style={{marginRight: 0}}>
+												<Col span={12} style={{ textAlign: 'right' }}>
+													<Tag style={{ marginRight: 0 }}>
 														{payment.receiver_username || 'system'}
 													</Tag>
 												</Col>
@@ -90,7 +92,7 @@ export const TimeSeriesBlock = (props: {data: PaymentHistory[]}) =>
 												<Col span={12}>
 													<Text strong>Remain</Text>
 												</Col>
-												<Col span={12} style={{textAlign: 'right'}}>
+												<Col span={12} style={{ textAlign: 'right' }}>
 													{payment.balance_after.toLocaleString()}
 												</Col>
 											</Row>

@@ -4,13 +4,13 @@ import Col from 'antd/lib/col'
 import Icon from 'antd/lib/icon'
 import Row from 'antd/lib/row'
 import Spin from 'antd/lib/spin'
-import {graphql} from 'babel-plugin-relay/macro'
-import React, {useState} from 'react'
-import {BreadCrumb} from '../../components/common/BreadCrumb'
-import {PaginationWrapper} from '../../graphql/GraphQLWrapper'
-import {PaymentHistoryConnection} from '../../types'
-import {PaymentList} from './PaymentList'
-import {PaymentListAction} from './PaymentListAction'
+import { graphql } from 'babel-plugin-relay/macro'
+import React, { useState } from 'react'
+import { BreadCrumb } from '../../components/common/BreadCrumb'
+import { PaginationWrapper } from '../../graphql/GraphQLWrapper'
+import { PaymentHistoryConnection } from '../../types'
+import { PaymentList } from './PaymentList'
+import { PaymentListAction } from './PaymentListAction'
 
 const query = graphql`
 	query PaymentsQuery($after: String, $first: Int, $before_time: Long) {
@@ -55,19 +55,18 @@ export const Payments = PaginationWrapper<{
 	{
 		first: 10,
 	},
-	props =>
-	{
+	props => {
 		if (props.error || props.loading)
 			return (
-				<Card style={{minHeight: '100%'}} title={<BreadCrumb />}>
-					<Row type="flex" justify="space-around" style={{minHeight: '100%'}}>
+				<Card style={{ minHeight: '100%' }} title={<BreadCrumb />}>
+					<Row type="flex" justify="space-around" style={{ minHeight: '100%' }}>
 						<Col>
 							{props.error && (
 								<Alert showIcon message={props.error} type="error" />
 							)}
 							{!props.error && props.loading && (
 								<Spin
-									indicator={<Icon type="loading" style={{fontSize: 24}} />}
+									indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
 								/>
 							)}
 						</Col>
@@ -80,10 +79,10 @@ export const Payments = PaginationWrapper<{
 		)
 
 		return (
-			<Card title={<BreadCrumb />} bodyStyle={{paddingTop: 10}}>
+			<Card title={<BreadCrumb />} bodyStyle={{ paddingTop: 10 }}>
 				<PaymentListAction
 					onChangeDate={d =>
-						props.reload({first: 12, before_time: d.getTime()})
+						props.reload({ first: 12, before_time: d.getTime() })
 					}
 					onSearch={set_search}
 				/>
@@ -95,22 +94,22 @@ export const Payments = PaginationWrapper<{
 						payment_histories={
 							search
 								? [
-									...paymentHistories.filter(
-										payment =>
-											payment.note
-												?.trim()
-												.toLocaleLowerCase()
-												.includes(search) ||
-											payment.receiver_username
-												?.trim()
-												.toLocaleLowerCase()
-												.includes(search) ||
-											payment.sender_username
-												?.trim()
-												.toLocaleLowerCase()
-												.includes(search),
-									),
-								]
+										...paymentHistories.filter(
+											payment =>
+												payment.note
+													?.trim()
+													.toLocaleLowerCase()
+													.includes(search) ||
+												payment.receiver_username
+													?.trim()
+													.toLocaleLowerCase()
+													.includes(search) ||
+												payment.sender_username
+													?.trim()
+													.toLocaleLowerCase()
+													.includes(search),
+										),
+								  ]
 								: [...paymentHistories]
 						}
 						loading={props.loading}

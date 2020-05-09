@@ -31,7 +31,7 @@ const DrawerLinks: DrawerLinksType[] = [
 		icon: 'alert',
 		to: '/seeding',
 	},
-	{ name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
+	// { name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
 	{ name: 'account_icon_title', icon: 'team', to: '/farm' },
 	{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
 	{ name: 'payments_icon_title', icon: 'credit-card', to: '/payments' },

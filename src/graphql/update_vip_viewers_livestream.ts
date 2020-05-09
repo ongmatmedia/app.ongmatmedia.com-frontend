@@ -1,33 +1,35 @@
 import graphql from 'babel-plugin-relay/macro'
-import {commitMutation} from 'react-relay'
-import {GraphQLError} from './GraphqlError'
-import {RelayEnvironment} from './RelayEnvironment'
-import {VIPViewersLivestreamUpdateInput} from './__generated__/updateVipViewersLivestreamMutation.graphql'
+import { commitMutation } from 'react-relay'
+import { GraphQLError } from './GraphqlError'
+import { RelayEnvironment } from './RelayEnvironment'
+import { VIPViewersLivestreamUpdateInput } from './__generated__/updateVipViewersLivestreamMutation.graphql'
 
 const mutation = graphql`
 	mutation updateVipViewersLivestreamMutation(
-		$days: Int!,
-		$input: VIPViewersLivestreamUpdateInput!,
-		$id: String!,
+		$livestream_nums: Int!
+		$input: VIPViewersLivestreamUpdateInput!
+		$id: String!
 	) {
-		update_vip_viewers_livestream_task(days: $days, input: $input, id: $id) {
+		update_vip_viewers_livestream_task(
+			livestream_nums: $livestream_nums
+			input: $input
+			id: $id
+		) {
 			vip {
 				node {
 					id
 					active
 					name
 					amount
-					end_time
 					max_duration
-					max_live_per_day
-					parallel
-					created_time
+					livestream_nums
+					livestream_used_nums
+					created_at
 					payment_history {
-						time
+						created_at
 						amount
 						max_duration
-						max_live_per_day
-						parallel
+						bought
 						price
 					}
 				}
@@ -41,17 +43,15 @@ const mutation = graphql`
 `
 
 export const update_vip_viewers_livestream = async (
-	days: number,
+	livestream_nums: number,
 	input: VIPViewersLivestreamUpdateInput,
-	id: string
+	id: string,
 ) => {
 	await new Promise((resolve, reject) => {
 		commitMutation(RelayEnvironment, {
 			mutation,
-			variables: { days, input, id },
-			updater: store => {
-				resolve()
-			},
+			variables: { livestream_nums, input, id },
+			onCompleted: resolve,
 			onError: error => {
 				const { errors } = (error as any) as GraphQLError
 				reject(errors.map(e => `[ERROR] ${e.message}`).join('\n'))

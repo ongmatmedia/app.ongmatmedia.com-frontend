@@ -7,15 +7,15 @@ import Spin from 'antd/lib/spin'
 import Tag from 'antd/lib/tag'
 import Tooltip from 'antd/lib/tooltip'
 import graphql from 'babel-plugin-relay/macro'
-import React, {useState} from 'react'
-import {isMobileOnly} from 'react-device-detect'
-import {BreadCrumb} from '../../components/common/BreadCrumb'
-import {GraphQLWrapper} from '../../graphql/GraphQLWrapper'
-import {User, UserConnection} from '../../types'
-import {AgencyAction} from './AgencyAction'
-import {CollaboratorStatics} from './CollaboratorStatics'
-import {SendMoneyModal} from './SendMoneyModal'
-import {UpdatePriceAgenciesModal} from './UpdatePriceAgenciesModal'
+import React, { useState } from 'react'
+import { isMobileOnly } from 'react-device-detect'
+import { BreadCrumb } from '../../components/common/BreadCrumb'
+import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
+import { User, UserConnection } from '../../types'
+import { AgencyAction } from './AgencyAction'
+import { CollaboratorStatics } from './CollaboratorStatics'
+import { SendMoneyModal } from './SendMoneyModal'
+import { UpdatePriceAgenciesModal } from './UpdatePriceAgenciesModal'
 
 const query = graphql`
 	query CollaboratorsListPageQuery {
@@ -51,15 +51,14 @@ const query = graphql`
 export const CollaboratorsListPage = GraphQLWrapper<{
 	users: UserConnection
 	me: User
-}>(query, {}, ({loading, data}) =>
-{
+}>(query, {}, ({ loading, data }) => {
 	if (loading)
 		return (
-			<Card title={<BreadCrumb />} style={{height: '100%'}}>
+			<Card title={<BreadCrumb />} style={{ height: '100%' }}>
 				<Row type="flex" justify="space-around">
 					<Col>
 						<Spin
-							indicator={<Icon type="loading" style={{fontSize: 24}} spin />}
+							indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}
 						/>
 					</Col>
 				</Row>
@@ -77,17 +76,14 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 
 	const [searchUsername, setSearchUsername] = useState<string>('')
 
-	const handleSelectAgencies = (user: User) =>
-	{
-		if (selectedAgencies.has(user))
-		{
+	const handleSelectAgencies = (user: User) => {
+		if (selectedAgencies.has(user)) {
 			selectedAgencies.delete(user)
 			setSelectedAgencies(new Set(selectedAgencies))
 		} else setSelectedAgencies(new Set(selectedAgencies.add(user)))
 	}
 
-	const onSelectAgencyAndOpenModal = (user: User) =>
-	{
+	const onSelectAgencyAndOpenModal = (user: User) => {
 		setSelectedAgencies(new Set([user]))
 		setUpdatePriceAgenciesModalVisible(true)
 	}
@@ -109,23 +105,18 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 					selectedAgencies={selectedAgencies}
 				/>
 			)}
-			<CollaboratorStatics
-				users={data.users.edges.map(n => n.node)}
-			/>
-			<div style={{paddingBottom: 10}}>
+			<CollaboratorStatics users={data.users.edges.map(n => n.node)} />
+			<div style={{ paddingBottom: 10 }}>
 				<AgencyAction
 					selectedAgencies={selectedAgencies}
-					onRemoveAllSelectedAgencies={() =>
-					{
+					onRemoveAllSelectedAgencies={() => {
 						setSelectedAgencies(new Set())
 					}}
-					onSelectAllAgencies={() =>
-					{
+					onSelectAllAgencies={() => {
 						const listUsers = data ? data.users.edges.map(n => n.node) : []
 						setSelectedAgencies(new Set(listUsers))
 					}}
-					onOpenUpdatePriceAgenciesModal={() =>
-					{
+					onOpenUpdatePriceAgenciesModal={() => {
 						setUpdatePriceAgenciesModalVisible(!updatePriceAgenciesModalVisible)
 					}}
 					onChangeSearchUsername={username =>
@@ -141,16 +132,17 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 					sm: 2,
 					md: 3,
 					lg: 4,
-					xxl: 6
+					xxl: 6,
 				}}
 				dataSource={data.users.edges
 					.map(n => n.node)
 					.sort(
 						(a, b) => b.balance / b.price_percent - a.balance / a.price_percent,
 					)
-					.filter(user => user.username.trim().toLocaleLowerCase().match(`${searchUsername}`))}
-				renderItem={item =>
-				{
+					.filter(user =>
+						user.username.trim().toLocaleLowerCase().match(`${searchUsername}`),
+					)}
+				renderItem={item => {
 					const percent = item.price_percent
 					const balance = item.balance.toLocaleString(undefined, {
 						maximumFractionDigits: 0,
@@ -171,13 +163,16 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 										align="middle"
 										justify="start"
 										onClick={() => handleSelectAgencies(item)}
-										style={{cursor: 'pointer'}}
+										style={{ cursor: 'pointer' }}
 									>
-										<Col style={{paddingRight: 5}}>
-										</Col>
+										<Col style={{ paddingRight: 5 }}></Col>
 										<Col>
-											<span style={{fontWeight: 'bold'}}>
-												{item.username.length >= 18 && !isMobileOnly && window.innerWidth < 1350 ? item.username.substring(0, 15) + '...' : item.username}
+											<span style={{ fontWeight: 'bold' }}>
+												{item.username.length >= 18 &&
+												!isMobileOnly &&
+												window.innerWidth < 1350
+													? item.username.substring(0, 15) + '...'
+													: item.username}
 											</span>
 										</Col>
 									</Row>
@@ -198,8 +193,8 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 										/>
 									</Tooltip>,
 								]}
-								style={{lineHeight: '2em'}}
-								bodyStyle={{height: 105}}
+								style={{ lineHeight: '2em' }}
+								bodyStyle={{ height: 105 }}
 							>
 								<Row type="flex" align="middle" justify="space-between">
 									<Col>Price</Col>

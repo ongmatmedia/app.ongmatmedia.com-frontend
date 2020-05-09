@@ -10,18 +10,17 @@ import Row from 'antd/lib/row'
 import Spin from 'antd/lib/spin'
 import Text from 'antd/lib/typography/Text'
 import graphql from 'babel-plugin-relay/macro'
-import React, {useState} from 'react'
-import {BreadCrumb} from '../../components/common/BreadCrumb'
-import {NoteReading} from '../../components/common/NoteReading'
-import {GraphQLWrapper} from '../../graphql/GraphQLWrapper'
-import {update_profile} from '../../graphql/update_profile'
-import {exportBankIcon} from '../../helpers/utils'
-import {PaymentMethod, User} from '../../types'
-import {CreateUpdateBankModal} from './CreateUpdateBankModal'
-import {Fab} from 'react-tiny-fab'
+import React, { useState } from 'react'
+import { BreadCrumb } from '../../components/common/BreadCrumb'
+import { NoteReading } from '../../components/common/NoteReading'
+import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
+import { update_profile } from '../../graphql/update_profile'
+import { exportBankIcon } from '../../helpers/utils'
+import { PaymentMethod, User } from '../../types'
+import { CreateUpdateBankModal } from './CreateUpdateBankModal'
+import { Fab } from 'react-tiny-fab'
 
-export interface Bank
-{
+export interface Bank {
 	name: string
 	owner: string
 	account_number: string
@@ -45,22 +44,20 @@ const query = graphql`
 
 export const BankInformationPage = GraphQLWrapper<{
 	me: User
-}>(query, {}, ({loading, data}) =>
-{
+}>(query, {}, ({ loading, data }) => {
 	if (loading)
 		return (
-			<Card title={<BreadCrumb />} style={{minHeight: '100%'}}>
+			<Card title={<BreadCrumb />} style={{ minHeight: '100%' }}>
 				<Row type="flex" justify="space-around">
 					<Col>
 						<Spin
-							indicator={<Icon type="loading" style={{fontSize: 24}} />}
+							indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
 						/>
 					</Col>
 				</Row>
 			</Card>
 		)
-	if (!loading && data)
-	{
+	if (!loading && data) {
 		const [
 			createUpdateBankModalVisible,
 			setCreateUpdateBankModalVisible,
@@ -70,22 +67,19 @@ export const BankInformationPage = GraphQLWrapper<{
 		const [deletedBank, setDeletedBank] = useState<string>()
 
 		return (
-			<Card title={<BreadCrumb />} style={{height: '100%'}} >
-				{
-					!createUpdateBankModalVisible && (
-						<Fab
-							mainButtonStyles={{backgroundColor: '#1890ff'}}
-							icon={<Icon type="plus" />}
-							event="click"
-							onClick={() =>
-							{
-								setModalMode('create')
-								setSelectedBank(null)
-								setCreateUpdateBankModalVisible(true)
-							}}
-						/>
-					)
-				}
+			<Card title={<BreadCrumb />} style={{ height: '100%' }}>
+				{!createUpdateBankModalVisible && (
+					<Fab
+						mainButtonStyles={{ backgroundColor: '#1890ff' }}
+						icon={<Icon type="plus" />}
+						event="click"
+						onClick={() => {
+							setModalMode('create')
+							setSelectedBank(null)
+							setCreateUpdateBankModalVisible(true)
+						}}
+					/>
+				)}
 				<CreateUpdateBankModal
 					visible={createUpdateBankModalVisible}
 					onClose={() => setCreateUpdateBankModalVisible(false)}
@@ -129,8 +123,7 @@ export const BankInformationPage = GraphQLWrapper<{
 								extra={
 									<Popconfirm
 										title="Are you sure delete this bank?"
-										onConfirm={async () =>
-										{
+										onConfirm={async () => {
 											setDeletedBank(item.account)
 											await update_profile({
 												payment_methods: [
@@ -149,18 +142,17 @@ export const BankInformationPage = GraphQLWrapper<{
 										cancelText="No"
 									>
 										{item.account !== deletedBank ? (
-											<Icon type="delete" style={{color: 'red'}} />
+											<Icon type="delete" style={{ color: 'red' }} />
 										) : (
-												<Icon type="loading" style={{color: 'blue'}} />
-											)}
+											<Icon type="loading" style={{ color: 'blue' }} />
+										)}
 									</Popconfirm>
 								}
-								headStyle={{textAlign: 'left'}}
+								headStyle={{ textAlign: 'left' }}
 							>
 								<Row
-									style={{marginBottom: 15, cursor: 'pointer'}}
-									onClick={() =>
-									{
+									style={{ marginBottom: 15, cursor: 'pointer' }}
+									onClick={() => {
 										setSelectedBank(item)
 										setModalMode('update')
 										setCreateUpdateBankModalVisible(true)
@@ -172,13 +164,13 @@ export const BankInformationPage = GraphQLWrapper<{
 											keyName !== 'name' && (
 												<Col xs={24}>
 													<Row>
-														<Col span={12} style={{textAlign: 'left'}}>
+														<Col span={12} style={{ textAlign: 'left' }}>
 															<Text strong>
 																{keyName.charAt(0).toUpperCase() +
 																	keyName.substring(1).replace(/_/g, ' ')}
 															</Text>
 														</Col>
-														<Col span={12} style={{textAlign: 'right'}}>
+														<Col span={12} style={{ textAlign: 'right' }}>
 															{item[keyName]}
 														</Col>
 													</Row>

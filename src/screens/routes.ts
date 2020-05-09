@@ -1,8 +1,7 @@
-import {MainLayout} from '../layouts/main'
+import { MainLayout } from '../layouts/main'
 import HomePage from './HomePage'
 
-export interface RouteRenderData
-{
+export interface RouteRenderData {
 	path: string
 	guard: boolean
 	component: any
@@ -10,8 +9,7 @@ export interface RouteRenderData
 	layout: any
 }
 
-export interface RouteData extends RouteRenderData
-{
+export interface RouteData extends RouteRenderData {
 	children?: RouteData[]
 }
 
@@ -26,20 +24,16 @@ export const NestedRoutes: RouteData[] = [
 	},
 ]
 
-export function exportRouteRenderData (
+export function exportRouteRenderData(
 	routeData: RouteData[],
-): RouteRenderData[]
-{
+): RouteRenderData[] {
 	const flatMapRenderData: RouteRenderData[] = []
 	let queueChildren: RouteData[] = [...routeData]
 	let tmp: RouteData[] = []
-	do
-	{
-		for (const route of queueChildren)
-		{
+	do {
+		for (const route of queueChildren) {
 			if (!route.children) flatMapRenderData.push(route)
-			else
-			{
+			else {
 				route.children.map(child => tmp.push(child))
 			}
 		}

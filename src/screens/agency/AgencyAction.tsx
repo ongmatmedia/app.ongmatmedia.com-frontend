@@ -4,12 +4,11 @@ import Col from 'antd/lib/col'
 import Row from 'antd/lib/row'
 import Tooltip from 'antd/lib/tooltip'
 import React from 'react'
-import {User} from '../../types'
-import {Input, Icon} from 'antd'
-import {Fab} from 'react-tiny-fab'
+import { User } from '../../types'
+import { Input, Icon } from 'antd'
+import { Fab } from 'react-tiny-fab'
 
-interface AgencyActionProps
-{
+interface AgencyActionProps {
 	selectedAgencies: Set<User>
 	onRemoveAllSelectedAgencies: Function
 	onSelectAllAgencies: Function
@@ -26,7 +25,7 @@ export const AgencyAction = (props: AgencyActionProps) => (
 					<Col>
 						<Checkbox
 							checked={props.selectedAgencies.size > 0}
-							style={{float: 'left'}}
+							style={{ float: 'left' }}
 							onChange={() =>
 								!props.selectedAgencies.size
 									? props.onSelectAllAgencies()
@@ -50,16 +49,15 @@ export const AgencyAction = (props: AgencyActionProps) => (
 							}
 						/>
 					</Col>
-					{
-						props.selectedAgencies.size !== 0 && !props.updatePriceAgenciesModalVisible && (
+					{props.selectedAgencies.size !== 0 &&
+						!props.updatePriceAgenciesModalVisible && (
 							<Fab
-								mainButtonStyles={{backgroundColor: 'rgb(64, 169, 255)'}}
+								mainButtonStyles={{ backgroundColor: 'rgb(64, 169, 255)' }}
 								icon={<Icon type="percentage" />}
 								event="click"
 								onClick={() => props.onOpenUpdatePriceAgenciesModal()}
 							/>
-						)
-					}
+						)}
 				</Row>
 			</Col>
 		</Row>
