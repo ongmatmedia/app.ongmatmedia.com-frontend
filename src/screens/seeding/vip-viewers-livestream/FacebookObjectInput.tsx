@@ -1,25 +1,32 @@
 import React, { useState } from 'react'
 import { Input, Icon } from 'antd'
 import { FacebookAccount } from '../../../api/FacebookAccount'
-
-export enum LivestreamFacebookTargetType {
-	profile = 'profile',
-	group = 'group',
-	page = 'page',
-}
+import {LivestreamFacebookTargetType} from '../../livestream/SharingComponents/LivestreamFacebookTargetType'
+import {graphql} from 'babel-plugin-relay/macro'
+import {GraphQLQueryFetcher} from '../../../graphql/GraphQLWrapper'
+import {FacebookProfile} from '../../../types'
 
 export type FacebookObjectInputProps = {
-	// onSelect: (obj: {
-	// 	name: string
-	// 	id: string
-	// 	image: string
-	// 	type: LivestreamFacebookTargetType
-	// }) => any
-	onSelect: (data: { url: string }) => void
+	onSelect: (data: {
+		name: string
+		id: string
+		image: string
+		type: LivestreamFacebookTargetType
+	}) => any
 	onError?: Function
 	placeholder?: string
 	defaultValue?: string
 }
+
+const query = graphql`
+	query FacebookObjectInputQuery($url: String!) {
+		profile_info(url: $url) {
+			uid
+			name
+			type
+		}
+	}
+`
 
 export const FacebookObjectInput = (props: FacebookObjectInputProps) => {
 	const [loading, set_loading] = useState<boolean>(false)
@@ -28,18 +35,16 @@ export const FacebookObjectInput = (props: FacebookObjectInputProps) => {
 	const submit = async () => {
 		set_loading(true)
 		try {
-			// const { name, type, uid: id } = await FacebookAccount.getUIDFromURL(value)
-			// props.onSelect({
-			// 	image:
-			// 		type != 'group'
-			// 			? `http://graph.facebook.com/${id}/picture?type=large`
-			// 			: 'https://leadershiproundtable.org/wp-content/uploads/2015/09/group-1824145_1280.png',
-			// 	name,
-			// 	id,
-			// 	type,
-			// })
+			const {profile_info} = await GraphQLQueryFetcher<{profile_info: FacebookProfile}>(query, {url: value.replace('profile.php?id=', '')})
+			const {name, type, uid} = profile_info
 			props.onSelect({
-				url: value,
+				image:
+					type !== LivestreamFacebookTargetType.group
+						? `http://graph.facebook.com/${uid}/picture?type=large`
+						: 'https://www.codester.com/static/uploads/items/5415/icon.png',
+				name,
+				id: uid,
+				type: type as LivestreamFacebookTargetType,
 			})
 			set_loading(false)
 			set_value('')

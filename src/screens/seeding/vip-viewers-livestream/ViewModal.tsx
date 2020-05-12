@@ -1,9 +1,28 @@
-import {Avatar, Button, Card, Col, Icon, List, message, Modal, notification, Popconfirm, Row, Spin, Tooltip, Alert, Tabs, Result, Table, Statistic} from 'antd'
+import {Avatar, Button, Card, Col, Icon, List, message, Modal, notification, Popconfirm, Row, Spin, Tooltip, Alert, Tabs, Result, Table, Statistic, Skeleton} from 'antd'
 import React, {useEffect, useState} from 'react'
 import {CopyToClipboard} from 'react-copy-to-clipboard'
 import {isMobile, isMobileOnly, isTablet} from 'react-device-detect'
 import {delete_vip_viewers_livestream} from '../../../graphql/delete_vip_viewers_livestream'
-import {VipViewersLivestream} from '../../../types'
+import {VipViewersLivestream, VipViewersLivestreamOrder} from '../../../types'
+import {graphql} from 'babel-plugin-relay/macro'
+import {GraphQLQueryFetcher, SmartGrahQLQueryRenderer} from '../../../graphql/GraphQLWrapper'
+import {GraphQLError} from '../../../graphql/GraphqlError'
+
+const query = graphql`
+	query ViewModalGetPaymentHistoryQuery($id: String!) {
+		vip_viewers_livestream_task(id: $id) {
+			user_id
+			id
+			payment_history {
+				created_at
+				amount
+				max_duration
+				bought
+				price
+			}
+		}
+	}
+`
 
 export type ViewModalProps = {
 	onClose: Function
@@ -114,6 +133,7 @@ export const ViewModal = (props: ViewModalProps) =>
 	const [videosArray, setVideosArray] = useState<VideoProps[]>()
 	const [isDeletingVip, setIsDeletingVip] = useState<boolean>(false)
 	const [error, setError] = useState<string | null>(null)
+	const [paymentHistory, setPaymentHistory] = useState<VipViewersLivestreamOrder[]>()
 
 	useEffect(() =>
 	{
@@ -250,43 +270,57 @@ export const ViewModal = (props: ViewModalProps) =>
 							<Alert message={error} showIcon type="error" />
 						)
 					}
-					<Table
-						style={{marginBottom: 20, marginTop: 20}}
-						bordered
-						pagination={false}
-						dataSource={[...props.vip?.payment_history].sort((a, b) => (a.created_at < b.created_at ? 1 : -1)).map(({created_at, ...rest}) => ({created_at: new Date(created_at).toLocaleString('vi'), ...rest}))}
-						columns={[
-							{
-								title: 'Updated',
-								dataIndex: 'created_at',
-								key: 'created_at',
-								fixed: 'left',
-								width: 100,
-							},
-							{
-								title: 'Amount',
-								dataIndex: 'amount',
-								key: 'amount',
-							},
-							{
-								title: 'Max duration',
-								dataIndex: 'max_duration',
-								key: 'max_duration',
-							},
-							{
-								title: 'Bought',
-								dataIndex: 'bought',
-								key: 'bought',
-							},
-							{
-								title: 'Price',
-								dataIndex: 'price',
-								key: 'price',
-								fixed: 'right',
-								width: 100,
-							},
-						]}
-						scroll={{x: 500}}
+					<SmartGrahQLQueryRenderer<{vip_viewers_livestream_task: {user_id: string, id: string, payment_history: VipViewersLivestreamOrder[]}}>
+						query={query}
+						variables={{id: props.vip.id}}
+						render={({data, loading, error}) => (
+							<Skeleton loading={loading && !error} active>
+								{
+									error ? (
+										<Alert style={{marginTop: 15}} showIcon type="error" message={(error as any).errors} />
+									) : (
+											<Table
+												style={{marginBottom: 20, marginTop: 20}}
+												bordered
+												pagination={false}
+												dataSource={(data?.vip_viewers_livestream_task?.payment_history.slice() ?? []).sort((a, b) => (a.created_at < b.created_at ? 1 : -1)).map(({created_at, ...rest}) => ({created_at: new Date(created_at).toLocaleString('vi'), ...rest}))}
+												columns={[
+													{
+														title: 'Updated',
+														dataIndex: 'created_at',
+														key: 'created_at',
+														fixed: 'left',
+														width: 100,
+													},
+													{
+														title: 'Amount',
+														dataIndex: 'amount',
+														key: 'amount',
+													},
+													{
+														title: 'Max duration',
+														dataIndex: 'max_duration',
+														key: 'max_duration',
+													},
+													{
+														title: 'Bought',
+														dataIndex: 'bought',
+														key: 'bought',
+													},
+													{
+														title: 'Price',
+														dataIndex: 'price',
+														key: 'price',
+														fixed: 'right',
+														width: 100,
+													},
+												]}
+												scroll={{x: 500}}
+											/>
+										)
+								}
+							</Skeleton>
+						)}
 					/>
 				</Tabs.TabPane>
 				<Tabs.TabPane tab="Report" key="2">

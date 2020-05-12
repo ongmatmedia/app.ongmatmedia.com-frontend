@@ -31,14 +31,16 @@ const DrawerLinks: DrawerLinksType[] = [
 		icon: 'alert',
 		to: '/seeding',
 	},
-	// { name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
+	{ name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
+	// { name: 'setting_icon_title', icon: 'setting', to: '/setting' },
 	{ name: 'account_icon_title', icon: 'team', to: '/farm' },
+	{ name: 'smart_group_title', icon: 'solution', to: '/facebook-page-manager' },
+	{ name: 'auto_reaction_title', icon: 'robot', to: '/auto-reaction' },
+	{ name: 'tool_icon_title', icon: 'tool', to: '/tools' },
+	{ name: 'agency_icon_title', icon: 'user', to: '/agency' },
 	{ name: 'deposit_icon_title', icon: 'dollar', to: '/deposit' },
 	{ name: 'payments_icon_title', icon: 'credit-card', to: '/payments' },
-	{ name: 'agency_icon_title', icon: 'user', to: '/agency' },
-	// { name: 'setting_icon_title', icon: 'setting', to: '/setting' },
 	{ name: 'admin_info_icon_title', icon: 'contacts', to: '/contact' },
-	{ name: 'tool_icon_title', icon: 'tool', to: '/tools' },
 ]
 
 const CurrentUserAvatarAppDrawer = (props: { loading: boolean }) => {
@@ -64,11 +66,12 @@ const DrawerApp = (props: DrawerAppProps) => (
 
 			alignItems: 'center',
 			cursor: 'pointer',
+			textAlign: 'center'
 		}}
 		className={`drawerItem_${props.name}`}
 	>
 		<Icon type={props.icon} style={{ fontSize: 30 }} />
-		<span style={{ fontSize: 12, paddingTop: 15 }}>{props.name}</span>
+		<span style={{ fontSize: 12, paddingTop: 15, fontWeight: 'bold' }}>{props.name}</span>
 	</div>
 )
 

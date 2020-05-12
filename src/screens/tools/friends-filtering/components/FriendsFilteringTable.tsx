@@ -13,6 +13,7 @@ import { ColumnProps } from 'antd/lib/table'
 import React from 'react'
 import { Friend } from '../../../../libs/filter-friends/FBFriend'
 import { withFilterFriendsStore } from '../../../../libs/filter-friends/store'
+import {isMobileOnly, isTablet} from 'react-device-detect'
 
 export const FriendsFilteringTable = withFilterFriendsStore(props => {
 	const columns: ColumnProps<Friend>[] = [
@@ -105,7 +106,7 @@ export const FriendsFilteringTable = withFilterFriendsStore(props => {
 					icon="close"
 				>
 					{' '}
-					Remove friend
+					Unfriend
 				</Button>
 			),
 			fixed: 'right',
@@ -177,7 +178,7 @@ export const FriendsFilteringTable = withFilterFriendsStore(props => {
 					},
 				}}
 				rowKey="uid"
-				scroll={{ x: 1300 }}
+				scroll={{ x: 'max-content', scrollToFirstRowOnChange: true }}
 			/>
 		</span>
 	)

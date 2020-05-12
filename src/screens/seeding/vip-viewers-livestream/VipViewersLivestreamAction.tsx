@@ -2,7 +2,7 @@ import { Col, Icon, Input, Row } from 'antd'
 import React from 'react'
 
 export type VipViewersLivestreamActionProps = {
-	onChangeSearch: (v: string) => void
+	onChangeSearch?: (v: string) => void
 }
 
 export const VipViewersLivestreamAction = (
@@ -21,7 +21,7 @@ export const VipViewersLivestreamAction = (
 				placeholder="Search by name or UID"
 				allowClear
 				onChange={e => {
-					props.onChangeSearch(e.target.value.trim().toLowerCase())
+					props.onChangeSearch && props.onChangeSearch(e.target.value.trim().toLowerCase())
 				}}
 			/>
 		</Col>

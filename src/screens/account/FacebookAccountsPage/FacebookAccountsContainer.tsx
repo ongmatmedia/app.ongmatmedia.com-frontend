@@ -1,12 +1,12 @@
 import Card from 'antd/lib/card'
 import graphql from 'babel-plugin-relay/macro'
-import React, { useState } from 'react'
-import { QueryRenderer } from 'react-relay'
-import { BreadCrumb } from '../../../components/common/BreadCrumb'
-import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
-import { CreateUpdateAccountModal } from '../CreateUpdateAccountModal'
-import { ViewAccountModal } from '../ViewAccountModal'
-import { FacebookAccountsPresentation } from './FacebookAccountsPresentation'
+import React, {useState} from 'react'
+import {QueryRenderer} from 'react-relay'
+import {BreadCrumb} from '../../../components/common/BreadCrumb'
+import {RelayEnvironment} from '../../../graphql/RelayEnvironment'
+import {CreateUpdateAccountModal} from '../CreateUpdateAccountModal'
+import {ViewAccountModal} from '../ViewAccountModal'
+import {FacebookAccountsPresentation} from './FacebookAccountsPresentation'
 
 const query = graphql`
 	query FacebookAccountsContainerQuery {
@@ -22,7 +22,8 @@ const query = graphql`
 	}
 `
 
-export const FacebookAccountsContainer = () => {
+export const FacebookAccountsContainer = () =>
+{
 	const [selectedAccounts, setSelectedAccounts] = useState<string[]>([])
 
 	const [modalViewAccountIsVisible, setModalViewAccountIsVisible] = useState<
@@ -34,7 +35,7 @@ export const FacebookAccountsContainer = () => {
 		setModalCreateUpdateAccountIsVisible,
 	] = useState<boolean>(false)
 
-	const [viewingAccount, setViewingAccount] = useState<string>()
+	const [viewingAccount, setViewingAccount] = useState<{id: string, name: string} | null>(null)
 
 	const [modalMode, setModalMode] = useState<'create' | 'update'>('create')
 
@@ -44,22 +45,27 @@ export const FacebookAccountsContainer = () => {
 			query={query}
 			variables={{}}
 			render={rs => (
-				<Card title={<BreadCrumb />} style={{ minHeight: '100%' }}>
-					<ViewAccountModal
-						visible={modalViewAccountIsVisible}
-						onClose={() => setModalViewAccountIsVisible(false)}
-						accountId={viewingAccount}
-						onUpdate={() => setModalCreateUpdateAccountIsVisible(true)}
-						onChangeModeModal={(mode: 'create' | 'update') =>
-							setModalMode(mode)
-						}
-					/>
-					<CreateUpdateAccountModal
-						visible={modalCreateUpdateAccountIsVisible}
-						onClose={() => setModalCreateUpdateAccountIsVisible(false)}
-						accountId={viewingAccount}
-						mode={modalMode}
-					/>
+				<Card title={<BreadCrumb />} style={{minHeight: '100%'}}>
+					{
+						modalViewAccountIsVisible && (
+							<ViewAccountModal
+								onClose={() => setModalViewAccountIsVisible(false)}
+								userInfo={viewingAccount}
+								onUpdate={() => setModalCreateUpdateAccountIsVisible(true)}
+								onChangeModeModal={(mode: 'create' | 'update') =>
+									setModalMode(mode)
+								}
+							/>
+						)
+					}
+					{
+						modalCreateUpdateAccountIsVisible && (
+							<CreateUpdateAccountModal
+								onClose={() => setModalCreateUpdateAccountIsVisible(false)}
+								mode={modalMode}
+							/>
+						)
+					}
 					<FacebookAccountsPresentation
 						loading={rs.props == null}
 						accounts={
@@ -75,8 +81,9 @@ export const FacebookAccountsContainer = () => {
 						onChangeModeModal={(mode: 'create' | 'update') =>
 							setModalMode(mode)
 						}
-						onOpenViewAccountModal={id => {
-							setViewingAccount(id)
+						onOpenViewAccountModal={userInfo =>
+						{
+							setViewingAccount(userInfo)
 							setModalViewAccountIsVisible(true)
 						}}
 						fabIsVisble={

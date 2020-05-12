@@ -12,6 +12,7 @@ import {update_vip_viewers_livestream} from '../../../graphql/update_vip_viewers
 import {withForm} from '../../../libs/Form'
 import {User, VipViewersLivestream} from '../../../types'
 import {FacebookObjectInput} from './FacebookObjectInput'
+import {LivestreamFacebookTargetType} from '../../livestream/SharingComponents/LivestreamFacebookTargetType'
 
 const query = graphql`
 	query CUModalQuery {
@@ -321,13 +322,13 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 									)}
 									{editing_uid && (
 										<FacebookObjectInput
-											placeholder={t('form.facebook_object_input.placeholder')}
-											onSelect={({url}) =>
+											placeholder="Username, page's shortname or url"
+											onSelect={({id, image, name, type}) =>
 											{
-												// if (type == LivestreamFacebookTargetType.group) return
+												if (type == LivestreamFacebookTargetType.group) return
 												setValue({
-													id: '100005137867313',
-													name: 'Dang Tien Nguyen',
+													id,
+													name,
 												})
 												set_editing_uid(false)
 											}}
@@ -344,7 +345,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 							render: ({setValue, value, error}) => (
 								<FormElement label="Viewers amount" icon="eye" require>
 									{error && <Alert type="error" message={error} />}
-									{[50, 100, 150, 200, 250, 300, 400, 500].map(amount => (
+									{[50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150].map(amount => (
 										<Button
 											style={{margin: 5, width: 100}}
 											type={amount == value ? 'primary' : 'dashed'}
@@ -390,7 +391,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 										<div>
 											{[1, 3, 7, 14, 30, 45, 60, 90, 120].map(amount => (
 												<Button
-													disabled={props.mode == 'update' && !isChangingTimes && amount !== value}
+													disabled={props.mode == 'update' && !isChangingTimes ? true : false}
 													style={{margin: 5, width: 100}}
 													type={amount == value ? 'primary' : 'dashed'}
 													onClick={() => setValue(amount)}

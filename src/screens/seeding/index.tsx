@@ -14,6 +14,21 @@ export const SeedingPage = () => (
 				serviceName: 'Vip viewers livestream',
 				link: '/vip-viewers-livestream',
 			},
+			{
+				icon: 'audit',
+				serviceName: 'View video (comming soon)',
+				link: '/view',
+			},
+			{
+				icon: 'like',
+				serviceName: 'Like (comming soon)',
+				link: '/like',
+			},
+			{
+				icon: 'message',
+				serviceName: 'Comment (comming soon)',
+				link: '/comment',
+			},
 		]}
 	/>
 )

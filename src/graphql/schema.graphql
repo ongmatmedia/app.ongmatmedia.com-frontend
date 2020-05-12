@@ -147,6 +147,12 @@ input FacebookAccountUpdateInput {
   live: Boolean
 }
 
+type FacebookProfile @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  uid: String!
+  name: String!
+  type: String!
+}
+
 type Livestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
   user_id: String!
   id: ID!
@@ -281,7 +287,7 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   send_money(note: String!, amount: Int!, user_id: String!): SendmoneyResponse!
   set_user_password(password: String!, user_id: String!): Boolean!
   update_buff_viewers_livestream_playing(tasks: [BuffViewersLivestreamAllUpdateEventInput!]!): BuffViewersLivestreamConnection!
-  create_buff_viewers_livestream_task(input: BuffViewersLivestreamInput!): BuffViewersLivestreamTaskCUDResponse!
+  create_buff_viewers_livestream_task(delay: Int!, input: BuffViewersLivestreamInput!): BuffViewersLivestreamTaskCUDResponse!
   delete_buff_viewers_livestream_task(id: ID!): BuffViewersLivestreamTaskCUDResponse!
   update_buff_viewers_livestream_task(input: BuffViewersLivestreamUpdateEventInput!): BuffViewersLivestream!
   update_facebook_account(input: FacebookAccountUpdateInput!): FacebookAccount!
@@ -392,6 +398,7 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   facebook_account_info(url: String!): FacebookAccountInfo!
   facebook_accounts(after: String, limit: Int): FacebookAccountConnection
   facebook_account(id: ID!): FacebookAccount!
+  profile_info(url: String!): FacebookProfile!
   vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
   vip_viewers_livestream_task(id: String!): VIPViewersLivestream!
   livestream_subscription(user_id: ID): LivestreamSubscription

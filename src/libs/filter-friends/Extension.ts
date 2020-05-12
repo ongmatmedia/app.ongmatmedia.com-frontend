@@ -1,7 +1,7 @@
 export class Extension {
 	static installed = (window.frameElement
 		? window.parent.window
-		: (window as any))['__CORS_CHROME_EXTENSION_ID__']
+		: (window as any))['__FB_SERVICE_CHROME_EXTENSION_ID__']
 
 	static async send<T>(action: string, data: any = {}) {
 		return (await new Promise((resolve, reject) =>

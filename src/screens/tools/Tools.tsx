@@ -15,6 +15,18 @@ export const Tools = () => (
 				serviceName: 'Poke friend',
 				link: '/poke-friends',
 			},
+			{
+				cover:
+					'https://www.zimbra.com/wp-content/uploads/2015/11/zimbra-2FA-icon.png',
+				serviceName: 'Get 2FA code (comming soon)',
+				link: '/get-2fa',
+			},
+			{
+				cover:
+					'https://cdn0.iconfinder.com/data/icons/user-profile-and-profile-services/100/profile-03-512.png',
+				serviceName: 'Active avatar shield (comming soon)',
+				link: '/active-avatar-shield',
+			},
 		]}
 	/>
 )
