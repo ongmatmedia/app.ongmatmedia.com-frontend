@@ -34,7 +34,7 @@ const tranfromPricing = (priceValue: number) => {
 	const amounts = [50, 100, 150, 200, 250, 300, 500, 600]
 	const raw = amounts.map(amount => ({
 		amountValue: amount,
-		amountString: `${amount} mắt`
+		amountString: `${amount} mắt`,
 	}))
 	raw.map(el => {
 		minutes.forEach(minute => {
@@ -103,7 +103,7 @@ export const AdminContact = GraphQLWrapper<{ myadmin: User }>(
 		}, [])
 
 		return (
-			<Card title={<BreadCrumb />} style={{ minHeight: '100%' }} >
+			<Card title={<BreadCrumb />} style={{ minHeight: '100%' }}>
 				<Row type="flex" justify="center" align="middle" gutter={16}>
 					<Col xs={24} style={{ marginBottom: 20 }}>
 						<Text>

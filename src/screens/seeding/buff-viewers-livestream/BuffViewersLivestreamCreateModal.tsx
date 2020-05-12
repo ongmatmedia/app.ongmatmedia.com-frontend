@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import {graphql} from 'babel-plugin-relay/macro'
-import React, {useState} from 'react'
-import {useTranslation} from 'react-i18next'
-import {FormElement} from '../../../components/form/FormElement'
-import {OrderInfo} from '../../../components/OrderInfo'
-import {VideoUrlInput} from '../../../components/VideoUrlInput'
-import {create_buff_viewers_livestream} from '../../../graphql/create_buff_viewers_livestream'
-import {GraphQLWrapper} from '../../../graphql/GraphQLWrapper'
-import {withForm} from '../../../libs/Form'
-import {User, VideoInfo} from '../../../types'
-import {BuffViewersLivestreamSystemStatus} from './BuffViewersLivestreamSystemStatus'
+import { graphql } from 'babel-plugin-relay/macro'
+import React, { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { FormElement } from '../../../components/form/FormElement'
+import { OrderInfo } from '../../../components/OrderInfo'
+import { VideoUrlInput } from '../../../components/VideoUrlInput'
+import { create_buff_viewers_livestream } from '../../../graphql/create_buff_viewers_livestream'
+import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper'
+import { withForm } from '../../../libs/Form'
+import { User, VideoInfo } from '../../../types'
+import { BuffViewersLivestreamSystemStatus } from './BuffViewersLivestreamSystemStatus'
 import Modal from 'antd/lib/modal'
 import Spin from 'antd/lib/spin'
 import Alert from 'antd/lib/alert'
@@ -18,10 +18,10 @@ import Col from 'antd/lib/col'
 import Card from 'antd/lib/card'
 import Tag from 'antd/lib/tag'
 import Icon from 'antd/lib/icon'
-import {notification} from 'antd'
+import { notification } from 'antd'
 import Button from 'antd/lib/button'
-import {isMobileOnly} from 'react-device-detect'
-import {range} from '../../../helpers/utils'
+import { isMobileOnly } from 'react-device-detect'
+import { range } from '../../../helpers/utils'
 
 const query = graphql`
 	query BuffViewersLivestreamCreateModalQuery {
@@ -46,7 +46,7 @@ export type BuffViewersLivestreamCreateModalProps = {
 	onClose: Function
 }
 
-export type BuffViewersLivestreamCreateModalGraphqlData = {me: User}
+export type BuffViewersLivestreamCreateModalGraphqlData = { me: User }
 
 export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 	BuffViewersLivestreamCreateModalGraphqlData,
@@ -54,36 +54,32 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 >(
 	query,
 	{},
-	withForm(props =>
-	{
+	withForm(props => {
 		const [error, set_error] = useState<string | null>(null)
 		const [loading, set_loading] = useState<boolean>(false)
 		const [video, set_video] = useState<VideoInfo | null>(null)
 
-		const {t} = useTranslation('buff_viewers_livestream_create_modal')
+		const { t } = useTranslation('buff_viewers_livestream_create_modal')
 
 		const limits_mins = [10, 30, 45, 60, 90, 120, 150, 180, 210, 240, 270, 300]
 
 		const completingBuffViewersTimes: number[] = [...range(1, 10)]
 
 		const submit = () =>
-			props.form.submit(async data =>
-			{
+			props.form.submit(async data => {
 				set_error(null)
 				set_loading(true)
-				try
-				{
-					const delay = data.completing_minutes / data.amount * 60 * 1000
+				try {
+					const delay = (data.completing_minutes / data.amount) * 60 * 1000
 					delete data.completing_minutes
 					const inputData = {
 						...data,
 						note: 'add_from_web',
 					}
 					await create_buff_viewers_livestream(delay, inputData)
-					notification.success({message: 'Successfully'})
+					notification.success({ message: 'Successfully' })
 					props.onClose()
-				} catch (e)
-				{
+				} catch (e) {
 					set_error(e)
 				}
 				set_loading(false)
@@ -96,30 +92,29 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 				onCancel={() => props.onClose()}
 				destroyOnClose
 				closable={true}
-				okButtonProps={{loading}}
+				okButtonProps={{ loading }}
 				title={t('title')}
-				style={{top: isMobileOnly ? 0 : 50}}
+				style={{ top: isMobileOnly ? 0 : 50 }}
 			>
 				<Spin spinning={props.loading}>
 					{props.form.field({
 						name: 'id',
 						require: t('form.facebook_video_input.validatingErrorMessage'),
-						render: ({error, setValues}) => (
+						render: ({ error, setValues }) => (
 							<FormElement
 								label={t('form.facebook_video_input.title')}
 								icon="user"
 								error={error}
 							>
 								<Alert
-									style={{marginBottom: 5}}
+									style={{ marginBottom: 5 }}
 									message="Nhập video URL rồi bấm nút kính lúp bên cạnh để xác nhận video"
 									type="info"
 									showIcon
 								/>
 
 								<VideoUrlInput
-									onSubmitVideo={info =>
-									{
+									onSubmitVideo={info => {
 										set_video(info)
 										setValues({
 											id: info.video_id,
@@ -129,9 +124,9 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 									}}
 								/>
 								{video && (
-									<Row style={{marginTop: 10}}>
+									<Row style={{ marginTop: 10 }}>
 										<Col span={12}>
-											<img style={{width: '100%'}} src={video?.thumbnail} />
+											<img style={{ width: '100%' }} src={video?.thumbnail} />
 										</Col>
 										<Col span={12}>
 											<Card
@@ -141,7 +136,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 															{video.owner.name}{' '}
 														</Tag>
 														<Icon
-															style={{fontSize: 25}}
+															style={{ fontSize: 25 }}
 															type="video-camera"
 															onClick={() =>
 																window.open(`https://fb.com/${video.id}`)
@@ -163,7 +158,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 					{props.form.field<number>({
 						name: 'amount',
 						require: t('form.viewer_amount_select.validatingErrorMessage'),
-						render: ({error, setValue, value}) => (
+						render: ({ error, setValue, value }) => (
 							<FormElement
 								label={t('form.viewer_amount_select.title')}
 								icon="eye"
@@ -173,17 +168,35 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 								<Row>
 									{' '}
 									<Col>
-										{[50, 100, 150, 200, 250, 300, 500, 600, 700, 800, 900, 1000, 1500, 2000, 2500, 3000, 3500, 4000, 5000].map(
-											amount => (
-												<Button
-													style={{margin: 5, width: 100}}
-													type={amount == value ? 'primary' : 'dashed'}
-													onClick={() => setValue(amount)}
-												>
-													{amount}
-												</Button>
-											),
-										)}
+										{[
+											50,
+											100,
+											150,
+											200,
+											250,
+											300,
+											500,
+											600,
+											700,
+											800,
+											900,
+											1000,
+											1500,
+											2000,
+											2500,
+											3000,
+											3500,
+											4000,
+											5000,
+										].map(amount => (
+											<Button
+												style={{ margin: 5, width: 100 }}
+												type={amount == value ? 'primary' : 'dashed'}
+												onClick={() => setValue(amount)}
+											>
+												{amount}
+											</Button>
+										))}
 									</Col>{' '}
 								</Row>
 							</FormElement>
@@ -194,9 +207,9 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 						name: 'completing_minutes',
 						require: 'Please select completing time',
 						initalValue: 1,
-						render: ({error, setValue, value}) => (
+						render: ({ error, setValue, value }) => (
 							<FormElement
-								label='Completing time'
+								label="Completing time"
 								icon="clock-circle"
 								require
 								error={error}
@@ -204,17 +217,15 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 								<Row>
 									{' '}
 									<Col>
-										{completingBuffViewersTimes.map(
-											time => (
-												<Button
-													style={{margin: 5, width: 100}}
-													type={time == value ? 'primary' : 'dashed'}
-													onClick={() => setValue(time)}
-												>
-													{`${time} ${time == 1 ? 'minute' : 'minutes'}`}
-												</Button>
-											),
-										)}
+										{completingBuffViewersTimes.map(time => (
+											<Button
+												style={{ margin: 5, width: 100 }}
+												type={time == value ? 'primary' : 'dashed'}
+												onClick={() => setValue(time)}
+											>
+												{`${time} ${time == 1 ? 'minute' : 'minutes'}`}
+											</Button>
+										))}
 									</Col>{' '}
 								</Row>
 							</FormElement>
@@ -224,14 +235,14 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 					{props.form.field<number>({
 						name: 'limit_mins',
 						require: t('form.limit_mins_viewers.validatingErrorMessage'),
-						render: ({setValue, value}) => (
+						render: ({ setValue, value }) => (
 							<FormElement
 								label={t('form.limit_mins_viewers.title')}
 								icon="eye"
 							>
 								{limits_mins.map(amount => (
 									<Button
-										style={{margin: 5, width: 100}}
+										style={{ margin: 5, width: 100 }}
 										type={amount == value ? 'primary' : 'dashed'}
 										onClick={() => setValue(amount)}
 									>
@@ -245,8 +256,8 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 						<OrderInfo
 							balance={props.data.me.balance}
 							order={[
-								{amount: props.form.data.limit_mins, unit: 'mins'},
-								{amount: props.form.data.amount, unit: 'viewers'},
+								{ amount: props.form.data.limit_mins, unit: 'mins' },
+								{ amount: props.form.data.amount, unit: 'viewers' },
 								{
 									amount: props.data.me.pricing?.buff_viewers_livestream,
 									unit: 'credit/viewer',

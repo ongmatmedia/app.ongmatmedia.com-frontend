@@ -1,19 +1,17 @@
-import {Avatar, Card, Col, Icon, List, Row, Tag} from 'antd'
-import React, {useState} from 'react'
-import {Fab} from 'react-tiny-fab'
-import {VipViewersLivestream} from '../../../types'
-import {CUModal} from './CUModal'
-import {ViewModal} from './ViewModal'
+import { Avatar, Card, Col, Icon, List, Row, Tag } from 'antd'
+import React, { useState } from 'react'
+import { Fab } from 'react-tiny-fab'
+import { VipViewersLivestream } from '../../../types'
+import { CUModal } from './CUModal'
+import { ViewModal } from './ViewModal'
 
-interface VipViewersLivestreamListProps
-{
+interface VipViewersLivestreamListProps {
 	data: VipViewersLivestream[]
 }
 
 export const VipViewersLivestreamList = (
 	props: VipViewersLivestreamListProps,
-) =>
-{
+) => {
 	const [
 		editingVipViewerLivestream,
 		setEditingVipViewerLivestream,
@@ -34,8 +32,7 @@ export const VipViewersLivestreamList = (
 				{createUpdateVipViewersLivestreamModalIsVisible && (
 					<CUModal
 						mode={editingVipViewerLivestream ? 'update' : 'create'}
-						onClose={() =>
-						{
+						onClose={() => {
 							setEditingVipViewerLivestream(null)
 							setCreateUpdateVipViewersLivestreamModalIsVisible(false)
 						}}
@@ -46,14 +43,16 @@ export const VipViewersLivestreamList = (
 					<ViewModal
 						onClose={() => setViewingVipViewerLivestream(null)}
 						vip={viewingVipViewerLivestream}
-						setCreateUpdateVipViewersLivestreamModalIsVisible={setCreateUpdateVipViewersLivestreamModalIsVisible}
+						setCreateUpdateVipViewersLivestreamModalIsVisible={
+							setCreateUpdateVipViewersLivestreamModalIsVisible
+						}
 						setEditingVipViewerLivestream={setEditingVipViewerLivestream}
 					/>
 				)}
 				{!createUpdateVipViewersLivestreamModalIsVisible &&
 					!viewingVipViewerLivestream && (
 						<Fab
-							mainButtonStyles={{backgroundColor: 'rgb(64, 169, 255)'}}
+							mainButtonStyles={{ backgroundColor: 'rgb(64, 169, 255)' }}
 							icon={<Icon type="plus" />}
 							event="click"
 							onClick={() =>
@@ -71,7 +70,7 @@ export const VipViewersLivestreamList = (
 					rowKey="uid"
 					dataSource={props.data}
 					renderItem={item => (
-						<List.Item style={{margin: 5}}>
+						<List.Item style={{ margin: 5 }}>
 							<Card
 								type="inner"
 								hoverable
@@ -100,13 +99,24 @@ export const VipViewersLivestreamList = (
 														Running <Icon type="sync" spin />
 													</Tag>
 												) : (
-														<Tag color="#c01922"> Stopped </Tag>
-													)}
+													<Tag color="#c01922"> Stopped </Tag>
+												)}
 											</Col>
 											<Col>
-												<Tag color={item.livestream_used_nums == item.livestream_nums ? 'red' : 'green'}>Remain: {item.livestream_nums - item.livestream_used_nums}</Tag>
+												<Tag
+													color={
+														item.livestream_used_nums == item.livestream_nums
+															? 'red'
+															: 'green'
+													}
+												>
+													Remain:{' '}
+													{item.livestream_nums - item.livestream_used_nums}
+												</Tag>
 											</Col>
-											<Col>{new Date(item.created_at).toLocaleString('vi')}</Col>
+											<Col>
+												{new Date(item.created_at).toLocaleString('vi')}
+											</Col>
 										</Row>
 									</Col>
 								</Row>

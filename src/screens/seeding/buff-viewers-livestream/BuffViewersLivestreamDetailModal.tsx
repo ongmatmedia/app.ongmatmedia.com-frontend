@@ -6,13 +6,13 @@ import Row from 'antd/lib/row'
 import Spin from 'antd/lib/spin'
 import Statistic from 'antd/lib/statistic'
 import Table from 'antd/lib/table'
-import {graphql} from 'babel-plugin-relay/macro'
+import { graphql } from 'babel-plugin-relay/macro'
 import React from 'react'
-import {Line} from 'react-chartjs-2'
-import {isMobileOnly, isTablet} from 'react-device-detect'
-import {useAuth0} from '../../../context/Auth0'
-import {SmartGrahQLQueryRenderer} from '../../../graphql/GraphQLWrapper'
-import {BuffViewersLivestream} from '../../../types'
+import { Line } from 'react-chartjs-2'
+import { isMobileOnly, isTablet } from 'react-device-detect'
+import { useAuth0 } from '../../../context/Auth0'
+import { SmartGrahQLQueryRenderer } from '../../../graphql/GraphQLWrapper'
+import { BuffViewersLivestream } from '../../../types'
 
 const query = graphql`
 	query BuffViewersLivestreamDetailModalQuery($id: String!) {
@@ -37,11 +37,9 @@ const options = {
 	tooltips: {
 		mode: 'label',
 		callbacks: {
-			label: function (tooltipItem, data)
-			{
+			label: function (tooltipItem, data) {
 				let label = data.datasets[tooltipItem.datasetIndex].label || ''
-				if (label)
-				{
+				if (label) {
 					label += ': '
 				}
 				label += Number(tooltipItem.yLabel).toLocaleString()
@@ -61,8 +59,7 @@ const options = {
 			{
 				display: true,
 				ticks: {
-					callback: (value: string, index: number, values: string[]) =>
-					{
+					callback: (value: string, index: number, values: string[]) => {
 						const date = new Date(value)
 						return date.getMinutes() % 15 == 0 &&
 							new Date(values[index + 1]).getMinutes() % 15 !== 0
@@ -91,16 +88,15 @@ const options = {
 export const BuffViewersDetailModal = (props: {
 	onClose: Function
 	video_id: string
-}) =>
-{
-	const {user} = useAuth0()
+}) => {
+	const { user } = useAuth0()
 	return (
 		<Modal
 			width={isMobileOnly ? '100%' : isTablet ? '80%' : '60%'}
 			destroyOnClose
 			closable={true}
 			title={`Chi tiết thông số buff`}
-			style={{textAlign: 'center', top: 10}}
+			style={{ textAlign: 'center', top: 10 }}
 			onCancel={() => props.onClose()}
 			footer={null}
 			visible={true}
@@ -109,19 +105,19 @@ export const BuffViewersDetailModal = (props: {
 				buff_viewers_livestream_task: BuffViewersLivestream
 			}>
 				query={query}
-				variables={{id: props.video_id}}
-				render={({data, loading, error}) => (
+				variables={{ id: props.video_id }}
+				render={({ data, loading, error }) => (
 					<Row>
 						<Col xs={24}>
 							{error && <Alert showIcon message={error} type="error" />}
 							{loading && !error && (
 								<Spin
-									indicator={<Icon type="loading" style={{fontSize: 24}} />}
+									indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
 								/>
 							)}
 							{!loading && data && (
 								<>
-									<Row gutter={16} style={{marginBottom: 15}}>
+									<Row gutter={16} style={{ marginBottom: 15 }}>
 										<Col xs={24} sm={8}>
 											<Statistic
 												title="ID"
@@ -145,7 +141,7 @@ export const BuffViewersDetailModal = (props: {
 														value={
 															data.buff_viewers_livestream_task.logs[
 																data.buff_viewers_livestream_task.logs.length -
-																1
+																	1
 															].amount
 														}
 													/>
@@ -155,7 +151,7 @@ export const BuffViewersDetailModal = (props: {
 									</Row>
 									<Table
 										title={() => 'Detail orders'}
-										style={{marginBottom: 20}}
+										style={{ marginBottom: 20 }}
 										bordered
 										pagination={false}
 										dataSource={data.buff_viewers_livestream_task.orders
@@ -167,14 +163,14 @@ export const BuffViewersDetailModal = (props: {
 													el.time + el.limit_mins * 60 * 1000 >= Date.now() ? (
 														<Icon
 															type="video-camera"
-															style={{color: '#ff5722'}}
+															style={{ color: '#ff5722' }}
 														/>
 													) : (
-															<Icon
-																type="check-circle"
-																style={{color: 'green'}}
-															/>
-														),
+														<Icon
+															type="check-circle"
+															style={{ color: 'green' }}
+														/>
+													),
 											}))
 											.sort((a, b) => (a.time < b.time ? 1 : -1))}
 										columns={[
@@ -203,7 +199,10 @@ export const BuffViewersDetailModal = (props: {
 												width: 100,
 											},
 										]}
-										scroll={{x: 'max-content', scrollToFirstRowOnChange: true}}
+										scroll={{
+											x: 'max-content',
+											scrollToFirstRowOnChange: true,
+										}}
 									/>
 									<Line
 										data={{

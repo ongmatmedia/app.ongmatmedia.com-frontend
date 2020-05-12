@@ -6,7 +6,7 @@ import { RelayEnvironment } from './RelayEnvironment'
 
 const mutation = graphql`
 	mutation createBuffViewersLivestreamMutation(
-		$delay: Int!,
+		$delay: Int!
 		$input: BuffViewersLivestreamInput!
 	) {
 		create_buff_viewers_livestream_task(delay: $delay, input: $input) {

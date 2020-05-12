@@ -66,12 +66,14 @@ const DrawerApp = (props: DrawerAppProps) => (
 
 			alignItems: 'center',
 			cursor: 'pointer',
-			textAlign: 'center'
+			textAlign: 'center',
 		}}
 		className={`drawerItem_${props.name}`}
 	>
 		<Icon type={props.icon} style={{ fontSize: 30 }} />
-		<span style={{ fontSize: 12, paddingTop: 15, fontWeight: 'bold' }}>{props.name}</span>
+		<span style={{ fontSize: 12, paddingTop: 15, fontWeight: 'bold' }}>
+			{props.name}
+		</span>
 	</div>
 )
 
