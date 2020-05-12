@@ -18,6 +18,7 @@ import Spin from 'antd/lib/spin'
 import Icon from 'antd/lib/icon'
 import List from 'antd/lib/list'
 import Statistic from 'antd/lib/statistic'
+import {Skeleton} from 'antd'
 
 const query = graphql`
 	query HomePageQuery($after: String, $first: Int, $before_time: Long) {
@@ -176,7 +177,7 @@ const HomePage = PaginationWrapper<{
 	({ data, loading, error, reload, load_more, loading_more, has_more }) => {
 		if (error && !data)
 			return (
-				<Card style={{ height: '100%' }} size="small">
+				<Card style={{ minHeight: '100%' }}>
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Alert showIcon message={error} type="error" />
@@ -186,7 +187,7 @@ const HomePage = PaginationWrapper<{
 			)
 		if (loading && !data)
 			return (
-				<Card style={{ height: '100%' }} size="small">
+				<Card style={{ minHeight: '100%' }}>
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Spin
@@ -291,7 +292,7 @@ const HomePage = PaginationWrapper<{
 		}[] = sortedAscendingDayData
 
 		return (
-			<Card style={{ height: '100%' }}>
+			<Card style={{ minHeight: '100%' }}>
 				<Row gutter={16}>
 					<Col xs={24}>
 						<List
@@ -537,14 +538,10 @@ const HomePage = PaginationWrapper<{
 									mode: 'label',
 									callbacks: {
 										label: function (tooltipItem, data) {
-											console.log('from tooltip')
-											console.log({ tooltipItem }, { data })
 											let label = data.labels[tooltipItem.index] || ''
-											console.log({ label })
 											if (label) {
 												label += ': '
 											}
-											console.log()
 											label += Number(
 												data.datasets[tooltipItem.datasetIndex].data[
 													tooltipItem.index

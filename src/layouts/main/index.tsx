@@ -11,13 +11,9 @@ export const MainLayout = ({ Content }: MainLayoutProps): JSX.Element => {
 	return (
 		<Layout style={{ height: '100vh' }}>
 			<Header />
-			<Layout>
-				<Layout style={{ flex: 1, padding: 10 }}>
-					<Layout.Content>
-						<Content />
-					</Layout.Content>
-				</Layout>
-			</Layout>
+			<Layout.Content style={{ flex: 1, padding: 10 }}>
+				<Content />
+			</Layout.Content>
 		</Layout>
 	)
 }

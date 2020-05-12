@@ -6,9 +6,10 @@ import { RelayEnvironment } from './RelayEnvironment'
 
 const mutation = graphql`
 	mutation createBuffViewersLivestreamMutation(
+		$delay: Int!,
 		$input: BuffViewersLivestreamInput!
 	) {
-		create_buff_viewers_livestream_task(input: $input) {
+		create_buff_viewers_livestream_task(delay: $delay, input: $input) {
 			buff {
 				node {
 					id
@@ -40,12 +41,13 @@ const mutation = graphql`
 `
 
 export const create_buff_viewers_livestream = async (
+	delay: number,
 	input: BuffViewersLivestreamInput,
 ) => {
 	await new Promise((s, r) => {
 		commitMutation(RelayEnvironment, {
 			mutation,
-			variables: { input },
+			variables: { delay, input },
 			updater: async store => {
 				const list = store.get(
 					'client:root:__BuffViewersLivestreamList_buff_viewers_livestream_tasks_connection',

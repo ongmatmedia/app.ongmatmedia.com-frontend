@@ -30,11 +30,16 @@ export const OrderInfo = (props: OrderInfoProps) => {
 				<Col>
 					{props.order.map((p, i, { length }) => (
 						<span>
-							<Tag color="#108ee9">{p.amount}</Tag>
+							<Tag style={{ marginTop: 10 }} color="#108ee9">
+								{p.amount}
+							</Tag>
 							{p.unit} {i < length - 1 && 'x '}
 						</span>
 					))}{' '}
-					= <Tag color="#108ee9">{order_total.toLocaleString()}</Tag>
+					={' '}
+					<Tag style={{ marginTop: 10 }} color="#108ee9">
+						{order_total.toLocaleString()}
+					</Tag>
 				</Col>
 			</Row>
 			{total > 0 &&

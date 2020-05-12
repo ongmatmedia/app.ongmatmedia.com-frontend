@@ -25,7 +25,6 @@ export const FacebookLoginTab = Form.create<FacebookLoginTabProps>()(
 			form.validateFields(async (err, values) => {
 				if (!err) {
 					setError(null)
-					console.log('Received values of form: ', values)
 					try {
 						setLoading(true)
 						form.resetFields()

@@ -24,6 +24,7 @@ const query = graphql`
 			id
 			default_pricing {
 				buff_viewers_livestream
+				vip_viewers_livestream
 			}
 			default_price_percent
 		}
@@ -41,7 +42,7 @@ export const SetDefaultPricePage = withForm<SetDefaultPricePageProps>(props => {
 				set_error(null)
 				await update_price_for_user('default', values.price_percent, {
 					buff_viewers_livestream: values.buff_viewers_livestream,
-					vip_viewers_livestream: 1000,
+					vip_viewers_livestream: values.vip_viewers_livestream,
 					livestream: { p1080: 1000, p480: 1000, p720: 1000 },
 				})
 				notification.success({
@@ -71,7 +72,7 @@ export const SetDefaultPricePage = withForm<SetDefaultPricePageProps>(props => {
 				offset: 0,
 			},
 			sm: {
-				span: 16,
+				span: 14,
 				offset: 10,
 			},
 		},
@@ -85,7 +86,7 @@ export const SetDefaultPricePage = withForm<SetDefaultPricePageProps>(props => {
 			render={(rs: any) => (
 				<>
 					{rs.props == null ? (
-						<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
+						<Card title={<BreadCrumb />} style={{ height: '100%' }}>
 							<Row type="flex" justify="space-around">
 								<Col>
 									<Spin
@@ -95,60 +96,82 @@ export const SetDefaultPricePage = withForm<SetDefaultPricePageProps>(props => {
 							</Row>
 						</Card>
 					) : (
-						<Card title={<BreadCrumb />}>
-							{error && (
-								<Alert
-									type="error"
-									message={error}
-									style={{ marginBottom: 15 }}
-								/>
-							)}
-							<Alert
-								style={{ marginBottom: 15 }}
-								showIcon
-								type="info"
-								message="You are setting default price for new user. Example: User that logged in via Facebook, Google,..."
-							/>
-							<Form {...formItemLayout}>
-								<Form.Item label="Price percent">
-									{props.form.field<number>({
-										name: 'price_percent',
-										require: 'Price percent is required',
-										initalValue: rs.props?.me?.default_price_percent || 100,
-										render: ({ value, setValue, error }) => (
-											<div>
-												<InputNumberAutoSelect
-													defaultValue={value}
-													onChangeValue={setValue}
-												/>
-											</div>
-										),
-									})}
-								</Form.Item>
-								<Form.Item label="Buff viewers livestream pricing">
-									{props.form.field<number>({
-										name: 'buff_viewers_livestream',
-										require: 'Buff viewers livestream price is required',
-										initalValue:
-											rs.props?.me?.default_pricing?.buff_viewers_livestream ||
-											1000,
-										render: ({ value, setValue, error }) => (
-											<div>
-												<InputNumberAutoSelect
-													defaultValue={value}
-													onChangeValue={setValue}
-												/>
-											</div>
-										),
-									})}
-								</Form.Item>
-								<Form.Item {...tailFormItemLayout}>
-									<Button type="primary" onClick={submit} loading={loading}>
-										Save prices
-									</Button>
-								</Form.Item>
-							</Form>
-						</Card>
+						<Row>
+							<Col xs={24}>
+								<Card title={<BreadCrumb />}>
+									{error && (
+										<Alert
+											type="error"
+											message={error}
+											style={{ marginBottom: 15 }}
+										/>
+									)}
+									<Alert
+										style={{ marginBottom: 15 }}
+										showIcon
+										type="info"
+										message="You are setting default price for new user. Example: User that logged in via Facebook, Google,..."
+									/>
+
+									<Form {...formItemLayout}>
+										<Form.Item label="Price percent">
+											{props.form.field<number>({
+												name: 'price_percent',
+												require: 'Price percent is required',
+												initalValue: rs.props?.me?.default_price_percent || 100,
+												render: ({ value, setValue, error }) => (
+													<div>
+														<InputNumberAutoSelect
+															defaultValue={value}
+															onChangeValue={setValue}
+														/>
+													</div>
+												),
+											})}
+										</Form.Item>
+										<Form.Item label="Buff viewers livestream pricing">
+											{props.form.field<number>({
+												name: 'buff_viewers_livestream',
+												require: 'Buff viewers livestream price is required',
+												initalValue:
+													rs.props?.me?.default_pricing
+														?.buff_viewers_livestream || 1000,
+												render: ({ value, setValue, error }) => (
+													<div>
+														<InputNumberAutoSelect
+															defaultValue={value}
+															onChangeValue={setValue}
+														/>
+													</div>
+												),
+											})}
+										</Form.Item>
+										<Form.Item label="Vip viewers livestream pricing">
+											{props.form.field<number>({
+												name: 'vip_viewers_livestream',
+												require: 'Vip viewers livestream price is required',
+												initalValue:
+													rs.props?.me?.default_pricing
+														?.vip_viewers_livestream || 1000,
+												render: ({ value, setValue, error }) => (
+													<div>
+														<InputNumberAutoSelect
+															defaultValue={value}
+															onChangeValue={setValue}
+														/>
+													</div>
+												),
+											})}
+										</Form.Item>
+										<Form.Item {...tailFormItemLayout}>
+											<Button type="primary" onClick={submit} loading={loading}>
+												Save prices
+											</Button>
+										</Form.Item>
+									</Form>
+								</Card>
+							</Col>
+						</Row>
 					)}
 				</>
 			)}

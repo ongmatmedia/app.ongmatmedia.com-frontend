@@ -198,7 +198,7 @@ export const PricingPage = () => {
 											setSelectedPeriod(null)
 										}}
 									>
-										Choose
+										{name == activeSubscription ? 'Renew' : 'Choose'}
 									</span>
 								)}
 								{showPeriods && selectedSubscription?.name == name && (

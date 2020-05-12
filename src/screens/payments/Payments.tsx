@@ -58,8 +58,8 @@ export const Payments = PaginationWrapper<{
 	props => {
 		if (props.error || props.loading)
 			return (
-				<Card style={{ height: '100%' }} title={<BreadCrumb />} size="small">
-					<Row type="flex" justify="space-around" style={{ height: '100%' }}>
+				<Card style={{ minHeight: '100%' }} title={<BreadCrumb />}>
+					<Row type="flex" justify="space-around" style={{ minHeight: '100%' }}>
 						<Col>
 							{props.error && (
 								<Alert showIcon message={props.error} type="error" />
@@ -79,7 +79,7 @@ export const Payments = PaginationWrapper<{
 		)
 
 		return (
-			<Card title={<BreadCrumb />} size="small">
+			<Card title={<BreadCrumb />} bodyStyle={{ paddingTop: 10 }}>
 				<PaymentListAction
 					onChangeDate={d =>
 						props.reload({ first: 12, before_time: d.getTime() })

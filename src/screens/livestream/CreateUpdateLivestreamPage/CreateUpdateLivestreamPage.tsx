@@ -114,13 +114,15 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 					>
 						<Form layout="vertical" onSubmit={handleSubmit}>
 							<Row gutter={32}>
-								<Col xs={24} style={{ marginBottom: 15 }}>
-									<Alert
-										type="info"
-										showIcon
-										message="You can change loop times for current playing livestream, but all remain informations will updated on next lives."
-									/>
-								</Col>
+								{mode == 'update' && (
+									<Col xs={24} style={{ marginBottom: 15 }}>
+										<Alert
+											type="info"
+											showIcon
+											message="You can change loop times for current playing livestream, but all remain informations will updated on next lives."
+										/>
+									</Col>
+								)}
 								<Col xs={24} md={12}>
 									<Form.Item label="Campaign's name">
 										{form.getFieldDecorator('name', {

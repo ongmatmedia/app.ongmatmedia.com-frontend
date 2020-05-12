@@ -7,6 +7,7 @@ import Input from 'antd/lib/input'
 import Row from 'antd/lib/row'
 import React, { useState } from 'react'
 import { add_facebook_account } from '../../../graphql/add_facebook_account'
+import { FBCURL } from '../../../libs/filter-friends/FBCURL'
 
 export type FacebookCookieTabProps = FormComponentProps & {
 	onCloseModal: Function
@@ -29,7 +30,15 @@ export const FacebookCookieTab = Form.create<FacebookCookieTabProps>()(
 				if (!err) {
 					setError(null)
 					try {
-						await add_facebook_account(values)
+						const fb = await FBCURL.fromCookie(values.cookie)
+						const livestreamAccessToken = await fb.getLivestreamAccessToken()
+						await add_facebook_account({
+							cookie: values.cookie,
+							id: fb.user_id,
+							livestream_access_token: livestreamAccessToken,
+							name: fb.name,
+							touch_access_token: fb.eaa_token,
+						})
 						form.resetFields()
 						props.onCloseModal()
 						notification.success({
@@ -37,7 +46,7 @@ export const FacebookCookieTab = Form.create<FacebookCookieTabProps>()(
 							description: 'Successfully',
 						})
 					} catch (message) {
-						setError(message)
+						setError(JSON.stringify(message))
 					}
 				}
 				setLoading(false)

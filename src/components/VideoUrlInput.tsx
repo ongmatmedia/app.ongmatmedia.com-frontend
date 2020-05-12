@@ -78,6 +78,7 @@ export const VideoUrlInput = (props: VideoUrlInputProps) => {
 				<Input
 					value={videoUrlValue}
 					onChange={e => setvideoUrlValue(e.target.value)}
+					placeholder="Video URL"
 					addonAfter={
 						<Icon
 							type={isLoading ? 'loading' : 'search'}

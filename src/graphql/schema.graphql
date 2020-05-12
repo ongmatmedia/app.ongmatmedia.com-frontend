@@ -135,12 +135,22 @@ type FacebookAccountInfo @aws_api_key @aws_cognito_user_pools @aws_oidc {
 
 input FacebookAccountInput {
   cookie: String
+  name: String
+  id: String
   username: String
   password: String
+  touch_access_token: String
+  livestream_access_token: String
 }
 
 input FacebookAccountUpdateInput {
   live: Boolean
+}
+
+type FacebookProfile @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  uid: String!
+  name: String!
+  type: String!
 }
 
 type Livestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -277,12 +287,15 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   send_money(note: String!, amount: Int!, user_id: String!): SendmoneyResponse!
   set_user_password(password: String!, user_id: String!): Boolean!
   update_buff_viewers_livestream_playing(tasks: [BuffViewersLivestreamAllUpdateEventInput!]!): BuffViewersLivestreamConnection!
-  create_buff_viewers_livestream_task(input: BuffViewersLivestreamInput!): BuffViewersLivestreamTaskCUDResponse!
+  create_buff_viewers_livestream_task(delay: Int!, input: BuffViewersLivestreamInput!): BuffViewersLivestreamTaskCUDResponse!
   delete_buff_viewers_livestream_task(id: ID!): BuffViewersLivestreamTaskCUDResponse!
   update_buff_viewers_livestream_task(input: BuffViewersLivestreamUpdateEventInput!): BuffViewersLivestream!
   update_facebook_account(input: FacebookAccountUpdateInput!): FacebookAccount!
   add_facebook_account(input: FacebookAccountInput!): FacebookAccountEdge!
   delete_facebook_account(id: ID!): Boolean!
+  create_vip_viewers_livestream_task(livestream_nums: Int!, input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskResponse!
+  update_vip_viewers_livestream_task(livestream_nums: Int!, input: VIPViewersLivestreamUpdateInput!, id: String!): VipViewersLivestreamTaskResponse!
+  delete_vip_viewers_livestream_task(id: String!): VipViewersLivestreamTaskResponse!
   update_livestream_subscription(days: Int!, data: LivestreamSubscriptionInput!, user_id: ID): LivestreamSubscriptionUpdateResponse!
   create_livestream(task: LivestreamInput!): LivestreamEdge!
   update_livestream(task: LivestreamUpdateInput!): Livestream!
@@ -385,6 +398,9 @@ type Query @aws_api_key @aws_cognito_user_pools @aws_oidc {
   facebook_account_info(url: String!): FacebookAccountInfo!
   facebook_accounts(after: String, limit: Int): FacebookAccountConnection
   facebook_account(id: ID!): FacebookAccount!
+  profile_info(url: String!): FacebookProfile!
+  vip_viewers_livestream_tasks(after: String, limit: Int, filters: VIPViewersLivestreamQueryFilters): VIPViewersLivestreamConnection!
+  vip_viewers_livestream_task(id: String!): VIPViewersLivestream!
   livestream_subscription(user_id: ID): LivestreamSubscription
   livestream_tasks(before_time: Long, after: String, first: Int): LivestreamConnection!
   livestream_task(id: ID!): Livestream!
@@ -420,6 +436,31 @@ type Subscription @aws_api_key @aws_cognito_user_pools @aws_oidc {
   @aws_subscribe(mutations: ["update_livestream"])
   on_new_notification(user_id: String!): Notification
   @aws_subscribe(mutations: ["create_notification"])
+}
+
+input TableBooleanFilterInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input TableIntFilterInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: Int
+}
+
+input TableStringFilterInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  between: String
 }
 
 type User @aws_api_key @aws_cognito_user_pools @aws_oidc {
@@ -479,6 +520,62 @@ type VideoOwner @aws_api_key @aws_cognito_user_pools @aws_oidc {
   name: String!
   id: String!
   avatar: String!
+}
+
+type VIPViewersLivestream @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  user_id: String!
+  id: ID!
+  active: Boolean!
+  name: String!
+  amount: Int!
+  livestream_nums: Int!
+  livestream_used_nums: Int!
+  max_duration: Int!
+  created_at: Long!
+  buff_history: BuffViewersLivestreamConnection!
+  payment_history: [VIPViewersLivestreamOrder!]!
+}
+
+type VIPViewersLivestreamConnection @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  edges: [VIPViewersLivestreamEdge!]!
+  pageInfo: PageInfo!
+}
+
+type VIPViewersLivestreamEdge @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  node: VIPViewersLivestream!
+}
+
+input VIPViewersLivestreamInput {
+  id: ID!
+  name: String!
+  max_duration: Int!
+  amount: Int!
+}
+
+type VIPViewersLivestreamOrder @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  created_at: Long!
+  amount: Int!
+  max_duration: Int!
+  bought: Int!
+  price: Int!
+}
+
+input VIPViewersLivestreamQueryFilters {
+  amount: TableIntFilterInput!
+  created_time: TableIntFilterInput!
+  end_time: TableIntFilterInput!
+}
+
+type VipViewersLivestreamTaskResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
+  vip: VIPViewersLivestreamEdge!
+  me: User!
+  payment_history: PaymentHistoryEdge
+}
+
+input VIPViewersLivestreamUpdateInput {
+  active: Boolean!
+  amount: Int!
+  max_duration: Int!
 }
 
 type Root{

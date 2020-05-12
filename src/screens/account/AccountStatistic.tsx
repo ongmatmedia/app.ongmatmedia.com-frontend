@@ -5,7 +5,7 @@ import Row from 'antd/lib/row'
 import Statistic from 'antd/lib/statistic'
 import React from 'react'
 export type AgencyStaticsProps = {
-	accounts: Array<{ id: string; name: string }>
+	accounts: { id: string; name: string; live: boolean }[]
 }
 export const AccountStatistic = (props: AgencyStaticsProps) => (
 	<Row gutter={16} style={{ marginBottom: 10 }}>
@@ -23,7 +23,7 @@ export const AccountStatistic = (props: AgencyStaticsProps) => (
 			<Card style={{ border: '4px solid green' }}>
 				<Statistic
 					title="Live account"
-					value={props.accounts.length / 2}
+					value={props.accounts.filter(account => account.live).length}
 					prefix={<Icon type="user" />}
 					valueStyle={{ color: 'green' }}
 				/>
@@ -33,7 +33,7 @@ export const AccountStatistic = (props: AgencyStaticsProps) => (
 			<Card style={{ border: '4px solid red' }}>
 				<Statistic
 					title="Died account"
-					value={props.accounts.length / 2}
+					value={props.accounts.filter(account => !account.live).length}
 					prefix={<Icon type="user" />}
 					valueStyle={{ color: 'red' }}
 				/>

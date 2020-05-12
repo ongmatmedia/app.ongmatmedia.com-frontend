@@ -18,6 +18,7 @@ import { update_profile } from '../../graphql/update_profile'
 import { exportBankIcon } from '../../helpers/utils'
 import { PaymentMethod, User } from '../../types'
 import { CreateUpdateBankModal } from './CreateUpdateBankModal'
+import { Fab } from 'react-tiny-fab'
 
 export interface Bank {
 	name: string
@@ -46,23 +47,11 @@ export const BankInformationPage = GraphQLWrapper<{
 }>(query, {}, ({ loading, data }) => {
 	if (loading)
 		return (
-			<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
+			<Card title={<BreadCrumb />} style={{ minHeight: '100%' }}>
 				<Row type="flex" justify="space-around">
 					<Col>
 						<Spin
 							indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
-						/>
-					</Col>
-				</Row>
-			</Card>
-		)
-	if (loading)
-		return (
-			<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
-				<Row type="flex" justify="space-around">
-					<Col>
-						<Spin
-							indicator={<Icon type="loading" style={{ fontSize: 24 }} spin />}
 						/>
 					</Col>
 				</Row>
@@ -78,18 +67,19 @@ export const BankInformationPage = GraphQLWrapper<{
 		const [deletedBank, setDeletedBank] = useState<string>()
 
 		return (
-			<Card title={<BreadCrumb />}>
-				<Button
-					type="primary"
-					style={{ marginBottom: 15 }}
-					onClick={() => {
-						setModalMode('create')
-						setSelectedBank(null)
-						setCreateUpdateBankModalVisible(true)
-					}}
-				>
-					Add a bank
-				</Button>
+			<Card title={<BreadCrumb />} style={{ height: '100%' }}>
+				{!createUpdateBankModalVisible && (
+					<Fab
+						mainButtonStyles={{ backgroundColor: '#1890ff' }}
+						icon={<Icon type="plus" />}
+						event="click"
+						onClick={() => {
+							setModalMode('create')
+							setSelectedBank(null)
+							setCreateUpdateBankModalVisible(true)
+						}}
+					/>
+				)}
 				<CreateUpdateBankModal
 					visible={createUpdateBankModalVisible}
 					onClose={() => setCreateUpdateBankModalVisible(false)}

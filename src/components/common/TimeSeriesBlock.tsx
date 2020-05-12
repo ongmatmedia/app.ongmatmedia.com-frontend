@@ -7,10 +7,10 @@ import Row from 'antd/lib/row'
 import Tag from 'antd/lib/tag'
 import Text from 'antd/lib/typography/Text'
 import React from 'react'
-import Moment from 'react-moment'
 import { groupTimeIntoDayMap } from '../../helpers/utils'
 import { PaymentHistory } from '../../types'
 import { NoteReading } from './NoteReading'
+import { useAuth0 } from '../../context/Auth0'
 
 export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 	const transformeData = props.data.map(({ time, ...rest }) => ({
@@ -18,6 +18,8 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 		created_time: time,
 	}))
 	const timeSeriesData = groupTimeIntoDayMap(transformeData)
+	const { user } = useAuth0()
+
 	return (
 		<List
 			size="large"
@@ -26,10 +28,10 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 				<>
 					<div style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 15 }}>
 						<Icon type="calendar" style={{ marginRight: 5 }} />
-							{item.time}
+						{item.time}
 					</div>
 					<List
-						grid={{ gutter: 16, xs: 1, sm: 2, md: 3, xxl: 4 }}
+						grid={{ gutter: 16, xs: 1, sm: 2, lg: 4 }}
 						dataSource={item.data}
 						renderItem={payment => (
 							<List.Item
@@ -47,6 +49,7 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 										</Text>
 									}
 									type="inner"
+									style={{ minHeight: 320 }}
 								>
 									<Row>
 										<Col xs={24}>
@@ -68,7 +71,10 @@ export const TimeSeriesBlock = (props: { data: PaymentHistory[] }) => {
 												</Col>
 												<Col span={12} style={{ textAlign: 'right' }}>
 													<Tag style={{ marginRight: 0, marginBottom: 2 }}>
-														{payment.sender_username || 'system'}
+														{payment.sender_id == user.sub
+															? 'me'
+															: payment.sender_username.substring(0, 11) +
+																	'...' || 'system'}
 													</Tag>
 												</Col>
 												<Col span={12}>

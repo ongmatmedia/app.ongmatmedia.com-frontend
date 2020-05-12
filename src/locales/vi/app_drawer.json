@@ -1,12 +1,15 @@
 {
   "notification_icon_title": "Thông báo",
-  "seeding_icon_title": "Tương tác",
+  "seeding_icon_title": "Mua tương tác",
   "payments_icon_title": "Lịch sử",
   "deposit_icon_title": "Nạp tiền",
   "logout_icon_title": "Đăng xuất",
-  "account_icon_title": "Farm",
-  "livestream_icon_title": "Livestream",
+  "account_icon_title": "Nuôi acc",
+  "livestream_icon_title": "Phát livestream",
   "agency_icon_title": "Đại lý",
   "setting_icon_title": "Cài đặt",
-  "admin_info_icon_title": "Liên hệ"
+  "admin_info_icon_title": "Liên hệ",
+  "tool_icon_title": "Công cụ",
+  "smart_group_title": "Quản lý nhóm",
+  "auto_reaction_title": "Bot tương tác"
 }

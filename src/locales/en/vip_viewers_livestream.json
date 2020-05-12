@@ -2,7 +2,7 @@
   "report": {
     "total_uids_description": "Total UIDs",
     "active_description": "Active",
-    "expire_in_5_days_description": "Expire 5 days",
+    "will_expired_description": "Will expired",
     "expired_description": "Expired"
   },
   "action": {

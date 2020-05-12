@@ -9,11 +9,10 @@ import { User } from '../../types'
 
 export type CollaboratorStaticsProps = {
 	users: User[]
-	onChangeSearchUsername: (username: string) => void
 }
 export const CollaboratorStatics = (props: CollaboratorStaticsProps) => (
 	<Row gutter={16} style={{ marginBottom: 10 }}>
-		<Col md={6} xs={12} style={{ marginTop: 10 }}>
+		<Col md={6} xs={24} style={{ marginTop: 10 }}>
 			<Card>
 				<Statistic
 					title="Total user"
@@ -23,7 +22,7 @@ export const CollaboratorStatics = (props: CollaboratorStaticsProps) => (
 				/>
 			</Card>
 		</Col>
-		<Col md={6} xs={12} style={{ marginTop: 10 }}>
+		<Col md={8} xs={24} style={{ marginTop: 10 }}>
 			<Card>
 				<Statistic
 					valueStyle={{ color: 'rgb(64, 169, 255)' }}
@@ -37,22 +36,6 @@ export const CollaboratorStatics = (props: CollaboratorStaticsProps) => (
 					prefix={<Icon type="dollar" />}
 				/>
 			</Card>
-		</Col>
-		<Col
-			md={{ span: 6, offset: 6 }}
-			xs={24}
-			style={{ marginTop: 10, textAlign: 'right' }}
-		>
-			<Input
-				placeholder="Search by username"
-				allowClear
-				prefix={<Icon type="search" />}
-				onChange={e =>
-					props.onChangeSearchUsername(
-						e.target.value.trim().toLocaleLowerCase(),
-					)
-				}
-			/>
 		</Col>
 	</Row>
 )

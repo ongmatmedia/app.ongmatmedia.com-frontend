@@ -33,11 +33,12 @@ const tranfromPricing = (priceValue: number) => {
 	const minutes = [30, 60, 90, 120, 150, 180]
 	const amounts = [50, 100, 150, 200, 250, 300, 500, 600]
 	const raw = amounts.map(amount => ({
-		amount,
+		amountValue: amount,
+		amountString: `${amount} mắt`
 	}))
 	raw.map(el => {
 		minutes.forEach(minute => {
-			el[`${minute}p`] = (priceValue * minute * el.amount).toLocaleString()
+			el[`${minute}p`] = (priceValue * minute * el.amountValue).toLocaleString()
 		})
 		return el
 	})
@@ -50,7 +51,7 @@ export const AdminContact = GraphQLWrapper<{ myadmin: User }>(
 	({ loading, error, data }) => {
 		if (error)
 			return (
-				<Card style={{ height: '100%' }} title={<BreadCrumb />}>
+				<Card style={{ minHeight: '100%' }} title={<BreadCrumb />}>
 					<Row type="flex" justify="space-around">
 						<Col xs={24}>
 							<Alert showIcon message={error} type="error" />
@@ -60,7 +61,7 @@ export const AdminContact = GraphQLWrapper<{ myadmin: User }>(
 			)
 		if (loading && !error)
 			return (
-				<Card style={{ height: '100%' }} title={<BreadCrumb />}>
+				<Card style={{ minHeight: '100%' }} title={<BreadCrumb />}>
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Spin
@@ -102,7 +103,7 @@ export const AdminContact = GraphQLWrapper<{ myadmin: User }>(
 		}, [])
 
 		return (
-			<Card title={<BreadCrumb />}>
+			<Card title={<BreadCrumb />} style={{ minHeight: '100%' }} >
 				<Row type="flex" justify="center" align="middle" gutter={16}>
 					<Col xs={24} style={{ marginBottom: 20 }}>
 						<Text>
@@ -127,21 +128,21 @@ export const AdminContact = GraphQLWrapper<{ myadmin: User }>(
 							columns={[
 								{
 									title: ' ',
-									dataIndex: 'amount',
-									key: 'amount',
+									dataIndex: 'amountString',
+									key: 'amountString',
 								},
 								{
-									title: '30p',
+									title: '30 phút',
 									dataIndex: '30p',
 									key: '30p',
 								},
 								{
-									title: '60p',
+									title: '60 phút',
 									dataIndex: '60p',
 									key: '60p',
 								},
 								{
-									title: '90p',
+									title: '90 phút',
 									dataIndex: '90p',
 									key: '90p',
 								},

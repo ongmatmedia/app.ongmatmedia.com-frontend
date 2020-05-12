@@ -8,6 +8,7 @@ import Tag from 'antd/lib/tag'
 import Tooltip from 'antd/lib/tooltip'
 import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
+import { isMobileOnly } from 'react-device-detect'
 import { BreadCrumb } from '../../components/common/BreadCrumb'
 import { GraphQLWrapper } from '../../graphql/GraphQLWrapper'
 import { User, UserConnection } from '../../types'
@@ -53,7 +54,7 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 }>(query, {}, ({ loading, data }) => {
 	if (loading)
 		return (
-			<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
+			<Card title={<BreadCrumb />} style={{ height: '100%' }}>
 				<Row type="flex" justify="space-around">
 					<Col>
 						<Spin
@@ -70,10 +71,6 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 		updatePriceAgenciesModalVisible,
 		setUpdatePriceAgenciesModalVisible,
 	] = useState<boolean>(false)
-	const [
-		set_new_pass_for_user,
-		set_set_new_pass_for_user,
-	] = useState<User | null>(null)
 
 	const [selectedAgencies, setSelectedAgencies] = useState(new Set<User>())
 
@@ -108,6 +105,7 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 					selectedAgencies={selectedAgencies}
 				/>
 			)}
+			<CollaboratorStatics users={data.users.edges.map(n => n.node)} />
 			<div style={{ paddingBottom: 10 }}>
 				<AgencyAction
 					selectedAgencies={selectedAgencies}
@@ -121,30 +119,29 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 					onOpenUpdatePriceAgenciesModal={() => {
 						setUpdatePriceAgenciesModalVisible(!updatePriceAgenciesModalVisible)
 					}}
+					onChangeSearchUsername={username =>
+						setSearchUsername(username.trim().toLocaleLowerCase())
+					}
+					updatePriceAgenciesModalVisible={updatePriceAgenciesModalVisible}
 				/>
 			</div>
-			<CollaboratorStatics
-				users={data.users.edges.map(n => n.node)}
-				onChangeSearchUsername={username =>
-					setSearchUsername(username.trim().toLocaleLowerCase())
-				}
-			/>
 			<List
 				grid={{
 					gutter: 16,
 					xs: 1,
 					sm: 2,
-					md: 4,
+					md: 3,
 					lg: 4,
-					xl: 6,
-					xxl: 8,
+					xxl: 6,
 				}}
 				dataSource={data.users.edges
 					.map(n => n.node)
 					.sort(
 						(a, b) => b.balance / b.price_percent - a.balance / a.price_percent,
 					)
-					.filter(user => user.username.match(`${searchUsername}`))}
+					.filter(user =>
+						user.username.trim().toLocaleLowerCase().match(`${searchUsername}`),
+					)}
 				renderItem={item => {
 					const percent = item.price_percent
 					const balance = item.balance.toLocaleString(undefined, {
@@ -168,12 +165,14 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 										onClick={() => handleSelectAgencies(item)}
 										style={{ cursor: 'pointer' }}
 									>
-										<Col style={{ paddingRight: 5 }}>
-											{/* <Avatar>{item.username.substring(0, 1)}</Avatar> */}
-										</Col>
+										<Col style={{ paddingRight: 5 }}></Col>
 										<Col>
 											<span style={{ fontWeight: 'bold' }}>
-												{item.username}
+												{item.username.length >= 18 &&
+												!isMobileOnly &&
+												window.innerWidth < 1350
+													? item.username.substring(0, 15) + '...'
+													: item.username}
 											</span>
 										</Col>
 									</Row>
@@ -193,15 +192,9 @@ export const CollaboratorsListPage = GraphQLWrapper<{
 											onClick={() => onSelectAgencyAndOpenModal(item)}
 										/>
 									</Tooltip>,
-									<Tooltip placement="bottom" title="Set new password">
-										<Icon
-											type="unlock"
-											key="unlock"
-											onClick={() => set_set_new_pass_for_user(item)}
-										/>
-									</Tooltip>,
 								]}
 								style={{ lineHeight: '2em' }}
+								bodyStyle={{ height: 105 }}
 							>
 								<Row type="flex" align="middle" justify="space-between">
 									<Col>Price</Col>

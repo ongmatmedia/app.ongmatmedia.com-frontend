@@ -105,7 +105,7 @@ export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
 	({ loading, data }) => {
 		if (loading)
 			return (
-				<Card title={<BreadCrumb />} style={{ height: '100vh' }}>
+				<Card title={<BreadCrumb />} style={{ minHeight: '100%' }}>
 					<Row type="flex" justify="space-around">
 						<Col>
 							<Spin
@@ -117,7 +117,7 @@ export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
 			)
 
 		return (
-			<Card title={<BreadCrumb />}>
+			<Card title={<BreadCrumb />} style={{ minHeight: '100%' }}>
 				{['localhost', '192.168', 'ongmatmedia', 'fbmedia']
 					.map(domain => window.location.hostname.includes(domain))
 					.includes(true) && (
@@ -129,6 +129,7 @@ export const DepositPage = GraphQLWrapper<{ payment_methods: PaymentMethod[] }>(
 								Modal.info({
 									title: 'QRPAY',
 									content: <AutoDepositModal />,
+									maskClosable: true,
 								})
 							}
 						>

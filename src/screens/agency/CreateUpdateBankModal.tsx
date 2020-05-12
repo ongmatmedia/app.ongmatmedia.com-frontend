@@ -60,7 +60,7 @@ export const CreateUpdateBankModal = Form.create<CreateUpdateBankModalProps>()(
 		return (
 			<Modal
 				title={
-					props.mode == 'create' ? 'Create a bank' : 'Update bank information'
+					props.mode == 'create' ? 'Add a bank' : 'Update bank information'
 				}
 				visible={props.visible}
 				onOk={submit}

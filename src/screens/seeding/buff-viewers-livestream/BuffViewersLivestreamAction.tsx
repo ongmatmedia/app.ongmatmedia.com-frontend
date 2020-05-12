@@ -26,12 +26,15 @@ export const BuffViewersLivestreamAction = (
 		<Row style={{ marginBottom: 10 }} gutter={16}>
 			<Col
 				xs={12}
-				sm={{ span: 6, offset: 8 }}
+				sm={8}
+				md={{ span: 6, offset: 6 }}
+				lg={{ span: 4, offset: 12 }}
 				style={{ textAlign: 'right', marginTop: 15 }}
 			>
 				<Select
 					defaultValue="Filter by status"
 					onChange={props.onChangeStatusFilter}
+					style={{ width: '100%' }}
 				>
 					<Option value="" key={5}>
 						No filter
@@ -50,14 +53,21 @@ export const BuffViewersLivestreamAction = (
 					</Option>
 				</Select>
 			</Col>
-			<Col xs={12} sm={{ span: 4 }} style={{ marginTop: 15 }}>
+			<Col xs={12} sm={8} md={6} lg={4} style={{ marginTop: 15 }}>
 				<DatePicker
 					onChange={d =>
 						props.onChangeDate(new Date(d ? d.valueOf() : Date.now()))
 					}
+					style={{ width: '100%' }}
 				/>
 			</Col>
-			<Col xs={24} sm={6} style={{ paddingBottom: 5, marginTop: 15 }}>
+			<Col
+				xs={24}
+				sm={8}
+				md={6}
+				lg={4}
+				style={{ paddingBottom: 5, marginTop: 15 }}
+			>
 				<Input
 					placeholder={t('action.search_placeholder')}
 					allowClear
