@@ -21,7 +21,8 @@ export const VipViewersLivestreamAction = (
 				placeholder="Search by name or UID"
 				allowClear
 				onChange={e => {
-					props.onChangeSearch && props.onChangeSearch(e.target.value.trim().toLowerCase())
+					props.onChangeSearch &&
+						props.onChangeSearch(e.target.value.trim().toLowerCase())
 				}}
 			/>
 		</Col>

@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Input, Icon } from 'antd'
 import { FacebookAccount } from '../../../api/FacebookAccount'
-import {LivestreamFacebookTargetType} from '../../livestream/SharingComponents/LivestreamFacebookTargetType'
-import {graphql} from 'babel-plugin-relay/macro'
-import {GraphQLQueryFetcher} from '../../../graphql/GraphQLWrapper'
-import {FacebookProfile} from '../../../types'
+import { LivestreamFacebookTargetType } from '../../livestream/SharingComponents/LivestreamFacebookTargetType'
+import { graphql } from 'babel-plugin-relay/macro'
+import { GraphQLQueryFetcher } from '../../../graphql/GraphQLWrapper'
+import { FacebookProfile } from '../../../types'
 
 export type FacebookObjectInputProps = {
 	onSelect: (data: {
@@ -35,8 +35,10 @@ export const FacebookObjectInput = (props: FacebookObjectInputProps) => {
 	const submit = async () => {
 		set_loading(true)
 		try {
-			const {profile_info} = await GraphQLQueryFetcher<{profile_info: FacebookProfile}>(query, {url: value.replace('profile.php?id=', '')})
-			const {name, type, uid} = profile_info
+			const { profile_info } = await GraphQLQueryFetcher<{
+				profile_info: FacebookProfile
+			}>(query, { url: value.replace('profile.php?id=', '') })
+			const { name, type, uid } = profile_info
 			props.onSelect({
 				image:
 					type !== LivestreamFacebookTargetType.group
