@@ -1,14 +1,8 @@
 {
-  "short_name": "Ongmatmedia",
-  "name": "Ongmatmedia PWA App",
-  "icons": [
-    {
-      "src": "https://ongmatmedia.com/img/logo.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
-  ],
-  "start_url": "index.html",
+  "name": "App",
+  "short_name": "App",
+  "orientation": "portrait",
   "display": "standalone",
-  "orientation": "landscape"
+  "start_url": "/",
+  "gcm_sender_id": "623436414105"
 }

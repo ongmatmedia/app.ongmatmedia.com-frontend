@@ -67,7 +67,7 @@ module.exports = {
 	},
 	output: {
 		filename: 'bundle.js',
-		path: `${process.env.PWD}/build`,
+		path: `${process.env.PWD}/public`,
 		publicPath: '/',
 	},
 	plugins: [
@@ -86,7 +86,7 @@ module.exports = {
 			gcm_sender_id: '623436414105',
 		}),
 		new HtmlWebpackPlugin({
-			template: `${process.env.PWD}/public/index.html`,
+			template: `${process.env.PWD}/public/template.html`,
 		}),
 	],
 }
