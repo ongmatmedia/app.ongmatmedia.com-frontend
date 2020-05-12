@@ -34,8 +34,8 @@
     "request-promise": "^4.2.5"
   },
   "scripts": {
-    "start": "yarn relay && webpack-dev-server --config webpack.dev.js --hot",
-    "build": "yarn relay && rm -vrf build && webpack --config webpack.prod.js",
+    "start": "yarn relay && webpack-dev-server --config webpack.dev.js --mode development --hot",
+    "build": "yarn relay && rm -vrf build && webpack --config webpack.dev.js --mode production",
     "relay": "relay-compiler --src ./src --schema ./src/graphql/schema.graphql --language typescript",
     "clear-map": "find ./build -name '*.map' -delete",
     "clear": "rm -vrf node_modules yarn.lock package-lock.json",
