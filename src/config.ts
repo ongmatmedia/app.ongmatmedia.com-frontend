@@ -3,7 +3,8 @@ import { Auth0ClientOptions } from '@auth0/auth0-spa-js'
 export const GraphQLEndpoint =
 	'https://7qwdnah2rbbopjl5cgj7w5jgqe.appsync-api.us-east-1.amazonaws.com/graphql'
 
-export const API_GATEWAY ='https://1s71m8djfk.execute-api.us-east-1.amazonaws.com'
+export const API_GATEWAY =
+	'https://1s71m8djfk.execute-api.us-east-1.amazonaws.com'
 
 export const AmplifyConfig = {
 	aws_appsync_graphqlEndpoint: GraphQLEndpoint,

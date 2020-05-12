@@ -13,7 +13,7 @@ import { ColumnProps } from 'antd/lib/table'
 import React from 'react'
 import { Friend } from '../../../../libs/filter-friends/FBFriend'
 import { withFilterFriendsStore } from '../../../../libs/filter-friends/store'
-import {isMobileOnly, isTablet} from 'react-device-detect'
+import { isMobileOnly, isTablet } from 'react-device-detect'
 
 export const FriendsFilteringTable = withFilterFriendsStore(props => {
 	const columns: ColumnProps<Friend>[] = [
