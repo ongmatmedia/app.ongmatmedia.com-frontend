@@ -1,6 +1,10 @@
 {
     "routes": [
         {
+            "src": "/public/(.*)",
+            "dest": "/public/$1"
+        },
+        {
             "src": "/(.*)",
             "dest": "/build/index.html"
         }
