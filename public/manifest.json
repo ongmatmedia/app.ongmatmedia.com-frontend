@@ -1,8 +1,0 @@
-{
-  "name": "App",
-  "short_name": "App",
-  "orientation": "portrait",
-  "display": "standalone",
-  "start_url": "/",
-  "gcm_sender_id": "623436414105"
-}

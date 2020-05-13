@@ -15,16 +15,9 @@ export const InputNumberAutoSelect = (props: InputNumberAutoSelectProps) => {
 	])
 
 	const changeValue = (v: string) => {
-		const match = v.replace(/\.|,/g, '').match(/^(?:\-|)[0-9]{0,20}$/)
-		if (match) {
-			if (v == '-') {
-				set_value('-')
-			} else {
-				const n = Number(match[0])
-				set_value(n.toLocaleString(undefined))
-				props.onChangeValue(n)
-			}
-		}
+		const match = v.replace(/[^\d.\-,]/g, '')
+		console.log({ v, match })
+		set_value(match)
 	}
 
 	return (
