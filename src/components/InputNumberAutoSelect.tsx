@@ -8,22 +8,17 @@ type InputNumberAutoSelectProps = {
 
 export const InputNumberAutoSelect = (props: InputNumberAutoSelectProps) => {
 	const [value, set_value] = useState<string>(
-		props.defaultValue.toLocaleString(undefined),
+		props.defaultValue.toLocaleString('en-US'),
 	)
-	useEffect(() => set_value(props.defaultValue.toLocaleString(undefined)), [
-		props.defaultValue,
-	])
 
 	const changeValue = (v: string) => {
-		const match = v.replace(/\.|,/g, '').match(/^(?:\-|)[0-9]{0,20}$/)
-		if (match) {
-			if (v == '-') {
-				set_value('-')
-			} else {
-				const n = Number(match[0])
-				set_value(n.toLocaleString(undefined))
-				props.onChangeValue(n)
-			}
+		if (v.match(/\./g)?.length > 1) return
+		if (v.endsWith('.')) {
+			set_value(v)
+		} else {
+			const n = Number(v.replace(/[^\d\-\.]/g, ''))
+			set_value(Number(n).toLocaleString('en-US'))
+			n != NaN && props.onChangeValue(n)
 		}
 	}
 
