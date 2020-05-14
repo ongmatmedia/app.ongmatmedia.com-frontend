@@ -428,7 +428,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 									require
 								>
 									{error && <Alert type="error" message={error} />}
-									{[30, 60, 90, 120, 150, 180].map(amount => (
+									{[60, 90, 120, 150, 180, 240].map(amount => (
 										<Button
 											style={{ margin: 5, width: 100 }}
 											type={amount == value ? 'primary' : 'dashed'}

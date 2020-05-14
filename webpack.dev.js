@@ -2,10 +2,10 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
 const WebpackPwaManifest = require('webpack-pwa-manifest')
+var webpack = require('webpack')
 
 module.exports = {
 	mode: 'development',
-	devtool: 'source-map',
 	node: {
 		fs: 'empty',
 	},

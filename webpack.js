@@ -8,6 +8,18 @@ module.exports = {
 	node: {
 		fs: 'empty',
 	},
+	devServer: {
+		host: '0.0.0.0',
+		port: '8080',
+		contentBase: './src',
+		disableHostCheck: true,
+		headers: {
+			'Access-Control-Allow-Origin': '*',
+		},
+		https: true, 
+		useLocalIp: true,
+		historyApiFallback: true,
+	},
 	entry: [path.join(__dirname, '/src/index.tsx')],
 	module: {
 		rules: [
