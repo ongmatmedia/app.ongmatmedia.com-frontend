@@ -32,7 +32,7 @@ export const FriendsPoking = withFilterFriendsStore(props => {
 			<Alert
 				showIcon
 				type="info"
-				message="Note: Cannot poke a person consecutively for a short time."
+				message="Lưu ý: Không thể chọc một người nhiều lần trong một khoảng thời gian ngắn"
 				style={{ marginBottom: 10 }}
 			/>
 			<FriendsPokingTable />

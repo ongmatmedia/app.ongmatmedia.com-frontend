@@ -105,6 +105,7 @@ export const FriendsPokingActions = Form.create()(
 									style={{ minWidth: 200 }}
 									size="large"
 									placeholder="Select an account"
+									onChange={() => props.store?.friends.clear()}
 								>
 									{accounts.map(account => (
 										<Option key={account.id} value={account.cookie}>
