@@ -209,7 +209,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 						initalValue: 1,
 						render: ({ error, setValue, value }) => (
 							<FormElement
-								label="Completing time"
+								label="Thời gian hoàn thành"
 								icon="clock-circle"
 								require
 								error={error}

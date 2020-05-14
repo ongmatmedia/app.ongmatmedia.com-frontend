@@ -129,7 +129,7 @@ export const FriendsPokingTable = withFilterFriendsStore(props => {
 				<Row style={{ marginBottom: 10 }}>
 					<Col>
 						<Alert
-							message={`Hủy kết bạn ${props.store.deleted_friend.name} thành công`}
+							message={`Chọc ${props.store.deleted_friend.name} thành công`}
 							type="success"
 							showIcon
 						/>

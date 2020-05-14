@@ -1,9 +1,10 @@
-import { stringify } from 'query-string'
-import { Extension } from './Extension'
+import {stringify} from 'query-string'
+import {Extension} from './Extension'
 import * as axios from 'axios'
 
-export class FBCURL {
-	constructor(
+export class FBCURL
+{
+	constructor (
 		private cookie: string,
 		public user_id: string,
 		public name: string,
@@ -11,22 +12,25 @@ export class FBCURL {
 		public readonly eaa_token: string,
 	) {}
 
-	static async fromCookie(cookie: string) {
+	static async fromCookie (cookie: string)
+	{
 		// Prefight request m diabled
-		try {
+		try
+		{
 			const user_id_match = cookie.match(/c_user=([0-9]+)/)
 			if (!user_id_match) throw new Error('Invaild user id')
 			const user_id = user_id_match[1]
+			const key = `fb-ext|${user_id}`
 			chrome.runtime.sendMessage(Extension.installed, {
 				action: 'set-cookie',
-				key: user_id,
+				key,
 				value: cookie,
 			})
 
 			const htmlOcelotToken = await fetch(
 				'https://m.facebook.com/composer/ocelot/async_loader/?publisher=feed',
 				{
-					headers: { accept: user_id },
+					headers: {accept: key},
 				},
 			).then(x => x.text())
 
@@ -36,7 +40,7 @@ export class FBCURL {
 			const htmlExtractUsername = await fetch(
 				'https://m.facebook.com/settings/sms',
 				{
-					headers: { accept: user_id },
+					headers: {accept: key},
 				},
 			).then(x => x.text())
 
@@ -44,28 +48,32 @@ export class FBCURL {
 			if (!name_match) throw new Error('Can not get profile name')
 			const name = JSON.parse(`"${name_match[1]}"`)
 
-			if (fb_dtsg_match && token_match) {
+			if (fb_dtsg_match && token_match)
+			{
 				return new this(cookie, user_id, name, fb_dtsg_match[1], token_match[1])
 			}
-		} catch (error) {
-			console.log(error)
+		} catch (error)
+		{
+			console.log({error})
 			throw new Error('Invaild cookie')
 		}
 	}
 
-	async get(url: string, params: any = null) {
-		const { data, status } = await axios.default({
+	async get (url: string, params: any = null)
+	{
+		const {data, status} = await axios.default({
 			method: 'GET',
 			url,
 			params,
-			headers: { accept: this.user_id, 'Access-Control-Allow-Origin': '*' },
+			headers: {accept: `fb-ext|${this.user_id}`, 'Access-Control-Allow-Origin': '*'},
 			httpsAgent:
 				'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36',
 		})
-		return { data, status }
+		return {data, status}
 	}
 
-	async post(url: string, data: any = {}, query: any = null) {
+	async post (url: string, data: any = {}, query: any = null)
+	{
 		return fetch(`${url}${query ? '?' + stringify(query) : ''}`, {
 			body: stringify({
 				...data,
@@ -73,7 +81,7 @@ export class FBCURL {
 				fb_dtsg: this.fb_dtsg,
 			}),
 			headers: {
-				accept: this.user_id,
+				accept: `fb-ext|${this.user_id}`,
 				'content-type': 'application/x-www-form-urlencoded',
 			},
 			method: 'POST',
@@ -82,16 +90,20 @@ export class FBCURL {
 			.catch(err => err)
 	}
 
-	async postForm<T>(url: string, data: any = {}, query: any = null) {
+	async postForm<T> (url: string, data: any = {}, query: any = null)
+	{
 		const rs = await this.post(url, data, query)
-		try {
+		try
+		{
 			return JSON.parse(rs) as T
-		} catch (e) {
+		} catch (e)
+		{
 			return JSON.parse(rs.slice(9, rs.length)) as T
 		}
 	}
 
-	async postJSON<T>(url: string, data: any = {}, query: any = {}) {
+	async postJSON<T> (url: string, data: any = {}, query: any = {})
+	{
 		const rs = fetch(`${url}${query ? '?' + stringify(query) : ''}`, {
 			method: 'POST',
 			body: JSON.stringify({
@@ -99,7 +111,7 @@ export class FBCURL {
 				fb_dtsg: this.fb_dtsg,
 			}),
 			headers: {
-				accept: this.user_id,
+				accept: `fb-ext|${this.user_id}`,
 				'content-type': 'application/json',
 			},
 		})
@@ -107,8 +119,10 @@ export class FBCURL {
 	}
 
 	/* Get access token */
-	public async getLivestreamAccessToken() {
-		try {
+	public async getLivestreamAccessToken ()
+	{
+		try
+		{
 			const qs = {
 				app_id: `273465416184080`,
 				target_id: this.user_id,
@@ -145,7 +159,8 @@ export class FBCURL {
 			)
 
 			return rs2.match(/accessToken":"(.+?)"/)[1]
-		} catch (error) {
+		} catch (error)
+		{
 			throw error
 		}
 	}
