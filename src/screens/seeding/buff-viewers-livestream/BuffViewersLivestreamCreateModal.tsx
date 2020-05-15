@@ -70,7 +70,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 				set_error(null)
 				set_loading(true)
 				try {
-					const delay = (data.completing_minutes / data.amount) * 60 * 1000
+					const delay = ~~(data.completing_minutes / data.amount) * 60 * 1000
 					delete data.completing_minutes
 					const inputData = {
 						...data,
