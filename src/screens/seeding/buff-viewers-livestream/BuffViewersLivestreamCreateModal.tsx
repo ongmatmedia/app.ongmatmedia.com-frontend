@@ -61,7 +61,22 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 
 		const { t } = useTranslation('buff_viewers_livestream_create_modal')
 
-		const limits_mins = [10, 30, 45, 60, 90, 120, 150, 180, 210, 240, 270, 300]
+		const limits_mins = [
+			10,
+			30,
+			45,
+			60,
+			70,
+			80,
+			90,
+			120,
+			150,
+			180,
+			210,
+			240,
+			270,
+			300,
+		]
 
 		const completingBuffViewersTimes: number[] = [...range(0, 10)]
 
