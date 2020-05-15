@@ -63,7 +63,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 
 		const limits_mins = [10, 30, 45, 60, 90, 120, 150, 180, 210, 240, 270, 300]
 
-		const completingBuffViewersTimes: number[] = [...range(1, 10)]
+		const completingBuffViewersTimes: number[] = [...range(0, 10)]
 
 		const submit = () =>
 			props.form.submit(async data => {
@@ -206,7 +206,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 					{props.form.field<number>({
 						name: 'completing_minutes',
 						require: 'Please select completing time',
-						initalValue: 1,
+						initalValue: 0,
 						render: ({ error, setValue, value }) => (
 							<FormElement
 								label="Thời gian hoàn thành"

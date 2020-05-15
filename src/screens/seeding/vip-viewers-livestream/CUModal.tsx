@@ -397,7 +397,7 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 											</div>
 										)}
 										<div>
-											{[1, 3, 7, 14, 30, 45, 60, 90, 120].map(amount => (
+											{[7, 10, 14, 30, 45, 60, 90, 120].map(amount => (
 												<Button
 													disabled={
 														props.mode == 'update' && !isChangingTimes
