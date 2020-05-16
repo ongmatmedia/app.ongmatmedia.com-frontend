@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import Text from 'antd/lib/typography/Text'
-import { graphql } from 'babel-plugin-relay/macro'
+import graphql from 'babel-plugin-relay/macro'
 import React, { useEffect } from 'react'
 import { Pie } from 'react-chartjs-2'
 import {

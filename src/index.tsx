@@ -1,11 +1,10 @@
-import 'antd/dist/antd.min.css'
 import { createBrowserHistory } from 'history'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AUTH0_CONFIG } from './config'
 import { Auth0Provider } from './context/Auth0'
 import { AppWithRouter } from './screens'
-import './style.css'
+import 'antd/dist/antd.min.css'
 
 ReactDOM.render(
 	<Auth0Provider

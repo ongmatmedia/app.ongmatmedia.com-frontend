@@ -1,5 +1,4 @@
-import graphql from 'babel-plugin-relay/macro'
-import { commitMutation } from 'react-relay'
+import { commitMutation, graphql } from 'react-relay'
 import { ConnectionHandler } from 'relay-runtime'
 import { BuffViewersLivestreamInput } from '../types'
 import { RelayEnvironment } from './RelayEnvironment'

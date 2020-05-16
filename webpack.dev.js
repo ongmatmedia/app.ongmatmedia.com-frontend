@@ -1,15 +1,20 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const ServiceWorkerWebpackPlugin = require('serviceworker-webpack-plugin')
-const WebpackPwaManifest = require('webpack-pwa-manifest')
-var webpack = require('webpack')
+const webpack = require('webpack')
 
 module.exports = {
 	mode: 'development',
+	devtool: 'eval',
+	entry: [path.join(__dirname, '/src/index.tsx')],
+	output: {
+		filename: 'bundle.js',
+		path: `${process.env.PWD}/build`,
+	},
 	node: {
 		fs: 'empty',
 	},
 	devServer: {
+		hot: true,
 		host: '0.0.0.0',
 		port: '8080',
 		contentBase: './src',
@@ -21,7 +26,6 @@ module.exports = {
 		useLocalIp: true,
 		historyApiFallback: true,
 	},
-	entry: [path.join(__dirname, '/src/index.tsx')],
 	module: {
 		rules: [
 			{
@@ -30,64 +34,35 @@ module.exports = {
 				type: 'javascript/auto'
 			},
 			{
-				test: /\.tsx?$/,
-				loader: 'babel-loader',
+				test: /\.(js|jsx)$/,
+				use: ['babel-loader'],
+				exclude: /node_modules/,
 			},
 			{
-				test: /\.(jpe?g|png|gif|svg)$/i,
-				loader: 'url-loader',
-				options: {
-					limit: 10000,
-				},
-			},
-			{
-				test: /\.less$/,
+				test: /\.css$/,
 				use: [
-					{
-						loader: 'style-loader',
-					},
-					{
-						loader: 'css-loader',
-					},
-					{
-						loader: 'less-loader',
-						options: {
-							javascriptEnabled: true,
-						},
-					},
-				],
+					'css-loader'
+				]
 			},
 			{
-				test: /\.css$/i,
-				use: ['style-loader', 'css-loader'],
-			},
+				test: /\.ts(x)?$/,
+				use: ['babel-loader'],
+				exclude: /node_modules/,
+			}
 		],
 	},
 	resolve: {
-		extensions: ['.ts', '.tsx', '.js', '.jsx'],
-	},
-	output: {
-		filename: 'bundle.js',
-		path: `${process.env.PWD}/build`,
-		publicPath: '/',
+		extensions: [
+			'.js',
+			'.jsx',
+			'.tsx',
+			'.ts',
+		]
 	},
 	plugins: [
-		new ServiceWorkerWebpackPlugin({
-			entry: path.join(__dirname, 'src/service-worker.ts'),
-			publicPath: '/service-worker.js',
-		}),
-		new WebpackPwaManifest({
-			filename: 'manifest.json',
-			name: 'App',
-			orientation: 'portrait',
-			display: 'standalone',
-			start_url: '/',
-			fingerprints: false,
-			inject: true,
-			gcm_sender_id: '623436414105',
-		}),
 		new HtmlWebpackPlugin({
 			template: `${process.env.PWD}/public/index.html`,
 		}),
-	],
+		new webpack.HotModuleReplacementPlugin(),
+	]
 }

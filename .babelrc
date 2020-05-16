@@ -36,6 +36,6 @@
         "loose": true
       }
     ],
-    ["import", { "libraryName": "antd", "libraryDirectory": "lib", "style": true }, "antd"]
+    ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }] 
   ]
 }
