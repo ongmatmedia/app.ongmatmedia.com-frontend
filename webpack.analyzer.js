@@ -1,6 +1,7 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 module.exports = {
@@ -61,6 +62,7 @@ module.exports = {
 			template: `${process.env.PWD}/public/index.html`,
 		}),
 		new MiniCssExtractPlugin(),
+		new BundleAnalyzerPlugin(),
 		new LodashModuleReplacementPlugin(),
 	],
 	optimization: {
