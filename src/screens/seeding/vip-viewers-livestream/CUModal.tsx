@@ -14,7 +14,7 @@ import {
 	Switch,
 	Tag,
 } from 'antd'
-import { graphql } from 'babel-plugin-relay/macro'
+import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { isMobile, isMobileOnly, isTablet } from 'react-device-detect'

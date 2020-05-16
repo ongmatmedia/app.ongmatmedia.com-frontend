@@ -15,6 +15,7 @@
       "allowSyntheticDefaultImports": true,
       "removeComments": true,
       "strictNullChecks": false,
+      "resolveJsonModule": true,
       "outDir": "build",
       "lib": [
           "es6",

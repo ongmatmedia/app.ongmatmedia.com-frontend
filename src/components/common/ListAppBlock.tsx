@@ -4,8 +4,8 @@ import Icon from 'antd/lib/icon'
 import List from 'antd/lib/list'
 import Row from 'antd/lib/row'
 import React from 'react'
-import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
-import {BreadCrumb} from './BreadCrumb'
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom'
+import { BreadCrumb } from './BreadCrumb'
 
 export const ListAppBlock = (withRouter as any)(
 	(
@@ -17,10 +17,9 @@ export const ListAppBlock = (withRouter as any)(
 				link: string
 			}>
 		} & RouteComponentProps,
-	) =>
-	{
+	) => {
 		return (
-			<Card style={{minHeight: '100%'}} title={<BreadCrumb />}>
+			<Card style={{ minHeight: '100%' }} title={<BreadCrumb />}>
 				<List
 					grid={{
 						gutter: 24,
@@ -34,13 +33,13 @@ export const ListAppBlock = (withRouter as any)(
 							<Link
 								to={`${
 									props.location.pathname[props.location.pathname.length - 1] ==
-										'/'
+									'/'
 										? props.location.pathname.slice(
-											0,
-											props.location.pathname.length - 1,
-										)
+												0,
+												props.location.pathname.length - 1,
+										  )
 										: props.location.pathname
-									}${item.link}`}
+								}${item.link}`}
 							>
 								<Card
 									style={{
@@ -49,16 +48,16 @@ export const ListAppBlock = (withRouter as any)(
 										borderRadius: 10,
 										boxShadow:
 											'0 2px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.05)',
-										paddingTop: 15
+										paddingTop: 15,
 									}}
-									bodyStyle={{minHeight: 150}}
+									bodyStyle={{ minHeight: 150 }}
 								>
-									<Row style={{marginBottom: 15}}>
+									<Row style={{ marginBottom: 15 }}>
 										{item.cover ? (
 											<Avatar src={item.cover} size={40} />
 										) : (
-												<Icon type={item.icon} style={{fontSize: 40}} />
-											)}
+											<Icon type={item.icon} style={{ fontSize: 40 }} />
+										)}
 									</Row>
 									<Row>
 										{item.serviceName.charAt(0).toLocaleUpperCase() +

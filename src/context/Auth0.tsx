@@ -6,17 +6,10 @@ import createAuth0Client, {
 	RedirectLoginOptions,
 } from '@auth0/auth0-spa-js'
 import Amplify from 'aws-amplify'
-import firebase from 'firebase'
 import i18next from 'i18next'
-import LanguageDetector from 'i18next-browser-languagedetector'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { initReactI18next } from 'react-i18next'
-import {
-	AmplifyConfig,
-	FirebaseConfig,
-	FirebaseConfigVAPIDKEY,
-	GraphQLEndpoint,
-} from '../config'
+import { AmplifyConfig, GraphQLEndpoint } from '../config'
 import * as lang from '../locales'
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
@@ -34,7 +27,6 @@ const defaultAuth0Context = {
 	getTokenSilently: () => {},
 	getTokenWithPopup: () => {},
 	logout: (options: LogoutOptions) => {},
-	firebaseInstance: null,
 	auth0Client: null,
 	userToken: null,
 }
@@ -57,31 +49,15 @@ export const Auth0Provider = (props: Auth0ProviderProps) => {
 	const [popupOpen, setPopupOpen] = useState<boolean>(false)
 	const [userToken, setUserToken] = useState<string>()
 
-	// For firebase
-	const [firebaseInstance, setFirebase] = useState<firebase.app.App>()
-
-	const registerServiceWorker = async () => {
-		if (!('serviceWorker' in navigator && 'PushManager' in window))
-			return console.error('Push messaging is not supported')
-		await new Promise((s, r) =>
-			Notification.requestPermission(state => (state == 'granted' ? s() : r())),
-		).catch(() => console.log('Please enable notification'))
-		const sw = await navigator.serviceWorker.register('/service-worker.js')
-		firebase.messaging().useServiceWorker(sw)
-	}
-
 	const initI18n = async () => {
-		await i18next
-			.use(LanguageDetector)
-			.use(initReactI18next)
-			.init({
-				fallbackLng: 'en',
-				debug: false,
-				interpolation: {
-					escapeValue: false,
-				},
-				resources: lang,
-			})
+		await i18next.use(initReactI18next).init({
+			fallbackLng: 'en',
+			debug: false,
+			interpolation: {
+				escapeValue: false,
+			},
+			resources: lang,
+		})
 	}
 
 	const configureAmplify = async (token: string) => {
@@ -112,19 +88,6 @@ export const Auth0Provider = (props: Auth0ProviderProps) => {
 		window.document.title = title.charAt(0).toUpperCase() + title.slice(1)
 	}
 
-	const initFirebase = () => {
-		if (Notification.permission == 'granted') {
-			if (!firebaseInstance) {
-				const firebaseApp = firebase.initializeApp(FirebaseConfig)
-				const FirebaseMessaging = firebaseApp.messaging()
-				FirebaseMessaging.usePublicVapidKey(FirebaseConfigVAPIDKEY)
-				setFirebase(firebaseApp)
-			} else {
-				firebaseInstance.messaging().usePublicVapidKey(FirebaseConfigVAPIDKEY)
-			}
-		}
-	}
-
 	useEffect(() => {
 		const initAuth0 = async () => {
 			const auth0FromHook = await createAuth0Client(props.initOptions)
@@ -152,8 +115,6 @@ export const Auth0Provider = (props: Auth0ProviderProps) => {
 				setUser(user)
 				await initI18n()
 				initTitleForCurrentUser()
-				await registerServiceWorker()
-				initFirebase()
 			}
 			setLoading(false)
 		}
@@ -174,8 +135,6 @@ export const Auth0Provider = (props: Auth0ProviderProps) => {
 		setUser(user)
 		await initI18n()
 		initTitleForCurrentUser()
-		await registerServiceWorker()
-		initFirebase()
 	}
 
 	const handleRedirectCallback = async () => {
@@ -187,8 +146,6 @@ export const Auth0Provider = (props: Auth0ProviderProps) => {
 		setUser(user)
 		await initI18n()
 		initTitleForCurrentUser()
-		await registerServiceWorker()
-		initFirebase()
 	}
 
 	return (
@@ -206,7 +163,6 @@ export const Auth0Provider = (props: Auth0ProviderProps) => {
 				getTokenSilently: (...p) => auth0Client.getTokenSilently(...p),
 				getTokenWithPopup: (...p) => auth0Client.getTokenWithPopup(...p),
 				logout: (...p) => auth0Client.logout(...p),
-				firebaseInstance,
 				auth0Client,
 				userToken,
 			}}

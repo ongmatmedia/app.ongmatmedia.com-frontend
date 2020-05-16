@@ -1,9 +1,8 @@
 import { commitMutation } from 'react-relay'
-import { ConnectionHandler, RecordProxy } from 'relay-runtime'
-import { RelayEnvironment } from './RelayEnvironment'
-const graphql = require('babel-plugin-relay/macro')
+import graphql from 'babel-plugin-relay/macro'
 import { NewDepositInfo } from '../types'
 import { GraphQLError } from './GraphqlError'
+import { RelayEnvironment } from './RelayEnvironment'
 
 const mutation = graphql`
 	mutation createDepositMutation($amount: Int!) {

@@ -1,7 +1,6 @@
 import Card from 'antd/lib/card'
-import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
-import { QueryRenderer } from 'react-relay'
+import { QueryRenderer, graphql } from 'react-relay'
 import { BreadCrumb } from '../../../components/common/BreadCrumb'
 import { RelayEnvironment } from '../../../graphql/RelayEnvironment'
 import { CreateUpdateAccountModal } from '../CreateUpdateAccountModal'

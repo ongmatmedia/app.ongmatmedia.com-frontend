@@ -24,7 +24,7 @@ import { CopyToClipboard } from 'react-copy-to-clipboard'
 import { isMobile, isMobileOnly, isTablet } from 'react-device-detect'
 import { delete_vip_viewers_livestream } from '../../../graphql/delete_vip_viewers_livestream'
 import { VipViewersLivestream, VipViewersLivestreamOrder } from '../../../types'
-import { graphql } from 'babel-plugin-relay/macro'
+import graphql from 'babel-plugin-relay/macro'
 import {
 	GraphQLQueryFetcher,
 	SmartGrahQLQueryRenderer,

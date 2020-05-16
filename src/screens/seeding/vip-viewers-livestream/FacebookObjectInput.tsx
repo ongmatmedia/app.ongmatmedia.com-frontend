@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { Input, Icon } from 'antd'
-import { FacebookAccount } from '../../../api/FacebookAccount'
 import { LivestreamFacebookTargetType } from '../../livestream/SharingComponents/LivestreamFacebookTargetType'
-import { graphql } from 'babel-plugin-relay/macro'
+import graphql from 'babel-plugin-relay/macro'
 import { GraphQLQueryFetcher } from '../../../graphql/GraphQLWrapper'
 import { FacebookProfile } from '../../../types'
 

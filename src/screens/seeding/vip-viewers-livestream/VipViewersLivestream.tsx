@@ -1,5 +1,5 @@
 import { Card, Alert, Skeleton } from 'antd'
-import { graphql } from 'babel-plugin-relay/macro'
+import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { BreadCrumb } from '../../../components/common/BreadCrumb'
 import { VipViewersLivestreamAction } from './VipViewersLivestreamAction'
