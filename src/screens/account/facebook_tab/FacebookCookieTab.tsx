@@ -30,6 +30,7 @@ export const FacebookCookieTab = Form.create<FacebookCookieTabProps>()(
 				if (!err) {
 					setError(null)
 					try {
+						console.log({cooie: values.cookie})
 						const fb = await FBCURL.fromCookie(values.cookie)
 						const livestreamAccessToken = await fb.getLivestreamAccessToken()
 						await add_facebook_account({

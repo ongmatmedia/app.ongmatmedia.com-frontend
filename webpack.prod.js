@@ -9,6 +9,7 @@ module.exports = {
 	output: {
 		filename: 'bundle.js',
 		path: `${process.env.PWD}/build`,
+		publicPath: '/',
 	},
 	node: {
 		fs: 'empty',
@@ -26,11 +27,19 @@ module.exports = {
 				exclude: /node_modules/
 			},
 			{
-				test: /\.css$/,
+				test: /\.less$/,
 				use: [
-					MiniCssExtractPlugin.loader,
-					'css-loader'
-				]
+					{
+						loader: 'less-loader',
+						options: {
+							javascriptEnabled: true,
+						},
+					},
+				],
+			},
+			{
+				test: /\.css$/i,
+				use: ['style-loader', 'css-loader'],
 			},
 			{
 				test: /\.ts(x)?$/,

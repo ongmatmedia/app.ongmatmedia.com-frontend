@@ -1,31 +1,32 @@
 import React from 'react'
-import { Redirect, Router, Switch } from 'react-router-dom'
+import {Redirect, Router, Switch} from 'react-router-dom'
 import PrivateRoute from '../components/PrivateRoute'
 import history from '../helpers/history'
-import { MainLayout } from '../layouts/main'
-import { AccountScreen } from './account'
-import { FacebookAccountsContainer } from './account/FacebookAccountsPage/FacebookAccountsContainer'
-import { AgencyPage } from './agency'
-import { AdminInformationPage } from './agency/AdminInformationPage'
-import { BankInformationPage } from './agency/BankInformationPage'
-import { CollaboratorsListPage } from './agency/CollaboratorsListPage'
-import { SetDefaultPricePage } from './agency/SetDefaultPricePage'
-import { AdminContact } from './contact/AdminContact'
-import { DepositPage } from './deposit'
+import {MainLayout} from '../layouts/main'
+import {AccountScreen} from './account'
+import {FacebookAccountsContainer} from './account/FacebookAccountsPage/FacebookAccountsContainer'
+import {AgencyPage} from './agency'
+import {AdminInformationPage} from './agency/AdminInformationPage'
+import {BankInformationPage} from './agency/BankInformationPage'
+import {CollaboratorsListPage} from './agency/CollaboratorsListPage'
+import {SetDefaultPricePage} from './agency/SetDefaultPricePage'
+import {AdminContact} from './contact/AdminContact'
+import {DepositPage} from './deposit'
 import HomePage from './HomePage'
-import { LivestreamsListPage } from './livestream'
-import { CreateUpdateLivestreamPage } from './livestream/CreateUpdateLivestreamPage/CreateUpdateLivestreamPage'
-import { DetailLivestreamPage } from './livestream/DetailLivestreamPage'
-import { PricingPage } from './livestream/LivestreamPricingPage/LivestreamPricingPage'
-import { NotificationPage } from './notification'
-import { Payments } from './payments/Payments'
-import { SeedingPage } from './seeding'
-import { BuffViewersLivestream } from './seeding/buff-viewers-livestream'
-import { VipViewersLivestreamPage } from './seeding/vip-viewers-livestream/VipViewersLivestream'
-import { FriendsFiltering } from './tools/friends-filtering/FriendsFiltering'
-import { FriendsPoking } from './tools/friends-poking/FriendsPoking'
-import { Tools } from './tools/Tools'
-import { Page404 } from './404'
+import {LivestreamsListPage} from './livestream'
+import {CreateUpdateLivestreamPage} from './livestream/CreateUpdateLivestreamPage/CreateUpdateLivestreamPage'
+import {DetailLivestreamPage} from './livestream/DetailLivestreamPage'
+import {PricingPage} from './livestream/LivestreamPricingPage/LivestreamPricingPage'
+import {NotificationPage} from './notification'
+import {Payments} from './payments/Payments'
+import {SeedingPage} from './seeding'
+import {BuffViewersLivestream} from './seeding/buff-viewers-livestream'
+import {VipViewersLivestreamPage} from './seeding/vip-viewers-livestream/VipViewersLivestream'
+import {FriendsFiltering} from './tools/friends-filtering/FriendsFiltering'
+import {FriendsPoking} from './tools/friends-poking/FriendsPoking'
+import {Tools} from './tools/Tools'
+import {Page404} from './404'
+import {AvatarShield} from './tools/avatar-shield/AvatarShield'
 
 export const AppWithRouter = () => {
 	return (
@@ -177,6 +178,13 @@ export const AppWithRouter = () => {
 					component={FriendsPoking}
 					layout={MainLayout}
 					path="/tools/poke-friends"
+				/>
+
+				<PrivateRoute
+					exact
+					component={AvatarShield}
+					layout={MainLayout}
+					path="/tools/avatar-shield"
 				/>
 
 				<PrivateRoute
