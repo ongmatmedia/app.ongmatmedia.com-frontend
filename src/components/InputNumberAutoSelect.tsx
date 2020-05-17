@@ -11,15 +11,17 @@ export const InputNumberAutoSelect = (props: InputNumberAutoSelectProps) => {
 		props.defaultValue.toLocaleString('en-US'),
 	)
 
+	useEffect(() => set_value(props.defaultValue.toLocaleString('en-US')), [
+		props.defaultValue,
+	])
+
 	const changeValue = (v: string) => {
-		if (v.match(/\./g)?.length > 1) return
-		if (v.endsWith('.')) {
-			set_value(v)
-		} else {
-			const n = Number(v.replace(/[^\d\-\.]/g, ''))
-			set_value(Number(n).toLocaleString('en-US'))
-			n != NaN && props.onChangeValue(n)
-		}
+		if (v.endsWith('.') || v == '-') return set_value(v)
+
+		const n = Number(v.replace(/[^\d\-\.]/g, ''))
+		if (n == NaN) return
+		set_value(n.toLocaleString('en-US'))
+		props.onChangeValue(n)
 	}
 
 	return (

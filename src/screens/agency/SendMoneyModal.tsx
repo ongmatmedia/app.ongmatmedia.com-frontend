@@ -44,6 +44,7 @@ export const SendMoneyModal = Form.create<SendMoneyModalProps>()(
 		}
 
 		const update_amount = (amount: number, is_send_amount: boolean) => {
+			console.log('Update amount')
 			if (is_send_amount) {
 				set_send_amount(amount)
 				const receive_amount = Math.floor(
