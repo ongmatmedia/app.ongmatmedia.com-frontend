@@ -11,6 +11,7 @@ import { RouteComponentProps } from 'react-router'
 import { withRouter } from 'react-router-dom'
 import { useAuth0 } from '../../context/Auth0'
 import { UserInfo } from './UserInfo'
+import './AppDrawer.css'
 
 type DrawerAppProps = {
 	name: string

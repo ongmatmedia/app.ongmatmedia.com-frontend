@@ -1,10 +1,10 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const webpack = require('webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 
 module.exports = {
-	mode: 'development',
-	devtool: 'eval',
+	mode: 'production',
 	entry: [path.join(__dirname, '/src/index.tsx')],
 	output: {
 		filename: 'bundle.js',
@@ -13,19 +13,6 @@ module.exports = {
 	},
 	node: {
 		fs: 'empty',
-	},
-	devServer: {
-		hot: true,
-		host: '0.0.0.0',
-		port: '8080',
-		contentBase: './src',
-		disableHostCheck: true,
-		headers: {
-			'Access-Control-Allow-Origin': '*',
-		},
-		https: true,
-		useLocalIp: true,
-		historyApiFallback: true,
 	},
 	module: {
 		rules: [
@@ -36,8 +23,8 @@ module.exports = {
 			},
 			{
 				test: /\.(js|jsx)$/,
-				use: ['babel-loader'],
-				exclude: /node_modules/,
+				use: 'babel-loader',
+				exclude: /node_modules/
 			},
 			{
 				test: /\.less$/,
@@ -56,8 +43,12 @@ module.exports = {
 			},
 			{
 				test: /\.ts(x)?$/,
-				use: ['babel-loader'],
+				loader: 'babel-loader',
 				exclude: /node_modules/,
+				options: {
+					'plugins': ['lodash'],
+					'presets': [['@babel/env', { 'modules': false, 'targets': { 'node': 8 } }]]
+				}
 			}
 		],
 	},
@@ -67,12 +58,29 @@ module.exports = {
 			'.jsx',
 			'.tsx',
 			'.ts',
-		]
+		],
+		"alias": {
+			"react": "preact/compat",
+			"react-dom/test-utils": "preact/test-utils",
+			"react-dom": "preact/compat",
+		}
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
 			template: `${process.env.PWD}/public/index.html`,
 		}),
-		new webpack.HotModuleReplacementPlugin(),
-	]
+		new MiniCssExtractPlugin(),
+		new LodashModuleReplacementPlugin(),
+	],
+	optimization: {
+		splitChunks: {
+			cacheGroups: {
+				vendor: {
+					test: /[\\/]node_modules[\\/]/,
+					name: 'vendors',
+					chunks: 'all'
+				}
+			}
+		}
+	}
 }

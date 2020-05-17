@@ -2,8 +2,7 @@ import {stringify} from 'query-string'
 import {Extension} from './Extension'
 import * as axios from 'axios'
 
-export class FBCURL
-{
+export class FBCURL {
 	constructor (
 		private cookie: string,
 		public user_id: string,
@@ -12,8 +11,7 @@ export class FBCURL
 		public readonly eaa_token: string,
 	) {}
 
-	static async fromCookie (cookie: string)
-	{
+	static async fromCookie (cookie: string) {
 		// Prefight request m diabled
 		try
 		{
@@ -35,17 +33,21 @@ export class FBCURL
 			).then(x => x.text())
 
 			const fb_dtsg_match = htmlOcelotToken.match(/fb_dtsg\\" value=\\"(.+?)\\/)
+
 			const token_match = htmlOcelotToken.match(/(EAAA\w+)/)
 
 			const htmlExtractUsername = await fetch(
 				'https://m.facebook.com/settings/sms',
 				{
-					headers: {accept: key},
+					headers: {
+						accept: key,
+					},
 				},
 			).then(x => x.text())
 
 			const name_match = htmlExtractUsername.match(/"NAME":"(.+?)"/)
 			if (!name_match) throw new Error('Can not get profile name')
+			console.log(htmlExtractUsername)
 			const name = JSON.parse(`"${name_match[1]}"`)
 
 			if (fb_dtsg_match && token_match)
@@ -55,25 +57,26 @@ export class FBCURL
 		} catch (error)
 		{
 			console.log({error})
-			throw new Error('Invaild cookie')
+			throw new Error('Can not perform this action. Something went wrong!')
 		}
 	}
 
-	async get (url: string, params: any = null)
-	{
+	async get (url: string, params: any = null) {
 		const {data, status} = await axios.default({
 			method: 'GET',
 			url,
 			params,
-			headers: {accept: `fb-ext|${this.user_id}`, 'Access-Control-Allow-Origin': '*'},
+			headers: {
+				accept: `fb-ext|${this.user_id}`,
+				'Access-Control-Allow-Origin': '*',
+			},
 			httpsAgent:
 				'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36',
 		})
 		return {data, status}
 	}
 
-	async post (url: string, data: any = {}, query: any = null)
-	{
+	async post (url: string, data: any = {}, query: any = null) {
 		return fetch(`${url}${query ? '?' + stringify(query) : ''}`, {
 			body: stringify({
 				...data,
@@ -90,8 +93,7 @@ export class FBCURL
 			.catch(err => err)
 	}
 
-	async postForm<T> (url: string, data: any = {}, query: any = null)
-	{
+	async postForm<T> (url: string, data: any = {}, query: any = null) {
 		const rs = await this.post(url, data, query)
 		try
 		{
@@ -102,8 +104,7 @@ export class FBCURL
 		}
 	}
 
-	async postJSON<T> (url: string, data: any = {}, query: any = {})
-	{
+	async postJSON<T> (url: string, data: any = {}, query: any = {}) {
 		const rs = fetch(`${url}${query ? '?' + stringify(query) : ''}`, {
 			method: 'POST',
 			body: JSON.stringify({
@@ -119,8 +120,7 @@ export class FBCURL
 	}
 
 	/* Get access token */
-	public async getLivestreamAccessToken ()
-	{
+	public async getLivestreamAccessToken () {
 		try
 		{
 			const qs = {

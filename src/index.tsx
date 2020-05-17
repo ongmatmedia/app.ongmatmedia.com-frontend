@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom'
 import { AUTH0_CONFIG } from './config'
 import { Auth0Provider } from './context/Auth0'
 import { AppWithRouter } from './screens'
-import './style.css'
 
 ReactDOM.render(
 	<Auth0Provider

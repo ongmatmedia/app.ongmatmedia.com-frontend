@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { graphql } from 'babel-plugin-relay/macro'
+import graphql from 'babel-plugin-relay/macro'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { FormElement } from '../../../components/form/FormElement'

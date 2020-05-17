@@ -1,5 +1,5 @@
 import React from 'react'
-import { graphql } from 'babel-plugin-relay/macro'
+import graphql from 'babel-plugin-relay/macro'
 import { GraphQLWrapper } from '../../../graphql/GraphQLWrapper'
 import { BuffViewersLivestreamStatus } from '../../../types'
 import Row from 'antd/lib/row'

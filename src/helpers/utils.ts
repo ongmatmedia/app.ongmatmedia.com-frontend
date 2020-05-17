@@ -35,33 +35,6 @@ export function* range(start: number, end: number) {
 	yield* range(start + 1, end)
 }
 
-export const toggleFullScreen = () => {
-	const doc = window.document
-	const docEl = doc.documentElement
-
-	const requestFullScreen =
-		docEl.requestFullscreen ||
-		docEl.mozRequestFullScreen ||
-		docEl.webkitRequestFullScreen ||
-		docEl.msRequestFullscreen
-	const cancelFullScreen =
-		doc.exitFullscreen ||
-		doc.mozCancelFullScreen ||
-		doc.webkitExitFullscreen ||
-		doc.msExitFullscreen
-
-	if (
-		!doc.fullscreenElement &&
-		!doc.mozFullScreenElement &&
-		!doc.webkitFullscreenElement &&
-		!doc.msFullscreenElement
-	) {
-		requestFullScreen.call(docEl)
-	} else {
-		cancelFullScreen.call(doc)
-	}
-}
-
 export function getRandomInt(min: number, max: number) {
 	return Math.floor(Math.random() * (max - min + 1)) + min
 }
@@ -119,11 +92,11 @@ export function nFormatter(num: number, digits: number) {
 
 export const useSortableData = <T extends {}>(
 	items: Array<T>,
-	config: { key: string; direction: 'ascending' | 'descending' | null },
+	config: { key: string; direction: string | null },
 ) => {
 	const [sortConfig, setSortConfig] = React.useState<{
 		key: string
-		direction: 'ascending' | 'descending' | null
+		direction: string | null
 	}>(config)
 
 	const sortedItems = React.useMemo(() => {
