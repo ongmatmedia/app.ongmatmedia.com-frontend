@@ -25,7 +25,7 @@ export const Tools = () => (
 				cover:
 					'https://cdn0.iconfinder.com/data/icons/user-profile-and-profile-services/100/profile-03-512.png',
 				serviceName: 'Active avatar shield (comming soon)',
-				link: '/active-avatar-shield',
+				link: '/avatar-shield',
 			},
 		]}
 	/>
