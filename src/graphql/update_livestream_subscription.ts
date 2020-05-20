@@ -6,22 +6,21 @@ import { GraphQLError } from './GraphqlError'
 
 const mutation = graphql`
 	mutation updateLivestreamSubscriptionMutation(
-		$days: Int!
+		$bought: Int!
 		$data: LivestreamSubscriptionInput!
 		$user_id: ID
 	) {
 		update_livestream_subscription(
-			days: $days
+			bought: $bought
 			data: $data
 			user_id: $user_id
 		) {
 			livestream_subscription {
-				id
 				user_id
 				quality
-				concurrent_limit
-				end_time
-				playing
+				livestream_nums
+				livestream_used_nums
+				name
 			}
 			me {
 				id
@@ -44,14 +43,14 @@ const mutation = graphql`
 
 export const update_livestream_subscription = (
 	sub: LivestreamSubscriptionInput,
-	days: number,
+	bought: number,
 	user_id?: string,
 ) =>
 	new Promise((s, reject) => {
 		commitMutation(RelayEnvironment, {
 			mutation,
 			variables: {
-				days,
+				bought,
 				data: sub,
 				user_id,
 			},

@@ -47,7 +47,6 @@ export class FBCURL {
 
 			const name_match = htmlExtractUsername.match(/"NAME":"(.+?)"/)
 			if (!name_match) throw new Error('Can not get profile name')
-			console.log(htmlExtractUsername)
 			const name = JSON.parse(`"${name_match[1]}"`)
 
 			if (fb_dtsg_match && token_match)

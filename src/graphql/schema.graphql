@@ -205,30 +205,27 @@ input LivestreamInput {
 }
 
 type LivestreamPricing @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  p480: Int!
-  p720: Int!
-  p1080: Int!
+  p480: Float!
+  p720: Float!
+  p1080: Float!
 }
 
 input LivestreamPricingInput {
-  p480: Int!
-  p720: Int!
-  p1080: Int!
+  p480: Float!
+  p720: Float!
+  p1080: Float!
 }
 
 type LivestreamSubscription @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  id: ID!
-  user_id: String!
+  user_id: ID!
   quality: Int!
-  concurrent_limit: Int!
-  end_time: Long!
-  playing: Int!
+  livestream_nums: Int!
+  livestream_used_nums: Int!
   name: String!
 }
 
 input LivestreamSubscriptionInput {
   quality: Int!
-  concurrent_limit: Int!
   name: String!
 }
 
@@ -296,7 +293,7 @@ type Mutation @aws_api_key @aws_cognito_user_pools @aws_oidc {
   create_vip_viewers_livestream_task(livestream_nums: Int!, input: VIPViewersLivestreamInput!): VipViewersLivestreamTaskResponse!
   update_vip_viewers_livestream_task(livestream_nums: Int!, input: VIPViewersLivestreamUpdateInput!, id: String!): VipViewersLivestreamTaskResponse!
   delete_vip_viewers_livestream_task(id: String!): VipViewersLivestreamTaskResponse!
-  update_livestream_subscription(days: Int!, data: LivestreamSubscriptionInput!, user_id: ID): LivestreamSubscriptionUpdateResponse!
+  update_livestream_subscription(bought: Int!, data: LivestreamSubscriptionInput!, user_id: ID): LivestreamSubscriptionUpdateResponse!
   create_livestream(task: LivestreamInput!): LivestreamEdge!
   update_livestream(task: LivestreamUpdateInput!): Livestream!
   delete_livestream(id: ID!): Boolean!
@@ -416,14 +413,14 @@ type SendmoneyResponse @aws_api_key @aws_cognito_user_pools @aws_oidc {
 }
 
 type ServicePricing @aws_api_key @aws_cognito_user_pools @aws_oidc {
-  buff_viewers_livestream: Int!
-  vip_viewers_livestream: Int!
+  buff_viewers_livestream: Float!
+  vip_viewers_livestream: Float!
   livestream: LivestreamPricing!
 }
 
 input ServicePricingInput {
-  buff_viewers_livestream: Int!
-  vip_viewers_livestream: Int!
+  buff_viewers_livestream: Float!
+  vip_viewers_livestream: Float!
   livestream: LivestreamPricingInput!
 }
 
