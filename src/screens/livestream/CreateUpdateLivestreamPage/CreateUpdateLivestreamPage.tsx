@@ -3,39 +3,38 @@ import Button from 'antd/lib/button'
 import Card from 'antd/lib/card'
 import Col from 'antd/lib/col'
 import Divider from 'antd/lib/divider'
-import Form, { FormComponentProps } from 'antd/lib/form'
+import Form, {FormComponentProps} from 'antd/lib/form'
 import Icon from 'antd/lib/icon'
 import Input from 'antd/lib/input'
 import InputNumber from 'antd/lib/input-number'
 import notification from 'antd/lib/notification'
 import Row from 'antd/lib/row'
 import Spin from 'antd/lib/spin'
-import React, { useState, useEffect } from 'react'
-import { Redirect, RouteComponentProps, withRouter } from 'react-router-dom'
-import { BreadCrumb } from '../../../components/common/BreadCrumb'
-import { create_livestream } from '../../../graphql/create_livestream'
-import { update_livestream } from '../../../graphql/update_livestream'
+import React, {useState, useEffect} from 'react'
+import {Redirect, RouteComponentProps, withRouter} from 'react-router-dom'
+import {BreadCrumb} from '../../../components/common/BreadCrumb'
+import {create_livestream} from '../../../graphql/create_livestream'
+import {update_livestream} from '../../../graphql/update_livestream'
 import {
 	Livestream,
 	LivestreamTarget,
 	LivestreamSubscription,
 } from '../../../types'
-import { BroadcastTime } from '../SharingComponents/BroadcastTime'
-import { ListTarget } from '../SharingComponents/ListTarget'
-import { VideoComposer } from '../SharingComponents/VideoComposer'
-import { useAuth0 } from '../../../context/Auth0'
-import { GraphQLQueryFetcher } from '../../../graphql/GraphQLWrapper'
+import {BroadcastTime} from '../SharingComponents/BroadcastTime'
+import {ListTarget} from '../SharingComponents/ListTarget'
+import {VideoComposer} from '../SharingComponents/VideoComposer'
+import {useAuth0} from '../../../context/Auth0'
+import {GraphQLQueryFetcher} from '../../../graphql/GraphQLWrapper'
 import graphql from 'babel-plugin-relay/macro'
+import Modal from 'antd/lib/modal'
 
 const query = graphql`
 	query CreateUpdateLivestreamPageQuery {
 		livestream_subscription {
-			id
 			user_id
 			quality
-			concurrent_limit
-			end_time
-			playing
+			livestream_nums
+			livestream_used_nums
 			name
 		}
 	}
@@ -47,20 +46,30 @@ export type CreateUpdateLivestreamPageProps = FormComponentProps &
 export const CreateUpdateLivestreamPage = (withRouter as any)(
 	Form.create<CreateUpdateLivestreamPageProps>()(
 		(props: CreateUpdateLivestreamPageProps) => {
-			const { form } = props
-			const { user } = useAuth0()
-			const state = props.location?.state as { live: Livestream }
+			const {form} = props
+			const {user} = useAuth0()
+			const state = props.location?.state as {live: Livestream}
 			const mode = state?.live ? 'update' : 'create'
 			const livestream = state?.live
 
 			useEffect(() => {
 				const fn = async () => {
 					const {
-						livestream_subscription: { quality },
+						livestream_subscription: {quality, livestream_nums, livestream_used_nums},
 					} = await GraphQLQueryFetcher<{
 						livestream_subscription: LivestreamSubscription
-					}>(query, { user_id: user.sub })
+					}>(query, {user_id: user.sub})
 					if (quality == 0) props.history.push('/livestream/pricing')
+					else if (livestream_used_nums >= livestream_nums)
+						Modal.confirm({
+							title:
+								'Please renew subscription to create a new livestream',
+							okText: 'Renew',
+							cancelText: 'Back',
+							onOk: () =>
+								props.history.push('/livestream/pricing'),
+							onCancel: () => window.history.back(),
+						})
 				}
 				if (user?.sub) fn()
 			}, [user])
@@ -78,13 +87,17 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 			const handleSubmit = e => {
 				e.preventDefault()
 				form.validateFields(async (err, values) => {
-					if (!err) {
+					if (!err)
+					{
 						setError(null)
-						try {
+						try
+						{
 							setLoading(true)
-							if (mode == 'create') {
+							if (mode == 'create')
+							{
 								await create_livestream(values)
-							} else if (mode == 'update') {
+							} else if (mode == 'update')
+							{
 								const task = {
 									id: (livestream as any).id,
 									...values,
@@ -98,7 +111,8 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 								description: 'You saved livestream successfully',
 							})
 							props.history.push('/livestream')
-						} catch (message) {
+						} catch (message)
+						{
 							setLoading(false)
 							setError(message)
 						}
@@ -110,12 +124,12 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 				<Card title={<BreadCrumb />}>
 					<Spin
 						spinning={loading}
-						indicator={<Icon type="loading" style={{ fontSize: 24 }} />}
+						indicator={<Icon type="loading" style={{fontSize: 24}} />}
 					>
 						<Form layout="vertical" onSubmit={handleSubmit}>
 							<Row gutter={32}>
 								{mode == 'update' && (
-									<Col xs={24} style={{ marginBottom: 15 }}>
+									<Col xs={24} style={{marginBottom: 15}}>
 										<Alert
 											type="info"
 											showIcon
@@ -163,13 +177,13 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 									<Form.Item label="Video URLs">
 										{form.getFieldDecorator('videos', {
 											rules: [
-												{ required: true, message: 'Please add some videos !' },
+												{required: true, message: 'Please add some videos !'},
 											],
 											initialValue: livestream ? livestream.videos : [],
 										})(
 											<VideoComposer
 												value={[]}
-												onChange={videos => form.setFieldsValue({ videos })}
+												onChange={videos => form.setFieldsValue({videos})}
 											/>,
 										)}
 									</Form.Item>
@@ -189,7 +203,7 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 									<Form.Item label="Broadcast time">
 										{form.getFieldDecorator('times', {
 											rules: [
-												{ required: true, message: 'Please select time !' },
+												{required: true, message: 'Please select time !'},
 											],
 											initialValue: livestream ? livestream.times : null,
 										})(
@@ -214,9 +228,11 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 														if (
 															value.rtmps.length == 0 &&
 															value.facebooks.length == 0
-														) {
+														)
+														{
 															done(new Error('Add some target !'))
-														} else {
+														} else
+														{
 															done()
 														}
 													},
@@ -224,7 +240,7 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 											],
 											initialValue: livestream
 												? livestream.targets
-												: ({ rtmps: [], facebooks: [] } as LivestreamTarget),
+												: ({rtmps: [], facebooks: []} as LivestreamTarget),
 										})(<ListTarget mode={mode} />)}
 									</Form.Item>
 								</Col>
@@ -236,14 +252,14 @@ export const CreateUpdateLivestreamPage = (withRouter as any)(
 											message={error}
 											type="error"
 											showIcon
-											style={{ marginBottom: 10 }}
+											style={{marginBottom: 10}}
 										/>
 									</Col>
 								</Row>
 							)}
 							<Divider />
 							<Row>
-								<Col xs={24} style={{ textAlign: 'center' }}>
+								<Col xs={24} style={{textAlign: 'center'}}>
 									<Form.Item>
 										<Button
 											type="primary"

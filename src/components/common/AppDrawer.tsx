@@ -32,7 +32,7 @@ const DrawerLinks: DrawerLinksType[] = [
 		icon: 'alert',
 		to: '/seeding',
 	},
-	{ name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
+	// { name: 'livestream_icon_title', icon: 'video-camera', to: '/livestream' },
 	// { name: 'setting_icon_title', icon: 'setting', to: '/setting' },
 	{ name: 'account_icon_title', icon: 'team', to: '/farm' },
 	{ name: 'smart_group_title', icon: 'solution', to: '/facebook-page-manager' },

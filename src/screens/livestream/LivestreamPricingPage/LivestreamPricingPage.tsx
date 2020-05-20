@@ -22,7 +22,7 @@ import Col from 'antd/lib/col'
 import { update_livestream_subscription } from '../../../graphql/update_livestream_subscription'
 import Alert from 'antd/lib/alert'
 import * as _ from 'lodash'
-import { notification } from 'antd'
+import { notification, Typography } from 'antd'
 import Icon from 'antd/lib/icon'
 import history from '../../../helpers/history'
 
@@ -30,31 +30,26 @@ const subscriptions = [
 	{
 		name: 'basic',
 		quality: 480,
-		concurrent_limit: 5,
 	},
 	{
 		name: 'pro',
 		quality: 720,
-		concurrent_limit: 10,
 	},
 	{
 		name: 'premium',
 		quality: 1080,
-		concurrent_limit: 15,
 	},
 ]
 
-const periods = [2, 7, 15, 30, 45, 60]
+const livestreamNums = [2, 7, 15, 30, 45, 60]
 
 const querySubscription = graphql`
 	query LivestreamPricingPageSubscriptionQuery {
 		livestream_subscription {
-			id
 			user_id
 			quality
-			concurrent_limit
-			end_time
-			playing
+			livestream_nums
+			livestream_used_nums
 			name
 		}
 	}
@@ -80,7 +75,7 @@ export const PricingPage = () => {
 
 	const [showPeriods, setShowPeriods] = useState<boolean>(false)
 
-	const [selectedPeriod, setSelectedPeriod] = useState<number | null>(null)
+	const [selectedNums, setSelectedNums] = useState<number | null>(null)
 
 	const [selectedSubscription, setSelectedSubscription] = useState<
 		LivestreamSubscriptionInput
@@ -124,7 +119,7 @@ export const PricingPage = () => {
 			subscriptions.some(
 				subscription =>
 					_.isEqual(subscription, selectedSubscription) &&
-					periods.includes(selectedPeriod),
+					livestreamNums.includes(selectedNums),
 			)
 		) {
 			setError(null)
@@ -132,7 +127,7 @@ export const PricingPage = () => {
 			try {
 				await update_livestream_subscription(
 					selectedSubscription,
-					selectedPeriod,
+					selectedNums,
 					user.sub,
 				)
 				notification.success({
@@ -148,12 +143,12 @@ export const PricingPage = () => {
 	}
 
 	return (
-		<Card title={<BreadCrumb />} bodyStyle={{ padding: 0, margin: 0 }}>
+		<Card title={<BreadCrumb />} bodyStyle={{ padding: 0, margin: 0 }} style={{minHeight: "100%"}}>
 			{error && <Alert showIcon type="error" message={error} />}
 			<div className="background">
 				<div className="container">
 					<div className="panel pricing-table">
-						{subscriptions.map(({ name, concurrent_limit, quality }) => (
+						{subscriptions.map(({ name, quality }) => (
 							<div
 								className={
 									name == activeSubscription
@@ -176,12 +171,9 @@ export const PricingPage = () => {
 								/>
 								<h2 className="pricing-header">{name.toLocaleUpperCase()}</h2>
 								<ul className="pricing-features">
-									<li className="pricing-features-item">
-										{`${concurrent_limit} concurrents`}
-									</li>
 									<li className="pricing-features-item">{`${quality} p`}</li>
 									<li className="pricing-features-item">
-										Unlimited times and repeat numbers
+										Unlimited concurrent and repeat numbers
 									</li>
 								</ul>
 								{selectedSubscription?.name !== name && (
@@ -190,12 +182,11 @@ export const PricingPage = () => {
 										style={{ cursor: 'pointer' }}
 										onClick={() => {
 											setSelectedSubscription({
-												concurrent_limit,
 												name,
 												quality,
 											})
 											setShowPeriods(true)
-											setSelectedPeriod(null)
+											setSelectedNums(null)
 										}}
 									>
 										{name == activeSubscription ? 'Renew' : 'Choose'}
@@ -203,20 +194,20 @@ export const PricingPage = () => {
 								)}
 								{showPeriods && selectedSubscription?.name == name && (
 									<Row gutter={16}>
-										{periods.map(period => (
-											<Col xs={12} md={8}>
+										{livestreamNums.map(num => (
+											<Col xs={8}>
 												<Button
 													style={{ margin: 5 }}
-													type={period == selectedPeriod ? 'primary' : 'dashed'}
-													onClick={() => setSelectedPeriod(period)}
+													type={num == selectedNums ? 'primary' : 'dashed'}
+													onClick={() => setSelectedNums(num)}
 												>
-													{`${period} days`}
+													{num}
 												</Button>
 											</Col>
 										))}
 									</Row>
 								)}
-								{selectedPeriod && selectedSubscription?.name == name && (
+								{selectedNums && selectedSubscription?.name == name && (
 									<div>
 										<Divider />
 										<span className="pricing-price">
@@ -224,20 +215,17 @@ export const PricingPage = () => {
 												selectedSubscription?.name == 'basic'
 													? (
 															livestreamPricingFromSystem.p480 *
-															5 *
-															selectedPeriod
+															selectedNums
 													  ).toLocaleString('vi-VN')
 													: selectedSubscription?.name == 'pro'
 													? (
 															livestreamPricingFromSystem.p720 *
-															10 *
-															selectedPeriod
+															selectedNums
 													  ).toLocaleString('vi-VN')
 													: selectedSubscription?.name == 'premium'
 													? (
 															livestreamPricingFromSystem.p1080 *
-															15 *
-															selectedPeriod
+															selectedNums
 													  ).toLocaleString('vi-VN')
 													: NaN
 											}`}
@@ -245,7 +233,7 @@ export const PricingPage = () => {
 										<span className="pricing-price__currency"> VND</span>
 									</div>
 								)}
-								{selectedPeriod && selectedSubscription.name == name && (
+								{selectedNums && selectedSubscription.name == name && (
 									<div
 										className="pricing-button"
 										style={{ cursor: 'pointer' }}
