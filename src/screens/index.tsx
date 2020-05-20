@@ -115,13 +115,13 @@ export const AppWithRouter = () => {
 					path="/contact"
 				/>
 
-				<PrivateRoute
+				{/* <PrivateRoute
 					exact
 					component={LivestreamsListPage}
 					layout={MainLayout}
 					path="/livestream"
 				/>
-				{/* <PrivateRoute
+				<PrivateRoute
 					exact
 					component={CreateUpdateLivestreamPage}
 					layout={MainLayout}
