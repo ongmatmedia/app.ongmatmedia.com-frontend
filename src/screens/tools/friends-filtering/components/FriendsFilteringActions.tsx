@@ -46,7 +46,9 @@ export const FriendsFilteringActions = Form.create()(
 
 		const delete_friends = async () => {
 			Modal.confirm({
-				title: 'Do you want to delete multiple friends',
+				title: `Do you want to delete multiple friends, ${props.form.getFieldValue(
+					'delay',
+				)} delay`,
 				content: `You are going to delete ${props.store?.selected_friends?.length} friends`,
 				onOk: () => {
 					props.store.delete_friends(
@@ -193,7 +195,7 @@ export const FriendsFilteringActions = Form.create()(
 										initialValue: 5,
 									})(
 										<Select>
-											{[5, 10, 15, 20].map(n => (
+											{[0.5, 1, 2, 3, 4, 5, 10, 15, 20].map(n => (
 												<Option key={n} value={n}>
 													Delay {n} seconds
 												</Option>

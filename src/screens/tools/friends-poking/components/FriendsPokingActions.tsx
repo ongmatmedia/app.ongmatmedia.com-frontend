@@ -160,7 +160,7 @@ export const FriendsPokingActions = Form.create()(
 										initialValue: 5,
 									})(
 										<Select>
-											{[5, 10, 15, 20].map(n => (
+											{[0.5, 1, 2, 3, 4, 5, 10, 15, 20].map(n => (
 												<Option key={n} value={n}>
 													Delay {n} seconds
 												</Option>
