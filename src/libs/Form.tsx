@@ -83,7 +83,7 @@ export class Form {
 			this.data[key] = value
 			if (!validate) return
 
-			if (require && (this.data[key] == undefined || this.data[key] == '')) {
+			if (require && (this.data[key] === undefined || this.data[key] === '')) {
 				this.errors.set(key, require)
 				return
 			}

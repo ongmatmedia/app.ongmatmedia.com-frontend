@@ -236,7 +236,7 @@ export const BuffViewersLivestreamCreateModal = GraphQLWrapper<
 											<Button
 												style={{ margin: 5, width: 100 }}
 												type={time == value ? 'primary' : 'dashed'}
-												onClick={() => setValue(time)}
+												onClick={() => setValue(Number(time))}
 											>
 												{`${time} ${time == 1 ? 'minute' : 'minutes'}`}
 											</Button>
