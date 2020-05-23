@@ -143,7 +143,11 @@ export const PricingPage = () => {
 	}
 
 	return (
-		<Card title={<BreadCrumb />} bodyStyle={{ padding: 0, margin: 0 }} style={{minHeight: "100%"}}>
+		<Card
+			title={<BreadCrumb />}
+			bodyStyle={{ padding: 0, margin: 0 }}
+			style={{ minHeight: '100%' }}
+		>
 			{error && <Alert showIcon type="error" message={error} />}
 			<div className="background">
 				<div className="container">
@@ -214,18 +218,15 @@ export const PricingPage = () => {
 											{`${
 												selectedSubscription?.name == 'basic'
 													? (
-															livestreamPricingFromSystem.p480 *
-															selectedNums
+															livestreamPricingFromSystem.p480 * selectedNums
 													  ).toLocaleString('vi-VN')
 													: selectedSubscription?.name == 'pro'
 													? (
-															livestreamPricingFromSystem.p720 *
-															selectedNums
+															livestreamPricingFromSystem.p720 * selectedNums
 													  ).toLocaleString('vi-VN')
 													: selectedSubscription?.name == 'premium'
 													? (
-															livestreamPricingFromSystem.p1080 *
-															selectedNums
+															livestreamPricingFromSystem.p1080 * selectedNums
 													  ).toLocaleString('vi-VN')
 													: NaN
 											}`}

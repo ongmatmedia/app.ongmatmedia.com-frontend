@@ -1,14 +1,14 @@
-import {Alert, Avatar, Button, Col, Form, Row, Select, Tooltip} from 'antd'
-import {FormComponentProps} from 'antd/lib/form'
+import { Alert, Avatar, Button, Col, Form, Row, Select, Tooltip } from 'antd'
+import { FormComponentProps } from 'antd/lib/form'
 import Input from 'antd/lib/input'
 import Modal from 'antd/lib/modal'
 import graphql from 'babel-plugin-relay/macro'
-import React, {useEffect, useState} from 'react'
-import {GraphQLQueryFetcher} from '../../../../graphql/GraphQLWrapper'
-import {withFilterFriendsStore} from '../../../../libs/filter-friends/store'
-import {Extension} from '../../../../libs/filter-friends/Extension'
+import React, { useEffect, useState } from 'react'
+import { GraphQLQueryFetcher } from '../../../../graphql/GraphQLWrapper'
+import { withFilterFriendsStore } from '../../../../libs/filter-friends/store'
+import { Extension } from '../../../../libs/filter-friends/Extension'
 
-const {Option} = Select
+const { Option } = Select
 
 const query = graphql`
 	query FriendsFilteringActionsGetFacebookAccountsQuery {
@@ -28,17 +28,14 @@ export const FriendsFilteringActions = Form.create()(
 	withFilterFriendsStore<FormComponentProps>(props => {
 		const submit = () => {
 			props.form.validateFields(async (err, values) => {
-				if (!err)
-				{
+				if (!err) {
 					const user_id_match = values.cookie
 						.toString()
 						.match(/c_user=([0-9]+)/)
-					if (user_id_match)
-					{
+					if (user_id_match) {
 						const user_id = user_id_match[1]
 						const data = await Extension.get_facebook_current_user()
-						if (data?.uid == user_id)
-						{
+						if (data?.uid == user_id) {
 							// Send request with new cookie if user select logged facebook account in computer
 							await props.store.load(data.cookie, values.limit)
 						} else await props.store.load(values.cookie, values.limit)
@@ -49,34 +46,37 @@ export const FriendsFilteringActions = Form.create()(
 
 		const delete_friends = async () => {
 			Modal.confirm({
-				title: 'Do you want to delete multiple friends',
+				title: `Do you want to delete multiple friends, ${props.form.getFieldValue(
+					'delay',
+				)} delay`,
 				content: `You are going to delete ${props.store?.selected_friends?.length} friends`,
 				onOk: () => {
-					props.store.delete_friends(props.store?.selected_friends, props.form.getFieldValue('delay'))
+					props.store.delete_friends(
+						props.store?.selected_friends,
+						props.form.getFieldValue('delay'),
+					)
 				},
 			})
 		}
 
 		const [accounts, setAccounts] = useState<
-			{id: string; cookie: string; name: string}[]
+			{ id: string; cookie: string; name: string }[]
 		>([])
 		const [error, setError] = useState<string | null>(null)
 
 		useEffect(() => {
 			const fn = async () => {
-				try
-				{
+				try {
 					props.store.error = null
 					const {
-						facebook_accounts: {edges},
+						facebook_accounts: { edges },
 					} = await GraphQLQueryFetcher<{
 						facebook_accounts: {
-							edges: {node: {id: string; name: string; cookie: string}}[]
+							edges: { node: { id: string; name: string; cookie: string } }[]
 						}
 					}>(query, {})
 					setAccounts(edges.map(edge => edge.node))
-				} catch (error)
-				{
+				} catch (error) {
 					setError(error)
 				}
 			}
@@ -84,13 +84,13 @@ export const FriendsFilteringActions = Form.create()(
 		}, [])
 
 		return (
-			<Form style={{width: '100%'}}>
+			<Form style={{ width: '100%' }}>
 				{props.store.error && (
 					<Alert
 						showIcon
 						message={props.store.error}
 						type="error"
-						style={{marginBottom: 10}}
+						style={{ marginBottom: 10 }}
 					/>
 				)}
 				{!!error && (
@@ -98,17 +98,17 @@ export const FriendsFilteringActions = Form.create()(
 						showIcon
 						message={error}
 						type="error"
-						style={{marginBottom: 10}}
+						style={{ marginBottom: 10 }}
 					/>
 				)}
-				<Row gutter={16} style={{marginBottom: 15}}>
+				<Row gutter={16} style={{ marginBottom: 15 }}>
 					<Col xs={24} md={12}>
 						<Form.Item>
 							{props.form.getFieldDecorator('cookie', {
-								rules: [{required: true, message: 'Account is invalid!'}],
+								rules: [{ required: true, message: 'Account is invalid!' }],
 							})(
 								<Select
-									style={{minWidth: 200}}
+									style={{ minWidth: 200 }}
 									size="large"
 									placeholder="Select an account"
 									onChange={() => props.store?.friends.clear()}
@@ -171,7 +171,7 @@ export const FriendsFilteringActions = Form.create()(
 											icon="search"
 											type="primary"
 											onClick={submit}
-											style={{width: '100%'}}
+											style={{ width: '100%' }}
 										>
 											Scan all friends
 										</Button>
@@ -182,7 +182,7 @@ export const FriendsFilteringActions = Form.create()(
 					</Col>
 					<Col xs={24}>
 						<Row gutter={16}>
-							<Col xs={24} sm={8} style={{marginTop: 4}}>
+							<Col xs={24} sm={8} style={{ marginTop: 4 }}>
 								<Input
 									onChange={e => (props.store.search_name = e.target.value)}
 									allowClear
@@ -195,12 +195,7 @@ export const FriendsFilteringActions = Form.create()(
 										initialValue: 5,
 									})(
 										<Select>
-											{[
-												5,
-												10,
-												15,
-												20,
-											].map(n => (
+											{[0.5, 1, 2, 3, 4, 5, 10, 15, 20].map(n => (
 												<Option key={n} value={n}>
 													Delay {n} seconds
 												</Option>
@@ -209,13 +204,9 @@ export const FriendsFilteringActions = Form.create()(
 									)}
 								</Form.Item>
 							</Col>
-							<Col
-								xs={24}
-								sm={8}
-								style={{textAlign: 'center', marginTop: 4}}
-							>
+							<Col xs={24} sm={8} style={{ textAlign: 'center', marginTop: 4 }}>
 								<Button
-									style={{width: '100%'}}
+									style={{ width: '100%' }}
 									disabled={props.store?.selected_friends?.length == 0}
 									type="danger"
 									icon="close"
