@@ -54,6 +54,22 @@ const statusMapping = {
 			fontSize: 20,
 		},
 	},
+	end: {
+		type: 'check-circle',
+		theme: 'filled',
+		style: {
+			color: 'green',
+			fontSize: 20,
+		},
+	},
+	stop: {
+		type: 'check-circle',
+		theme: 'filled',
+		style: {
+			color: 'green',
+			fontSize: 20,
+		},
+	},
 	queue: {
 		type: 'clock-circle',
 		style: {
