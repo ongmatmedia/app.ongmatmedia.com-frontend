@@ -41,9 +41,6 @@ const query = graphql`
 		}
 	}
 `
-const IconFont = Icon.createFromIconfontCN({
-	scriptUrl: '//at.alicdn.com/t/font_8d5l8fzk5b87iudi.js',
-})
 
 export type CUModalProps = {
 	mode: 'create' | 'update'
@@ -244,8 +241,8 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 																	)
 																}
 															/>,
-															<IconFont
-																type="icon-facebook"
+															<Icon
+																type="facebook"
 																style={{
 																	color: 'black',
 																	fontSize: 20,
@@ -297,8 +294,8 @@ export const CUModal = GraphQLWrapper<CUModalGraphqlData, CUModalProps>(
 																	)
 																}
 															/>,
-															<IconFont
-																type="icon-facebook"
+															<Icon
+																type="facebook"
 																style={{
 																	color: 'black',
 																	fontSize: 20,

@@ -10,25 +10,19 @@ const mutation = graphql`
 	}
 `
 
-const share_updater = (store, id: string) => {
-	const list = store.get('client:root:livestream_tasks') as RecordProxy
-	ConnectionHandler.deleteNode(list, id)
-}
-
 export const delete_livestream = async (id: string) =>
-	new Promise(async (success: Function, reject: Function) => {
+	new Promise(async (resolve, reject) => {
 		commitMutation(RelayEnvironment as any, {
 			variables: { id },
 			mutation,
 			updater: store => {
-				share_updater(store, id)
-				success()
+				const list = store.get('client:root:livestream_tasks') as RecordProxy
+				ConnectionHandler.deleteNode(list, id)
+				resolve()
 			},
 			onError: error => {
 				const { errors } = (error as any) as GraphQLError
-				!!errors
-					? reject(errors.map(e => `[${e.errorType}] ${e.message}`).join('\n'))
-					: reject('Error')
+				reject(errors.map(e => `[ERROR] ${e.message}`).join('\n'))
 			},
 		})
 	})

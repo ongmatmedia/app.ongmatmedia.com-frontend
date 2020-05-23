@@ -23,6 +23,10 @@ import { AvatarShield } from './tools/avatar-shield/AvatarShield'
 import { FriendsFiltering } from './tools/friends-filtering/FriendsFiltering'
 import { FriendsPoking } from './tools/friends-poking/FriendsPoking'
 import { Tools } from './tools/Tools'
+import { LivestreamsListPage } from './livestream'
+import { CreateUpdateLivestreamPage } from './livestream/CreateUpdateLivestreamPage/CreateUpdateLivestreamPage'
+import { DetailLivestreamPage } from './livestream/DetailLivestreamPage'
+import { PricingPage } from './livestream/LivestreamPricingPage/LivestreamPricingPage'
 
 export const AppWithRouter = () => {
 	return (

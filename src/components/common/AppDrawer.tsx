@@ -60,10 +60,11 @@ const DrawerApp = (props: DrawerAppProps) => (
 		onClick={() => props.onClick()}
 		style={{
 			width: 80,
-			marginLeft: 10,
+			marginLeft: 5,
 			display: 'flex',
 			flexDirection: 'column',
 			marginTop: 15,
+			marginBottom: 15,
 			alignItems: 'center',
 			cursor: 'pointer',
 			textAlign: 'center',
